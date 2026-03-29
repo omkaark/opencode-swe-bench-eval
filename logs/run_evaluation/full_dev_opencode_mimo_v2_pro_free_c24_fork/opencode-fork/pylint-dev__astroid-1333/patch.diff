@@ -1,0 +1,37 @@
+diff --git a/astroid/modutils.py b/astroid/modutils.py
+index 6d698469..03a46adb 100644
+--- a/astroid/modutils.py
++++ b/astroid/modutils.py
+@@ -266,7 +266,7 @@ def check_modpath_has_init(path, mod_path):
+         path = os.path.join(path, part)
+         if not _has_init(path):
+             old_namespace = util.is_namespace(".".join(modpath))
+-            if not old_namespace:
++            if not old_namespace and not os.path.isdir(path):
+                 return False
+     return True
+ 
+diff --git a/tests/unittest_modutils.py b/tests/unittest_modutils.py
+index d6fcb68e..cf014239 100644
+--- a/tests/unittest_modutils.py
++++ b/tests/unittest_modutils.py
+@@ -157,6 +157,19 @@ class ModPathFromFileTest(unittest.TestCase):
+             finally:
+                 os.remove(linked_file_name)
+ 
++    def test_load_packages_without_init(self) -> None:
++        with tempfile.TemporaryDirectory() as tmpdir:
++            package_dir = os.path.join(tmpdir, "package")
++            os.makedirs(package_dir)
++            module_file = os.path.join(package_dir, "module.py")
++            with open(module_file, "w", encoding="utf-8"):
++                pass
++            sys.path.insert(0, tmpdir)
++            self.addCleanup(sys.path.remove, tmpdir)
++            self.assertEqual(
++                modutils.modpath_from_file(module_file), ["package", "module"]
++            )
++
+     def test_load_from_module_symlink_on_symlinked_paths_in_syspath(self) -> None:
+         # constants
+         tmp = tempfile.gettempdir()

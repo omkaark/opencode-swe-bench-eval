@@ -1,0 +1,35 @@
+diff --git a/src/sqlfluff/core/file_helpers.py b/src/sqlfluff/core/file_helpers.py
+index 52f74f0b..187e917c 100644
+--- a/src/sqlfluff/core/file_helpers.py
++++ b/src/sqlfluff/core/file_helpers.py
+@@ -12,6 +12,9 @@ def get_encoding(fname: str, config: FluffConfig) -> str:
+     if encoding_config == "autodetect":
+         with open(fname, "rb") as f:
+             data = f.read()
+-        return chardet.detect(data)["encoding"]
++        encoding = chardet.detect(data)["encoding"]
++        if encoding is None:
++            encoding = "utf-8"
++        return encoding
+ 
+     return encoding_config
+diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py
+index 3a8593ed..ff476515 100644
+--- a/src/sqlfluff/core/linter/linted_file.py
++++ b/src/sqlfluff/core/linter/linted_file.py
+@@ -493,7 +493,12 @@ class LintedFile(NamedTuple):
+             if suffix:
+                 root, ext = os.path.splitext(fname)
+                 fname = root + suffix + ext
+-            # Actually write the file.
+-            with open(fname, "w", encoding=self.encoding) as f:
+-                f.write(write_buff)
++
++            try:
++                encoding = self.encoding
++                with open(fname, "w", encoding=encoding) as f:
++                    f.write(write_buff)
++            except UnicodeEncodeError:
++                with open(fname, "w", encoding="utf-8") as f:
++                    f.write(write_buff)
+         return success

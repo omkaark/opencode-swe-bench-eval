@@ -1,0 +1,30 @@
+diff --git a/astroid/nodes/as_string.py b/astroid/nodes/as_string.py
+index 427ccc15..eb6cce78 100644
+--- a/astroid/nodes/as_string.py
++++ b/astroid/nodes/as_string.py
+@@ -259,6 +259,10 @@ class AsStringVisitor:
+         """dummy method for visiting an Empty node"""
+         return ""
+ 
++    def visit_unknown(self, node):
++        """dummy method for visiting an Unknown node"""
++        return ""
++
+     def visit_excepthandler(self, node):
+         if node.type:
+             if node.name:
+diff --git a/tests/unittest_nodes.py b/tests/unittest_nodes.py
+index 7c78cd23..25b5ba41 100644
+--- a/tests/unittest_nodes.py
++++ b/tests/unittest_nodes.py
+@@ -306,6 +306,10 @@ everything = f""" " \' \r \t \\ {{ }} {'x' + x!r:a} {["'"]!s:{a}}"""
+         ast = abuilder.string_build(code)
+         self.assertEqual(ast.as_string().strip(), code.strip())
+ 
++    def test_as_string_unknown(self) -> None:
++        node = nodes.Unknown()
++        self.assertEqual(node.as_string(), "")
++
+ 
+ class _NodeTest(unittest.TestCase):
+     """test transformation of If Node"""

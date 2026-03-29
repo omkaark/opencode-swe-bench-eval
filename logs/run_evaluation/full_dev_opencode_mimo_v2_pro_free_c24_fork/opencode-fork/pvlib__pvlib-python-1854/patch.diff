@@ -1,0 +1,13 @@
+diff --git a/pvlib/pvsystem.py b/pvlib/pvsystem.py
+index c277a77..bd507c4 100644
+--- a/pvlib/pvsystem.py
++++ b/pvlib/pvsystem.py
+@@ -202,6 +202,8 @@ class PVSystem:
+                  inverter=None, inverter_parameters=None,
+                  racking_model=None, losses_parameters=None, name=None):
+ 
++        if isinstance(arrays, Array):
++            arrays = (arrays,)
+         if arrays is None:
+             if losses_parameters is None:
+                 array_losses_parameters = {}

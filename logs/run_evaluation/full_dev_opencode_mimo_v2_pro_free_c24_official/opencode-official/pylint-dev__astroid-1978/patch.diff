@@ -1,0 +1,66 @@
+diff --git a/astroid/raw_building.py b/astroid/raw_building.py
+index cc3aa015..5c088117 100644
+--- a/astroid/raw_building.py
++++ b/astroid/raw_building.py
+@@ -471,7 +471,9 @@ class InspectBuilder:
+             # check if it sounds valid and then add an import node, else use a
+             # dummy node
+             try:
+-                getattr(sys.modules[modname], name)
++                with warnings.catch_warnings():
++                    warnings.simplefilter("ignore", FutureWarning)
++                    getattr(sys.modules[modname], name)
+             except (KeyError, AttributeError):
+                 attach_dummy_node(node, name, member)
+             else:
+diff --git a/tests/unittest_raw_building.py b/tests/unittest_raw_building.py
+index 64c22727..dff5d1b1 100644
+--- a/tests/unittest_raw_building.py
++++ b/tests/unittest_raw_building.py
+@@ -116,6 +116,46 @@ class RawBuildingTC(unittest.TestCase):
+         # This should not raise an exception
+         AstroidBuilder().inspect_build(fm_getattr, "test")
+ 
++    def test_build_module_getattr_catch_output(self) -> None:
++        # Test that FutureWarnings from getattr calls during module building
++        # are suppressed and don't escape to the user.
++        # See https://github.com/PyCQA/astroid/issues/1783
++        import subprocess
++        import sys
++
++        code = """
++import warnings
++import sys
++import types
++
++# Create a module that warns on getattr
++fake_mod = types.ModuleType("fake_warn_module")
++def _getattr(name):
++    if name == "SomeClass":
++        warnings.warn("deprecated", FutureWarning, stacklevel=2)
++        return type("SomeClass", (), {})
++    raise AttributeError(name)
++fake_mod.__getattr__ = _getattr
++fake_mod.__dir__ = lambda: ["SomeClass"]
++sys.modules["fake_warn_module"] = fake_mod
++
++# Create our test module with a class that "comes from" fake_warn_module
++class SomeClass:
++    __module__ = "fake_warn_module"
++
++import astroid
++builder = astroid.raw_building.InspectBuilder()
++builder.inspect_build(sys.modules[__name__])
++"""
++        result = subprocess.run(
++            [sys.executable, "-W", "error::FutureWarning", "-c", code],
++            capture_output=True,
++            text=True,
++        )
++        assert result.returncode == 0, (
++            f"FutureWarning was not suppressed:\n{result.stderr}"
++        )
++
+ 
+ if __name__ == "__main__":
+     unittest.main()

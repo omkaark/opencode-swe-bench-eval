@@ -1,0 +1,65 @@
+2026-03-29 02:12:32,101 - INFO - Creating container for pydicom__pydicom-901...
+2026-03-29 02:12:32,278 - INFO - Container for pydicom__pydicom-901 created: dbb97438bb2f82113d702249383e65f39366ead5f170336e998ddebf8fc7e802
+2026-03-29 02:12:32,362 - INFO - Container for pydicom__pydicom-901 started: dbb97438bb2f82113d702249383e65f39366ead5f170336e998ddebf8fc7e802
+2026-03-29 02:12:32,363 - INFO - Intermediate patch for pydicom__pydicom-901 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_official/opencode-official/pydicom__pydicom-901/patch.diff, now applying to container...
+2026-03-29 02:12:32,514 - INFO - >>>>> Applied Patch:
+Checking patch pydicom/config.py...
+Applied patch pydicom/config.py cleanly.
+
+2026-03-29 02:12:32,670 - INFO - Git diff before:
+diff --git a/pydicom/config.py b/pydicom/config.py
+index ae9c8bdf1..22e806ef4 100644
+--- a/pydicom/config.py
++++ b/pydicom/config.py
+@@ -62,10 +62,6 @@ and datetime.time respectively. Default: False
+ 
+ # Logging system and debug function to change logging level
+ logger = logging.getLogger('pydicom')
+-handler = logging.StreamHandler()
+-formatter = logging.Formatter("%(message)s")
+-handler.setFormatter(formatter)
+-logger.addHandler(handler)
+ 
+ 
+ import pydicom.pixel_data_handlers.numpy_handler as np_handler  # noqa
+@@ -127,6 +123,3 @@ def debug(debug_on=True):
+         logger.setLevel(logging.WARNING)
+         debugging = False
+ 
+-
+-# force level=WARNING, in case logging default is set differently (issue 103)
+-debug(False)
+2026-03-29 02:12:32,671 - INFO - Eval script for pydicom__pydicom-901 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_official/opencode-official/pydicom__pydicom-901/eval.sh; copying to container...
+2026-03-29 02:12:35,587 - INFO - Test runtime: 2.86 seconds
+2026-03-29 02:12:35,587 - INFO - Test output for pydicom__pydicom-901 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_official/opencode-official/pydicom__pydicom-901/test_output.txt
+2026-03-29 02:12:35,660 - INFO - Git diff after:
+diff --git a/pydicom/config.py b/pydicom/config.py
+index ae9c8bdf1..22e806ef4 100644
+--- a/pydicom/config.py
++++ b/pydicom/config.py
+@@ -62,10 +62,6 @@ and datetime.time respectively. Default: False
+ 
+ # Logging system and debug function to change logging level
+ logger = logging.getLogger('pydicom')
+-handler = logging.StreamHandler()
+-formatter = logging.Formatter("%(message)s")
+-handler.setFormatter(formatter)
+-logger.addHandler(handler)
+ 
+ 
+ import pydicom.pixel_data_handlers.numpy_handler as np_handler  # noqa
+@@ -127,6 +123,3 @@ def debug(debug_on=True):
+         logger.setLevel(logging.WARNING)
+         debugging = False
+ 
+-
+-# force level=WARNING, in case logging default is set differently (issue 103)
+-debug(False)
+2026-03-29 02:12:35,660 - INFO - Grading answer for pydicom__pydicom-901...
+2026-03-29 02:12:35,663 - INFO - report: {'pydicom__pydicom-901': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pydicom/tests/test_config.py::TestDebug::test_default', 'pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_null', 'pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_null', 'pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_stream', 'pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_stream']}, 'PASS_TO_PASS': {'success': [], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pydicom__pydicom-901: resolved: False
+2026-03-29 02:12:35,663 - INFO - Attempting to stop container sweb.eval.pydicom__pydicom-901.full_dev_opencode_mimo_v2_pro_free_c24_official...
+2026-03-29 02:12:50,786 - INFO - Attempting to remove container sweb.eval.pydicom__pydicom-901.full_dev_opencode_mimo_v2_pro_free_c24_official...
+2026-03-29 02:12:50,796 - INFO - Container sweb.eval.pydicom__pydicom-901.full_dev_opencode_mimo_v2_pro_free_c24_official removed.
+2026-03-29 02:12:50,796 - INFO - Attempting to remove image swebench/sweb.eval.x86_64.pydicom_1776_pydicom-901:latest...
+2026-03-29 02:12:51,178 - INFO - Image swebench/sweb.eval.x86_64.pydicom_1776_pydicom-901:latest removed.

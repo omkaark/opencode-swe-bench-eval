@@ -1,0 +1,63 @@
+2026-03-29 02:24:30,651 - INFO - Creating container for pvlib__pvlib-python-1606...
+2026-03-29 02:24:30,831 - INFO - Container for pvlib__pvlib-python-1606 created: 0e533fea31cbee86413a0825fc318dea25d67c3dac304e7701d137b53cff725b
+2026-03-29 02:24:30,899 - INFO - Container for pvlib__pvlib-python-1606 started: 0e533fea31cbee86413a0825fc318dea25d67c3dac304e7701d137b53cff725b
+2026-03-29 02:24:30,899 - INFO - Intermediate patch for pvlib__pvlib-python-1606 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_fork/opencode-fork/pvlib__pvlib-python-1606/patch.diff, now applying to container...
+2026-03-29 02:24:31,018 - INFO - >>>>> Applied Patch:
+Checking patch pvlib/tools.py...
+Applied patch pvlib/tools.py cleanly.
+
+2026-03-29 02:24:31,433 - INFO - Git diff before:
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..b8824e7 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -351,12 +351,15 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     converged = False
+     iterations = 0
+ 
+-    # handle all NaN case gracefully
++    # handle all NaN case gracefully, and handle equal bounds by
++    # replacing zero differences with atol (iterlimit becomes 0)
+     with warnings.catch_warnings():
+         warnings.filterwarnings(action='ignore',
+                                 message='All-NaN slice encountered')
++        diff = df['VH'] - df['VL']
++        diff = np.where(np.isnan(diff) | (diff == 0), atol, diff)
+         iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++            np.trunc(np.log(atol / diff) / np.log(phim1)))
+ 
+     while not converged and (iterations <= iterlimit):
+2026-03-29 02:24:31,434 - INFO - Eval script for pvlib__pvlib-python-1606 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_fork/opencode-fork/pvlib__pvlib-python-1606/eval.sh; copying to container...
+2026-03-29 02:24:39,490 - INFO - Test runtime: 8.00 seconds
+2026-03-29 02:24:39,490 - INFO - Test output for pvlib__pvlib-python-1606 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_fork/opencode-fork/pvlib__pvlib-python-1606/test_output.txt
+2026-03-29 02:24:39,562 - INFO - Git diff after:
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..b8824e7 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -351,12 +351,15 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     converged = False
+     iterations = 0
+ 
+-    # handle all NaN case gracefully
++    # handle all NaN case gracefully, and handle equal bounds by
++    # replacing zero differences with atol (iterlimit becomes 0)
+     with warnings.catch_warnings():
+         warnings.filterwarnings(action='ignore',
+                                 message='All-NaN slice encountered')
++        diff = df['VH'] - df['VL']
++        diff = np.where(np.isnan(diff) | (diff == 0), atol, diff)
+         iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++            np.trunc(np.log(atol / diff) / np.log(phim1)))
+ 
+     while not converged and (iterations <= iterlimit):
+2026-03-29 02:24:39,562 - INFO - Grading answer for pvlib__pvlib-python-1606...
+2026-03-29 02:24:39,563 - INFO - report: {'pvlib__pvlib-python-1606': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test__golden_sect_DataFrame_vector']}, 'PASS_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test_build_kwargs[keys0-input_dict0-expected0]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys1-input_dict1-expected1]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys2-input_dict2-expected2]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys3-input_dict3-expected3]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params0-0.0-1.0-0.5-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params1-0.0-1.0-0.07230200263994839-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params2-0.0-100.0-89.14332727531685-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_atol', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_nans', 'pvlib/tests/test_tools.py::test_degrees_to_index_1']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pvlib__pvlib-python-1606: resolved: False
+2026-03-29 02:24:39,564 - INFO - Attempting to stop container sweb.eval.pvlib__pvlib-python-1606.full_dev_opencode_mimo_v2_pro_free_c24_fork...
+2026-03-29 02:24:54,687 - INFO - Attempting to remove container sweb.eval.pvlib__pvlib-python-1606.full_dev_opencode_mimo_v2_pro_free_c24_fork...
+2026-03-29 02:24:54,703 - INFO - Container sweb.eval.pvlib__pvlib-python-1606.full_dev_opencode_mimo_v2_pro_free_c24_fork removed.
+2026-03-29 02:24:54,703 - INFO - Attempting to remove image swebench/sweb.eval.x86_64.pvlib_1776_pvlib-python-1606:latest...
+2026-03-29 02:24:54,814 - INFO - Image swebench/sweb.eval.x86_64.pvlib_1776_pvlib-python-1606:latest removed.

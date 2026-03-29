@@ -1,0 +1,15 @@
+diff --git a/pydicom/dataelem.py b/pydicom/dataelem.py
+index b2709f13..1fd20bdd 100644
+--- a/pydicom/dataelem.py
++++ b/pydicom/dataelem.py
+@@ -437,8 +437,8 @@ class DataElement:
+         # If so, turn them into a list of separate strings
+         #  Last condition covers 'US or SS' etc
+         if isinstance(val, (str, bytes)) and self.VR not in \
+-                ['UT', 'ST', 'LT', 'FL', 'FD', 'AT', 'OB', 'OW', 'OF', 'SL',
+-                 'SQ', 'SS', 'UL', 'OB/OW', 'OW/OB', 'OB or OW',
++                ['UT', 'ST', 'LT', 'FL', 'FD', 'AT', 'OB', 'OD', 'OF', 'OL',
++                 'OW', 'OV', 'SQ', 'SS', 'UL', 'OB/OW', 'OW/OB', 'OB or OW',
+                  'OW or OB', 'UN'] and 'US' not in self.VR:
+             try:
+                 if _backslash_str in val:

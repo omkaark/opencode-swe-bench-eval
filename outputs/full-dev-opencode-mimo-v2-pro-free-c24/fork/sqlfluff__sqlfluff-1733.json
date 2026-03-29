@@ -1,0 +1,14 @@
+{
+  "variant": "fork",
+  "instance_id": "sqlfluff__sqlfluff-1733",
+  "repo": "sqlfluff/sqlfluff",
+  "base_commit": "a1579a16b1d8913d9d7c7d12add374a290bcc78c",
+  "attempt": 1,
+  "modal_log_url": "https://modal.com/apps/omkaark/main/deployed/swe-rex?activeTab=logs&taskId=ta-01KMW2VJST6H56R40G91JW54TW",
+  "opencode_exit_code": null,
+  "opencode_output": "",
+  "opencode_duration_seconds": null,
+  "git_status": "",
+  "model_patch": "",
+  "error": "ManualFailure: first attempt timed out at 1800 seconds; second attempt was manually cut off after a prolonged rerun per user instruction to mark the case failed and move on."
+}

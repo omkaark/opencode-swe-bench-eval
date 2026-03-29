@@ -1,0 +1,61 @@
+2026-03-29 02:13:37,590 - INFO - Creating container for pydicom__pydicom-1139...
+2026-03-29 02:13:37,801 - INFO - Container for pydicom__pydicom-1139 created: 94676c75fe7973e15c0c5727582e3b4375941ae887a1d07daf8a66ff805a8f78
+2026-03-29 02:13:37,857 - INFO - Container for pydicom__pydicom-1139 started: 94676c75fe7973e15c0c5727582e3b4375941ae887a1d07daf8a66ff805a8f78
+2026-03-29 02:13:37,857 - INFO - Intermediate patch for pydicom__pydicom-1139 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_official/opencode-official/pydicom__pydicom-1139/patch.diff, now applying to container...
+2026-03-29 02:13:37,969 - INFO - >>>>> Applied Patch:
+Checking patch pydicom/valuerep.py...
+Applied patch pydicom/valuerep.py cleanly.
+
+2026-03-29 02:13:38,095 - INFO - Git diff before:
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f7872..e86cc8b25 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -826,6 +826,15 @@ class PersonName:
+                     (len(self._components) > 1 or bool(self._components[0])))
+         return bool(self.original_string)
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, x):
++        return x in str(self)
++
++    def __len__(self):
++        return len(str(self))
++
+ 
+ # Alias old class names for backwards compat in user code
+ PersonNameUnicode = PersonName = PersonName
+2026-03-29 02:13:38,095 - INFO - Eval script for pydicom__pydicom-1139 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_official/opencode-official/pydicom__pydicom-1139/eval.sh; copying to container...
+2026-03-29 02:13:40,571 - INFO - Test runtime: 2.43 seconds
+2026-03-29 02:13:40,572 - INFO - Test output for pydicom__pydicom-1139 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_official/opencode-official/pydicom__pydicom-1139/test_output.txt
+2026-03-29 02:13:40,645 - INFO - Git diff after:
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f7872..e86cc8b25 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -826,6 +826,15 @@ class PersonName:
+                     (len(self._components) > 1 or bool(self._components[0])))
+         return bool(self.original_string)
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, x):
++        return x in str(self)
++
++    def __len__(self):
++        return len(str(self))
++
+ 
+ # Alias old class names for backwards compat in user code
+ PersonNameUnicode = PersonName = PersonName
+2026-03-29 02:13:40,645 - INFO - Grading answer for pydicom__pydicom-1139...
+2026-03-29 02:13:40,647 - INFO - report: {'pydicom__pydicom-1139': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': ['pydicom/tests/test_valuerep.py::TestPersonName::test_iterator', 'pydicom/tests/test_valuerep.py::TestPersonName::test_contains'], 'failure': ['pydicom/tests/test_valuerep.py::TestPersonName::test_next']}, 'PASS_TO_PASS': {'success': ['pydicom/tests/test_valuerep.py::TestTM::test_pickling', 'pydicom/tests/test_valuerep.py::TestDT::test_pickling', 'pydicom/tests/test_valuerep.py::TestDA::test_pickling', 'pydicom/tests/test_valuerep.py::TestDS::test_empty_value', 'pydicom/tests/test_valuerep.py::TestDS::test_float_values', 'pydicom/tests/test_valuerep.py::TestDSfloat::test_pickling', 'pydicom/tests/test_valuerep.py::TestDSfloat::test_str', 'pydicom/tests/test_valuerep.py::TestDSfloat::test_repr', 'pydicom/tests/test_valuerep.py::TestDSdecimal::test_pickling', 'pydicom/tests/test_valuerep.py::TestDSdecimal::test_float_value', 'pydicom/tests/test_valuerep.py::TestIS::test_empty_value', 'pydicom/tests/test_valuerep.py::TestIS::test_valid_value', 'pydicom/tests/test_valuerep.py::TestIS::test_invalid_value', 'pydicom/tests/test_valuerep.py::TestIS::test_pickling', 'pydicom/tests/test_valuerep.py::TestIS::test_longint', 'pydicom/tests/test_valuerep.py::TestIS::test_overflow', 'pydicom/tests/test_valuerep.py::TestIS::test_str', 'pydicom/tests/test_valuerep.py::TestIS::test_repr', 'pydicom/tests/test_valuerep.py::TestDecimalString::test_DS_decimal_set', 'pydicom/tests/test_valuerep.py::TestDecimalString::test_valid_decimal_strings', 'pydicom/tests/test_valuerep.py::TestDecimalString::test_invalid_decimal_strings', 'pydicom/tests/test_valuerep.py::TestPersonName::test_last_first', 'pydicom/tests/test_valuerep.py::TestPersonName::test_copy', 'pydicom/tests/test_valuerep.py::TestPersonName::test_three_component', 'pydicom/tests/test_valuerep.py::TestPersonName::test_formatting', 'pydicom/tests/test_valuerep.py::TestPersonName::test_unicode_kr', 'pydicom/tests/test_valuerep.py::TestPersonName::test_unicode_jp_from_bytes', 'pydicom/tests/test_valuerep.py::TestPersonName::test_unicode_jp_from_bytes_comp_delimiter', 'pydicom/tests/test_valuerep.py::TestPersonName::test_unicode_jp_from_bytes_caret_delimiter', 'pydicom/tests/test_valuerep.py::TestPersonName::test_unicode_jp_from_unicode', 'pydicom/tests/test_valuerep.py::TestPersonName::test_not_equal', 'pydicom/tests/test_valuerep.py::TestPersonName::test_encoding_carried', 'pydicom/tests/test_valuerep.py::TestPersonName::test_hash', 'pydicom/tests/test_valuerep.py::TestDateTime::test_date', 'pydicom/tests/test_valuerep.py::TestDateTime::test_date_time', 'pydicom/tests/test_valuerep.py::TestDateTime::test_time'], 'failure': ['pydicom/tests/test_valuerep.py::TestBadValueRead::test_read_bad_value_in_VR_default', 'pydicom/tests/test_valuerep.py::TestBadValueRead::test_read_bad_value_in_VR_enforce_valid_value']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pydicom__pydicom-1139: resolved: False
+2026-03-29 02:13:40,648 - INFO - Attempting to stop container sweb.eval.pydicom__pydicom-1139.full_dev_opencode_mimo_v2_pro_free_c24_official...
+2026-03-29 02:13:55,784 - INFO - Attempting to remove container sweb.eval.pydicom__pydicom-1139.full_dev_opencode_mimo_v2_pro_free_c24_official...
+2026-03-29 02:13:55,796 - INFO - Container sweb.eval.pydicom__pydicom-1139.full_dev_opencode_mimo_v2_pro_free_c24_official removed.
+2026-03-29 02:13:55,796 - INFO - Attempting to remove image swebench/sweb.eval.x86_64.pydicom_1776_pydicom-1139:latest...
+2026-03-29 02:13:56,214 - INFO - Image swebench/sweb.eval.x86_64.pydicom_1776_pydicom-1139:latest removed.

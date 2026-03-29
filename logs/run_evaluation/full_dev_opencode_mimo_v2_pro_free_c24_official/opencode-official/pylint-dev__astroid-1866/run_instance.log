@@ -1,0 +1,53 @@
+2026-03-29 02:10:09,245 - INFO - Creating container for pylint-dev__astroid-1866...
+2026-03-29 02:10:09,286 - INFO - Container for pylint-dev__astroid-1866 created: c1e50266127b5197512f7393253c7913ee59dc3e873a00e671f37a73197e66bb
+2026-03-29 02:10:09,333 - INFO - Container for pylint-dev__astroid-1866 started: c1e50266127b5197512f7393253c7913ee59dc3e873a00e671f37a73197e66bb
+2026-03-29 02:10:09,333 - INFO - Intermediate patch for pylint-dev__astroid-1866 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_official/opencode-official/pylint-dev__astroid-1866/patch.diff, now applying to container...
+2026-03-29 02:10:09,439 - INFO - >>>>> Applied Patch:
+Checking patch astroid/brain/brain_builtin_inference.py...
+Applied patch astroid/brain/brain_builtin_inference.py cleanly.
+
+2026-03-29 02:10:09,537 - INFO - Git diff before:
+diff --git a/astroid/brain/brain_builtin_inference.py b/astroid/brain/brain_builtin_inference.py
+index af1ddf4d..8bb79581 100644
+--- a/astroid/brain/brain_builtin_inference.py
++++ b/astroid/brain/brain_builtin_inference.py
+@@ -954,8 +954,10 @@ def _infer_str_format_call(
+ 
+     try:
+         formatted_string = format_template.format(*pos_values, **keyword_values)
+-    except (IndexError, KeyError):
++    except (IndexError, KeyError, TypeError):
+         # If there is an IndexError there are too few arguments to interpolate
++        # If there is a KeyError a key is missing
++        # If there is a TypeError the arguments cannot be formatted, e.g. None with 's' spec
+         return iter([util.Uninferable])
+ 
+     return iter([nodes.const_factory(formatted_string)])
+2026-03-29 02:10:09,538 - INFO - Eval script for pylint-dev__astroid-1866 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_official/opencode-official/pylint-dev__astroid-1866/eval.sh; copying to container...
+2026-03-29 02:10:14,709 - INFO - Test runtime: 5.12 seconds
+2026-03-29 02:10:14,709 - INFO - Test output for pylint-dev__astroid-1866 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_official/opencode-official/pylint-dev__astroid-1866/test_output.txt
+2026-03-29 02:10:14,785 - INFO - Git diff after:
+diff --git a/astroid/brain/brain_builtin_inference.py b/astroid/brain/brain_builtin_inference.py
+index af1ddf4d..8bb79581 100644
+--- a/astroid/brain/brain_builtin_inference.py
++++ b/astroid/brain/brain_builtin_inference.py
+@@ -954,8 +954,10 @@ def _infer_str_format_call(
+ 
+     try:
+         formatted_string = format_template.format(*pos_values, **keyword_values)
+-    except (IndexError, KeyError):
++    except (IndexError, KeyError, TypeError):
+         # If there is an IndexError there are too few arguments to interpolate
++        # If there is a KeyError a key is missing
++        # If there is a TypeError the arguments cannot be formatted, e.g. None with 's' spec
+         return iter([util.Uninferable])
+ 
+     return iter([nodes.const_factory(formatted_string)])
+2026-03-29 02:10:14,785 - INFO - Grading answer for pylint-dev__astroid-1866...
+2026-03-29 02:10:14,786 - INFO - report: {'pylint-dev__astroid-1866': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['tests/unittest_brain_builtin.py::TestStringNodes::test_string_format_uninferable[\\n']}, 'PASS_TO_PASS': {'success': ['tests/unittest_brain_builtin.py::BuiltinsTest::test_infer_property', 'tests/unittest_brain_builtin.py::TestStringNodes::test_string_format[empty-indexes]', 'tests/unittest_brain_builtin.py::TestStringNodes::test_string_format[numbered-indexes]', 'tests/unittest_brain_builtin.py::TestStringNodes::test_string_format[named-indexes]', 'tests/unittest_brain_builtin.py::TestStringNodes::test_string_format[numbered-indexes-from-positional]', 'tests/unittest_brain_builtin.py::TestStringNodes::test_string_format[named-indexes-from-keyword]', 'tests/unittest_brain_builtin.py::TestStringNodes::test_string_format[mixed-indexes-from-mixed]', 'tests/unittest_brain_builtin.py::TestStringNodes::test_string_format[empty-indexes-on-variable]', 'tests/unittest_brain_builtin.py::TestStringNodes::test_string_format_uninferable["I', 'tests/unittest_brain_builtin.py::TestStringNodes::test_string_format_with_specs'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pylint-dev__astroid-1866: resolved: False
+2026-03-29 02:10:14,786 - INFO - Attempting to stop container sweb.eval.pylint-dev__astroid-1866.full_dev_opencode_mimo_v2_pro_free_c24_official...
+2026-03-29 02:10:29,904 - INFO - Attempting to remove container sweb.eval.pylint-dev__astroid-1866.full_dev_opencode_mimo_v2_pro_free_c24_official...
+2026-03-29 02:10:29,914 - INFO - Container sweb.eval.pylint-dev__astroid-1866.full_dev_opencode_mimo_v2_pro_free_c24_official removed.
+2026-03-29 02:10:29,914 - INFO - Attempting to remove image swebench/sweb.eval.x86_64.pylint-dev_1776_astroid-1866:latest...
+2026-03-29 02:10:29,929 - INFO - Image swebench/sweb.eval.x86_64.pylint-dev_1776_astroid-1866:latest removed.

@@ -1,0 +1,18 @@
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..d3566562 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -186,6 +186,13 @@ class Delimited(OneOf):
+                 else:
+                     # Zero length section between delimiters, or zero code
+                     # elements if appropriate. Return unmatched.
++                    # TODO: Refactor this to handle allow_trailing with
++                    # consecutive delimiters better.
++                    if self.allow_trailing:
++                        return MatchResult(
++                            matched_segments.matched_segments,
++                            mutated_segments,
++                        )
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're

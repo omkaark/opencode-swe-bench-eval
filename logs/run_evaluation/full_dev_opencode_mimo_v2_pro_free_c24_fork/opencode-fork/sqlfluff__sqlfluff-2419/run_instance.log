@@ -1,0 +1,49 @@
+2026-03-29 02:22:04,122 - INFO - Creating container for sqlfluff__sqlfluff-2419...
+2026-03-29 02:22:04,560 - INFO - Container for sqlfluff__sqlfluff-2419 created: 3a6eca531d3a11912eec514de793b5817c5f6381e1020937fa427ffaeb1ec64b
+2026-03-29 02:22:04,635 - INFO - Container for sqlfluff__sqlfluff-2419 started: 3a6eca531d3a11912eec514de793b5817c5f6381e1020937fa427ffaeb1ec64b
+2026-03-29 02:22:04,636 - INFO - Intermediate patch for sqlfluff__sqlfluff-2419 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_fork/opencode-fork/sqlfluff__sqlfluff-2419/patch.diff, now applying to container...
+2026-03-29 02:22:04,756 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L060.py...
+Applied patch src/sqlfluff/rules/L060.py cleanly.
+
+2026-03-29 02:22:04,916 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L060.py b/src/sqlfluff/rules/L060.py
+index 836941edc..853ceeb6f 100644
+--- a/src/sqlfluff/rules/L060.py
++++ b/src/sqlfluff/rules/L060.py
+@@ -59,4 +59,8 @@ class Rule_L060(BaseRule):
+             ],
+         )
+ 
+-        return LintResult(context.segment, [fix])
++        return LintResult(
++            context.segment,
++            [fix],
++            description=f"Use 'COALESCE' instead of '{context.segment.raw_upper}'.",
++        )
+2026-03-29 02:22:04,916 - INFO - Eval script for sqlfluff__sqlfluff-2419 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_fork/opencode-fork/sqlfluff__sqlfluff-2419/eval.sh; copying to container...
+2026-03-29 02:22:07,907 - INFO - Test runtime: 2.94 seconds
+2026-03-29 02:22:07,908 - INFO - Test output for sqlfluff__sqlfluff-2419 written to logs/run_evaluation/full_dev_opencode_mimo_v2_pro_free_c24_fork/opencode-fork/sqlfluff__sqlfluff-2419/test_output.txt
+2026-03-29 02:22:07,987 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L060.py b/src/sqlfluff/rules/L060.py
+index 836941edc..853ceeb6f 100644
+--- a/src/sqlfluff/rules/L060.py
++++ b/src/sqlfluff/rules/L060.py
+@@ -59,4 +59,8 @@ class Rule_L060(BaseRule):
+             ],
+         )
+ 
+-        return LintResult(context.segment, [fix])
++        return LintResult(
++            context.segment,
++            [fix],
++            description=f"Use 'COALESCE' instead of '{context.segment.raw_upper}'.",
++        )
+2026-03-29 02:22:07,987 - INFO - Grading answer for sqlfluff__sqlfluff-2419...
+2026-03-29 02:22:07,988 - INFO - report: {'sqlfluff__sqlfluff-2419': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['test/rules/std_L060_test.py::test__rules__std_L060_raised'], 'failure': []}, 'PASS_TO_PASS': {'success': [], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-2419: resolved: True
+2026-03-29 02:22:07,988 - INFO - Attempting to stop container sweb.eval.sqlfluff__sqlfluff-2419.full_dev_opencode_mimo_v2_pro_free_c24_fork...
+2026-03-29 02:22:23,119 - INFO - Attempting to remove container sweb.eval.sqlfluff__sqlfluff-2419.full_dev_opencode_mimo_v2_pro_free_c24_fork...
+2026-03-29 02:22:23,134 - INFO - Container sweb.eval.sqlfluff__sqlfluff-2419.full_dev_opencode_mimo_v2_pro_free_c24_fork removed.
+2026-03-29 02:22:23,134 - INFO - Attempting to remove image swebench/sweb.eval.x86_64.sqlfluff_1776_sqlfluff-2419:latest...
+2026-03-29 02:22:23,288 - INFO - Image swebench/sweb.eval.x86_64.sqlfluff_1776_sqlfluff-2419:latest removed.
