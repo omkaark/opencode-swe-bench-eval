@@ -1,0 +1,107 @@
+2026-03-29 20:52:29,557 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L036.py...
+Checking patch test/rules/std_L016_L36_combo.py...
+Applied patch src/sqlfluff/rules/L036.py cleanly.
+Applied patch test/rules/std_L016_L36_combo.py cleanly.
+
+2026-03-29 20:52:31,071 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..6eb69da0 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -118,7 +118,20 @@ class Rule_L036(BaseRule):
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+-                fixes.append(LintFix("create", select_target, NewlineSegment()))
++                create_buff = [NewlineSegment()]
++                if not i and select_targets_info.first_whitespace_idx != -1:
++                    create_buff.append(
++                        WhitespaceSegment(
++                            raw=segment.segments[
++                                select_targets_info.first_whitespace_idx
++                            ].raw
++                        )
++                    )
++                if not i and ws_to_delete:
++                    fixes.append(LintFix("edit", ws_to_delete[0], create_buff))
++                    fixes += [LintFix("delete", ws) for ws in ws_to_delete[1:]]
++                else:
++                    fixes.append(LintFix("create", select_target, create_buff))
+         if fixes:
+             return LintResult(anchor=segment, fixes=fixes)
+ 
+diff --git a/test/rules/std_L016_L36_combo.py b/test/rules/std_L016_L36_combo.py
+index e69ea81f..88f11fbf 100644
+--- a/test/rules/std_L016_L36_combo.py
++++ b/test/rules/std_L016_L36_combo.py
+@@ -29,3 +29,34 @@ def test__rules__std_L016_L036_long_line_fix2():
+         result
+         == "SELECT 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\n"
+     )
++
++
++def test__rules__std_L036_with_cte_first_target_moved_to_newline():
++    """Verify moving the first select target in a CTE does not add extra indentation."""
++    sql = """WITH example AS (
++    SELECT my_id,
++        other_thing,
++        one_more
++    FROM
++        my_table
++)
++
++SELECT *
++FROM example
++"""
++    result = sqlfluff.fix(sql)
++    assert (
++        result
++        == """WITH example AS (
++    SELECT
++        my_id,
++        other_thing,
++        one_more
++    FROM
++        my_table
++)
++
++SELECT *
++FROM example
++"""
++    )
+
+2026-03-29 20:52:40,669 - INFO - Test runtime: 9.24 seconds
+2026-03-29 20:52:40,670 - INFO - Test output for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/codex/opencode-codex/sqlfluff__sqlfluff-1733/test_output.txt
+2026-03-29 20:52:41,047 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..6eb69da0 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -118,7 +118,20 @@ class Rule_L036(BaseRule):
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+-                fixes.append(LintFix("create", select_target, NewlineSegment()))
++                create_buff = [NewlineSegment()]
++                if not i and select_targets_info.first_whitespace_idx != -1:
++                    create_buff.append(
++                        WhitespaceSegment(
++                            raw=segment.segments[
++                                select_targets_info.first_whitespace_idx
++                            ].raw
++                        )
++                    )
++                if not i and ws_to_delete:
++                    fixes.append(LintFix("edit", ws_to_delete[0], create_buff))
++                    fixes += [LintFix("delete", ws) for ws in ws_to_delete[1:]]
++                else:
++                    fixes.append(LintFix("create", select_target, create_buff))
+         if fixes:
+             return LintResult(anchor=segment, fixes=fixes)
+ 
+
+2026-03-29 20:52:41,047 - INFO - Git diff changed after running eval script
+2026-03-29 20:52:41,047 - INFO - Grading answer for sqlfluff__sqlfluff-1733...
+2026-03-29 20:52:41,049 - INFO - report: {'sqlfluff__sqlfluff-1733': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['test/rules/std_L003_L036_L039_combo_test.py::test__rules__std_L003_L036_L039'], 'failure': []}, 'PASS_TO_PASS': {'success': ['test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_lint', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix2'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1733: resolved: True

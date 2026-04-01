@@ -1,0 +1,46 @@
+diff --git a/src/marshmallow/schema.py b/src/marshmallow/schema.py
+index 085c509..5dea285 100644
+--- a/src/marshmallow/schema.py
++++ b/src/marshmallow/schema.py
+@@ -861,6 +861,8 @@ class BaseSchema(base.SchemaABC):
+         return data
+ 
+     def _invoke_field_validators(self, unmarshal, data, many):
++        if data is None:
++            return
+         for attr_name in self.__processors__[(VALIDATES, False)]:
+             validator = getattr(self, attr_name)
+             validator_kwargs = validator.__marshmallow_kwargs__[(VALIDATES, False)]
+diff --git a/tests/test_marshalling.py b/tests/test_marshalling.py
+index 273dada..a19f885 100644
+--- a/tests/test_marshalling.py
++++ b/tests/test_marshalling.py
+@@ -2,7 +2,7 @@
+ 
+ import pytest
+ 
+-from marshmallow import fields, Schema
++from marshmallow import fields, Schema, validates
+ from marshmallow.marshalling import Marshaller, Unmarshaller, missing
+ from marshmallow.exceptions import ValidationError
+ 
+@@ -283,3 +283,19 @@ class TestUnmarshaller:
+ 
+             assert result is None
+             assert excinfo.value.messages == {'foo': {'_schema': ['Invalid input type.']}}
++
++    def test_deserialize_wrong_nested_type_with_validates_method(self, unmarshal):
++        class BarSchema(Schema):
++            value = fields.String()
++
++            @validates('value')
++            def validate_value(self, value):
++                pass
++
++        data = {'bar': 'invalid'}
++        fields_dict = {'bar': fields.Nested(BarSchema)}
++
++        with pytest.raises(ValidationError) as excinfo:
++            unmarshal.deserialize(data, fields_dict)
++
++        assert excinfo.value.messages == {'bar': {'_schema': ['Invalid input type.']}}

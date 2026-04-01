@@ -1,0 +1,93 @@
+{
+  "instance_id": "pydicom__pydicom-901",
+  "variant": "fork",
+  "repo": "pydicom/pydicom",
+  "tokens": {
+    "total": 279314,
+    "input": 25507,
+    "output": 2607,
+    "reasoning": 1151,
+    "cache_read": 251200,
+    "cache_write": 0
+  },
+  "duration_seconds": 108.86,
+  "time_to_first_edit_seconds": 35.254,
+  "steps": 17,
+  "tool_calls": {
+    "total": 17,
+    "by_tool": {
+      "bash": 3,
+      "edit": 2,
+      "glob": 2,
+      "grep": 1,
+      "read": 4,
+      "todowrite": 4,
+      "write": 1
+    }
+  },
+  "files_read": [
+    "/repo/pydicom/config.py",
+    "/repo/pydicom/tests/test_config.py",
+    "/repo/pydicom/tests/test_filereader.py"
+  ],
+  "files_edited": [
+    "/repo/pydicom/config.py"
+  ],
+  "failed_tool_calls": 4,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/pydicom/tests/test_config.py"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/test_config.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 6,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pydicom/config.py",
+        "oldString": "# Logging system and debug function to change logging level\nlogger = logging.getLogger('pydicom')\nhandler = logging.StreamHandler()\nformatter = logging.Formatter(\"%(message)s\")\nhandler.setFormatter(formatter)\nlogger.addHandler(handler)",
+        "newString": "# Logging system and debug function to change logging level\nlogger = logging.getLogger('pydicom')"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "pattern": "config\\.handler|config\\.formatter",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        1,
+        2
+      ],
+      "tools": [
+        "read",
+        "glob"
+      ],
+      "inputs_preview": [
+        "{\"filePath\": \"/repo/pydicom/tests/test_config.py\"}",
+        "{\"pattern\": \"**/test_config.py\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

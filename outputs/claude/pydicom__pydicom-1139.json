@@ -1,0 +1,13 @@
+{
+  "variant": "claude",
+  "instance_id": "pydicom__pydicom-1139",
+  "repo": "pydicom/pydicom",
+  "base_commit": "b9fb05c177b685bf683f7f57b2d57374eb7d882d",
+  "cli_exit_code": 0,
+  "cli_output": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":44768,\"duration_api_ms\":44342,\"num_turns\":10,\"result\":\"The fix works. Added `__iter__` and `__contains__` methods to `PersonName` that delegate to the string representation, making `PersonName` iterable and supporting the `in` operator.\",\"stop_reason\":\"end_turn\",\"session_id\":\"8cfc5ed0-2abe-4251-8c42-38630de22d2c\",\"total_cost_usd\":0.16561924999999997,\"usage\":{\"input_tokens\":11,\"cache_creation_input_tokens\":8765,\"cache_read_input_tokens\":148916,\"output_tokens\":1453,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":8765,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-opus-4-6[1m]\":{\"inputTokens\":11,\"outputTokens\":1453,\"cacheReadInputTokens\":148916,\"cacheCreationInputTokens\":8765,\"webSearchRequests\":0,\"costUSD\":0.16561924999999997,\"contextWindow\":1000000,\"maxOutputTokens\":64000}},\"permission_denials\":[],\"fast_mode_state\":\"off\",\"uuid\":\"d840ac5d-c66f-494e-bd44-cd7d52004305\"}\n",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 46.48,
+  "git_status": " M pydicom/valuerep.py\n?? .swe_prompt.txt\n",
+  "model_patch": "diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py\nindex e992f787..377a5ab6 100644\n--- a/pydicom/valuerep.py\n+++ b/pydicom/valuerep.py\n@@ -753,6 +753,12 @@ class PersonName:\n     def __repr__(self):\n         return '='.join(self.components).__repr__()\n \n+    def __iter__(self):\n+        return iter(str(self))\n+\n+    def __contains__(self, x):\n+        return x in str(self)\n+\n     def __hash__(self):\n         return hash(self.components)\n \n",
+  "error": ""
+}

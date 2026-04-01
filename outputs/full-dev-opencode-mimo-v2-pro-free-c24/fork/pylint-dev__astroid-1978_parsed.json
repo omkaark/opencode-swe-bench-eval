@@ -1,0 +1,92 @@
+{
+  "instance_id": "pylint-dev__astroid-1978",
+  "variant": "fork",
+  "repo": "pylint-dev/astroid",
+  "tokens": {
+    "total": 285080,
+    "input": 22496,
+    "output": 2264,
+    "reasoning": 0,
+    "cache_read": 260320,
+    "cache_write": 0
+  },
+  "duration_seconds": 62.64,
+  "time_to_first_edit_seconds": 21.561,
+  "steps": 19,
+  "tool_calls": {
+    "total": 19,
+    "by_tool": {
+      "bash": 8,
+      "edit": 1,
+      "glob": 1,
+      "grep": 4,
+      "read": 5
+    }
+  },
+  "files_read": [
+    "/repo/astroid/raw_building.py",
+    "/repo/tests/unittest_raw_building.py",
+    "/repo/tests/testdata/python3/data/fake_module_with_warnings.py"
+  ],
+  "files_edited": [
+    "/repo/astroid/raw_building.py"
+  ],
+  "failed_tool_calls": 4,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_build_module_getattr_catch_output",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests",
+        "pattern": "getattr.*catch"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests",
+        "pattern": "test_build_module"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/astroid/raw_building.py",
+        "pattern": "^import warnings"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        3,
+        4
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"path\": \"/repo/tests\", \"pattern\": \"getattr.*catch\"}",
+        "{\"path\": \"/repo/tests\", \"pattern\": \"test_build_module\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

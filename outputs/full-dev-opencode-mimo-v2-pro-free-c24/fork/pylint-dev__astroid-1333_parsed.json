@@ -1,0 +1,218 @@
+{
+  "instance_id": "pylint-dev__astroid-1333",
+  "variant": "fork",
+  "repo": "pylint-dev/astroid",
+  "tokens": {
+    "total": 3289405,
+    "input": 303740,
+    "output": 20545,
+    "reasoning": 14001,
+    "cache_read": 2965120,
+    "cache_write": 0
+  },
+  "duration_seconds": 1124.19,
+  "time_to_first_edit_seconds": 795.332,
+  "steps": 66,
+  "tool_calls": {
+    "total": 69,
+    "by_tool": {
+      "bash": 46,
+      "edit": 2,
+      "glob": 2,
+      "grep": 9,
+      "read": 10
+    }
+  },
+  "files_read": [
+    "/repo/astroid/interpreter/_import/spec.py",
+    "/repo/astroid/modutils.py",
+    "/repo/tests/unittest_modutils.py",
+    "/repo/astroid/interpreter/_import/util.py",
+    "/repo/tests/resources.py"
+  ],
+  "files_edited": [
+    "/repo/astroid/modutils.py",
+    "/repo/tests/unittest_modutils.py"
+  ],
+  "failed_tool_calls": 14,
+  "failed_calls_detail": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_load_packages_without_init",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "ModPathFromFileTest",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "load_packages_without_init",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 7,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/astroid/modutils.py"
+      },
+      "output_preview": "<path>/repo/astroid/modutils.py</path>\n<type>file</type>\n<content>1: # Copyright (c) 2014-2018, 2020 Claudiu Popa <pcmanticore@gmail.com>\n2: # Copyright (c) 2014 Google, Inc.\n3: # Copyright (c) 2014 D"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "mkdir -p /tmp/repro/src/project && touch /tmp/repro/src/__init__.py && echo \"import os\" > /tmp/repro/src/project/file.py",
+        "description": "Create repro structure"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 16,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "test_load.*init"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 16,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "packages_without"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 17,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "Unable to load file"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 19,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/astroid/interpreter/_import",
+        "pattern": "def is_namespace"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 20,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "def is_namespace"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 24,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "_spec_from_modpath",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 27,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && grep -rn \"lru_cache\" astroid/modutils.py",
+        "description": "Check for caching in modutils"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 35,
+      "tool": "bash",
+      "input": {
+        "command": "mkdir -p /tmp/repro2/src/project && echo \"x = 1\" > /tmp/repro2/src/project/__init__.py && echo \"import os\" > /tmp/repro2/src/project/file.py",
+        "description": "Create test with regular package"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 37,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && git log --all --oneline --grep=\"load_packages_without_init\" 2>/dev/null; git log --all --oneline --grep=\"packages_without\" 2>/dev/null; git log --all --oneline --grep=\"without_init\" 2>/dev/null",
+        "description": "Search for related commits"
+      },
+      "output_preview": ""
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        3,
+        3
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"ModPathFromFileTest\", \"path\": \"/repo\"}",
+        "{\"pattern\": \"load_packages_without_init\", \"path\": \"/repo\"}"
+      ]
+    },
+    {
+      "length": 3,
+      "steps": [
+        16,
+        16,
+        17
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"path\": \"/repo\", \"pattern\": \"test_load.*init\"}",
+        "{\"path\": \"/repo\", \"pattern\": \"packages_without\"}",
+        "{\"path\": \"/repo\", \"pattern\": \"Unable to load file\"}"
+      ]
+    },
+    {
+      "length": 2,
+      "steps": [
+        19,
+        20
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"path\": \"/repo/astroid/interpreter/_import\", \"pattern\": \"def is_namespace\"}",
+        "{\"path\": \"/repo\", \"pattern\": \"def is_namespace\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

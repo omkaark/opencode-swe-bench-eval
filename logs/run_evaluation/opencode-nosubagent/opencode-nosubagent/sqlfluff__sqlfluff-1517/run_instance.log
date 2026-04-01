@@ -1,0 +1,86 @@
+2026-04-01 03:30:06,478 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/core/parser/grammar/delimited.py...
+Checking patch test/dialects/ansi_test.py...
+Applied patch src/sqlfluff/core/parser/grammar/delimited.py cleanly.
+Applied patch test/dialects/ansi_test.py cleanly.
+
+2026-04-01 03:30:07,981 - INFO - Git diff before:
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..f6383b11 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -185,7 +185,16 @@ class Delimited(OneOf):
+                         )
+                 else:
+                     # Zero length section between delimiters, or zero code
+-                    # elements if appropriate. Return unmatched.
++                    # elements if appropriate.
++                    if self.allow_trailing and delimiters:
++                        # If we allow trailing and have already matched at least
++                        # one delimiter, treat this as a trailing delimiter.
++                        # Return matched content, leaving the extra delimiter
++                        # in unmatched_segments so nothing is dropped.
++                        return MatchResult(
++                            matched_segments.matched_segments,
++                            delimiter_match.all_segments(),
++                        )
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+diff --git a/test/dialects/ansi_test.py b/test/dialects/ansi_test.py
+index 1c83e4c6..417862f9 100644
+--- a/test/dialects/ansi_test.py
++++ b/test/dialects/ansi_test.py
+@@ -173,6 +173,21 @@ def test__dialect__ansi_specific_segment_not_parse(raw, err_locations, caplog):
+     assert locs == err_locations
+ 
+ 
++@pytest.mark.parametrize(
++    "raw",
++    [
++        "select id from tbl;;",
++        "select id from tbl;;;",
++    ],
++)
++def test__dialect__ansi_multiple_semicolons(raw):
++    """Test that multiple semicolons don't cause a crash."""
++    lnt = Linter()
++    parsed = lnt.parse_string(raw)
++    # Should not raise RuntimeError
++    assert parsed.tree is not None
++
++
+ def test__dialect__ansi_is_whitespace():
+     """Test proper tagging with is_whitespace."""
+     lnt = Linter()
+
+2026-04-01 03:31:00,849 - INFO - Test runtime: 52.50 seconds
+2026-04-01 03:31:00,856 - INFO - Test output for sqlfluff__sqlfluff-1517 written to logs/run_evaluation/opencode-nosubagent/opencode-nosubagent/sqlfluff__sqlfluff-1517/test_output.txt
+2026-04-01 03:31:01,201 - INFO - Git diff after:
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..f6383b11 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -185,7 +185,16 @@ class Delimited(OneOf):
+                         )
+                 else:
+                     # Zero length section between delimiters, or zero code
+-                    # elements if appropriate. Return unmatched.
++                    # elements if appropriate.
++                    if self.allow_trailing and delimiters:
++                        # If we allow trailing and have already matched at least
++                        # one delimiter, treat this as a trailing delimiter.
++                        # Return matched content, leaving the extra delimiter
++                        # in unmatched_segments so nothing is dropped.
++                        return MatchResult(
++                            matched_segments.matched_segments,
++                            delimiter_match.all_segments(),
++                        )
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+
+2026-04-01 03:31:01,202 - INFO - Git diff changed after running eval script
+2026-04-01 03:31:01,202 - INFO - Grading answer for sqlfluff__sqlfluff-1517...
+2026-04-01 03:31:01,234 - INFO - report: {'sqlfluff__sqlfluff-1517': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/dialects/ansi_test.py::test__dialect__ansi_multiple_semicolons[select']}, 'PASS_TO_PASS': {'success': ['test/dialects/ansi_test.py::test__dialect__ansi__file_lex[a', 'test/dialects/ansi_test.py::test__dialect__ansi__file_lex[b.c-res1]', 'test/dialects/ansi_test.py::test__dialect__ansi__file_lex[abc', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectKeywordSegment-select]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[NakedIdentifierSegment-online_sales]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[BareFunctionSegment-current_timestamp]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[FunctionSegment-current_timestamp()]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[NumericLiteralSegment-1000.0]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-online_sales', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[IntervalExpressionSegment-INTERVAL', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-CASE', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-CAST(ROUND(online_sales', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-name', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-MIN', "test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-DATE_ADD(CURRENT_DATE('America/New_York'),", 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-my_array[1]]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-my_array[OFFSET(1)]]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-my_array[5:8]]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-4', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-bits[OFFSET(0)]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-(count_18_24', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-count_18_24', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectStatementSegment-SELECT', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-t.val/t.id]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-CAST(num', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-a.*]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-a.b.*]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-a.b.c.*]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ObjectReferenceSegment-a..c.*]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment--some_variable]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment--', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-concat(left(uaid,', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-c', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-c', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-NULL::INT]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-NULL::INT', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[TruncateStatementSegment-TRUNCATE', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_not_match[ObjectReferenceSegment-\\n', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_not_parse[SELECT', 'test/dialects/ansi_test.py::test__dialect__ansi_is_whitespace', 'test/dialects/ansi_test.py::test__dialect__ansi_parse_indented_joins[select', 'test/dialects/ansi_test.py::test__dialect__ansi_multiple_semicolons[;;-Line'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1517: resolved: False

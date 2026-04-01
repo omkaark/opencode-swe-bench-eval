@@ -1,0 +1,99 @@
+diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py
+index 3a8593ed..e473b916 100644
+--- a/src/sqlfluff/core/linter/linted_file.py
++++ b/src/sqlfluff/core/linter/linted_file.py
+@@ -7,6 +7,8 @@ post linting.
+ 
+ import os
+ import logging
++import shutil
++import tempfile
+ from typing import (
+     Any,
+     Iterable,
+@@ -36,6 +38,34 @@ from sqlfluff.core.linter.common import NoQaDirective, EnrichedFixPatch
+ linter_logger: logging.Logger = logging.getLogger("sqlfluff.linter")
+ 
+ 
++def safe_create_replace_file(fname, write_buff, encoding):
++    """Safely create or replace a file with the given content.
++
++    This function first writes to a temporary file and then replaces the
++    original file, to avoid data loss if encoding errors occur during write.
++    """
++    # Write to a temporary file in the same directory to ensure
++    # it's on the same filesystem for a reliable rename/move.
++    dir_name = os.path.dirname(fname) or "."
++    tmp_path = None
++    try:
++        fd, tmp_path = tempfile.mkstemp(dir=dir_name, suffix=".tmp")
++        try:
++            with os.fdopen(fd, "w", encoding=encoding) as f:
++                f.write(write_buff)
++        except Exception:
++            # Clean up the temp file on write failure
++            os.remove(tmp_path)
++            raise
++        # Replace the original file with the temp file
++        shutil.move(tmp_path, fname)
++    except Exception:
++        # Ensure temp file is cleaned up if shutil.move fails
++        if tmp_path is not None and os.path.exists(tmp_path):
++            os.remove(tmp_path)
++        raise
++
++
+ class LintedFile(NamedTuple):
+     """A class to store the idea of a linted file."""
+ 
+@@ -494,6 +524,5 @@ class LintedFile(NamedTuple):
+                 root, ext = os.path.splitext(fname)
+                 fname = root + suffix + ext
+             # Actually write the file.
+-            with open(fname, "w", encoding=self.encoding) as f:
+-                f.write(write_buff)
++            safe_create_replace_file(fname, write_buff, self.encoding)
+         return success
+diff --git a/test/core/linter_test.py b/test/core/linter_test.py
+index 0600adf2..4ce64d47 100644
+--- a/test/core/linter_test.py
++++ b/test/core/linter_test.py
+@@ -641,3 +641,38 @@ def test__attempt_to_change_templater_warning(caplog):
+         assert "Attempt to set templater to " in caplog.text
+     finally:
+         logger.propagate = original_propagate_value
++
++
++@pytest.mark.parametrize(
++    "test_case,initial_content,new_content",
++    [
++        (
++            "utf8_create",
++            None,
++            "SELECT 1\n",
++        ),
++        (
++            "utf8_update",
++            "SELECT 1\n",
++            "SELECT 2\n",
++        ),
++        (
++            "utf8_special_char",
++            "SELECT 'foo'\n",
++            "SELECT 'foo → bar'\n",
++        ),
++    ],
++)
++def test_safe_create_replace_file(
++    test_case, initial_content, new_content, tmp_path
++):
++    """Test that safe_create_replace_file handles UTF-8 content correctly."""
++    from sqlfluff.core.linter.linted_file import safe_create_replace_file
++
++    fpath = tmp_path / "test.sql"
++    if initial_content is not None:
++        fpath.write_text(initial_content, encoding="utf-8")
++
++    safe_create_replace_file(str(fpath), new_content, "utf-8")
++    result = fpath.read_text(encoding="utf-8")
++    assert result == new_content

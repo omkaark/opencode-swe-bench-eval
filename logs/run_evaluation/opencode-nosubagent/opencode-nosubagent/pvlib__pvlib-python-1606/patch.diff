@@ -1,0 +1,14 @@
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..36400bf 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -351,6 +351,9 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     converged = False
+     iterations = 0
+ 
++    # handle equal upper and lower bounds (already at optimum)
++    df['VH'] = np.where(df['VH'] == df['VL'], df['VL'] + atol, df['VH'])
++
+     # handle all NaN case gracefully
+     with warnings.catch_warnings():
+         warnings.filterwarnings(action='ignore',

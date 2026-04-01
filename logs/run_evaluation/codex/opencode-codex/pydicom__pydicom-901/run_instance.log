@@ -1,0 +1,59 @@
+2026-03-29 20:50:26,925 - INFO - >>>>> Applied Patch:
+Checking patch pydicom/config.py...
+Applied patch pydicom/config.py cleanly.
+
+2026-03-29 20:50:30,304 - INFO - Git diff before:
+diff --git a/pydicom/config.py b/pydicom/config.py
+index ae9c8bd..c8d0c29 100644
+--- a/pydicom/config.py
++++ b/pydicom/config.py
+@@ -62,10 +62,6 @@ and datetime.time respectively. Default: False
+ 
+ # Logging system and debug function to change logging level
+ logger = logging.getLogger('pydicom')
+-handler = logging.StreamHandler()
+-formatter = logging.Formatter("%(message)s")
+-handler.setFormatter(formatter)
+-logger.addHandler(handler)
+ 
+ 
+ import pydicom.pixel_data_handlers.numpy_handler as np_handler  # noqa
+@@ -126,7 +122,3 @@ def debug(debug_on=True):
+     else:
+         logger.setLevel(logging.WARNING)
+         debugging = False
+-
+-
+-# force level=WARNING, in case logging default is set differently (issue 103)
+-debug(False)
+
+2026-03-29 20:50:36,711 - INFO - Test runtime: 5.88 seconds
+2026-03-29 20:50:36,713 - INFO - Test output for pydicom__pydicom-901 written to logs/run_evaluation/codex/opencode-codex/pydicom__pydicom-901/test_output.txt
+2026-03-29 20:50:37,383 - INFO - Git diff after:
+diff --git a/pydicom/config.py b/pydicom/config.py
+index ae9c8bd..c8d0c29 100644
+--- a/pydicom/config.py
++++ b/pydicom/config.py
+@@ -62,10 +62,6 @@ and datetime.time respectively. Default: False
+ 
+ # Logging system and debug function to change logging level
+ logger = logging.getLogger('pydicom')
+-handler = logging.StreamHandler()
+-formatter = logging.Formatter("%(message)s")
+-handler.setFormatter(formatter)
+-logger.addHandler(handler)
+ 
+ 
+ import pydicom.pixel_data_handlers.numpy_handler as np_handler  # noqa
+@@ -126,7 +122,3 @@ def debug(debug_on=True):
+     else:
+         logger.setLevel(logging.WARNING)
+         debugging = False
+-
+-
+-# force level=WARNING, in case logging default is set differently (issue 103)
+-debug(False)
+
+2026-03-29 20:50:37,384 - INFO - Grading answer for pydicom__pydicom-901...
+2026-03-29 20:50:37,387 - INFO - report: {'pydicom__pydicom-901': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pydicom/tests/test_config.py::TestDebug::test_default', 'pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_null', 'pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_null', 'pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_stream', 'pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_stream']}, 'PASS_TO_PASS': {'success': [], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pydicom__pydicom-901: resolved: False

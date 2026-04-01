@@ -1,0 +1,119 @@
+2026-04-01 03:30:05,172 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/__init__.py...
+Checking patch src/sqlfluff/rules/L036.py...
+Applied patch src/sqlfluff/__init__.py cleanly.
+Applied patch src/sqlfluff/rules/L036.py cleanly.
+
+2026-04-01 03:30:06,694 - INFO - Git diff before:
+diff --git a/src/sqlfluff/__init__.py b/src/sqlfluff/__init__.py
+index 677a56fc..1c0039e8 100644
+--- a/src/sqlfluff/__init__.py
++++ b/src/sqlfluff/__init__.py
+@@ -6,12 +6,21 @@ import pytest
+ from sqlfluff.api import lint, fix, parse, list_rules, list_dialects  # noqa: F401
+ 
+ # Set the version attribute of the library
+-import pkg_resources
+-import configparser
++try:
++    import pkg_resources
++    import configparser
+ 
+-# Get the current version
+-config = configparser.ConfigParser()
+-config.read([pkg_resources.resource_filename("sqlfluff", "config.ini")])
++    # Get the current version
++    config = configparser.ConfigParser()
++    config.read([pkg_resources.resource_filename("sqlfluff", "config.ini")])
++except ModuleNotFoundError:
++    from importlib import resources
++    import configparser
++    import io
++
++    # Get the current version
++    config = configparser.ConfigParser()
++    config.read_string(resources.files("sqlfluff").joinpath("config.ini").read_text())
+ 
+ __version__ = config.get("sqlfluff", "version")
+ 
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..e0b8410c 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -169,6 +169,16 @@ class Rule_L036(BaseRule):
+                     select_clause.segments[select_targets_info.first_select_target_idx],
+                 ),
+             ]
++            # Delete any whitespace before the first select target.
++            if select_targets_info.first_whitespace_idx != -1:
++                fixes += [
++                    LintFix(
++                        "delete",
++                        select_clause.segments[
++                            select_targets_info.first_whitespace_idx
++                        ],
++                    )
++                ]
+ 
+             start_idx = 0
+ 
+
+2026-04-01 03:30:16,687 - INFO - Test runtime: 9.76 seconds
+2026-04-01 03:30:16,688 - INFO - Test output for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/opencode-nosubagent/opencode-nosubagent/sqlfluff__sqlfluff-1733/test_output.txt
+2026-04-01 03:30:17,117 - INFO - Git diff after:
+diff --git a/src/sqlfluff/__init__.py b/src/sqlfluff/__init__.py
+index 677a56fc..1c0039e8 100644
+--- a/src/sqlfluff/__init__.py
++++ b/src/sqlfluff/__init__.py
+@@ -6,12 +6,21 @@ import pytest
+ from sqlfluff.api import lint, fix, parse, list_rules, list_dialects  # noqa: F401
+ 
+ # Set the version attribute of the library
+-import pkg_resources
+-import configparser
++try:
++    import pkg_resources
++    import configparser
+ 
+-# Get the current version
+-config = configparser.ConfigParser()
+-config.read([pkg_resources.resource_filename("sqlfluff", "config.ini")])
++    # Get the current version
++    config = configparser.ConfigParser()
++    config.read([pkg_resources.resource_filename("sqlfluff", "config.ini")])
++except ModuleNotFoundError:
++    from importlib import resources
++    import configparser
++    import io
++
++    # Get the current version
++    config = configparser.ConfigParser()
++    config.read_string(resources.files("sqlfluff").joinpath("config.ini").read_text())
+ 
+ __version__ = config.get("sqlfluff", "version")
+ 
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..e0b8410c 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -169,6 +169,16 @@ class Rule_L036(BaseRule):
+                     select_clause.segments[select_targets_info.first_select_target_idx],
+                 ),
+             ]
++            # Delete any whitespace before the first select target.
++            if select_targets_info.first_whitespace_idx != -1:
++                fixes += [
++                    LintFix(
++                        "delete",
++                        select_clause.segments[
++                            select_targets_info.first_whitespace_idx
++                        ],
++                    )
++                ]
+ 
+             start_idx = 0
+ 
+
+2026-04-01 03:30:17,117 - INFO - Grading answer for sqlfluff__sqlfluff-1733...
+2026-04-01 03:30:17,119 - INFO - report: {'sqlfluff__sqlfluff-1733': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/rules/std_L003_L036_L039_combo_test.py::test__rules__std_L003_L036_L039']}, 'PASS_TO_PASS': {'success': ['test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_lint', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix2'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1733: resolved: False

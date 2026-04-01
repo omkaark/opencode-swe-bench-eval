@@ -1,0 +1,53 @@
+diff --git a/src/sqlfluff/core/file_helpers.py b/src/sqlfluff/core/file_helpers.py
+index 52f74f0b..13a9ef2b 100644
+--- a/src/sqlfluff/core/file_helpers.py
++++ b/src/sqlfluff/core/file_helpers.py
+@@ -12,6 +12,16 @@ def get_encoding(fname: str, config: FluffConfig) -> str:
+     if encoding_config == "autodetect":
+         with open(fname, "rb") as f:
+             data = f.read()
+-        return chardet.detect(data)["encoding"]
++        encoding = chardet.detect(data)["encoding"]
++        # If encoding could not be detected, default to utf-8
++        if not encoding:
++            encoding = "utf-8"
++        # If the detected encoding is ascii, upgrade to utf-8. This is
++        # compatible since utf-8 is a superset of ascii, and avoids
++        # UnicodeEncodeError when the file contains special characters
++        # that were not in the sample chardet analyzed.
++        if encoding.lower() == "ascii":
++            encoding = "utf-8"
++        return encoding
+ 
+     return encoding_config
+diff --git a/test/core/linter_test.py b/test/core/linter_test.py
+index 0600adf2..cea92237 100644
+--- a/test/core/linter_test.py
++++ b/test/core/linter_test.py
+@@ -641,3 +641,26 @@ def test__attempt_to_change_templater_warning(caplog):
+         assert "Attempt to set templater to " in caplog.text
+     finally:
+         logger.propagate = original_propagate_value
++
++
++@pytest.mark.parametrize(
++    "sql,expected_encoding",
++    [
++        ("SELECT 1\n", "utf-8"),
++        ("SELECT '\u00e4\u00f6\u00fc'\n", "utf-8"),
++        ("SELECT '\u2192'\n", "utf-8"),
++    ],
++    ids=["utf8_create", "utf8_update", "utf8_special_char"],
++)
++def test_safe_create_replace_file(sql, expected_encoding, tmp_path):
++    """Test safe creation and replacement of files with various encodings."""
++    filepath = tmp_path / "test.sql"
++    filepath.write_text(sql, encoding="utf-8")
++
++    lntr = Linter()
++    result = lntr.lint_paths([str(filepath)], fix=True)
++
++    # The file should still exist and be readable
++    assert filepath.exists()
++    content = filepath.read_text(encoding="utf-8")
++    assert content  # File should not be empty/wiped

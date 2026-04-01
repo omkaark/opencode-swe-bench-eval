@@ -1,0 +1,84 @@
+2026-03-29 19:48:43,345 - INFO - Creating container for pylint-dev__astroid-1978...
+2026-03-29 19:48:46,281 - INFO - Container for pylint-dev__astroid-1978 created: 1a78c853a66fbc116f577a2a6caab7275b74f6b09fdfce9b54810be9b62ee168
+2026-03-29 19:48:46,362 - INFO - Container for pylint-dev__astroid-1978 started: 1a78c853a66fbc116f577a2a6caab7275b74f6b09fdfce9b54810be9b62ee168
+2026-03-29 19:48:46,363 - INFO - Intermediate patch for pylint-dev__astroid-1978 written to logs/run_evaluation/opencode-claude/opencode-claude/pylint-dev__astroid-1978/patch.diff, now applying to container...
+2026-03-29 19:48:46,478 - INFO - >>>>> Applied Patch:
+Checking patch astroid/raw_building.py...
+Checking patch tests/unittest_raw_building.py...
+Applied patch astroid/raw_building.py cleanly.
+Applied patch tests/unittest_raw_building.py cleanly.
+
+2026-03-29 19:48:46,587 - INFO - Git diff before:
+diff --git a/astroid/raw_building.py b/astroid/raw_building.py
+index cc3aa015..cff66437 100644
+--- a/astroid/raw_building.py
++++ b/astroid/raw_building.py
+@@ -471,7 +471,9 @@ class InspectBuilder:
+             # check if it sounds valid and then add an import node, else use a
+             # dummy node
+             try:
+-                getattr(sys.modules[modname], name)
++                with warnings.catch_warnings():
++                    warnings.simplefilter("ignore")
++                    getattr(sys.modules[modname], name)
+             except (KeyError, AttributeError):
+                 attach_dummy_node(node, name, member)
+             else:
+diff --git a/tests/unittest_raw_building.py b/tests/unittest_raw_building.py
+index 64c22727..253ff70d 100644
+--- a/tests/unittest_raw_building.py
++++ b/tests/unittest_raw_building.py
+@@ -10,6 +10,7 @@ to simulate issues in unittest below
+ 
+ import types
+ import unittest
++import warnings
+ 
+ import _io
+ import pytest
+@@ -117,5 +118,17 @@ class RawBuildingTC(unittest.TestCase):
+         AstroidBuilder().inspect_build(fm_getattr, "test")
+ 
+ 
++def test_build_module_getattr_catch_output():
++    """Ensure that warnings from module getattr are suppressed.
++
++    https://github.com/PyCQA/astroid/issues/1974
++    """
++    m = types.ModuleType("test")
++    m.pd = fm
++    with warnings.catch_warnings():
++        warnings.simplefilter("error")
++        AstroidBuilder().module_build(m, "test")
++
++
+ if __name__ == "__main__":
+     unittest.main()
+2026-03-29 19:48:46,587 - INFO - Eval script for pylint-dev__astroid-1978 written to logs/run_evaluation/opencode-claude/opencode-claude/pylint-dev__astroid-1978/eval.sh; copying to container...
+2026-03-29 19:48:52,095 - INFO - Test runtime: 5.45 seconds
+2026-03-29 19:48:52,095 - INFO - Test output for pylint-dev__astroid-1978 written to logs/run_evaluation/opencode-claude/opencode-claude/pylint-dev__astroid-1978/test_output.txt
+2026-03-29 19:48:52,169 - INFO - Git diff after:
+diff --git a/astroid/raw_building.py b/astroid/raw_building.py
+index cc3aa015..cff66437 100644
+--- a/astroid/raw_building.py
++++ b/astroid/raw_building.py
+@@ -471,7 +471,9 @@ class InspectBuilder:
+             # check if it sounds valid and then add an import node, else use a
+             # dummy node
+             try:
+-                getattr(sys.modules[modname], name)
++                with warnings.catch_warnings():
++                    warnings.simplefilter("ignore")
++                    getattr(sys.modules[modname], name)
+             except (KeyError, AttributeError):
+                 attach_dummy_node(node, name, member)
+             else:
+2026-03-29 19:48:52,169 - INFO - Git diff changed after running eval script
+2026-03-29 19:48:52,169 - INFO - Grading answer for pylint-dev__astroid-1978...
+2026-03-29 19:48:52,169 - INFO - report: {'pylint-dev__astroid-1978': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['tests/unittest_raw_building.py::test_build_module_getattr_catch_output']}, 'PASS_TO_PASS': {'success': ['tests/unittest_raw_building.py::RawBuildingTC::test_attach_dummy_node', 'tests/unittest_raw_building.py::RawBuildingTC::test_build_class', 'tests/unittest_raw_building.py::RawBuildingTC::test_build_from_import', 'tests/unittest_raw_building.py::RawBuildingTC::test_build_function', 'tests/unittest_raw_building.py::RawBuildingTC::test_build_function_args', 'tests/unittest_raw_building.py::RawBuildingTC::test_build_function_deepinspect_deprecation', 'tests/unittest_raw_building.py::RawBuildingTC::test_build_function_defaults', 'tests/unittest_raw_building.py::RawBuildingTC::test_build_function_kwonlyargs', 'tests/unittest_raw_building.py::RawBuildingTC::test_build_function_posonlyargs', 'tests/unittest_raw_building.py::RawBuildingTC::test_build_module', 'tests/unittest_raw_building.py::RawBuildingTC::test_io_is__io', 'tests/unittest_raw_building.py::RawBuildingTC::test_module_object_with_broken_getattr'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pylint-dev__astroid-1978: resolved: False
+2026-03-29 19:48:52,169 - INFO - Attempting to stop container sweb.eval.pylint-dev__astroid-1978.opencode-claude...
+2026-03-29 19:49:07,277 - INFO - Attempting to remove container sweb.eval.pylint-dev__astroid-1978.opencode-claude...
+2026-03-29 19:49:07,288 - INFO - Container sweb.eval.pylint-dev__astroid-1978.opencode-claude removed.
+2026-03-29 19:49:07,288 - INFO - Attempting to remove image swebench/sweb.eval.x86_64.pylint-dev_1776_astroid-1978:latest...
+2026-03-29 19:49:07,739 - INFO - Image swebench/sweb.eval.x86_64.pylint-dev_1776_astroid-1978:latest removed.

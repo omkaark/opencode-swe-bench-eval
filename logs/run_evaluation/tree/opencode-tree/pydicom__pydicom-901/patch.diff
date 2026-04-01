@@ -1,0 +1,15 @@
+diff --git a/pydicom/config.py b/pydicom/config.py
+index ae9c8bdf..f830e2cb 100644
+--- a/pydicom/config.py
++++ b/pydicom/config.py
+@@ -62,10 +62,6 @@ and datetime.time respectively. Default: False
+ 
+ # Logging system and debug function to change logging level
+ logger = logging.getLogger('pydicom')
+-handler = logging.StreamHandler()
+-formatter = logging.Formatter("%(message)s")
+-handler.setFormatter(formatter)
+-logger.addHandler(handler)
+ 
+ 
+ import pydicom.pixel_data_handlers.numpy_handler as np_handler  # noqa

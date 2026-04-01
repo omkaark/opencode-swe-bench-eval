@@ -1,0 +1,22 @@
+ERROR:
+CommandTimeoutError: timeout after 1200.0 seconds while running command 'cd /repo && opencode run --agent build --model opencode/mimo-v2-pro-free --format json "$(cat /tmp/problem.txt)"'
+Traceback (most recent call last):
+  File "/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/src/runner.py", line 524, in run_instance
+    opencode_result = await bash(
+                      ^^^^^^^^^^^
+  File "/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/src/runner.py", line 347, in bash
+    return await runtime.run_in_session(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/.venv/lib/python3.12/site-packages/swerex/runtime/remote.py", line 205, in run_in_session
+    return await self._request("run_in_session", action, Observation)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/src/runner.py", line 78, in _request_with_timeouts
+    raise last_exception  # type: ignore[misc]
+    ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/src/runner.py", line 66, in _request_with_timeouts
+    await self._handle_response_errors(resp)
+  File "/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/.venv/lib/python3.12/site-packages/swerex/runtime/remote.py", line 122, in _handle_response_errors
+    self._handle_transfer_exception(exc_transfer)
+  File "/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/.venv/lib/python3.12/site-packages/swerex/runtime/remote.py", line 115, in _handle_transfer_exception
+    raise exception from None
+swerex.exceptions.CommandTimeoutError: timeout after 1200.0 seconds while running command 'cd /repo && opencode run --agent build --model opencode/mimo-v2-pro-free --format json "$(cat /tmp/problem.txt)"'

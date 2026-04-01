@@ -1,0 +1,14 @@
+{
+  "variant": "summarize",
+  "instance_id": "sqlfluff__sqlfluff-1733",
+  "repo": "sqlfluff/sqlfluff",
+  "base_commit": "a1579a16b1d8913d9d7c7d12add374a290bcc78c",
+  "attempt": 3,
+  "modal_log_url": "https://modal.com/apps/sentra/main/deployed/swe-rex?activeTab=logs&taskId=ta-01KN32KS0VXZEMWKY3AM9FVFW7",
+  "opencode_exit_code": null,
+  "opencode_output": "",
+  "opencode_duration_seconds": null,
+  "git_status": "",
+  "model_patch": "",
+  "error": "CommandTimeoutError: timeout after 1200.0 seconds while running command 'cd /repo && opencode run --agent build --model opencode/mimo-v2-pro-free --format json \"$(cat /tmp/problem.txt)\"'\nTraceback (most recent call last):\n  File \"/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/src/runner.py\", line 524, in run_instance\n    opencode_result = await bash(\n                      ^^^^^^^^^^^\n  File \"/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/src/runner.py\", line 347, in bash\n    return await runtime.run_in_session(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/.venv/lib/python3.12/site-packages/swerex/runtime/remote.py\", line 205, in run_in_session\n    return await self._request(\"run_in_session\", action, Observation)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/src/runner.py\", line 78, in _request_with_timeouts\n    raise last_exception  # type: ignore[misc]\n    ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/src/runner.py\", line 66, in _request_with_timeouts\n    await self._handle_response_errors(resp)\n  File \"/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/.venv/lib/python3.12/site-packages/swerex/runtime/remote.py\", line 122, in _handle_response_errors\n    self._handle_transfer_exception(exc_transfer)\n  File \"/Users/sonia/Documents/GitHub/opencode-swe-bench-eval/.venv/lib/python3.12/site-packages/swerex/runtime/remote.py\", line 115, in _handle_transfer_exception\n    raise exception from None\nswerex.exceptions.CommandTimeoutError: timeout after 1200.0 seconds while running command 'cd /repo && opencode run --agent build --model opencode/mimo-v2-pro-free --format json \"$(cat /tmp/problem.txt)\"'\n"
+}

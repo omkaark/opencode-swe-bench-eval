@@ -1,0 +1,48 @@
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..f6383b11 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -185,7 +185,16 @@ class Delimited(OneOf):
+                         )
+                 else:
+                     # Zero length section between delimiters, or zero code
+-                    # elements if appropriate. Return unmatched.
++                    # elements if appropriate.
++                    if self.allow_trailing and delimiters:
++                        # If we allow trailing and have already matched at least
++                        # one delimiter, treat this as a trailing delimiter.
++                        # Return matched content, leaving the extra delimiter
++                        # in unmatched_segments so nothing is dropped.
++                        return MatchResult(
++                            matched_segments.matched_segments,
++                            delimiter_match.all_segments(),
++                        )
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+diff --git a/test/dialects/ansi_test.py b/test/dialects/ansi_test.py
+index 1c83e4c6..417862f9 100644
+--- a/test/dialects/ansi_test.py
++++ b/test/dialects/ansi_test.py
+@@ -173,6 +173,21 @@ def test__dialect__ansi_specific_segment_not_parse(raw, err_locations, caplog):
+     assert locs == err_locations
+ 
+ 
++@pytest.mark.parametrize(
++    "raw",
++    [
++        "select id from tbl;;",
++        "select id from tbl;;;",
++    ],
++)
++def test__dialect__ansi_multiple_semicolons(raw):
++    """Test that multiple semicolons don't cause a crash."""
++    lnt = Linter()
++    parsed = lnt.parse_string(raw)
++    # Should not raise RuntimeError
++    assert parsed.tree is not None
++
++
+ def test__dialect__ansi_is_whitespace():
+     """Test proper tagging with is_whitespace."""
+     lnt = Linter()

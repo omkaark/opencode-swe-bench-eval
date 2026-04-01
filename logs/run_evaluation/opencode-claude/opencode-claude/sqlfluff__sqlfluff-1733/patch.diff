@@ -1,0 +1,88 @@
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..fd3547ba 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -118,7 +118,29 @@ class Rule_L036(BaseRule):
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+-                fixes.append(LintFix("create", select_target, NewlineSegment()))
++                # When creating the newline, also add the indentation
++                # whitespace that matches the other select targets to avoid
++                # leaving indentation fixes to L003 (which can interact
++                # badly with L039).
++                if select_targets_info.first_whitespace_idx != -1:
++                    fixes.append(
++                        LintFix(
++                            "create",
++                            select_target,
++                            [
++                                NewlineSegment(),
++                                WhitespaceSegment(
++                                    raw=segment.segments[
++                                        select_targets_info.first_whitespace_idx
++                                    ].raw,
++                                ),
++                            ],
++                        )
++                    )
++                else:
++                    fixes.append(
++                        LintFix("create", select_target, NewlineSegment())
++                    )
+         if fixes:
+             return LintResult(anchor=segment, fixes=fixes)
+ 
+diff --git a/test/fixtures/rules/std_rule_cases/L036.yml b/test/fixtures/rules/std_rule_cases/L036.yml
+index a2f44493..2d8eea88 100644
+--- a/test/fixtures/rules/std_rule_cases/L036.yml
++++ b/test/fixtures/rules/std_rule_cases/L036.yml
+@@ -61,18 +61,15 @@ test_multiple_select_targets_some_newlines_missing_1:
+       d, e, f, g,
+       h
+     from x
+-  # The spaces before a, d, and h look odd, but these are places where the
+-  # select targets were already on a separate line, and the rule made no
+-  # changes.
+   fix_str: |
+     select
+       a,
+-    b,
+-    c,
++      b,
++      c,
+       d,
+-    e,
+-    f,
+-    g,
++      e,
++      f,
++      g,
+       h
+     from x
+ 
+@@ -83,18 +80,15 @@ test_multiple_select_targets_some_newlines_missing_2:
+       d, e, f, g,
+       h
+     from x
+-  # The spaces before d, and h look odd, but these are places where the
+-  # select targets were already on a separate line, and the rule made no
+-  # changes.
+   fix_str: |
+     select
+-    a,
+-    b,
+-    c,
++      a,
++      b,
++      c,
+       d,
+-    e,
+-    f,
+-    g,
++      e,
++      f,
++      g,
+       h
+     from x
+ 

@@ -1,0 +1,13 @@
+{
+  "variant": "claude",
+  "instance_id": "pvlib__pvlib-python-1072",
+  "repo": "pvlib/pvlib-python",
+  "base_commit": "04a523fafbd61bc2e49420963b84ed8e2bd1b3cf",
+  "cli_exit_code": 0,
+  "cli_output": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":32447,\"duration_api_ms\":31137,\"num_turns\":7,\"result\":\"The fix works correctly for both tz-aware and tz-naive inputs. The change uses `.index.values` (which returns a numpy array of `datetime64` values regardless of timezone) instead of `.index` (which returns a pandas `DatetimeIndex` that, on pandas>=1.0.0 with tz-aware data, produces `Timedelta` objects from `np.diff`). Dividing by `np.timedelta64(1, 'h')` is also cleaner than the original `.astype(float) / 1e9 / 60 / 60`.\",\"stop_reason\":\"end_turn\",\"session_id\":\"9db147ca-2378-4826-af59-5d799dbff03a\",\"total_cost_usd\":0.17807250000000002,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":14542,\"cache_read_input_tokens\":112180,\"output_tokens\":1242,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":14542,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-opus-4-6[1m]\":{\"inputTokens\":9,\"outputTokens\":1242,\"cacheReadInputTokens\":112180,\"cacheCreationInputTokens\":14542,\"webSearchRequests\":0,\"costUSD\":0.17807250000000002,\"contextWindow\":1000000,\"maxOutputTokens\":64000}},\"permission_denials\":[],\"fast_mode_state\":\"off\",\"uuid\":\"efb07fb7-cd2f-4a24-829d-3b6e9f74cae5\"}\n",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 33.37,
+  "git_status": " M pvlib/temperature.py\n?? .swe_prompt.txt\n",
+  "model_patch": "diff --git a/pvlib/temperature.py b/pvlib/temperature.py\nindex 1d98736..d4d9d75 100644\n--- a/pvlib/temperature.py\n+++ b/pvlib/temperature.py\n@@ -599,7 +599,7 @@ def fuentes(poa_global, temp_air, wind_speed, noct_installed, module_height=5,\n     # n.b. the way Fuentes calculates the first timedelta makes it seem like\n     # the value doesn't matter -- rather than recreate it here, just assume\n     # it's the same as the second timedelta:\n-    timedelta_hours = np.diff(poa_global.index).astype(float) / 1e9 / 60 / 60\n+    timedelta_hours = np.diff(poa_global.index.values) / np.timedelta64(1, 'h')\n     timedelta_hours = np.append([timedelta_hours[0]], timedelta_hours)\n \n     tamb_array = temp_air + 273.15\n",
+  "error": ""
+}

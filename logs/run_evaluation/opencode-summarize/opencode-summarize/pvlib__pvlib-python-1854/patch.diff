@@ -1,0 +1,34 @@
+diff --git a/pvlib/pvsystem.py b/pvlib/pvsystem.py
+index c277a77..c3ee964 100644
+--- a/pvlib/pvsystem.py
++++ b/pvlib/pvsystem.py
+@@ -202,6 +202,8 @@ class PVSystem:
+                  inverter=None, inverter_parameters=None,
+                  racking_model=None, losses_parameters=None, name=None):
+ 
++        if arrays is not None and not isinstance(arrays, (tuple, list)):
++            arrays = (arrays,)
+         if arrays is None:
+             if losses_parameters is None:
+                 array_losses_parameters = {}
+diff --git a/pvlib/tests/test_pvsystem.py b/pvlib/tests/test_pvsystem.py
+index b379dd4..0e3be71 100644
+--- a/pvlib/tests/test_pvsystem.py
++++ b/pvlib/tests/test_pvsystem.py
+@@ -1887,8 +1887,14 @@ def test_PVSystem_multiple_array_creation():
+     assert pv_system.arrays[0].module_parameters == {}
+     assert pv_system.arrays[1].module_parameters == {'pdc0': 1}
+     assert pv_system.arrays == (array_one, array_two)
+-    with pytest.raises(TypeError):
+-        pvsystem.PVSystem(arrays=array_one)
++
++
++def test_PVSystem_single_array():
++    mount = pvsystem.FixedMount(surface_tilt=35, surface_azimuth=180)
++    array = pvsystem.Array(mount=mount)
++    pv = pvsystem.PVSystem(arrays=array)
++    assert len(pv.arrays) == 1
++    assert pv.arrays[0] is array
+ 
+ 
+ def test_PVSystem_get_aoi():

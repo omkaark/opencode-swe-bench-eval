@@ -1,0 +1,59 @@
+2026-04-01 03:30:20,869 - INFO - >>>>> Applied Patch:
+Checking patch astroid/nodes/as_string.py...
+Checking patch tests/unittest_nodes.py...
+Applied patch astroid/nodes/as_string.py cleanly.
+Applied patch tests/unittest_nodes.py cleanly.
+
+2026-04-01 03:30:21,864 - INFO - Git diff before:
+diff --git a/astroid/nodes/as_string.py b/astroid/nodes/as_string.py
+index 427ccc15..96377c45 100644
+--- a/astroid/nodes/as_string.py
++++ b/astroid/nodes/as_string.py
+@@ -643,6 +643,9 @@ class AsStringVisitor:
+     def visit_evaluatedobject(self, node):
+         return node.original.accept(self)
+ 
++    def visit_unknown(self, node):
++        return ""
++
+ 
+ def _import_string(names):
+     """return a list of (name, asname) formatted as a string"""
+diff --git a/tests/unittest_nodes.py b/tests/unittest_nodes.py
+index 7c78cd23..184638d0 100644
+--- a/tests/unittest_nodes.py
++++ b/tests/unittest_nodes.py
+@@ -111,6 +111,10 @@ class AsStringTest(resources.SysPathSetup, unittest.TestCase):
+         self.assertEqual(inferred.as_string(), "[Uninferable]")
+         self.assertEqual(binop.as_string(), "[arg] * 1")
+ 
++    def test_as_string_unknown(self) -> None:
++        node = nodes.Unknown()
++        self.assertEqual(node.as_string(), "")
++
+     def test_frozenset_as_string(self) -> None:
+         ast_nodes = builder.extract_node(
+             """
+
+2026-04-01 03:30:51,537 - INFO - Test runtime: 29.33 seconds
+2026-04-01 03:30:51,537 - INFO - Test output for pylint-dev__astroid-1268 written to logs/run_evaluation/opencode-nosubagent/opencode-nosubagent/pylint-dev__astroid-1268/test_output.txt
+2026-04-01 03:30:52,003 - INFO - Git diff after:
+diff --git a/astroid/nodes/as_string.py b/astroid/nodes/as_string.py
+index 427ccc15..96377c45 100644
+--- a/astroid/nodes/as_string.py
++++ b/astroid/nodes/as_string.py
+@@ -643,6 +643,9 @@ class AsStringVisitor:
+     def visit_evaluatedobject(self, node):
+         return node.original.accept(self)
+ 
++    def visit_unknown(self, node):
++        return ""
++
+ 
+ def _import_string(names):
+     """return a list of (name, asname) formatted as a string"""
+
+2026-04-01 03:30:52,003 - INFO - Git diff changed after running eval script
+2026-04-01 03:30:52,003 - INFO - Grading answer for pylint-dev__astroid-1268...
+2026-04-01 03:30:52,005 - INFO - report: {'pylint-dev__astroid-1268': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['tests/unittest_nodes.py::AsStringTest::test_as_string_unknown']}, 'PASS_TO_PASS': {'success': ['tests/unittest_nodes.py::AsStringTest::test_3k_annotations_and_metaclass', 'tests/unittest_nodes.py::AsStringTest::test_3k_as_string', 'tests/unittest_nodes.py::AsStringTest::test_as_string', 'tests/unittest_nodes.py::AsStringTest::test_as_string_for_list_containing_uninferable', 'tests/unittest_nodes.py::AsStringTest::test_class_def', 'tests/unittest_nodes.py::AsStringTest::test_ellipsis', 'tests/unittest_nodes.py::AsStringTest::test_f_strings', 'tests/unittest_nodes.py::AsStringTest::test_frozenset_as_string', 'tests/unittest_nodes.py::AsStringTest::test_func_signature_issue_185', 'tests/unittest_nodes.py::AsStringTest::test_int_attribute', 'tests/unittest_nodes.py::AsStringTest::test_module2_as_string', 'tests/unittest_nodes.py::AsStringTest::test_module_as_string', 'tests/unittest_nodes.py::AsStringTest::test_operator_precedence', 'tests/unittest_nodes.py::AsStringTest::test_slice_and_subscripts', 'tests/unittest_nodes.py::AsStringTest::test_slices', 'tests/unittest_nodes.py::AsStringTest::test_tuple_as_string', 'tests/unittest_nodes.py::AsStringTest::test_varargs_kwargs_as_string', 'tests/unittest_nodes.py::IfNodeTest::test_block_range', 'tests/unittest_nodes.py::IfNodeTest::test_if_elif_else_node', 'tests/unittest_nodes.py::IfNodeTest::test_if_sys_guard', 'tests/unittest_nodes.py::IfNodeTest::test_if_typing_guard', 'tests/unittest_nodes.py::TryExceptNodeTest::test_block_range', 'tests/unittest_nodes.py::TryFinallyNodeTest::test_block_range', 'tests/unittest_nodes.py::TryExceptFinallyNodeTest::test_block_range', 'tests/unittest_nodes.py::ImportNodeTest::test_absolute_import', 'tests/unittest_nodes.py::ImportNodeTest::test_as_string', 'tests/unittest_nodes.py::ImportNodeTest::test_bad_import_inference', 'tests/unittest_nodes.py::ImportNodeTest::test_conditional', 'tests/unittest_nodes.py::ImportNodeTest::test_conditional_import', 'tests/unittest_nodes.py::ImportNodeTest::test_from_self_resolve', 'tests/unittest_nodes.py::ImportNodeTest::test_import_self_resolve', 'tests/unittest_nodes.py::ImportNodeTest::test_more_absolute_import', 'tests/unittest_nodes.py::ImportNodeTest::test_real_name', 'tests/unittest_nodes.py::CmpNodeTest::test_as_string', 'tests/unittest_nodes.py::ConstNodeTest::test_bool', 'tests/unittest_nodes.py::ConstNodeTest::test_complex', 'tests/unittest_nodes.py::ConstNodeTest::test_copy', 'tests/unittest_nodes.py::ConstNodeTest::test_float', 'tests/unittest_nodes.py::ConstNodeTest::test_int', 'tests/unittest_nodes.py::ConstNodeTest::test_none', 'tests/unittest_nodes.py::ConstNodeTest::test_str', 'tests/unittest_nodes.py::ConstNodeTest::test_str_kind', 'tests/unittest_nodes.py::ConstNodeTest::test_unicode', 'tests/unittest_nodes.py::NameNodeTest::test_assign_to_true', 'tests/unittest_nodes.py::TestNamedExprNode::test_frame', 'tests/unittest_nodes.py::TestNamedExprNode::test_scope', 'tests/unittest_nodes.py::AnnAssignNodeTest::test_as_string', 'tests/unittest_nodes.py::AnnAssignNodeTest::test_complex', 'tests/unittest_nodes.py::AnnAssignNodeTest::test_primitive', 'tests/unittest_nodes.py::AnnAssignNodeTest::test_primitive_without_initial_value', 'tests/unittest_nodes.py::ArgumentsNodeTC::test_kwoargs', 'tests/unittest_nodes.py::ArgumentsNodeTC::test_positional_only', 'tests/unittest_nodes.py::UnboundMethodNodeTest::test_no_super_getattr', 'tests/unittest_nodes.py::BoundMethodNodeTest::test_is_property', 'tests/unittest_nodes.py::AliasesTest::test_aliases', 'tests/unittest_nodes.py::Python35AsyncTest::test_async_await_keywords', 'tests/unittest_nodes.py::Python35AsyncTest::test_asyncfor_as_string', 'tests/unittest_nodes.py::Python35AsyncTest::test_asyncwith_as_string', 'tests/unittest_nodes.py::Python35AsyncTest::test_await_as_string', 'tests/unittest_nodes.py::Python35AsyncTest::test_decorated_async_def_as_string', 'tests/unittest_nodes.py::ContextTest::test_list_del', 'tests/unittest_nodes.py::ContextTest::test_list_load', 'tests/unittest_nodes.py::ContextTest::test_list_store', 'tests/unittest_nodes.py::ContextTest::test_starred_load', 'tests/unittest_nodes.py::ContextTest::test_starred_store', 'tests/unittest_nodes.py::ContextTest::test_subscript_del', 'tests/unittest_nodes.py::ContextTest::test_subscript_load', 'tests/unittest_nodes.py::ContextTest::test_subscript_store', 'tests/unittest_nodes.py::ContextTest::test_tuple_load', 'tests/unittest_nodes.py::ContextTest::test_tuple_store', 'tests/unittest_nodes.py::test_unknown', 'tests/unittest_nodes.py::test_type_comments_with', 'tests/unittest_nodes.py::test_type_comments_for', 'tests/unittest_nodes.py::test_type_coments_assign', 'tests/unittest_nodes.py::test_type_comments_invalid_expression', 'tests/unittest_nodes.py::test_type_comments_invalid_function_comments', 'tests/unittest_nodes.py::test_type_comments_function', 'tests/unittest_nodes.py::test_type_comments_arguments', 'tests/unittest_nodes.py::test_type_comments_posonly_arguments', 'tests/unittest_nodes.py::test_correct_function_type_comment_parent', 'tests/unittest_nodes.py::test_is_generator_for_yield_assignments', 'tests/unittest_nodes.py::test_f_string_correct_line_numbering', 'tests/unittest_nodes.py::test_assignment_expression', 'tests/unittest_nodes.py::test_assignment_expression_in_functiondef', 'tests/unittest_nodes.py::test_get_doc', 'tests/unittest_nodes.py::test_parse_fstring_debug_mode', 'tests/unittest_nodes.py::test_parse_type_comments_with_proper_parent', 'tests/unittest_nodes.py::test_const_itered', 'tests/unittest_nodes.py::test_is_generator_for_yield_in_while', 'tests/unittest_nodes.py::test_is_generator_for_yield_in_if', 'tests/unittest_nodes.py::test_is_generator_for_yield_in_aug_assign'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pylint-dev__astroid-1268: resolved: False

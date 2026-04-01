@@ -1,0 +1,71 @@
+{
+  "instance_id": "pydicom__pydicom-901",
+  "variant": "official",
+  "repo": "pydicom/pydicom",
+  "tokens": {
+    "total": 147329,
+    "input": 33162,
+    "output": 1975,
+    "reasoning": 976,
+    "cache_read": 112192,
+    "cache_write": 0
+  },
+  "duration_seconds": 67.45,
+  "time_to_first_edit_seconds": 22.007,
+  "steps": 10,
+  "tool_calls": {
+    "total": 10,
+    "by_tool": {
+      "bash": 2,
+      "edit": 2,
+      "glob": 2,
+      "read": 3,
+      "write": 1
+    }
+  },
+  "files_read": [
+    "/repo/pydicom/config.py",
+    "/repo/pydicom/tests/test_config.py"
+  ],
+  "files_edited": [
+    "/repo/pydicom/config.py"
+  ],
+  "failed_tool_calls": 2,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/pydicom/tests/test_config.py"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/test_config.py"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        1,
+        2
+      ],
+      "tools": [
+        "read",
+        "glob"
+      ],
+      "inputs_preview": [
+        "{\"filePath\": \"/repo/pydicom/tests/test_config.py\"}",
+        "{\"pattern\": \"**/test_config.py\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

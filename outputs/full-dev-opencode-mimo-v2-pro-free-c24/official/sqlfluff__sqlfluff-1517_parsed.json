@@ -1,0 +1,342 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1517",
+  "variant": "official",
+  "repo": "sqlfluff/sqlfluff",
+  "tokens": {
+    "total": 2113744,
+    "input": 58889,
+    "output": 18951,
+    "reasoning": 0,
+    "cache_read": 2035904,
+    "cache_write": 0
+  },
+  "duration_seconds": 509.71,
+  "time_to_first_edit_seconds": 416.876,
+  "steps": 64,
+  "tool_calls": {
+    "total": 63,
+    "by_tool": {
+      "bash": 24,
+      "edit": 1,
+      "glob": 3,
+      "grep": 19,
+      "read": 16
+    }
+  },
+  "files_read": [
+    "/repo/test/dialects/ansi_test.py",
+    "/repo/src/sqlfluff/dialects/dialect_ansi.py",
+    "/repo/src/sqlfluff/core/parser/helpers.py",
+    "/repo/src/sqlfluff/core/parser/grammar/delimited.py",
+    "/repo/src/sqlfluff/core/parser/grammar/greedy.py",
+    "/repo/src/sqlfluff/core/dialects/base.py",
+    "/repo/src/sqlfluff/core/parser/segments/base.py"
+  ],
+  "files_edited": [
+    "/repo/src/sqlfluff/core/parser/grammar/delimited.py"
+  ],
+  "failed_tool_calls": 20,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "Dropped elements in sequence",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "check_still_complete"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "Dropped elements",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo",
+        "pattern": "semicolon"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo",
+        "pattern": "SemicolonSegment"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo",
+        "pattern": "statement_terminator"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 12,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo",
+        "pattern": "StatementTerminatorSegment"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 13,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/src/sqlfluff/dialects",
+        "pattern": "FileSegment"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 15,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo",
+        "pattern": "DelimiterSegment"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 16,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo",
+        "pattern": "Delimiter"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 17,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/src/sqlfluff",
+        "pattern": "GreedyUntil"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 24,
+      "tool": "grep",
+      "input": {
+        "include": "dialect_ansi.py",
+        "path": "/repo/src/sqlfluff/dialects",
+        "pattern": "class FileSegment"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 26,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo",
+        "pattern": "RootSegment"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 30,
+      "tool": "grep",
+      "input": {
+        "include": "dialect_ansi.py",
+        "path": "/repo/src/sqlfluff/dialects",
+        "pattern": "SequenceOfStatements"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 31,
+      "tool": "grep",
+      "input": {
+        "include": "dialect_ansi.py",
+        "path": "/repo/src/sqlfluff/dialects",
+        "pattern": "Sequence.*Statement"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 33,
+      "tool": "grep",
+      "input": {
+        "include": "dialect_ansi.py",
+        "path": "/repo/src/sqlfluff/dialects",
+        "pattern": "class.*FileSegment"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 34,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/src/sqlfluff/core/parser",
+        "pattern": "BaseFileSegment"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 35,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/src/sqlfluff",
+        "pattern": "BaseFileSegment"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 57,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/core/linter_test.py -v --tb=short 2>&1 | tail -50",
+        "description": "Run linter tests",
+        "timeout": 180000
+      },
+      "output_preview": "test/core/linter_test.py::test_linter_noqa_with_templating PASSED        [ 95%]\ntest/core/linter_test.py::test__linter__skip_dbt_model_disabled FAILED   [ 96%]\ntest/core/linter_test.py::test_delayed_e"
+    },
+    {
+      "step": 59,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/test",
+        "pattern": "multiple_semicolon"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        1,
+        2
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"Dropped elements in sequence\", \"path\": \"/repo\"}",
+        "{\"path\": \"/repo\", \"pattern\": \"check_still_complete\"}"
+      ]
+    },
+    {
+      "length": 2,
+      "steps": [
+        8,
+        9
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"include\": \"*.py\", \"path\": \"/repo\", \"pattern\": \"semicolon\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo\", \"pattern\": \"SemicolonSegment\"}"
+      ]
+    },
+    {
+      "length": 3,
+      "steps": [
+        11,
+        12,
+        13
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"include\": \"*.py\", \"path\": \"/repo\", \"pattern\": \"statement_terminator\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo\", \"pattern\": \"StatementTerminatorSegment\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo/src/sqlfluff/dialects\", \"pattern\": \"FileSegment\"}"
+      ]
+    },
+    {
+      "length": 3,
+      "steps": [
+        15,
+        16,
+        17
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"include\": \"*.py\", \"path\": \"/repo\", \"pattern\": \"DelimiterSegment\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo\", \"pattern\": \"Delimiter\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo/src/sqlfluff\", \"pattern\": \"GreedyUntil\"}"
+      ]
+    },
+    {
+      "length": 2,
+      "steps": [
+        30,
+        31
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"include\": \"dialect_ansi.py\", \"path\": \"/repo/src/sqlfluff/dialects\", \"pattern\": \"SequenceOfStatemen",
+        "{\"include\": \"dialect_ansi.py\", \"path\": \"/repo/src/sqlfluff/dialects\", \"pattern\": \"Sequence.*Statemen"
+      ]
+    },
+    {
+      "length": 3,
+      "steps": [
+        33,
+        34,
+        35
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"include\": \"dialect_ansi.py\", \"path\": \"/repo/src/sqlfluff/dialects\", \"pattern\": \"class.*FileSegment",
+        "{\"include\": \"*.py\", \"path\": \"/repo/src/sqlfluff/core/parser\", \"pattern\": \"BaseFileSegment\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo/src/sqlfluff\", \"pattern\": \"BaseFileSegment\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

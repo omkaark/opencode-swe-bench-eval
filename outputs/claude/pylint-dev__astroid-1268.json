@@ -1,0 +1,13 @@
+{
+  "variant": "claude",
+  "instance_id": "pylint-dev__astroid-1268",
+  "repo": "pylint-dev/astroid",
+  "base_commit": "ce5cbce5ba11cdc2f8139ade66feea1e181a7944",
+  "cli_exit_code": 0,
+  "cli_output": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":39353,\"duration_api_ms\":38379,\"num_turns\":14,\"result\":\"Test passes. The fix adds `visit_unknown` to `AsStringVisitor` in `astroid/nodes/as_string.py`, which returns `str(node)` for `Unknown` nodes, matching the pattern used by similar visitor methods like `visit_uninferable`.\",\"stop_reason\":\"end_turn\",\"session_id\":\"fb730768-253e-4530-9731-3416781c3d01\",\"total_cost_usd\":0.20399649999999997,\"usage\":{\"input_tokens\":13,\"cache_creation_input_tokens\":10156,\"cache_read_input_tokens\":196363,\"output_tokens\":1691,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":10156,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-opus-4-6[1m]\":{\"inputTokens\":13,\"outputTokens\":1691,\"cacheReadInputTokens\":196363,\"cacheCreationInputTokens\":10156,\"webSearchRequests\":0,\"costUSD\":0.20399649999999997,\"contextWindow\":1000000,\"maxOutputTokens\":64000}},\"permission_denials\":[],\"fast_mode_state\":\"off\",\"uuid\":\"1bbb3a21-071b-49ae-b60b-0ba03ef070a2\"}\n",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 40.86,
+  "git_status": " M astroid/nodes/as_string.py\n M tests/unittest_nodes.py\n?? .swe_prompt.txt\n",
+  "model_patch": "diff --git a/astroid/nodes/as_string.py b/astroid/nodes/as_string.py\nindex 427ccc15..3a41df41 100644\n--- a/astroid/nodes/as_string.py\n+++ b/astroid/nodes/as_string.py\n@@ -643,6 +643,9 @@ class AsStringVisitor:\n     def visit_evaluatedobject(self, node):\n         return node.original.accept(self)\n \n+    def visit_unknown(self, node):\n+        return str(node)\n+\n \n def _import_string(names):\n     \"\"\"return a list of (name, asname) formatted as a string\"\"\"\ndiff --git a/tests/unittest_nodes.py b/tests/unittest_nodes.py\nindex 7c78cd23..6491f40a 100644\n--- a/tests/unittest_nodes.py\n+++ b/tests/unittest_nodes.py\n@@ -111,6 +111,9 @@ class AsStringTest(resources.SysPathSetup, unittest.TestCase):\n         self.assertEqual(inferred.as_string(), \"[Uninferable]\")\n         self.assertEqual(binop.as_string(), \"[arg] * 1\")\n \n+    def test_as_string_unknown(self) -> None:\n+        self.assertEqual(astroid.nodes.Unknown().as_string(), \"Unknown.Unknown()\")\n+\n     def test_frozenset_as_string(self) -> None:\n         ast_nodes = builder.extract_node(\n             \"\"\"\n",
+  "error": ""
+}

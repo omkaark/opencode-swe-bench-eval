@@ -1,0 +1,13 @@
+{
+  "variant": "claude",
+  "instance_id": "sqlfluff__sqlfluff-2419",
+  "repo": "sqlfluff/sqlfluff",
+  "base_commit": "f1dba0e1dd764ae72d67c3d5e1471cf14d3db030",
+  "cli_exit_code": 0,
+  "cli_output": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":46149,\"duration_api_ms\":43341,\"num_turns\":13,\"result\":\"Test passes. The fix adds a specific error message mentioning the actual function used (`IFNULL` or `NVL`) instead of the generic message listing both.\",\"stop_reason\":\"end_turn\",\"session_id\":\"19f9e147-7bba-477c-b16a-420130c2c179\",\"total_cost_usd\":0.20367174999999998,\"usage\":{\"input_tokens\":14,\"cache_creation_input_tokens\":8335,\"cache_read_input_tokens\":206516,\"output_tokens\":1930,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":8335,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-opus-4-6[1m]\":{\"inputTokens\":14,\"outputTokens\":1930,\"cacheReadInputTokens\":206516,\"cacheCreationInputTokens\":8335,\"webSearchRequests\":0,\"costUSD\":0.20367174999999998,\"contextWindow\":1000000,\"maxOutputTokens\":64000}},\"permission_denials\":[],\"fast_mode_state\":\"off\",\"uuid\":\"45af7795-16b2-4ade-9906-0353aede6042\"}\n",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 47.1,
+  "git_status": " M src/sqlfluff/rules/L060.py\n?? .swe_prompt.txt\n?? test/rules/std_L060_test.py\n",
+  "model_patch": "diff --git a/src/sqlfluff/rules/L060.py b/src/sqlfluff/rules/L060.py\nindex 836941ed..853ceeb6 100644\n--- a/src/sqlfluff/rules/L060.py\n+++ b/src/sqlfluff/rules/L060.py\n@@ -59,4 +59,8 @@ class Rule_L060(BaseRule):\n             ],\n         )\n \n-        return LintResult(context.segment, [fix])\n+        return LintResult(\n+            context.segment,\n+            [fix],\n+            description=f\"Use 'COALESCE' instead of '{context.segment.raw_upper}'.\",\n+        )\n",
+  "error": ""
+}

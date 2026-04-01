@@ -1,0 +1,361 @@
+{
+  "instance_id": "pvlib__pvlib-python-1854",
+  "variant": "nosubagent",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [],
+  "per_file": {
+    "/repo/pvlib/pvsystem.py": {
+      "reads": [
+        1,
+        3
+      ],
+      "edits": [
+        {
+          "step": 4,
+          "old": "        if arrays is None:\n            if losses_parameters is None:\n                array_losses_parameters = {}\n            else:\n                array_losses_parameters = _build_kwargs(['dc_ohmic_percent'],\n                                                        losses_parameters)\n            self.arrays = (Array(\n                FixedMount(surface_tilt, surface_azimuth, racking_model),\n                albedo,\n                surface_type,\n                module,\n                module_type,\n                module_parameters,\n                temperature_model_parameters,\n                modules_per_string,\n                strings_per_inverter,\n                array_losses_parameters,\n            ),)\n        elif len(arrays) == 0:\n            raise ValueError(\"PVSystem must have at least one Array. \"\n                             \"If you want to create a PVSystem instance \"\n                             \"with a single Array pass `arrays=None` and pass \"\n                             \"values directly to PVSystem attributes, e.g., \"\n                             \"`surface_tilt=30`\")\n        else:\n            self.arrays = tuple(arrays)",
+          "new": "        if arrays is None:\n            if losses_parameters is None:\n                array_losses_parameters = {}\n            else:\n                array_losses_parameters = _build_kwargs(['dc_ohmic_percent'],\n                                                        losses_parameters)\n            self.arrays = (Array(\n                FixedMount(surface_tilt, surface_azimuth, racking_model),\n                albedo,\n                surface_type,\n                module,\n                module_type,\n                module_parameters,\n                temperature_model_parameters,\n                modules_per_string,\n                strings_per_inverter,\n                array_losses_parameters,\n            ),)\n        elif isinstance(arrays, Array):\n            self.arrays = (arrays,)\n        elif len(arrays) == 0:\n            raise ValueError(\"PVSystem must have at least one Array. \"\n                             \"If you want to create a PVSystem instance \"\n                             \"with a single Array pass `arrays=None` and pass \"\n                             \"values directly to PVSystem attributes, e.g., \"\n                             \"`surface_tilt=30`\")\n        else:\n            self.arrays = tuple(arrays)"
+        }
+      ],
+      "first_read_step": 1,
+      "first_edit_step": 4,
+      "content_snippets": [
+        {
+          "offset": 240,
+          "limit": 30,
+          "signatures": [
+            "def __repr__(self)",
+            "def _validate_per_array(self, values, system_wide=False)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_pvsystem.py": {
+      "reads": [
+        27
+      ],
+      "edits": [
+        {
+          "step": 28,
+          "old": "    with pytest.raises(TypeError):\n        pvsystem.PVSystem(arrays=array_one)\n\n\ndef test_PVSystem_get_aoi():",
+          "new": "    pv_system_single = pvsystem.PVSystem(arrays=array_one)\n    assert pv_system_single.arrays == (array_one,)\n\n\ndef test_PVSystem_single_array():\n    mount = pvsystem.FixedMount(surface_tilt=35, surface_azimuth=180)\n    array = pvsystem.Array(mount=mount)\n    pv = pvsystem.PVSystem(arrays=array)\n    assert pv.arrays == (array,)\n    assert pv.num_arrays == 1\n\n\ndef test_PVSystem_get_aoi():"
+        }
+      ],
+      "first_read_step": 27,
+      "first_edit_step": 28,
+      "content_snippets": [
+        {
+          "offset": 1882,
+          "limit": 30,
+          "signatures": [
+            "def test_PVSystem_get_aoi()",
+            "def test_PVSystem_multiple_array_get_aoi()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "bash",
+      "input": {
+        "command": "grep -n \"test_PVSystem_single_array\" /repo/pvlib/tests/test_pvsystem.py",
+        "description": "Find the failing test"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_PVSystem_single_array",
+        "path": "/repo/pvlib/tests"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"\nimport importlib, sys\nsys.modules['pvlib'] = type(sys)('pvlib')\nsys.modules['pvlib'].__path__ = ['/repo/pvlib']\n# Directly load pvsystem module\nimport importlib.util\nspec = importlib.util.spec_from_file_location('pvlib.pvsystem', '/repo/pvlib/pvsystem.py')\nmod = importlib.util.module_from_spec(spec)\nsys.modules['pvlib.pvsystem'] = mod\ntry:\n    spec.loader.exec_module(mod)\nexcept Exception as e:\n    # just check the __init__ logic\n    pass\n\"",
+        "description": "Try importing pvsystem directly",
+        "workdir": "/repo"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 25,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_pvsystem.py::test_PVSystem_single_array -xvs --override-ini=\"testpaths=pvlib/tests\" 2>&1 | tail -30",
+        "description": "Run the failing test",
+        "workdir": "/repo"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: pyproject.toml\nplugins: anyio-4.13.0\ncollecting ... ERROR: not found: /repo/pvlib/",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "def __init__",
+        "path": "/repo/pvlib/pvsystem.py",
+        "include": "pvsystem.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/pvlib/pvsystem.py:\n  Line 194:     def __init__(self,\n  Line 945:     def __init__(self, mount,"
+    },
+    {
+      "step": 4,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/pvsystem.py",
+        "oldString": "        if arrays is None:\n            if losses_parameters is None:\n                array_losses_parameters = {}\n            else:\n                array_losses_parameters = _build_kwargs(['dc_ohmic_percent'],\n                                                        losses_parameters)\n            self.arrays = (Array(\n                FixedMount(surface_tilt, surface_azimuth, racking_model),\n                albedo,\n                surface_type,\n                module,\n                module_type,\n                module_parameters,\n                temperature_model_parameters,\n                modules_per_string,\n                strings_per_inverter,\n                array_losses_parameters,\n            ),)\n        elif len(arrays) == 0:\n            raise ValueError(\"PVSystem must have at least one Array. \"\n                             \"If you want to create a PVSystem instance \"\n                             \"with a single Array pass `arrays=None` and pass \"\n                             \"values directly to PVSystem attributes, e.g., \"\n                             \"`surface_tilt=30`\")\n        else:\n            self.arrays = tuple(arrays)",
+        "newString": "        if arrays is None:\n            if losses_parameters is None:\n                array_losses_parameters = {}\n            else:\n                array_losses_parameters = _build_kwargs(['dc_ohmic_percent'],\n                                                        losses_parameters)\n            self.arrays = (Array(\n                FixedMount(surface_tilt, surface_azimuth, racking_model),\n                albedo,\n                surface_type,\n                module,\n                module_type,\n                module_parameters,\n                temperature_model_parameters,\n                modules_per_string,\n                strings_per_inverter,\n                array_losses_parameters,\n            ),)\n        elif isinstance(arrays, Array):\n            self.arrays = (arrays,)\n        elif len(arrays) == 0:\n            raise ValueError(\"PVSystem must have at least one Array. \"\n                             \"If you want to create a PVSystem instance \"\n                             \"with a single Array pass `arrays=None` and pass \"\n                             \"values directly to PVSystem attributes, e.g., \"\n                             \"`surface_tilt=30`\")\n        else:\n            self.arrays = tuple(arrays)"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/pvsystem.py\">\nERROR [13:8] Import \"numpy\" could not be resolved\nERROR [14:6] Import \"scipy\" could not be resolved\nERROR [15:8] Import \"pandas\" could not be resolved\nERROR [959:27] No overloads fo"
+    },
+    {
+      "step": 5,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_pvsystem.py::test_PVSystem_single_array -xvs 2>&1 | head -40",
+        "description": "Run the failing test",
+        "workdir": "/repo"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "pip install pytest -q 2>&1 | tail -3 && python -m pytest pvlib/tests/test_pvsystem.py::test_PVSystem_single_array -xvs 2>&1 | head -40",
+        "description": "Install pytest and run test",
+        "workdir": "/repo"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/usr/local/lib/python3.12/site-packages"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "single_array",
+        "path": "/repo/pvlib/tests"
+      },
+      "output_preview": "Found 6 matches\n/repo/pvlib/tests/test_pvsystem.py:\n  Line 1808: def test_PVSystem_get_ac_single_array_tuple_input(\n\n/repo/pvlib/tests/test_modelchain.py:\n  Line 1125: def test_run_model_singleton_weather_single_array(cec_dc_snl_ac_system,\n  Line 1142: def test_run_model_from_poa_singleton_weather_s"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"\nimport pvlib.pvsystem as pvsystem\nmount = pvsystem.FixedMount(surface_tilt=35, surface_azimuth=180)\narray = pvsystem.Array(mount=mount)\npv = pvsystem.PVSystem(arrays=array)\nprint('Success:', pv.arrays)\nprint('num_arrays:', pv.num_arrays)\n\"",
+        "description": "Verify the fix works",
+        "workdir": "/repo"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/spectrum/__init__.py\", line 1, in <module>\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\n    ^^^^"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "pip install numpy pandas scipy -q 2>&1 | tail -3",
+        "description": "Install dependencies",
+        "workdir": "/repo"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"\nimport pvlib.pvsystem as pvsystem\nmount = pvsystem.FixedMount(surface_tilt=35, surface_azimuth=180)\narray = pvsystem.Array(mount=mount)\npv = pvsystem.PVSystem(arrays=array)\nprint('Success:', pv.arrays)\nprint('num_arrays:', pv.num_arrays)\n\"",
+        "description": "Verify the fix works",
+        "workdir": "/repo"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/spectrum/__init__.py\", line 1, in <module>\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\n    ^^^^"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "pip install pytz -q 2>&1 | tail -2 && python -c \"\nimport pvlib.pvsystem as pvsystem\nmount = pvsystem.FixedMount(surface_tilt=35, surface_azimuth=180)\narray = pvsystem.Array(mount=mount)\npv = pvsystem.PVSystem(arrays=array)\nprint('Success:', pv.arrays)\nprint('num_arrays:', pv.num_arrays)\n\"",
+        "description": "Install pytz and verify fix",
+        "workdir": "/repo"
+      },
+      "output_preview": "[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nTraceback (most recent call last):\n  File \"<string>\", line 2, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/cl"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"\nimport sys\nsys.path.insert(0, '/repo')\nfrom pvlib.pvsystem import PVSystem, Array, FixedMount\nmount = FixedMount(surface_tilt=35, surface_azimuth=180)\narray = Array(mount=mount)\npv = PVSystem(arrays=array)\nprint('Success:', pv.arrays)\nprint('num_arrays:', pv.num_arrays)\n\"",
+        "description": "Test fix directly with imports",
+        "workdir": "/repo"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/clearsky.py\", line 14, in <module>\n    import h5py\nModuleNotFoundError: No module named 'h5py'\n"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "pip install h5py -q 2>&1 | tail -2 && python -c \"\nimport pvlib.pvsystem as pvsystem\nmount = pvsystem.FixedMount(surface_tilt=35, surface_azimuth=180)\narray = pvsystem.Array(mount=mount)\npv = pvsystem.PVSystem(arrays=array)\nprint('Success:', pv.arrays)\nprint('num_arrays:', pv.num_arrays)\n\"",
+        "description": "Install h5py and verify fix",
+        "workdir": "/repo"
+      },
+      "output_preview": "[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n/repo/pvlib/iam.py:854: SyntaxWarning: invalid escape sequence '\\c'\n  IAM = 1 - (1 - \\cos(aoi))^5\nTraceback (most recent call last):\n  File \"<string>\", line 2, in <module>\n  File \"/repo/pv"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "pip install 'numpy<2' -q 2>&1 | tail -2 && python -c \"\nimport pvlib.pvsystem as pvsystem\nmount = pvsystem.FixedMount(surface_tilt=35, surface_azimuth=180)\narray = pvsystem.Array(mount=mount)\npv = pvsystem.PVSystem(arrays=array)\nprint('Success:', pv.arrays)\nprint('num_arrays:', pv.num_arrays)\n\"",
+        "description": "Install numpy<2 and verify fix",
+        "workdir": "/repo"
+      },
+      "output_preview": "[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nSuccess: (Array:\n  name: None\n  mount: FixedMount(surface_tilt=35, surface_azimuth=180, racking_model=None, module_height=None)\n  module: None\n  albedo: 0.25\n  module_type: None\n  temperat"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_pvsystem.py::test_PVSystem_single_array -xvs 2>&1 | tail -20",
+        "description": "Run the failing test",
+        "workdir": "/repo"
+      },
+      "output_preview": "            ^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/pluggy/_callers.py\", line 139, in _multicall\n    teardown.throw(exception)\n  File \"/usr/local/lib/python3.12/site-packages/_pytest/capture.py\", line 173, in pytest_load_initial_conftests\n    yield\n  File \"/usr/local/lib/python3.12/sit"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_pvsystem.py::test_PVSystem_single_array -xvs --override-ini=\"testpaths=pvlib/tests\" 2>&1 | tail -20",
+        "description": "Run test with override",
+        "workdir": "/repo"
+      },
+      "output_preview": "ImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:7: in <module>\n    from pkg_resources import parse_version\nE   ModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "pip install setuptools -q 2>&1 | tail -2 && python -m pytest pvlib/tests/test_pvsystem.py::test_PVSystem_single_array -xvs --override-ini=\"testpaths=pvlib/tests\" 2>&1 | tail -20",
+        "description": "Install setuptools and run test",
+        "workdir": "/repo"
+      },
+      "output_preview": "[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:7: in <module>\n    from pkg_resources import parse_version\nE   ModuleNotFoundError: No module na"
+    },
+    {
+      "step": 19,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import pkg_resources; print(pkg_resources.__file__)\" 2>&1",
+        "description": "Check pkg_resources availability",
+        "workdir": "/repo"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "pip install --force-reinstall setuptools -q 2>&1 | tail -2 && python -c \"import pkg_resources; print('ok')\"",
+        "description": "Force reinstall setuptools",
+        "workdir": "/repo"
+      },
+      "output_preview": "[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 21,
+      "tool": "bash",
+      "input": {
+        "command": "pip install 'setuptools>=69' -q 2>&1 | tail -2 && pip install -e /repo -q 2>&1 | tail -5",
+        "description": "Install pvlib in editable mode",
+        "workdir": "/repo"
+      },
+      "output_preview": "[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 22,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import pkg_resources; print('ok')\"",
+        "description": "Check pkg_resources",
+        "workdir": "/repo"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 23,
+      "tool": "bash",
+      "input": {
+        "command": "pip show setuptools 2>&1 && python -c \"import setuptools; print(setuptools.__file__)\"",
+        "description": "Check setuptools installation",
+        "workdir": "/repo"
+      },
+      "output_preview": "Name: setuptools\nVersion: 82.0.1\nSummary: Most extensible Python build backend with support for C/C++ extension modules\nHome-page: \nAuthor: \nAuthor-email: Python Packaging Authority <distutils-sig@python.org>\nLicense-Expression: MIT\nLocation: /usr/local/lib/python3.12/site-packages\nRequires: \nRequir"
+    },
+    {
+      "step": 24,
+      "tool": "bash",
+      "input": {
+        "command": "pip install 'setuptools<71' -q 2>&1 | tail -2 && python -c \"import pkg_resources; print('ok')\"",
+        "description": "Install older setuptools with pkg_resources",
+        "workdir": "/repo"
+      },
+      "output_preview": "[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n<string>:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html\nok\n"
+    },
+    {
+      "step": 26,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/pvlib/tests/test_pvsystem.py",
+        "pattern": "def test_PVSystem.*array"
+      },
+      "output_preview": "Found 26 matches\n/repo/pvlib/tests/test_pvsystem.py:\n  Line 42: def test_PVSystem_multi_array_get_iam():\n  Line 240: def test_PVSystem_multi_array_sapm(sapm_module_params):\n  Line 281: def test_PVSystem_multi_array_sapm_spectral_loss(sapm_module_params):\n  Line 315: def test_PVSystem_multi_array_fir"
+    },
+    {
+      "step": 28,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/tests/test_pvsystem.py",
+        "oldString": "    with pytest.raises(TypeError):\n        pvsystem.PVSystem(arrays=array_one)\n\n\ndef test_PVSystem_get_aoi():",
+        "newString": "    pv_system_single = pvsystem.PVSystem(arrays=array_one)\n    assert pv_system_single.arrays == (array_one,)\n\n\ndef test_PVSystem_single_array():\n    mount = pvsystem.FixedMount(surface_tilt=35, surface_azimuth=180)\n    array = pvsystem.Array(mount=mount)\n    pv = pvsystem.PVSystem(arrays=array)\n    assert pv.arrays == (array,)\n    assert pv.num_arrays == 1\n\n\ndef test_PVSystem_get_aoi():"
+      },
+      "output_preview": "Edit applied successfully."
+    },
+    {
+      "step": 29,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_pvsystem.py::test_PVSystem_single_array pvlib/tests/test_pvsystem.py::test_PVSystem_multiple_array_creation -xvs --override-ini=\"testpaths=pvlib/tests\" 2>&1 | tail -25",
+        "description": "Run both tests",
+        "workdir": "/repo"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: pyproject.toml\nplugins: anyio-4.13.0\ncollecting ... collected 2 items\n\npvlib/tests"
+    },
+    {
+      "step": 30,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_pvsystem.py::test_PVSystem_at_least_one_array pvlib/tests/test_pvsystem.py::test_PVSystem_num_arrays -xvs --override-ini=\"testpaths=pvlib/tests\" 2>&1 | tail -15",
+        "description": "Run edge case tests",
+        "workdir": "/repo"
+      },
+      "output_preview": "rootdir: /repo\nconfigfile: pyproject.toml\nplugins: anyio-4.13.0\ncollecting ... collected 2 items\n\npvlib/tests/test_pvsystem.py::test_PVSystem_at_least_one_array PASSED\npvlib/tests/test_pvsystem.py::test_PVSystem_num_arrays PASSED\n\n=============================== warnings summary ===================="
+    }
+  ],
+  "token_cost": {
+    "total": 565680,
+    "input": 25353,
+    "output": 4199,
+    "cache_read": 536128,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": 15.52,
+  "total_duration_seconds": 198.13,
+  "patch_non_empty": true
+}

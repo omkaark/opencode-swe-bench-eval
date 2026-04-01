@@ -1,0 +1,86 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1733",
+  "variant": "official",
+  "repo": "sqlfluff/sqlfluff",
+  "tokens": {
+    "total": 139907,
+    "input": 25138,
+    "output": 1169,
+    "reasoning": 561,
+    "cache_read": 113600,
+    "cache_write": 0
+  },
+  "duration_seconds": 46.48,
+  "time_to_first_edit_seconds": null,
+  "steps": 7,
+  "tool_calls": {
+    "total": 12,
+    "by_tool": {
+      "bash": 6,
+      "glob": 3,
+      "read": 3
+    }
+  },
+  "files_read": [
+    "/repo",
+    "/repo/src/sqlfluff/rules/L003.py",
+    "/repo/src/sqlfluff/rules/L036.py"
+  ],
+  "files_edited": [],
+  "failed_tool_calls": 4,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "bash",
+      "input": {
+        "command": "find /repo -name \"std_L003_L036_L039_combo_test.py\" -type f",
+        "description": "Find the failing test file"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/std_L003_L036_L039_combo_test.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L003.py"
+      },
+      "output_preview": "<path>/repo/src/sqlfluff/rules/L003.py</path>\n<type>file</type>\n<content>1: \"\"\"Implementation of Rule L003.\"\"\"\n2: from typing import List, Optional, Sequence, Tuple\n3: \n4: from sqlfluff.core.parser im"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && echo \"WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\" > /tmp/test.sql && python -m sqlfluff fix --dialect ansi /tmp/test.sql -f && cat /tmp/test.sql",
+        "description": "Reproduce the issue"
+      },
+      "output_preview": ""
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        1,
+        2
+      ],
+      "tools": [
+        "bash",
+        "glob"
+      ],
+      "inputs_preview": [
+        "{\"command\": \"find /repo -name \\\"std_L003_L036_L039_combo_test.py\\\" -type f\", \"description\": \"Find th",
+        "{\"pattern\": \"**/std_L003_L036_L039_combo_test.py\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": false,
+  "error": ""
+}

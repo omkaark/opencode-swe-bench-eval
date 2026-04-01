@@ -1,0 +1,82 @@
+2026-04-01 03:18:02,735 - INFO - >>>>> Applied Patch:
+Checking patch pydicom/tests/test_valuerep.py...
+Checking patch pydicom/valuerep.py...
+Applied patch pydicom/tests/test_valuerep.py cleanly.
+Applied patch pydicom/valuerep.py cleanly.
+
+2026-04-01 03:18:06,730 - INFO - Git diff before:
+diff --git a/pydicom/tests/test_valuerep.py b/pydicom/tests/test_valuerep.py
+index ad5a62d..db35071 100644
+--- a/pydicom/tests/test_valuerep.py
++++ b/pydicom/tests/test_valuerep.py
+@@ -427,6 +427,27 @@ class TestPersonName:
+         )
+         assert hash(pn1) == hash(pn2)
+ 
++    def test_contains(self):
++        """PN: __contains__ operator works correctly"""
++        pn = PersonName("Family^Given")
++        assert "F" in pn
++        assert "Family" in pn
++        assert "Given" in pn
++        assert "amily^Giv" in pn
++        assert "Z" not in pn
++
++    def test_iterator(self):
++        """PN: __iter__ returns an iterator over the string representation"""
++        pn = PersonName("AB")
++        assert list(pn) == ["A", "B"]
++
++    def test_next(self):
++        """PN: iteration via next() works correctly"""
++        pn = PersonName("AB")
++        it = iter(pn)
++        assert next(it) == "A"
++        assert next(it) == "B"
++
+ 
+ class TestDateTime:
+     """Unit tests for DA, DT, TM conversion to datetime objects"""
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f78..0c17550 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -826,6 +826,12 @@ class PersonName:
+                     (len(self._components) > 1 or bool(self._components[0])))
+         return bool(self.original_string)
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, substr):
++        return substr in str(self)
++
+ 
+ # Alias old class names for backwards compat in user code
+ PersonNameUnicode = PersonName = PersonName
+
+2026-04-01 03:18:16,207 - INFO - Test runtime: 9.26 seconds
+2026-04-01 03:18:16,208 - INFO - Test output for pydicom__pydicom-1139 written to logs/run_evaluation/opencode-summarize/opencode-summarize/pydicom__pydicom-1139/test_output.txt
+2026-04-01 03:18:16,766 - INFO - Git diff after:
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f78..0c17550 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -826,6 +826,12 @@ class PersonName:
+                     (len(self._components) > 1 or bool(self._components[0])))
+         return bool(self.original_string)
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, substr):
++        return substr in str(self)
++
+ 
+ # Alias old class names for backwards compat in user code
+ PersonNameUnicode = PersonName = PersonName
+
+2026-04-01 03:18:16,767 - INFO - Git diff changed after running eval script
+2026-04-01 03:18:16,767 - INFO - Grading answer for pydicom__pydicom-1139...
+2026-04-01 03:18:16,770 - INFO - report: {'pydicom__pydicom-1139': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': ['pydicom/tests/test_valuerep.py::TestPersonName::test_iterator', 'pydicom/tests/test_valuerep.py::TestPersonName::test_contains'], 'failure': ['pydicom/tests/test_valuerep.py::TestPersonName::test_next']}, 'PASS_TO_PASS': {'success': ['pydicom/tests/test_valuerep.py::TestTM::test_pickling', 'pydicom/tests/test_valuerep.py::TestDT::test_pickling', 'pydicom/tests/test_valuerep.py::TestDA::test_pickling', 'pydicom/tests/test_valuerep.py::TestDS::test_empty_value', 'pydicom/tests/test_valuerep.py::TestDS::test_float_values', 'pydicom/tests/test_valuerep.py::TestDSfloat::test_pickling', 'pydicom/tests/test_valuerep.py::TestDSfloat::test_str', 'pydicom/tests/test_valuerep.py::TestDSfloat::test_repr', 'pydicom/tests/test_valuerep.py::TestDSdecimal::test_pickling', 'pydicom/tests/test_valuerep.py::TestDSdecimal::test_float_value', 'pydicom/tests/test_valuerep.py::TestIS::test_empty_value', 'pydicom/tests/test_valuerep.py::TestIS::test_valid_value', 'pydicom/tests/test_valuerep.py::TestIS::test_invalid_value', 'pydicom/tests/test_valuerep.py::TestIS::test_pickling', 'pydicom/tests/test_valuerep.py::TestIS::test_longint', 'pydicom/tests/test_valuerep.py::TestIS::test_overflow', 'pydicom/tests/test_valuerep.py::TestIS::test_str', 'pydicom/tests/test_valuerep.py::TestIS::test_repr', 'pydicom/tests/test_valuerep.py::TestDecimalString::test_DS_decimal_set', 'pydicom/tests/test_valuerep.py::TestDecimalString::test_valid_decimal_strings', 'pydicom/tests/test_valuerep.py::TestDecimalString::test_invalid_decimal_strings', 'pydicom/tests/test_valuerep.py::TestPersonName::test_last_first', 'pydicom/tests/test_valuerep.py::TestPersonName::test_copy', 'pydicom/tests/test_valuerep.py::TestPersonName::test_three_component', 'pydicom/tests/test_valuerep.py::TestPersonName::test_formatting', 'pydicom/tests/test_valuerep.py::TestPersonName::test_unicode_kr', 'pydicom/tests/test_valuerep.py::TestPersonName::test_unicode_jp_from_bytes', 'pydicom/tests/test_valuerep.py::TestPersonName::test_unicode_jp_from_bytes_comp_delimiter', 'pydicom/tests/test_valuerep.py::TestPersonName::test_unicode_jp_from_bytes_caret_delimiter', 'pydicom/tests/test_valuerep.py::TestPersonName::test_unicode_jp_from_unicode', 'pydicom/tests/test_valuerep.py::TestPersonName::test_not_equal', 'pydicom/tests/test_valuerep.py::TestPersonName::test_encoding_carried', 'pydicom/tests/test_valuerep.py::TestPersonName::test_hash', 'pydicom/tests/test_valuerep.py::TestDateTime::test_date', 'pydicom/tests/test_valuerep.py::TestDateTime::test_date_time', 'pydicom/tests/test_valuerep.py::TestDateTime::test_time'], 'failure': ['pydicom/tests/test_valuerep.py::TestBadValueRead::test_read_bad_value_in_VR_default', 'pydicom/tests/test_valuerep.py::TestBadValueRead::test_read_bad_value_in_VR_enforce_valid_value']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pydicom__pydicom-1139: resolved: False

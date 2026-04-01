@@ -1,0 +1,47 @@
+{
+  "instance_id": "pvlib__pvlib-python-1606",
+  "variant": "fork",
+  "repo": "pvlib/pvlib-python",
+  "tokens": {
+    "total": 442103,
+    "input": 43529,
+    "output": 6702,
+    "reasoning": 1613,
+    "cache_read": 391872,
+    "cache_write": 0
+  },
+  "duration_seconds": 210.69,
+  "time_to_first_edit_seconds": 92.006,
+  "steps": 23,
+  "tool_calls": {
+    "total": 23,
+    "by_tool": {
+      "bash": 15,
+      "edit": 2,
+      "read": 6
+    }
+  },
+  "files_read": [
+    "/repo/pvlib/tools.py",
+    "/repo/pvlib/tests/test_tools.py"
+  ],
+  "files_edited": [
+    "/repo/pvlib/tools.py"
+  ],
+  "failed_tool_calls": 1,
+  "failed_calls_detail": [
+    {
+      "step": 10,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/tools.py",
+        "oldString": "    # handle all NaN case gracefully\n    with warnings.catch_warnings():\n        warnings.filterwarnings(action='ignore',\n                                message='All-NaN slice encountered')\n        iterlimit = 1 + np.nanmax(\n            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))",
+        "newString": "    # handle all NaN case gracefully\n    with warnings.catch_warnings():\n        warnings.filterwarnings(action='ignore',\n                                message='All-NaN slice encountered')\n        # replace zero or nan differences with atol to avoid division by\n        # zero and to set iterlimit to 0 when upper == lower (already\n        # converged)\n        diff = df['VH'] - df['VL']\n        diff = np.where(np.isnan(diff) | (diff == 0), atol, diff)\n        iterlimit = 1 + np.nanmax(\n            np.trunc(np.log(atol / diff) / np.log(phim1)))"
+      },
+      "output_preview": ""
+    }
+  ],
+  "dead_ends": [],
+  "patch_non_empty": true,
+  "error": ""
+}

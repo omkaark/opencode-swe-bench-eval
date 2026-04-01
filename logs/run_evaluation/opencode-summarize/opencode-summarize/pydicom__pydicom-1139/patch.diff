@@ -1,0 +1,49 @@
+diff --git a/pydicom/tests/test_valuerep.py b/pydicom/tests/test_valuerep.py
+index ad5a62d9..db350711 100644
+--- a/pydicom/tests/test_valuerep.py
++++ b/pydicom/tests/test_valuerep.py
+@@ -427,6 +427,27 @@ class TestPersonName:
+         )
+         assert hash(pn1) == hash(pn2)
+ 
++    def test_contains(self):
++        """PN: __contains__ operator works correctly"""
++        pn = PersonName("Family^Given")
++        assert "F" in pn
++        assert "Family" in pn
++        assert "Given" in pn
++        assert "amily^Giv" in pn
++        assert "Z" not in pn
++
++    def test_iterator(self):
++        """PN: __iter__ returns an iterator over the string representation"""
++        pn = PersonName("AB")
++        assert list(pn) == ["A", "B"]
++
++    def test_next(self):
++        """PN: iteration via next() works correctly"""
++        pn = PersonName("AB")
++        it = iter(pn)
++        assert next(it) == "A"
++        assert next(it) == "B"
++
+ 
+ class TestDateTime:
+     """Unit tests for DA, DT, TM conversion to datetime objects"""
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f787..0c175504 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -826,6 +826,12 @@ class PersonName:
+                     (len(self._components) > 1 or bool(self._components[0])))
+         return bool(self.original_string)
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, substr):
++        return substr in str(self)
++
+ 
+ # Alias old class names for backwards compat in user code
+ PersonNameUnicode = PersonName = PersonName

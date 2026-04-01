@@ -1,0 +1,45 @@
+diff --git a/astroid/raw_building.py b/astroid/raw_building.py
+index cc3aa015..cff66437 100644
+--- a/astroid/raw_building.py
++++ b/astroid/raw_building.py
+@@ -471,7 +471,9 @@ class InspectBuilder:
+             # check if it sounds valid and then add an import node, else use a
+             # dummy node
+             try:
+-                getattr(sys.modules[modname], name)
++                with warnings.catch_warnings():
++                    warnings.simplefilter("ignore")
++                    getattr(sys.modules[modname], name)
+             except (KeyError, AttributeError):
+                 attach_dummy_node(node, name, member)
+             else:
+diff --git a/tests/unittest_raw_building.py b/tests/unittest_raw_building.py
+index 64c22727..253ff70d 100644
+--- a/tests/unittest_raw_building.py
++++ b/tests/unittest_raw_building.py
+@@ -10,6 +10,7 @@ to simulate issues in unittest below
+ 
+ import types
+ import unittest
++import warnings
+ 
+ import _io
+ import pytest
+@@ -117,5 +118,17 @@ class RawBuildingTC(unittest.TestCase):
+         AstroidBuilder().inspect_build(fm_getattr, "test")
+ 
+ 
++def test_build_module_getattr_catch_output():
++    """Ensure that warnings from module getattr are suppressed.
++
++    https://github.com/PyCQA/astroid/issues/1974
++    """
++    m = types.ModuleType("test")
++    m.pd = fm
++    with warnings.catch_warnings():
++        warnings.simplefilter("error")
++        AstroidBuilder().module_build(m, "test")
++
++
+ if __name__ == "__main__":
+     unittest.main()

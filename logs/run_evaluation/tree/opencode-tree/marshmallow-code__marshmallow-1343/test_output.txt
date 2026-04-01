@@ -1,0 +1,475 @@
+On branch dev
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   src/marshmallow/marshalling.py
+	modified:   src/marshmallow/schema.py
+	modified:   tests/test_marshalling.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+commit ab253d3b65ab27a475277fad1d2d0d99d30314f8
+Author: SWE-bench <setup@swebench.config>
+Date:   Sun Mar 29 19:09:14 2026 +0000
+
+    SWE-bench
+diff --git a/src/marshmallow/marshalling.py b/src/marshmallow/marshalling.py
+index feb7d1a..e267c88 100644
+--- a/src/marshmallow/marshalling.py
++++ b/src/marshmallow/marshalling.py
+@@ -10,7 +10,7 @@ and from primitive types.
+ 
+ from __future__ import unicode_literals
+ 
+-import collections
++import collections.abc
+ 
+ from marshmallow.utils import is_collection, missing, set_value
+ from marshmallow.compat import text_type, iteritems
+@@ -250,7 +250,7 @@ class Unmarshaller(ErrorStore):
+ 
+         ret = dict_class()
+ 
+-        if not isinstance(data, collections.Mapping):
++        if not isinstance(data, collections.abc.Mapping):
+             errors = self.get_errors(index=index)
+             msg = 'Invalid input type.'
+             self.error_field_names = [SCHEMA]
+diff --git a/src/marshmallow/schema.py b/src/marshmallow/schema.py
+index 085c509..826d274 100644
+--- a/src/marshmallow/schema.py
++++ b/src/marshmallow/schema.py
+@@ -877,7 +877,7 @@ class BaseSchema(base.SchemaABC):
+                 for idx, item in enumerate(data):
+                     try:
+                         value = item[field_obj.attribute or field_name]
+-                    except KeyError:
++                    except (KeyError, TypeError):
+                         pass
+                     else:
+                         validated_value = unmarshal.call_and_store(
+@@ -892,7 +892,7 @@ class BaseSchema(base.SchemaABC):
+             else:
+                 try:
+                     value = data[field_obj.attribute or field_name]
+-                except KeyError:
++                except (KeyError, TypeError):
+                     pass
+                 else:
+                     validated_value = unmarshal.call_and_store(
+diff --git a/tests/test_marshalling.py b/tests/test_marshalling.py
+index 273dada..1f564a6 100644
+--- a/tests/test_marshalling.py
++++ b/tests/test_marshalling.py
+@@ -2,7 +2,7 @@
+ 
+ import pytest
+ 
+-from marshmallow import fields, Schema
++from marshmallow import fields, Schema, validates
+ from marshmallow.marshalling import Marshaller, Unmarshaller, missing
+ from marshmallow.exceptions import ValidationError
+ 
+@@ -283,3 +283,18 @@ class TestUnmarshaller:
+ 
+             assert result is None
+             assert excinfo.value.messages == {'foo': {'_schema': ['Invalid input type.']}}
++
++    def test_deserialize_wrong_nested_type_with_validates_method(self):
++        class Bar(Schema):
++            value = fields.String()
++
++            @validates('value')
++            def validate_value(self, value):
++                pass
++
++        class Foo(Schema):
++            bar = fields.Nested(Bar)
++
++        sch = Foo()
++        errors = sch.validate({'bar': 'invalid'})
++        assert 'bar' in errors
+Obtaining file:///testbed
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: python-dateutil in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from marshmallow==2.20.0) (2.9.0.post0)
+Requirement already satisfied: simplejson in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from marshmallow==2.20.0) (3.20.2)
+Requirement already satisfied: pytest in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from marshmallow==2.20.0) (8.4.2)
+Requirement already satisfied: pytz in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from marshmallow==2.20.0) (2026.1.post1)
+Requirement already satisfied: flake8==3.7.4 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from marshmallow==2.20.0) (3.7.4)
+Requirement already satisfied: tox in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from marshmallow==2.20.0) (4.30.3)
+Requirement already satisfied: entrypoints<0.4.0,>=0.3.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from flake8==3.7.4->marshmallow==2.20.0) (0.3)
+Requirement already satisfied: pyflakes<2.2.0,>=2.1.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from flake8==3.7.4->marshmallow==2.20.0) (2.1.1)
+Requirement already satisfied: pycodestyle<2.6.0,>=2.5.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from flake8==3.7.4->marshmallow==2.20.0) (2.5.0)
+Requirement already satisfied: mccabe<0.7.0,>=0.6.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from flake8==3.7.4->marshmallow==2.20.0) (0.6.1)
+Requirement already satisfied: exceptiongroup>=1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest->marshmallow==2.20.0) (1.3.1)
+Requirement already satisfied: iniconfig>=1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest->marshmallow==2.20.0) (2.1.0)
+Requirement already satisfied: packaging>=20 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest->marshmallow==2.20.0) (26.0)
+Requirement already satisfied: pluggy<2,>=1.5 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest->marshmallow==2.20.0) (1.6.0)
+Requirement already satisfied: pygments>=2.7.2 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest->marshmallow==2.20.0) (2.20.0)
+Requirement already satisfied: tomli>=1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest->marshmallow==2.20.0) (2.4.1)
+Requirement already satisfied: typing-extensions>=4.6.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from exceptiongroup>=1->pytest->marshmallow==2.20.0) (4.15.0)
+Requirement already satisfied: six>=1.5 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from python-dateutil->marshmallow==2.20.0) (1.17.0)
+Requirement already satisfied: cachetools>=6.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from tox->marshmallow==2.20.0) (6.2.6)
+Requirement already satisfied: chardet>=5.2 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from tox->marshmallow==2.20.0) (5.2.0)
+Requirement already satisfied: colorama>=0.4.6 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from tox->marshmallow==2.20.0) (0.4.6)
+Requirement already satisfied: filelock>=3.18 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from tox->marshmallow==2.20.0) (3.19.1)
+Requirement already satisfied: platformdirs>=4.3.8 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from tox->marshmallow==2.20.0) (4.4.0)
+Requirement already satisfied: pyproject-api>=1.9.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from tox->marshmallow==2.20.0) (1.9.1)
+Requirement already satisfied: virtualenv>=20.31.2 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from tox->marshmallow==2.20.0) (21.2.0)
+Requirement already satisfied: distlib<1,>=0.3.7 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from virtualenv>=20.31.2->tox->marshmallow==2.20.0) (0.4.0)
+Requirement already satisfied: python-discovery>=1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from virtualenv>=20.31.2->tox->marshmallow==2.20.0) (1.2.1)
+Building wheels for collected packages: marshmallow
+  Building editable for marshmallow (pyproject.toml): started
+  Building editable for marshmallow (pyproject.toml): finished with status 'done'
+  Created wheel for marshmallow: filename=marshmallow-2.20.0-0.editable-py2.py3-none-any.whl size=8130 sha256=23a10f59aec3a4781b387c8cc72fb1555d7b5226ee5c88aa49aa429e6e022b3f
+  Stored in directory: /tmp/pip-ephem-wheel-cache-qe0yxm9_/wheels/7d/66/67/70d1ee2124ccf21d601c352e25cdca10f611f7c8b3f9ffb9e4
+Successfully built marshmallow
+Installing collected packages: marshmallow
+  Attempting uninstall: marshmallow
+    Found existing installation: marshmallow 2.20.0
+    Uninstalling marshmallow-2.20.0:
+      Successfully uninstalled marshmallow-2.20.0
+Successfully installed marshmallow-2.20.0
+============================= test session starts ==============================
+platform linux -- Python 3.9.25, pytest-8.4.2, pluggy-1.6.0 -- /opt/miniconda3/envs/testbed/bin/python
+cachedir: .pytest_cache
+rootdir: /testbed
+configfile: setup.cfg
+collecting ... collected 25 items
+
+tests/test_marshalling.py::test_missing_is_falsy PASSED                  [  4%]
+tests/test_marshalling.py::TestMarshaller::test_prefix PASSED            [  8%]
+tests/test_marshalling.py::TestMarshaller::test_marshalling_generator PASSED [ 12%]
+tests/test_marshalling.py::TestMarshaller::test_default_to_missing PASSED [ 16%]
+tests/test_marshalling.py::TestMarshaller::test_serialize_fields_with_load_only_param PASSED [ 20%]
+tests/test_marshalling.py::TestMarshaller::test_missing_data_are_skipped PASSED [ 24%]
+tests/test_marshalling.py::TestMarshaller::test_serialize_with_load_only_doesnt_validate PASSED [ 28%]
+tests/test_marshalling.py::TestMarshaller::test_serialize_fields_with_dump_to_param PASSED [ 32%]
+tests/test_marshalling.py::TestMarshaller::test_serialize_fields_with_dump_to_and_prefix_params PASSED [ 36%]
+tests/test_marshalling.py::TestMarshaller::test_stores_indices_of_errors_when_many_equals_true PASSED [ 40%]
+tests/test_marshalling.py::TestMarshaller::test_doesnt_store_errors_when_index_errors_equals_false PASSED [ 44%]
+tests/test_marshalling.py::TestUnmarshaller::test_extra_data_is_ignored PASSED [ 48%]
+tests/test_marshalling.py::TestUnmarshaller::test_stores_errors PASSED   [ 52%]
+tests/test_marshalling.py::TestUnmarshaller::test_stores_indices_of_errors_when_many_equals_true PASSED [ 56%]
+tests/test_marshalling.py::TestUnmarshaller::test_doesnt_store_errors_when_index_errors_equals_false PASSED [ 60%]
+tests/test_marshalling.py::TestUnmarshaller::test_deserialize PASSED     [ 64%]
+tests/test_marshalling.py::TestUnmarshaller::test_extra_fields PASSED    [ 68%]
+tests/test_marshalling.py::TestUnmarshaller::test_deserialize_many PASSED [ 72%]
+tests/test_marshalling.py::TestUnmarshaller::test_deserialize_stores_errors PASSED [ 76%]
+tests/test_marshalling.py::TestUnmarshaller::test_deserialize_fields_with_attribute_param PASSED [ 80%]
+tests/test_marshalling.py::TestUnmarshaller::test_deserialize_fields_with_load_from_param PASSED [ 84%]
+tests/test_marshalling.py::TestUnmarshaller::test_deserialize_fields_with_dump_only_param PASSED [ 88%]
+tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_type_root_data PASSED [ 92%]
+tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_type_nested_data PASSED [ 96%]
+tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method PASSED [100%]
+
+=============================== warnings summary ===============================
+src/marshmallow/__init__.py:19
+  /testbed/src/marshmallow/__init__.py:19: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    __version_info__ = tuple(LooseVersion(__version__).version)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_marshalling.py::test_missing_is_falsy
+PASSED tests/test_marshalling.py::TestMarshaller::test_prefix
+PASSED tests/test_marshalling.py::TestMarshaller::test_marshalling_generator
+PASSED tests/test_marshalling.py::TestMarshaller::test_default_to_missing
+PASSED tests/test_marshalling.py::TestMarshaller::test_serialize_fields_with_load_only_param
+PASSED tests/test_marshalling.py::TestMarshaller::test_missing_data_are_skipped
+PASSED tests/test_marshalling.py::TestMarshaller::test_serialize_with_load_only_doesnt_validate
+PASSED tests/test_marshalling.py::TestMarshaller::test_serialize_fields_with_dump_to_param
+PASSED tests/test_marshalling.py::TestMarshaller::test_serialize_fields_with_dump_to_and_prefix_params
+PASSED tests/test_marshalling.py::TestMarshaller::test_stores_indices_of_errors_when_many_equals_true
+PASSED tests/test_marshalling.py::TestMarshaller::test_doesnt_store_errors_when_index_errors_equals_false
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_extra_data_is_ignored
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_stores_errors
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_stores_indices_of_errors_when_many_equals_true
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_doesnt_store_errors_when_index_errors_equals_false
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_deserialize
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_extra_fields
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_deserialize_many
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_deserialize_stores_errors
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_deserialize_fields_with_attribute_param
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_deserialize_fields_with_load_from_param
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_deserialize_fields_with_dump_only_param
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_type_root_data
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_type_nested_data
+PASSED tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method
+======================== 25 passed, 1 warning in 0.11s =========================
++ source /opt/miniconda3/bin/activate
+++ _CONDA_ROOT=/opt/miniconda3
+++ . /opt/miniconda3/etc/profile.d/conda.sh
++++ export CONDA_EXE=/opt/miniconda3/bin/conda
++++ CONDA_EXE=/opt/miniconda3/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ '[' -z '' ']'
++++ export CONDA_SHLVL=0
++++ CONDA_SHLVL=0
++++ '[' -n '' ']'
++++++ dirname /opt/miniconda3/bin/conda
+++++ dirname /opt/miniconda3/bin
++++ PATH=/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++++ export PATH
++++ '[' -z '' ']'
++++ PS1=
+++ conda activate
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1=
++++ __conda_exe shell.posix activate
++++ /opt/miniconda3/bin/conda shell.posix activate
+++ ask_conda='PS1='\''(base) '\''
+export PATH='\''/opt/miniconda3/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
+++ eval 'PS1='\''(base) '\''
+export PATH='\''/opt/miniconda3/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
++++ PS1='(base) '
++++ export PATH=/opt/miniconda3/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++++ PATH=/opt/miniconda3/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++++ export CONDA_PREFIX=/opt/miniconda3
++++ CONDA_PREFIX=/opt/miniconda3
++++ export CONDA_SHLVL=1
++++ CONDA_SHLVL=1
++++ export CONDA_DEFAULT_ENV=base
++++ CONDA_DEFAULT_ENV=base
++++ export 'CONDA_PROMPT_MODIFIER=(base) '
++++ CONDA_PROMPT_MODIFIER='(base) '
++++ export CONDA_EXE=/opt/miniconda3/bin/conda
++++ CONDA_EXE=/opt/miniconda3/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
++ conda activate testbed
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate testbed
++ '[' -n '' ']'
++ local ask_conda
+++ PS1='(base) '
+++ __conda_exe shell.posix activate testbed
+++ /opt/miniconda3/bin/conda shell.posix activate testbed
++ ask_conda='PS1='\''(testbed) '\''
+export PATH='\''/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''testbed'\''
+export CONDA_PROMPT_MODIFIER='\''(testbed) '\''
+export CONDA_PREFIX_1='\''/opt/miniconda3'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
++ eval 'PS1='\''(testbed) '\''
+export PATH='\''/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''testbed'\''
+export CONDA_PROMPT_MODIFIER='\''(testbed) '\''
+export CONDA_PREFIX_1='\''/opt/miniconda3'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
+++ PS1='(testbed) '
+++ export PATH=/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ PATH=/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ export CONDA_PREFIX=/opt/miniconda3/envs/testbed
+++ CONDA_PREFIX=/opt/miniconda3/envs/testbed
+++ export CONDA_SHLVL=2
+++ CONDA_SHLVL=2
+++ export CONDA_DEFAULT_ENV=testbed
+++ CONDA_DEFAULT_ENV=testbed
+++ export 'CONDA_PROMPT_MODIFIER=(testbed) '
+++ CONDA_PROMPT_MODIFIER='(testbed) '
+++ export CONDA_PREFIX_1=/opt/miniconda3
+++ CONDA_PREFIX_1=/opt/miniconda3
+++ export CONDA_EXE=/opt/miniconda3/bin/conda
+++ CONDA_EXE=/opt/miniconda3/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
+++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r
++ cd /testbed
++ git config --global --add safe.directory /testbed
++ cd /testbed
++ git status
++ git show
++ git -c core.fileMode=false diff 2be2d83a1a9a6d3d9b85804f3ab545cecc409bb0
++ source /opt/miniconda3/bin/activate
+++ _CONDA_ROOT=/opt/miniconda3
+++ . /opt/miniconda3/etc/profile.d/conda.sh
++++ export CONDA_EXE=/opt/miniconda3/bin/conda
++++ CONDA_EXE=/opt/miniconda3/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ '[' -z x ']'
+++ conda activate
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1='(testbed) '
++++ __conda_exe shell.posix activate
++++ /opt/miniconda3/bin/conda shell.posix activate
+++ ask_conda='PS1='\''(base) '\''
+export PATH='\''/opt/miniconda3/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3'\''
+export CONDA_SHLVL='\''3'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_PREFIX_2='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
+++ eval 'PS1='\''(base) '\''
+export PATH='\''/opt/miniconda3/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3'\''
+export CONDA_SHLVL='\''3'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_PREFIX_2='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
++++ PS1='(base) '
++++ export PATH=/opt/miniconda3/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++++ PATH=/opt/miniconda3/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++++ export CONDA_PREFIX=/opt/miniconda3
++++ CONDA_PREFIX=/opt/miniconda3
++++ export CONDA_SHLVL=3
++++ CONDA_SHLVL=3
++++ export CONDA_DEFAULT_ENV=base
++++ CONDA_DEFAULT_ENV=base
++++ export 'CONDA_PROMPT_MODIFIER=(base) '
++++ CONDA_PROMPT_MODIFIER='(base) '
++++ export CONDA_PREFIX_2=/opt/miniconda3/envs/testbed
++++ CONDA_PREFIX_2=/opt/miniconda3/envs/testbed
++++ export CONDA_EXE=/opt/miniconda3/bin/conda
++++ CONDA_EXE=/opt/miniconda3/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
++ conda activate testbed
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate testbed
++ '[' -n '' ']'
++ local ask_conda
+++ PS1='(base) '
+++ __conda_exe shell.posix activate testbed
+++ /opt/miniconda3/bin/conda shell.posix activate testbed
++ ask_conda='PS1='\''(testbed) '\''
+export PATH='\''/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_SHLVL='\''4'\''
+export CONDA_DEFAULT_ENV='\''testbed'\''
+export CONDA_PROMPT_MODIFIER='\''(testbed) '\''
+export CONDA_PREFIX_3='\''/opt/miniconda3'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
++ eval 'PS1='\''(testbed) '\''
+export PATH='\''/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_SHLVL='\''4'\''
+export CONDA_DEFAULT_ENV='\''testbed'\''
+export CONDA_PROMPT_MODIFIER='\''(testbed) '\''
+export CONDA_PREFIX_3='\''/opt/miniconda3'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
+++ PS1='(testbed) '
+++ export PATH=/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ PATH=/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ export CONDA_PREFIX=/opt/miniconda3/envs/testbed
+++ CONDA_PREFIX=/opt/miniconda3/envs/testbed
+++ export CONDA_SHLVL=4
+++ CONDA_SHLVL=4
+++ export CONDA_DEFAULT_ENV=testbed
+++ CONDA_DEFAULT_ENV=testbed
+++ export 'CONDA_PROMPT_MODIFIER=(testbed) '
+++ CONDA_PROMPT_MODIFIER='(testbed) '
+++ export CONDA_PREFIX_3=/opt/miniconda3
+++ CONDA_PREFIX_3=/opt/miniconda3
+++ export CONDA_EXE=/opt/miniconda3/bin/conda
+++ CONDA_EXE=/opt/miniconda3/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
+++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r
++ python -m pip install -e '.[dev]'
++ git checkout 2be2d83a1a9a6d3d9b85804f3ab545cecc409bb0 tests/test_marshalling.py
+Updated 1 path from a381575
++ git apply -v -
+Checking patch tests/test_marshalling.py...
+Applied patch tests/test_marshalling.py cleanly.
++ : '>>>>> Start Test Output'
++ pytest -rA tests/test_marshalling.py
++ : '>>>>> End Test Output'
++ git checkout 2be2d83a1a9a6d3d9b85804f3ab545cecc409bb0 tests/test_marshalling.py
+Updated 1 path from a381575

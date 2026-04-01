@@ -1,0 +1,182 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-2419",
+  "variant": "official",
+  "repo": "sqlfluff/sqlfluff",
+  "tokens": {
+    "total": 342365,
+    "input": 19785,
+    "output": 1684,
+    "reasoning": 402,
+    "cache_read": 320896,
+    "cache_write": 0
+  },
+  "duration_seconds": 102.65,
+  "time_to_first_edit_seconds": 57.159,
+  "steps": 24,
+  "tool_calls": {
+    "total": 26,
+    "by_tool": {
+      "bash": 7,
+      "edit": 1,
+      "glob": 3,
+      "grep": 9,
+      "read": 6
+    }
+  },
+  "files_read": [
+    "/repo/src/sqlfluff/rules/L060.py",
+    "/repo/test/fixtures/rules/std_rule_cases/L060.yml",
+    "/repo/test",
+    "/repo/test/rules",
+    "/repo/test/rules/yaml_test_cases_test.py",
+    "/repo/src/sqlfluff/core/rules/base.py"
+  ],
+  "files_edited": [
+    "/repo/src/sqlfluff/rules/L060.py"
+  ],
+  "failed_tool_calls": 10,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "L060",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "pattern": "test__rules__std_L060_raised"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/std_L060_test.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/test",
+        "pattern": "std_L060"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/test",
+        "pattern": "std_.*_test"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/test",
+        "pattern": "std_rule_cases"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 10,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/src/sqlfluff/core/rules",
+        "pattern": "class LintResult"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/src",
+        "pattern": "class LintResult"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 12,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/src",
+        "pattern": "LintResult"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 14,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/src/sqlfluff/core/rules",
+        "pattern": "class LintResult|def __init__"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 5,
+      "steps": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "tools": [
+        "grep",
+        "glob",
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"include\": \"*.py\", \"pattern\": \"test__rules__std_L060_raised\"}",
+        "{\"pattern\": \"**/std_L060_test.py\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo/test\", \"pattern\": \"std_L060\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo/test\", \"pattern\": \"std_.*_test\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo/test\", \"pattern\": \"std_rule_cases\"}"
+      ]
+    },
+    {
+      "length": 3,
+      "steps": [
+        10,
+        11,
+        12
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"include\": \"*.py\", \"path\": \"/repo/src/sqlfluff/core/rules\", \"pattern\": \"class LintResult\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo/src\", \"pattern\": \"class LintResult\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo/src\", \"pattern\": \"LintResult\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

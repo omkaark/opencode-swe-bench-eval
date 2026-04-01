@@ -1,0 +1,13 @@
+{
+  "variant": "claude",
+  "instance_id": "pydicom__pydicom-1694",
+  "repo": "pydicom/pydicom",
+  "base_commit": "f8cf45b6c121e5a4bf4a43f71aba3bc64af3db9c",
+  "cli_exit_code": 0,
+  "cli_output": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":32656,\"duration_api_ms\":31978,\"num_turns\":8,\"result\":\"The fix works. The `data_element = self[key]` line is now inside the try/except block, so exceptions during raw data element conversion are caught when `suppress_invalid_tags=True`.\",\"stop_reason\":\"end_turn\",\"session_id\":\"e4965cc7-65e6-444e-a306-aedf8a8f6c95\",\"total_cost_usd\":0.1522405,\"usage\":{\"input_tokens\":10,\"cache_creation_input_tokens\":8352,\"cache_read_input_tokens\":132531,\"output_tokens\":1349,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":8352,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-opus-4-6[1m]\":{\"inputTokens\":10,\"outputTokens\":1349,\"cacheReadInputTokens\":132531,\"cacheCreationInputTokens\":8352,\"webSearchRequests\":0,\"costUSD\":0.1522405,\"contextWindow\":1000000,\"maxOutputTokens\":64000}},\"permission_denials\":[],\"fast_mode_state\":\"off\",\"uuid\":\"1e55d6ca-43ac-4f7c-8bcf-b7dfed9b6b71\"}\n",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 34.58,
+  "git_status": " M pydicom/dataset.py\n?? .swe_prompt.txt\n",
+  "model_patch": "diff --git a/pydicom/dataset.py b/pydicom/dataset.py\nindex e3231501..a6f88796 100644\n--- a/pydicom/dataset.py\n+++ b/pydicom/dataset.py\n@@ -2492,8 +2492,8 @@ class Dataset:\n         json_dataset = {}\n         for key in self.keys():\n             json_key = '{:08X}'.format(key)\n-            data_element = self[key]\n             try:\n+                data_element = self[key]\n                 json_dataset[json_key] = data_element.to_json_dict(\n                     bulk_data_element_handler=bulk_data_element_handler,\n                     bulk_data_threshold=bulk_data_threshold\n",
+  "error": ""
+}

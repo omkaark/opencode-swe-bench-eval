@@ -1,0 +1,81 @@
+2026-04-01 03:17:55,720 - INFO - >>>>> Applied Patch:
+Checking patch pvlib/tools.py...
+Applied patch pvlib/tools.py cleanly.
+
+2026-04-01 03:17:57,111 - INFO - Git diff before:
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..f5cf377 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -355,8 +355,18 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     with warnings.catch_warnings():
+         warnings.filterwarnings(action='ignore',
+                                 message='All-NaN slice encountered')
+-        iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++        try:
++            iterlimit = 1 + np.nanmax(
++                np.trunc(np.log(atol / (df['VH'] - df['VL']))
++                         / np.log(phim1)))
++        except (ZeroDivisionError, ValueError):
++            # upper == lower causes division by zero (scalar) or
++            # all-NaN after inf/inf (array)
++            iterlimit = np.nan
++    # when upper == lower, iterlimit is inf or nan; set to 0 since no
++    # iterations are needed (the answer is the bound itself)
++    if not np.isfinite(iterlimit):
++        iterlimit = 0
+ 
+     while not converged and (iterations <= iterlimit):
+ 
+@@ -379,7 +389,7 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+         # but just to be safe
+         iterations += 1
+ 
+-    if iterations > iterlimit:
++    if iterations > iterlimit and not converged:
+         raise Exception("Iterations exceeded maximum. Check that func",
+                         " is not NaN in (lower, upper)")  # pragma: no cover
+ 
+
+2026-04-01 03:18:12,331 - INFO - Test runtime: 14.73 seconds
+2026-04-01 03:18:12,332 - INFO - Test output for pvlib__pvlib-python-1606 written to logs/run_evaluation/opencode-summarize/opencode-summarize/pvlib__pvlib-python-1606/test_output.txt
+2026-04-01 03:18:12,841 - INFO - Git diff after:
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..f5cf377 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -355,8 +355,18 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     with warnings.catch_warnings():
+         warnings.filterwarnings(action='ignore',
+                                 message='All-NaN slice encountered')
+-        iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++        try:
++            iterlimit = 1 + np.nanmax(
++                np.trunc(np.log(atol / (df['VH'] - df['VL']))
++                         / np.log(phim1)))
++        except (ZeroDivisionError, ValueError):
++            # upper == lower causes division by zero (scalar) or
++            # all-NaN after inf/inf (array)
++            iterlimit = np.nan
++    # when upper == lower, iterlimit is inf or nan; set to 0 since no
++    # iterations are needed (the answer is the bound itself)
++    if not np.isfinite(iterlimit):
++        iterlimit = 0
+ 
+     while not converged and (iterations <= iterlimit):
+ 
+@@ -379,7 +389,7 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+         # but just to be safe
+         iterations += 1
+ 
+-    if iterations > iterlimit:
++    if iterations > iterlimit and not converged:
+         raise Exception("Iterations exceeded maximum. Check that func",
+                         " is not NaN in (lower, upper)")  # pragma: no cover
+ 
+
+2026-04-01 03:18:12,841 - INFO - Grading answer for pvlib__pvlib-python-1606...
+2026-04-01 03:18:12,842 - INFO - report: {'pvlib__pvlib-python-1606': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test__golden_sect_DataFrame_vector']}, 'PASS_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test_build_kwargs[keys0-input_dict0-expected0]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys1-input_dict1-expected1]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys2-input_dict2-expected2]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys3-input_dict3-expected3]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params0-0.0-1.0-0.5-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params1-0.0-1.0-0.07230200263994839-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params2-0.0-100.0-89.14332727531685-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_atol', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_nans', 'pvlib/tests/test_tools.py::test_degrees_to_index_1']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pvlib__pvlib-python-1606: resolved: False

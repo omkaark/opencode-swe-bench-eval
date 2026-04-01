@@ -1,0 +1,46 @@
+{
+  "instance_id": "pvlib__pvlib-python-1854",
+  "variant": "fork",
+  "repo": "pvlib/pvlib-python",
+  "tokens": {
+    "total": 194535,
+    "input": 39286,
+    "output": 1713,
+    "reasoning": 238,
+    "cache_read": 153536,
+    "cache_write": 0
+  },
+  "duration_seconds": 90.85,
+  "time_to_first_edit_seconds": 13.118,
+  "steps": 13,
+  "tool_calls": {
+    "total": 13,
+    "by_tool": {
+      "bash": 9,
+      "edit": 1,
+      "grep": 1,
+      "read": 2
+    }
+  },
+  "files_read": [
+    "/repo/pvlib/pvsystem.py"
+  ],
+  "files_edited": [
+    "/repo/pvlib/pvsystem.py"
+  ],
+  "failed_tool_calls": 1,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_PVSystem_single_array",
+        "path": "/repo/pvlib/tests"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [],
+  "patch_non_empty": true,
+  "error": ""
+}

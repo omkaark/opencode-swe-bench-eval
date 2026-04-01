@@ -1,0 +1,41 @@
+2026-03-29 21:15:18,880 - INFO - >>>>> Applied Patch:
+Checking patch pydicom/dataset.py...
+Applied patch pydicom/dataset.py cleanly.
+
+2026-03-29 21:15:19,497 - INFO - Git diff before:
+diff --git a/pydicom/dataset.py b/pydicom/dataset.py
+index e323150..a6f8879 100644
+--- a/pydicom/dataset.py
++++ b/pydicom/dataset.py
+@@ -2492,8 +2492,8 @@ class Dataset:
+         json_dataset = {}
+         for key in self.keys():
+             json_key = '{:08X}'.format(key)
+-            data_element = self[key]
+             try:
++                data_element = self[key]
+                 json_dataset[json_key] = data_element.to_json_dict(
+                     bulk_data_element_handler=bulk_data_element_handler,
+                     bulk_data_threshold=bulk_data_threshold
+
+2026-03-29 21:15:24,326 - INFO - Test runtime: 4.54 seconds
+2026-03-29 21:15:24,327 - INFO - Test output for pydicom__pydicom-1694 written to logs/run_evaluation/opencode-claude/opencode-claude/pydicom__pydicom-1694/test_output.txt
+2026-03-29 21:15:24,675 - INFO - Git diff after:
+diff --git a/pydicom/dataset.py b/pydicom/dataset.py
+index e323150..a6f8879 100644
+--- a/pydicom/dataset.py
++++ b/pydicom/dataset.py
+@@ -2492,8 +2492,8 @@ class Dataset:
+         json_dataset = {}
+         for key in self.keys():
+             json_key = '{:08X}'.format(key)
+-            data_element = self[key]
+             try:
++                data_element = self[key]
+                 json_dataset[json_key] = data_element.to_json_dict(
+                     bulk_data_element_handler=bulk_data_element_handler,
+                     bulk_data_threshold=bulk_data_threshold
+
+2026-03-29 21:15:24,675 - INFO - Grading answer for pydicom__pydicom-1694...
+2026-03-29 21:15:24,679 - INFO - report: {'pydicom__pydicom-1694': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement'], 'failure': []}, 'PASS_TO_PASS': {'success': ['pydicom/tests/test_json.py::TestPersonName::test_json_pn_from_file', 'pydicom/tests/test_json.py::TestPersonName::test_pn_components_to_json', 'pydicom/tests/test_json.py::TestPersonName::test_pn_components_from_json', 'pydicom/tests/test_json.py::TestPersonName::test_empty_value', 'pydicom/tests/test_json.py::TestPersonName::test_multi_value_to_json', 'pydicom/tests/test_json.py::TestPersonName::test_dataelem_from_json', 'pydicom/tests/test_json.py::TestAT::test_to_json', 'pydicom/tests/test_json.py::TestAT::test_from_json', 'pydicom/tests/test_json.py::TestAT::test_invalid_value_in_json', 'pydicom/tests/test_json.py::TestAT::test_invalid_tag_in_json', 'pydicom/tests/test_json.py::TestDataSetToJson::test_json_from_dicom_file', 'pydicom/tests/test_json.py::TestDataSetToJson::test_roundtrip', 'pydicom/tests/test_json.py::TestDataSetToJson::test_dataset_dumphandler', 'pydicom/tests/test_json.py::TestDataSetToJson::test_dataelement_dumphandler', 'pydicom/tests/test_json.py::TestDataSetToJson::test_sort_order', 'pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags', 'pydicom/tests/test_json.py::TestSequence::test_nested_sequences', 'pydicom/tests/test_json.py::TestBinary::test_inline_binary', 'pydicom/tests/test_json.py::TestBinary::test_invalid_inline_binary', 'pydicom/tests/test_json.py::TestBinary::test_valid_bulkdata_uri', 'pydicom/tests/test_json.py::TestBinary::test_invalid_bulkdata_uri', 'pydicom/tests/test_json.py::TestBinary::test_bulk_data_reader_is_called', 'pydicom/tests/test_json.py::TestBinary::test_bulk_data_reader_is_called_2', 'pydicom/tests/test_json.py::TestBinary::test_bulk_data_reader_is_called_within_SQ', 'pydicom/tests/test_json.py::TestNumeric::test_numeric_values', 'pydicom/tests/test_json.py::TestNumeric::test_numeric_types'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pydicom__pydicom-1694: resolved: True

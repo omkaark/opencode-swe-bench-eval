@@ -1,0 +1,57 @@
+2026-03-29 21:15:18,479 - INFO - >>>>> Applied Patch:
+Checking patch pvlib/tools.py...
+Applied patch pvlib/tools.py cleanly.
+
+2026-03-29 21:15:19,882 - INFO - Git diff before:
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..ca29105 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -351,12 +351,15 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     converged = False
+     iterations = 0
+ 
+-    # handle all NaN case gracefully
++    # handle all NaN case and equal bounds gracefully
+     with warnings.catch_warnings():
+         warnings.filterwarnings(action='ignore',
+                                 message='All-NaN slice encountered')
++        diff = df['VH'] - df['VL']
++        # replace 0 with atol to avoid log(atol/0) = -inf when bounds equal
++        diff = np.where(diff == 0, atol, diff)
+         iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++            np.trunc(np.log(atol / diff) / np.log(phim1)))
+ 
+     while not converged and (iterations <= iterlimit):
+ 
+
+2026-03-29 21:15:37,107 - INFO - Test runtime: 17.01 seconds
+2026-03-29 21:15:37,108 - INFO - Test output for pvlib__pvlib-python-1606 written to logs/run_evaluation/opencode-claude/opencode-claude/pvlib__pvlib-python-1606/test_output.txt
+2026-03-29 21:15:37,420 - INFO - Git diff after:
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..ca29105 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -351,12 +351,15 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     converged = False
+     iterations = 0
+ 
+-    # handle all NaN case gracefully
++    # handle all NaN case and equal bounds gracefully
+     with warnings.catch_warnings():
+         warnings.filterwarnings(action='ignore',
+                                 message='All-NaN slice encountered')
++        diff = df['VH'] - df['VL']
++        # replace 0 with atol to avoid log(atol/0) = -inf when bounds equal
++        diff = np.where(diff == 0, atol, diff)
+         iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++            np.trunc(np.log(atol / diff) / np.log(phim1)))
+ 
+     while not converged and (iterations <= iterlimit):
+ 
+
+2026-03-29 21:15:37,421 - INFO - Grading answer for pvlib__pvlib-python-1606...
+2026-03-29 21:15:37,422 - INFO - report: {'pvlib__pvlib-python-1606': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test__golden_sect_DataFrame_vector']}, 'PASS_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test_build_kwargs[keys0-input_dict0-expected0]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys1-input_dict1-expected1]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys2-input_dict2-expected2]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys3-input_dict3-expected3]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params0-0.0-1.0-0.5-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params1-0.0-1.0-0.07230200263994839-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params2-0.0-100.0-89.14332727531685-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_atol', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_nans', 'pvlib/tests/test_tools.py::test_degrees_to_index_1']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pvlib__pvlib-python-1606: resolved: False

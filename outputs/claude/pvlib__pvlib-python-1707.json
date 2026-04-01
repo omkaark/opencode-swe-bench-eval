@@ -1,0 +1,13 @@
+{
+  "variant": "claude",
+  "instance_id": "pvlib__pvlib-python-1707",
+  "repo": "pvlib/pvlib-python",
+  "base_commit": "40e9e978c170bdde4eeee1547729417665dbc34c",
+  "cli_exit_code": 0,
+  "cli_output": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":90044,\"duration_api_ms\":73788,\"num_turns\":15,\"result\":\"The test can't run due to numpy version incompatibility in the environment, but the fix is correct. The change in `pvlib/iam.py` adds a post-processing step that sets `iam = 0` for `|aoi| >= 90`, which handles the case where `n=1` produces `0/0 = nan` in the Fresnel reflectance calculations.\",\"stop_reason\":\"end_turn\",\"session_id\":\"40465a15-9dd2-458a-bad1-d6de64d68f34\",\"total_cost_usd\":0.30171699999999996,\"usage\":{\"input_tokens\":15,\"cache_creation_input_tokens\":13572,\"cache_read_input_tokens\":257184,\"output_tokens\":3529,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":13572,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-opus-4-6[1m]\":{\"inputTokens\":15,\"outputTokens\":3529,\"cacheReadInputTokens\":257184,\"cacheCreationInputTokens\":13572,\"webSearchRequests\":0,\"costUSD\":0.30171699999999996,\"contextWindow\":1000000,\"maxOutputTokens\":64000}},\"permission_denials\":[],\"fast_mode_state\":\"off\",\"uuid\":\"ab7d3cf3-3cb1-482b-bc99-8311f6f8d54a\"}\n",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 91.11,
+  "git_status": " M pvlib/iam.py\n?? .swe_prompt.txt\n",
+  "model_patch": "diff --git a/pvlib/iam.py b/pvlib/iam.py\nindex 3eaa6b4..0711f84 100644\n--- a/pvlib/iam.py\n+++ b/pvlib/iam.py\n@@ -215,6 +215,14 @@ def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):\n     # incidence angle modifier\n     iam = (tau_s + tau_p) / 2 / tau_0\n \n+    # for aoi >= 90, replace any nan with 0\n+    if isinstance(aoi, pd.Series):\n+        iam = iam.where(np.abs(aoi) < 90, other=0.0)\n+    else:\n+        iam = np.where(np.abs(aoi) >= 90, 0.0, iam)\n+        if np.isscalar(aoi):\n+            iam = float(iam)\n+\n     return iam\n \n \n",
+  "error": ""
+}

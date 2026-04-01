@@ -1,0 +1,352 @@
+{
+  "instance_id": "pvlib__pvlib-python-1154",
+  "variant": "aware",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [],
+  "per_file": {
+    "/repo/pvlib/irradiance.py": {
+      "reads": [
+        2,
+        3,
+        20,
+        21,
+        34
+      ],
+      "edits": [
+        {
+          "step": 22,
+          "old": "    term3 = 1 + np.sqrt(HB / ghi) * (tools.sind(0.5 * surface_tilt) ** 3)",
+          "new": "    term3 = 1 + np.sqrt(HB / np.maximum(ghi, 1)) * \\\n        (tools.sind(0.5 * surface_tilt) ** 3)"
+        }
+      ],
+      "first_read_step": 2,
+      "first_edit_step": 22,
+      "content_snippets": [
+        {
+          "offset": 873,
+          "limit": 30,
+          "signatures": [
+            "def king(surface_tilt, dhi, ghi, solar_zenith)"
+          ]
+        },
+        {
+          "offset": 927,
+          "limit": 20,
+          "signatures": [
+            "def perez(surface_tilt, surface_azimuth, dhi, dni, dni_extra,"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_irradiance.py": {
+      "reads": [
+        2,
+        5,
+        23,
+        35
+      ],
+      "edits": [
+        {
+          "step": 24,
+          "old": "    # values from matlab 1.4 code\n    assert_allclose(result, [np.nan, 27.9412, 104.1317, 34.1663], atol=1e-4)",
+          "new": "    # values from matlab 1.4 code\n    assert_allclose(result, [0, 27.9412, 104.1317, 34.1663], atol=1e-4)"
+        }
+      ],
+      "first_read_step": 2,
+      "first_edit_step": 24,
+      "content_snippets": [
+        {
+          "offset": 201,
+          "limit": 30,
+          "signatures": [
+            "def test_king(irrad_data, ephem_data)",
+            "def test_perez(irrad_data, ephem_data, dni_et, relative_airmass)",
+            "def test_perez_components(irrad_data, ephem_data, dni_et, relative_airmass)"
+          ]
+        },
+        {
+          "offset": 35,
+          "limit": 30,
+          "signatures": [
+            "def ephem_data(times)",
+            "def dni_et(times)"
+          ]
+        },
+        {
+          "offset": 201,
+          "limit": 10,
+          "signatures": [
+            "def test_king(irrad_data, ephem_data)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "bash",
+      "input": {
+        "command": "grep -n \"reindl\" /repo/pvlib/tests/test_irradiance.py",
+        "description": "Find reindl test references"
+      },
+      "output_preview": "201:def test_reindl(irrad_data, ephem_data, dni_et):\n202:    result = irradiance.reindl(\n275:                                   'reindl', 'king', 'perez'])\n304:              'haydavies', 'reindl', 'king', 'perez']\n322:                                   'haydavies', 'reindl', 'king', 'perez'])\n"
+    },
+    {
+      "step": 1,
+      "tool": "bash",
+      "input": {
+        "command": "grep -n \"def reindl\" /repo/pvlib/irradiance.py",
+        "description": "Find reindl function definition"
+      },
+      "output_preview": "793:def reindl(surface_tilt, surface_azimuth, dhi, dni, ghi, dni_extra,\n"
+    },
+    {
+      "step": 4,
+      "tool": "bash",
+      "input": {
+        "command": "grep -n \"irrad_data\" /repo/pvlib/tests/test_irradiance.py | head -20",
+        "description": "Find irrad_data fixture"
+      },
+      "output_preview": "35:def irrad_data(times):\n128:def test_grounddiffuse_simple_series(irrad_data):\n129:    ground_irrad = irradiance.get_ground_diffuse(40, irrad_data['ghi'])\n133:def test_grounddiffuse_albedo_0(irrad_data):\n135:        40, irrad_data['ghi'], albedo=0)\n139:def test_grounddiffuse_albedo_invalid_surface("
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1 | tail -20",
+        "description": "Run the reindl test"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "pip install pytest -q 2>&1 | tail -3",
+        "description": "Install pytest"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1 | tail -20",
+        "description": "Run the reindl test"
+      },
+      "output_preview": "ImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:5: in <module>\n    import pandas as pd\nE   ModuleNotFoundError: No module named 'pandas'\n"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install -e . -q 2>&1 | tail -5",
+        "description": "Install pvlib with deps"
+      },
+      "output_preview": "\u00d7 Getting requirements to build editable did not run successfully.\n\u2502 exit code: 1\n\u2570\u2500> See above for output.\n\nnote: This error originates from a subprocess, and is likely not a problem with pip.\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "pip install pandas numpy scipy pytest -q 2>&1 | tail -3",
+        "description": "Install core dependencies"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1 | tail -30",
+        "description": "Run the reindl test"
+      },
+      "output_preview": "ImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:6: in <module>\n    from pkg_resources import parse_version\nE   ModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "pip install setuptools -q 2>&1 | tail -3",
+        "description": "Install setuptools"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1 | tail -30",
+        "description": "Run the reindl test"
+      },
+      "output_preview": "ImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:6: in <module>\n    from pkg_resources import parse_version\nE   ModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "pip install --upgrade setuptools 2>&1 | tail -5",
+        "description": "Upgrade setuptools"
+      },
+      "output_preview": "Requirement already satisfied: setuptools in /usr/local/lib/python3.12/site-packages (82.0.1)\n\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import pkg_resources; print('ok')\" 2>&1",
+        "description": "Test pkg_resources import"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nimport sys\nsys.path.insert(0, '.')\nfrom pvlib.irradiance import reindl\n\n# Test with GHI=0\nresult = reindl(40, 180, 0.0, 0.0, 0.0, 1321.16, 82.85, -2.42)\nprint('Result with GHI=0:', result)\nprint('Is NaN:', np.isnan(result))\n\"",
+        "description": "Test reindl with GHI=0"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 5, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/clearsky.py\", line 15, in <module>\n    from pvlib import atmosphere, tools\n  File \"/repo/pvlib/tools.py\", line 8, "
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "pip install pytz -q 2>&1 | tail -3 && cd /repo && python -c \"\nimport numpy as np\nimport sys\nsys.path.insert(0, '.')\nfrom pvlib.irradiance import reindl\n\n# Test with GHI=0\nresult = reindl(40, 180, 0.0, 0.0, 0.0, 1321.16, 82.85, -2.42)\nprint('Result with GHI=0:', result)\nprint('Is NaN:', np.isnan(result))\n\"",
+        "description": "Install pytz and test reindl"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nTraceback (most recent call last):\n  File \"<string>\", line 5, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/i"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nfrom pvlib import tools\nfrom pvlib.irradiance import reindl\n\n# Test with GHI=0\nresult = reindl(40, 180, 0.0, 0.0, 0.0, 1321.16, 82.85, -2.42)\nprint('Result with GHI=0:', result)\nprint('Is NaN:', np.isnan(result))\n\" 2>&1",
+        "description": "Direct import test"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/ivtools/__init__.py\", line 7, in <module>\n    from pvlib.ivtools import sde, sdm, utils  # noqa: F401\n    ^^^^^^^^"
+    },
+    {
+      "step": 19,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nimport pvlib.tools as tools\n\n# Reproduce the reindl logic with ghi=0\nghi = 0.0\ndni = 0.0\nHB = 0.0\n\n# This is the problematic line\nresult = 1 + np.sqrt(HB / ghi) * (tools.sind(0.5 * 40) ** 3)\nprint('HB/ghi =', HB/ghi)\nprint('term3 =', result)\n\"",
+        "description": "Test the problematic division"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/ivtools/__init__.py\", line 7, in <module>\n    from pvlib.ivtools import sde, sdm, utils  # noqa: F401\n    ^^^^^^^^"
+    },
+    {
+      "step": 22,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/irradiance.py",
+        "oldString": "    term3 = 1 + np.sqrt(HB / ghi) * (tools.sind(0.5 * surface_tilt) ** 3)",
+        "newString": "    term3 = 1 + np.sqrt(HB / np.maximum(ghi, 1)) * \\\n        (tools.sind(0.5 * surface_tilt) ** 3)"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/irradiance.py\">\nERROR [11:8] Import \"numpy\" could not be resolved\nERROR [12:8] Import \"pandas\" could not be resolved\nERROR [125:18] Type \"(pd_object: Unknown) -> Unknown\" is not assignable to dec"
+    },
+    {
+      "step": 24,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/tests/test_irradiance.py",
+        "oldString": "    # values from matlab 1.4 code\n    assert_allclose(result, [np.nan, 27.9412, 104.1317, 34.1663], atol=1e-4)",
+        "newString": "    # values from matlab 1.4 code\n    assert_allclose(result, [0, 27.9412, 104.1317, 34.1663], atol=1e-4)"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/tests/test_irradiance.py\">\nERROR [5:8] Import \"numpy\" could not be resolved\nERROR [6:6] Import \"numpy\" could not be resolved\nERROR [7:8] Import \"pandas\" could not be resolved\nERROR [9:8] Import \""
+    },
+    {
+      "step": 25,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"\nimport numpy as np\n\n# Before fix: np.sqrt(0/0) = nan\nprint('Before fix (0/0):', np.sqrt(0/0))\n\n# After fix: np.sqrt(0/max(0,1)) = np.sqrt(0/1) = 0\nprint('After fix (0/max(0,1)):', np.sqrt(0/max(0,1)))\n\n# Test with actual value\nprint('With actual ghi (0/max(40,1)):', np.sqrt(0/max(40,1)))\n\n# Verify the term3 result\nterm3 = 1 + np.sqrt(0/max(0,1)) * np.sin(np.radians(0.5*40))**3\nprint('term3 with ghi=0:', term3)\n\n# And with a normal ghi\nghi = 40.46\nHB = 79.74 * np.cos(np.radians(82.85))\nterm3_normal = 1 + np.sqrt(HB/max(ghi,1)) * np.sin(np.radians(0.5*40))**3\nprint('term3 with normal ghi:', term3_normal)\n\"",
+        "description": "Verify fix logic"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 5, in <module>\nZeroDivisionError: division by zero\n"
+    },
+    {
+      "step": 26,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"\nimport numpy as np\n\n# Simulate the fix with scalar values\nghi = 0.0\nHB = 0.0\n\n# Before fix: sqrt(HB/ghi) = sqrt(0/0) = nan\nprint('Before fix:', np.sqrt(np.array(HB/ghi)))  # will be nan with numpy\n\n# After fix\nprint('After fix:', np.sqrt(HB / np.maximum(np.array(ghi), 1)))\n\"",
+        "description": "Verify fix with numpy"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 9, in <module>\nZeroDivisionError: float division by zero\n"
+    },
+    {
+      "step": 27,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"\nimport numpy as np\n\n# Test with numpy arrays (which is how pvlib operates)\nghi = np.array([0.0, 40.46])\nHB = np.array([0.0, 30.0])\n\n# Before fix\nprint('Before fix:', np.sqrt(HB / ghi))\n\n# After fix\nprint('After fix:', np.sqrt(HB / np.maximum(ghi, 1)))\n\"",
+        "description": "Verify fix with numpy arrays"
+      },
+      "output_preview": "<string>:9: RuntimeWarning: invalid value encountered in divide\nBefore fix: [      nan 0.8610883]\nAfter fix: [0.        0.8610883]\n"
+    },
+    {
+      "step": 28,
+      "tool": "bash",
+      "input": {
+        "command": "pip install \"numpy<2\" -q 2>&1 | tail -3",
+        "description": "Install numpy <2 for compat"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 29,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1 | tail -20",
+        "description": "Run the reindl test"
+      },
+      "output_preview": "ImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:6: in <module>\n    from pkg_resources import parse_version\nE   ModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 30,
+      "tool": "bash",
+      "input": {
+        "command": "pip install \"setuptools<70\" -q 2>&1 | tail -3 && python -c \"from pkg_resources import parse_version; print('ok')\"",
+        "description": "Install older setuptools for pkg_resources"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n<string>:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html\nok\n"
+    },
+    {
+      "step": 31,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1",
+        "description": "Run the reindl test"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: setup.cfg\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\npvlib/tests/test_"
+    },
+    {
+      "step": 32,
+      "tool": "bash",
+      "input": {
+        "command": "pip install \"pandas<2.2\" -q 2>&1 | tail -3",
+        "description": "Install compatible pandas"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 33,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1",
+        "description": "Run the reindl test"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: setup.cfg\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\npvlib/tests/test_"
+    }
+  ],
+  "token_cost": {
+    "total": 691881,
+    "input": 55706,
+    "output": 5199,
+    "cache_read": 630976,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": 169.99,
+  "total_duration_seconds": 313.2,
+  "patch_non_empty": true
+}

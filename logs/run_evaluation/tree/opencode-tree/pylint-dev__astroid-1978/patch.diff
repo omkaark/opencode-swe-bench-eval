@@ -1,0 +1,42 @@
+diff --git a/astroid/raw_building.py b/astroid/raw_building.py
+index cc3aa015..5c088117 100644
+--- a/astroid/raw_building.py
++++ b/astroid/raw_building.py
+@@ -471,7 +471,9 @@ class InspectBuilder:
+             # check if it sounds valid and then add an import node, else use a
+             # dummy node
+             try:
+-                getattr(sys.modules[modname], name)
++                with warnings.catch_warnings():
++                    warnings.simplefilter("ignore", FutureWarning)
++                    getattr(sys.modules[modname], name)
+             except (KeyError, AttributeError):
+                 attach_dummy_node(node, name, member)
+             else:
+diff --git a/tests/unittest_raw_building.py b/tests/unittest_raw_building.py
+index 64c22727..f6a5cf9b 100644
+--- a/tests/unittest_raw_building.py
++++ b/tests/unittest_raw_building.py
+@@ -108,6 +108,22 @@ class RawBuildingTC(unittest.TestCase):
+         # This should not raise an exception
+         AstroidBuilder().module_build(m, "test")
+ 
++    def test_build_module_getattr_catch_output(self) -> None:
++        # Tests https://github.com/PyCQA/astroid/issues/1752
++        # When astroid builds a module from a member of another module,
++        # it should not emit warnings from getattr calls.
++        m = types.ModuleType("test")
++        m.fm = fm
++        import warnings
++
++        with warnings.catch_warnings(record=True) as caught:
++            warnings.simplefilter("always")
++            AstroidBuilder().module_build(m, "test")
++        future_warnings = [
++            w for w in caught if issubclass(w.category, FutureWarning)
++        ]
++        assert not future_warnings, f"Unexpected FutureWarnings: {future_warnings}"
++
+     def test_module_object_with_broken_getattr(self) -> None:
+         # Tests https://github.com/PyCQA/astroid/issues/1958
+         # When astroid deep inspection of modules raises

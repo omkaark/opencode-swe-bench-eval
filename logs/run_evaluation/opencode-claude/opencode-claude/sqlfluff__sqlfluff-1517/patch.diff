@@ -1,0 +1,48 @@
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..50f33457 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -185,7 +185,15 @@ class Delimited(OneOf):
+                         )
+                 else:
+                     # Zero length section between delimiters, or zero code
+-                    # elements if appropriate. Return unmatched.
++                    # elements if appropriate.
++                    # If we're allowing trailing delimiters and we just
++                    # hit another delimiter, treat it as a trailing case.
++                    if self.allow_trailing and delimiter_matcher is self.delimiter:
++                        # Add the delimiter to the matched segments
++                        matched_segments += delimiter_match.matched_segments
++                        # Continue looking for more
++                        seg_buff = delimiter_match.unmatched_segments
++                        continue
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+diff --git a/test/dialects/ansi_test.py b/test/dialects/ansi_test.py
+index 1c83e4c6..4c2719e9 100644
+--- a/test/dialects/ansi_test.py
++++ b/test/dialects/ansi_test.py
+@@ -184,6 +184,22 @@ def test__dialect__ansi_is_whitespace():
+             assert raw_seg.is_whitespace
+ 
+ 
++@pytest.mark.parametrize(
++    "sql",
++    [
++        "select id from tbl;;",
++        ";;;",
++    ],
++)
++def test__dialect__ansi_multiple_semicolons(sql):
++    """Multiple semicolons should not cause a RuntimeError."""
++    lnt = Linter()
++    parsed = lnt.parse_string(sql)
++    # It should parse without raising a RuntimeError.
++    # There may be parse errors but it should not crash.
++    assert parsed.tree is not None
++
++
+ @pytest.mark.parametrize(
+     "sql_string, indented_joins,meta_loc",
+     [

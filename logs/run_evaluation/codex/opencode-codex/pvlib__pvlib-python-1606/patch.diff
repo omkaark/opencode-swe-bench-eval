@@ -1,0 +1,93 @@
+diff --git a/pvlib/tests/test_tools.py b/pvlib/tests/test_tools.py
+index 167dca8..56dfc53 100644
+--- a/pvlib/tests/test_tools.py
++++ b/pvlib/tests/test_tools.py
+@@ -47,6 +47,16 @@ def test__golden_sect_DataFrame_vector():
+     assert np.allclose(x, expected, atol=1e-8)
+ 
+ 
++def test__golden_sect_DataFrame_vector_equal_bounds():
++    params = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}
++    lower = np.array([0., 0.25])
++    upper = np.array([1.1, 0.25])
++    expected = np.array([0.5, 0.25])
++    v, x = tools._golden_sect_DataFrame(params, lower, upper,
++                                        _obj_test_golden_sect)
++    assert np.allclose(x, expected, atol=1e-8)
++
++
+ def test__golden_sect_DataFrame_nans():
+     # nan in bounds
+     params = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..57ec983 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -350,38 +350,43 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+ 
+     converged = False
+     iterations = 0
++    err = abs(df['VH'] - df['VL'])
++    remaining = err > atol
+ 
+-    # handle all NaN case gracefully
+-    with warnings.catch_warnings():
+-        warnings.filterwarnings(action='ignore',
+-                                message='All-NaN slice encountered')
+-        iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++    if not remaining[~np.isnan(remaining)].any():
++        df['V1'] = df['VL']
++    else:
++        # handle all NaN case gracefully
++        with warnings.catch_warnings():
++            warnings.filterwarnings(action='ignore',
++                                    message='All-NaN slice encountered')
++            iterlimit = 1 + np.nanmax(
++                np.trunc(np.log(atol / err[remaining]) / np.log(phim1)))
+ 
+-    while not converged and (iterations <= iterlimit):
++        while not converged and (iterations <= iterlimit):
+ 
+-        phi = phim1 * (df['VH'] - df['VL'])
+-        df['V1'] = df['VL'] + phi
+-        df['V2'] = df['VH'] - phi
++            phi = phim1 * (df['VH'] - df['VL'])
++            df['V1'] = df['VL'] + phi
++            df['V2'] = df['VH'] - phi
+ 
+-        df['f1'] = func(df, 'V1')
+-        df['f2'] = func(df, 'V2')
+-        df['SW_Flag'] = df['f1'] > df['f2']
++            df['f1'] = func(df, 'V1')
++            df['f2'] = func(df, 'V2')
++            df['SW_Flag'] = df['f1'] > df['f2']
+ 
+-        df['VL'] = df['V2']*df['SW_Flag'] + df['VL']*(~df['SW_Flag'])
+-        df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])
++            df['VL'] = df['V2']*df['SW_Flag'] + df['VL']*(~df['SW_Flag'])
++            df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])
+ 
+-        err = abs(df['V2'] - df['V1'])
++            err = abs(df['V2'] - df['V1'])
+ 
+-        # works with single value because err is np.float64
+-        converged = (err[~np.isnan(err)] < atol).all()
+-        # err will be less than atol before iterations hit the limit
+-        # but just to be safe
+-        iterations += 1
++            # works with single value because err is np.float64
++            converged = (err[~np.isnan(err)] < atol).all()
++            # err will be less than atol before iterations hit the limit
++            # but just to be safe
++            iterations += 1
+ 
+-    if iterations > iterlimit:
+-        raise Exception("Iterations exceeded maximum. Check that func",
+-                        " is not NaN in (lower, upper)")  # pragma: no cover
++        if iterations > iterlimit:
++            raise Exception("Iterations exceeded maximum. Check that func",
++                            " is not NaN in (lower, upper)")  # pragma: no cover
+ 
+     try:
+         func_result = func(df, 'V1')
