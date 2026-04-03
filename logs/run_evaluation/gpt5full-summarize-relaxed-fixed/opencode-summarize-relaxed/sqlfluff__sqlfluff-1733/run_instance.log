@@ -1,0 +1,37 @@
+2026-04-03 18:26:17,850 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L039.py...
+Applied patch src/sqlfluff/rules/L039.py cleanly.
+
+2026-04-03 18:26:18,615 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L039.py b/src/sqlfluff/rules/L039.py
+index 0e084672..253a112e 100644
+--- a/src/sqlfluff/rules/L039.py
++++ b/src/sqlfluff/rules/L039.py
+@@ -44,7 +44,6 @@ class Rule_L039(BaseRule):
+                 # This is to avoid indents
+                 if not prev_newline:
+                     prev_whitespace = seg
+-                prev_newline = False
+             elif seg.is_type("comment"):
+                 prev_newline = False
+                 prev_whitespace = None
+
+2026-04-03 18:26:24,059 - INFO - Test runtime: 5.11 seconds
+2026-04-03 18:26:24,060 - INFO - Test output for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/gpt5full-summarize-relaxed-fixed/opencode-summarize-relaxed/sqlfluff__sqlfluff-1733/test_output.txt
+2026-04-03 18:26:24,366 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L039.py b/src/sqlfluff/rules/L039.py
+index 0e084672..253a112e 100644
+--- a/src/sqlfluff/rules/L039.py
++++ b/src/sqlfluff/rules/L039.py
+@@ -44,7 +44,6 @@ class Rule_L039(BaseRule):
+                 # This is to avoid indents
+                 if not prev_newline:
+                     prev_whitespace = seg
+-                prev_newline = False
+             elif seg.is_type("comment"):
+                 prev_newline = False
+                 prev_whitespace = None
+
+2026-04-03 18:26:24,366 - INFO - Grading answer for sqlfluff__sqlfluff-1733...
+2026-04-03 18:26:24,368 - INFO - report: {'sqlfluff__sqlfluff-1733': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['test/rules/std_L003_L036_L039_combo_test.py::test__rules__std_L003_L036_L039'], 'failure': []}, 'PASS_TO_PASS': {'success': ['test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_lint', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix2'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1733: resolved: True

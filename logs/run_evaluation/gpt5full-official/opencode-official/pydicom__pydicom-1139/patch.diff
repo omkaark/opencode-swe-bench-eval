@@ -1,0 +1,17 @@
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f787..cbb611e6 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -747,6 +747,12 @@ class PersonName:
+     def __ne__(self, other):
+         return not self == other
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, x):
++        return x in str(self)
++
+     def __str__(self):
+         return '='.join(self.components).__str__()
+ 

@@ -1,0 +1,47 @@
+diff --git a/astroid/modutils.py b/astroid/modutils.py
+index 6d698469..63af82e8 100644
+--- a/astroid/modutils.py
++++ b/astroid/modutils.py
+@@ -266,6 +266,14 @@ def check_modpath_has_init(path, mod_path):
+         path = os.path.join(path, part)
+         if not _has_init(path):
+             old_namespace = util.is_namespace(".".join(modpath))
++            if not old_namespace:
++                try:
++                    old_namespace = (
++                        spec.find_spec(modpath, [os.path.dirname(path)]).type
++                        == spec.ModuleType.PY_NAMESPACE
++                    )
++                except ImportError:
++                    old_namespace = False
+             if not old_namespace:
+                 return False
+     return True
+diff --git a/tests/unittest_modutils.py b/tests/unittest_modutils.py
+index d6fcb68e..c40afb58 100644
+--- a/tests/unittest_modutils.py
++++ b/tests/unittest_modutils.py
+@@ -157,6 +157,23 @@ class ModPathFromFileTest(unittest.TestCase):
+             finally:
+                 os.remove(linked_file_name)
+ 
++    def test_load_packages_without_init(self) -> None:
++        with tempfile.TemporaryDirectory() as root_dir:
++            src_dir = os.path.join(root_dir, "src")
++            project_dir = os.path.join(src_dir, "project")
++            os.mkdir(src_dir)
++            os.mkdir(project_dir)
++            with open(os.path.join(src_dir, "__init__.py"), "w", encoding="utf-8"):
++                pass
++            module_file = os.path.join(project_dir, "file.py")
++            with open(module_file, "w", encoding="utf-8"):
++                pass
++
++            self.assertEqual(
++                modutils.modpath_from_file(module_file, [root_dir]),
++                ["src", "project", "file"],
++            )
++
+     def test_load_from_module_symlink_on_symlinked_paths_in_syspath(self) -> None:
+         # constants
+         tmp = tempfile.gettempdir()

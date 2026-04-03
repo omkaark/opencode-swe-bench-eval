@@ -1,0 +1,347 @@
+{
+  "instance_id": "marshmallow-code__marshmallow-1343",
+  "variant": "summarize-relaxed",
+  "repo": "marshmallow-code/marshmallow",
+  "repo_map": [
+    "/repo/tests/test_marshalling.py",
+    "/repo/src/marshmallow/schema.py",
+    "/repo/src/marshmallow/fields.py",
+    "/repo/src/marshmallow/marshalling.py"
+  ],
+  "per_file": {
+    "/repo/tests/test_marshalling.py": {
+      "reads": [
+        4,
+        5
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "def test_missing_is_falsy()",
+            "class TestMarshaller",
+            "def marshal(self)",
+            "def test_prefix(self)",
+            "def test_marshalling_generator(self, marshal)",
+            "def test_default_to_missing(self, marshal)",
+            "def test_serialize_fields_with_load_only_param(self, marshal)",
+            "def test_missing_data_are_skipped(self, marshal)",
+            "def test_serialize_with_load_only_doesnt_validate(self, marshal)",
+            "def test_serialize_fields_with_dump_to_param(self, marshal)",
+            "def test_serialize_fields_with_dump_to_and_prefix_params(self)",
+            "def test_stores_indices_of_errors_when_many_equals_true(self, marshal)",
+            "def test_doesnt_store_errors_when_index_errors_equals_false(self, marshal)",
+            "class TestUnmarshaller",
+            "def unmarshal(self)",
+            "def test_extra_data_is_ignored(self, unmarshal)",
+            "def test_stores_errors(self, unmarshal)",
+            "def test_stores_indices_of_errors_when_many_equals_true(self, unmarshal)",
+            "def test_doesnt_store_errors_when_index_errors_equals_false(self, unmarshal)",
+            "def test_deserialize(self, unmarshal)"
+          ]
+        },
+        {
+          "offset": 260,
+          "limit": 80,
+          "signatures": [
+            "def test_deserialize_wrong_type_root_data(self, unmarshal)",
+            "def test_deserialize_wrong_type_nested_data(self, unmarshal)",
+            "class TestSchema(Schema)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/marshmallow/fields.py": {
+      "reads": [
+        4
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 420,
+          "limit": 80,
+          "signatures": [
+            "def _nested_normalized_option(self, option_name)",
+            "def _serialize(self, nested_obj, attr, obj)",
+            "def _deserialize(self, value, attr, data)",
+            "def _validate_missing(self, value)",
+            "def _check_required(self)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/marshmallow/schema.py": {
+      "reads": [
+        4,
+        7,
+        12
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 820,
+          "limit": 120,
+          "signatures": [
+            "def _invoke_dump_processors(self, tag_name, data, many, original_data=None)",
+            "def _invoke_load_processors(self, tag_name, data, many, original_data=None)",
+            "def _invoke_field_validators(self, unmarshal, data, many)",
+            "def _invoke_validators("
+          ]
+        },
+        {
+          "offset": 560,
+          "limit": 130,
+          "signatures": [
+            "def load(self, data, many=None, partial=None)",
+            "def loads(self, json_data, many=None, *args, **kwargs)",
+            "def validate(self, data, many=None, partial=None)",
+            "def _do_load(self, data, many=None, partial=None, postprocess=True)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 40,
+          "signatures": [
+            "def _get_fields(attrs, field_class, pop=False, ordered=False)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/marshmallow/marshalling.py": {
+      "reads": [
+        5,
+        6
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 180,
+          "signatures": [
+            "class ErrorStore(object)",
+            "def __init__(self)",
+            "def get_errors(self, index=None)",
+            "def call_and_store(self, getter_func, data, field_name, field_obj, index=None)",
+            "class Marshaller(ErrorStore)",
+            "def __init__(self, prefix='')",
+            "def serialize(self, obj, fields_dict, many=False,",
+            "class Unmarshaller(ErrorStore)",
+            "def run_validator(self, validator_func, output,"
+          ]
+        },
+        {
+          "offset": 173,
+          "limit": 140,
+          "signatures": [
+            "def deserialize(self, data, fields_dict, many=False, partial=False,"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/test_schema.py": {
+      "reads": [
+        9
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1830,
+          "limit": 80,
+          "signatures": [
+            "def test_invalid_type_passed_to_nested_field(self)",
+            "class InnerSchema(Schema)",
+            "class MySchema(Schema)",
+            "class OuterSchema(Schema)",
+            "def test_all_errors_on_many_nested_field_with_validates_decorator(self)",
+            "class Inner(Schema)",
+            "class Outer(Schema)",
+            "def validates_inner(self, data)",
+            "def test_missing_required_nested_field(self)",
+            "class Inner(Schema)",
+            "class Middle(Schema)",
+            "class Outer(Schema)",
+            "class TestSelfReference"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "marshmallow/schema.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "marshmallow/fields.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "pattern": "import collections",
+        "path": "/repo/src/marshmallow/schema.py",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "pytest tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method",
+        "workdir": "/repo",
+        "description": "Run targeted regression test"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "pytest -q tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method",
+        "workdir": "/repo",
+        "description": "Verify regression test passes quietly"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile src/marshmallow/schema.py tests/test_marshalling.py",
+        "workdir": "/repo",
+        "description": "Compile changed files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "@validates\\(",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 11 matches\n/repo/tests/test_schema.py:\n  Line 1492:             @validates('num')\n  Line 1581:             @validates('a')\n  Line 1585:             @validates('b')\n  Line 1865:             @validates('inner')\n  Line 2160:             @validates('foo')\n\n/repo/tests/test_decorators.py:\n  Line 23"
+    },
+    {
+      "step": 10,
+      "tool": "grep",
+      "input": {
+        "pattern": "_invoke_field_validators",
+        "path": "/repo/src/marshmallow",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/src/marshmallow/schema.py:\n  Line 674:             self._invoke_field_validators(unmarshal, data=result, many=many)\n  Line 863:     def _invoke_field_validators(self, unmarshal, data, many):"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest -q tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method",
+        "workdir": "/repo",
+        "description": "Run pytest via python module"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=/repo/src python - <<'PY'\nfrom marshmallow import Schema, fields, validates\n\nclass Bar(Schema):\n    value = fields.String()\n\n    @validates('value')\n    def validate_value(self, value):\n        pass\n\nclass Foo(Schema):\n    bar = fields.Nested(Bar)\n\nprint(Foo().validate({'bar': 'invalid'}))\nPY",
+        "workdir": "/repo",
+        "description": "Run direct regression reproduction"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/src/marshmallow/__init__.py\", line 16, in <module>\n    from distutils.version import LooseVersion\nModuleNotFoundError: No module named 'distutils'\n"
+    },
+    {
+      "step": 19,
+      "tool": "bash",
+      "input": {
+        "command": "python --version",
+        "workdir": "/repo",
+        "description": "Check Python version"
+      },
+      "output_preview": "Python 3.12.10\n"
+    },
+    {
+      "step": 21,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=/repo/src python - <<'PY'\nimport sys, types\nfrom setuptools._distutils.version import LooseVersion\nmod = types.ModuleType('distutils')\nver = types.ModuleType('distutils.version')\nver.LooseVersion = LooseVersion\nmod.version = ver\nsys.modules['distutils'] = mod\nsys.modules['distutils.version'] = ver\n\nfrom marshmallow import Schema, fields, validates\n\nclass Bar(Schema):\n    value = fields.String()\n\n    @validates('value')\n    def validate_value(self, value):\n        pass\n\nclass Foo(Schema):\n    bar = fields.Nested(Bar)\n\nprint(Foo().validate({'bar': 'invalid'}))\nPY",
+        "workdir": "/repo",
+        "description": "Reproduce regression with distutils stub"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 2, in <module>\nModuleNotFoundError: No module named 'setuptools'\n"
+    },
+    {
+      "step": 22,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=/repo/src python - <<'PY'\nimport sys, types\nclass LooseVersion(str):\n    pass\nmod = types.ModuleType('distutils')\nver = types.ModuleType('distutils.version')\nver.LooseVersion = LooseVersion\nmod.version = ver\nsys.modules['distutils'] = mod\nsys.modules['distutils.version'] = ver\n\nfrom marshmallow import Schema, fields, validates\n\nclass Bar(Schema):\n    value = fields.String()\n\n    @validates('value')\n    def validate_value(self, value):\n        pass\n\nclass Foo(Schema):\n    bar = fields.Nested(Bar)\n\nprint(Foo().validate({'bar': 'invalid'}))\nPY",
+        "workdir": "/repo",
+        "description": "Run regression repro with stubbed version"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 11, in <module>\n  File \"/repo/src/marshmallow/__init__.py\", line 19, in <module>\n    __version_info__ = tuple(LooseVersion(__version__).version)\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'LooseVersion' obj"
+    },
+    {
+      "step": 23,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=/repo/src python - <<'PY'\nimport sys, types\nclass LooseVersion:\n    def __init__(self, v):\n        self.version = [v]\nmod = types.ModuleType('distutils')\nver = types.ModuleType('distutils.version')\nver.LooseVersion = LooseVersion\nmod.version = ver\nsys.modules['distutils'] = mod\nsys.modules['distutils.version'] = ver\n\nfrom marshmallow import Schema, fields, validates\n\nclass Bar(Schema):\n    value = fields.String()\n\n    @validates('value')\n    def validate_value(self, value):\n        pass\n\nclass Foo(Schema):\n    bar = fields.Nested(Bar)\n\nprint(Foo().validate({'bar': 'invalid'}))\nPY",
+        "workdir": "/repo",
+        "description": "Reproduce regression using custom LooseVersion"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 24, in <module>\n  File \"/repo/src/marshmallow/schema.py\", line 628, in validate\n    _, errors = self._do_load(data, many, partial=partial, postprocess=False)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File"
+    },
+    {
+      "step": 24,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=/repo/src python - <<'PY'\nimport sys, types, collections, collections.abc\nclass LooseVersion:\n    def __init__(self, v):\n        self.version = [v]\nmod = types.ModuleType('distutils')\nver = types.ModuleType('distutils.version')\nver.LooseVersion = LooseVersion\nmod.version = ver\nsys.modules['distutils'] = mod\nsys.modules['distutils.version'] = ver\ncollections.Mapping = collections.abc.Mapping\n\nfrom marshmallow import Schema, fields, validates\n\nclass Bar(Schema):\n    value = fields.String()\n\n    @validates('value')\n    def validate_value(self, value):\n        pass\n\nclass Foo(Schema):\n    bar = fields.Nested(Bar)\n\nprint(Foo().validate({'bar': 'invalid'}))\nPY",
+        "workdir": "/repo",
+        "description": "Run regression repro with compatibility stubs"
+      },
+      "output_preview": "{'bar': {'_schema': ['Invalid input type.']}}\n"
+    }
+  ],
+  "token_cost": {
+    "total": 568297,
+    "input": 29346,
+    "output": 6471,
+    "cache_read": 532480,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 118.65,
+  "patch_non_empty": true
+}

@@ -1,0 +1,108 @@
+{
+  "instance_id": "pvlib__pvlib-python-1606",
+  "variant": "summarize",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [],
+  "per_file": {
+    "/repo/pvlib/tools.py": {
+      "reads": [
+        2,
+        9
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 300,
+          "limit": 120,
+          "signatures": [
+            "def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8)",
+            "def _get_sample_intervals(times, win_length)",
+            "def _degrees_to_index(degrees, coordinate)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_tools.py": {
+      "reads": [
+        2,
+        9
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "def test_build_kwargs(keys, input_dict, expected)",
+            "def _obj_test_golden_sect(params, loc)",
+            "def test__golden_sect_DataFrame(params, lb, ub, expected, func)",
+            "def test__golden_sect_DataFrame_atol()",
+            "def test__golden_sect_DataFrame_vector()",
+            "def test__golden_sect_DataFrame_nans()",
+            "def test_degrees_to_index_1()"
+          ]
+        },
+        {
+          "offset": 37,
+          "limit": 22,
+          "signatures": [
+            "def test__golden_sect_DataFrame_vector()",
+            "def test__golden_sect_DataFrame_equal_bounds()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pvlib/tests/test_tools.py -k golden_sect_DataFrame_vector or golden_sect_DataFrame_equal_bounds",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted golden section tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_tools.py -k \"golden_sect_DataFrame_vector or golden_sect_DataFrame_equal_bounds\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted golden section tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport numpy as np\nfrom pvlib import tools\n\ndef f(params, loc):\n    return params[loc] * (1. - params['c'] * params[loc]**params['n'])\n\nparams = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}\nlower = np.array([0.5, 0.25])\nupper = np.array([0.5, 0.25])\nprint(tools._golden_sect_DataFrame(params, lower, upper, f)[1])\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Exercises equal-bound golden section case"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nModuleNotFoundError: No module named 'numpy'\n"
+    }
+  ],
+  "token_cost": {
+    "total": 163481,
+    "input": 16117,
+    "output": 2980,
+    "cache_read": 144384,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 67.13,
+  "patch_non_empty": true
+}

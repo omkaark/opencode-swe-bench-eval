@@ -1,0 +1,242 @@
+{
+  "instance_id": "marshmallow-code__marshmallow-1343",
+  "variant": "summarize",
+  "repo": "marshmallow-code/marshmallow",
+  "repo_map": [
+    "/repo/src/marshmallow/schema.py",
+    "/repo/tests/test_marshalling.py"
+  ],
+  "per_file": {
+    "/repo/tests/test_marshalling.py": {
+      "reads": [
+        2,
+        3,
+        14
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "def test_missing_is_falsy()",
+            "class TestMarshaller",
+            "def marshal(self)",
+            "def test_prefix(self)",
+            "def test_marshalling_generator(self, marshal)",
+            "def test_default_to_missing(self, marshal)",
+            "def test_serialize_fields_with_load_only_param(self, marshal)",
+            "def test_missing_data_are_skipped(self, marshal)",
+            "def test_serialize_with_load_only_doesnt_validate(self, marshal)",
+            "def test_serialize_fields_with_dump_to_param(self, marshal)",
+            "def test_serialize_fields_with_dump_to_and_prefix_params(self)",
+            "def test_stores_indices_of_errors_when_many_equals_true(self, marshal)",
+            "def test_doesnt_store_errors_when_index_errors_equals_false(self, marshal)",
+            "class TestUnmarshaller",
+            "def unmarshal(self)",
+            "def test_extra_data_is_ignored(self, unmarshal)",
+            "def test_stores_errors(self, unmarshal)",
+            "def test_stores_indices_of_errors_when_many_equals_true(self, unmarshal)",
+            "def test_doesnt_store_errors_when_index_errors_equals_false(self, unmarshal)",
+            "def test_deserialize(self, unmarshal)"
+          ]
+        },
+        {
+          "offset": 261,
+          "limit": 80,
+          "signatures": [
+            "def test_deserialize_wrong_type_root_data(self, unmarshal)",
+            "def test_deserialize_wrong_type_nested_data(self, unmarshal)",
+            "class TestSchema(Schema)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 330,
+          "signatures": [
+            "def test_missing_is_falsy()",
+            "class TestMarshaller",
+            "def marshal(self)",
+            "def test_prefix(self)",
+            "def test_marshalling_generator(self, marshal)",
+            "def test_default_to_missing(self, marshal)",
+            "def test_serialize_fields_with_load_only_param(self, marshal)",
+            "def test_missing_data_are_skipped(self, marshal)",
+            "def test_serialize_with_load_only_doesnt_validate(self, marshal)",
+            "def test_serialize_fields_with_dump_to_param(self, marshal)",
+            "def test_serialize_fields_with_dump_to_and_prefix_params(self)",
+            "def test_stores_indices_of_errors_when_many_equals_true(self, marshal)",
+            "def test_doesnt_store_errors_when_index_errors_equals_false(self, marshal)",
+            "class TestUnmarshaller",
+            "def unmarshal(self)",
+            "def test_extra_data_is_ignored(self, unmarshal)",
+            "def test_stores_errors(self, unmarshal)",
+            "def test_stores_indices_of_errors_when_many_equals_true(self, unmarshal)",
+            "def test_doesnt_store_errors_when_index_errors_equals_false(self, unmarshal)",
+            "def test_deserialize(self, unmarshal)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/marshmallow/schema.py": {
+      "reads": [
+        2,
+        5
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 840,
+          "limit": 80,
+          "signatures": [
+            "def _invoke_dump_processors(self, tag_name, data, many, original_data=None)",
+            "def _invoke_load_processors(self, tag_name, data, many, original_data=None)",
+            "def _invoke_field_validators(self, unmarshal, data, many)",
+            "def _invoke_validators("
+          ]
+        }
+      ]
+    },
+    "/repo/tests/test_schema.py": {
+      "reads": [
+        7,
+        10
+      ],
+      "edits": [],
+      "first_read_step": 7,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1830,
+          "limit": 80,
+          "signatures": [
+            "def test_invalid_type_passed_to_nested_field(self)",
+            "class InnerSchema(Schema)",
+            "class MySchema(Schema)",
+            "class OuterSchema(Schema)",
+            "def test_all_errors_on_many_nested_field_with_validates_decorator(self)",
+            "class Inner(Schema)",
+            "class Outer(Schema)",
+            "def validates_inner(self, data)",
+            "def test_missing_required_nested_field(self)",
+            "class Inner(Schema)",
+            "class Middle(Schema)",
+            "class Outer(Schema)",
+            "class TestSelfReference"
+          ]
+        },
+        {
+          "offset": 340,
+          "limit": 100,
+          "signatures": [
+            "def test_nested_on_bind_field_hook()",
+            "class MySchema(Schema)",
+            "class NestedSchema(Schema)",
+            "def on_bind_field(self, field_name, field_obj)",
+            "class TestValidate",
+            "def test_validate_returns_errors_dict(self)",
+            "def test_validate_many(self)",
+            "def test_validate_many_doesnt_store_index_if_index_errors_option_is_false(self)",
+            "class NoIndex(Schema)",
+            "class Meta",
+            "def test_validate_strict(self)",
+            "def test_validate_required(self)",
+            "class MySchema(Schema)",
+            "def test_fields_are_not_copies(SchemaClass)",
+            "def test_dumps_returns_json(user)",
+            "def test_naive_datetime_field(user, serialized_user)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_deserialize_wrong_nested_type_with_validates_method",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "pytest tests/test_marshalling.py -k wrong_nested_type_with_validates_method",
+        "workdir": "/repo",
+        "description": "Runs targeted regression test"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "_invoke_field_validators\\(",
+        "path": "/repo/src/marshmallow"
+      },
+      "output_preview": "Found 2 matches\n/repo/src/marshmallow/schema.py:\n  Line 674:             self._invoke_field_validators(unmarshal, data=result, many=many)\n  Line 863:     def _invoke_field_validators(self, unmarshal, data, many):"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "validates\\(",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 13 matches\n/repo/tests/test_serialization.py:\n  Line 342:     def test_email_field_validates(self, user):\n  Line 380:     def test_url_field_validates(self, user):\n\n/repo/tests/test_schema.py:\n  Line 1492:             @validates('num')\n  Line 1581:             @validates('a')\n  Line 1585:     "
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "pattern": "\\.validate\\(",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 54 matches\n/repo/tests/test_schema.py:\n  Line 197:     errors = sch.validate([valid, invalid], many=True)\n  Line 369:         errors = s.validate({'email': 'bad-email', 'name': 'Valid Name'})\n  Line 375:         errors = s.validate(valid_data)\n  Line 384:         errors = s.validate(in_data, m"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/test_marshalling.py -k wrong_nested_type_with_validates_method",
+        "workdir": "/repo",
+        "description": "Runs targeted regression test via python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "python -m compileall src/marshmallow/schema.py tests/test_marshalling.py",
+        "workdir": "/repo",
+        "description": "Checks syntax of modified files"
+      },
+      "output_preview": "Compiling 'src/marshmallow/schema.py'...\nCompiling 'tests/test_marshalling.py'...\n"
+    }
+  ],
+  "token_cost": {
+    "total": 359665,
+    "input": 20871,
+    "output": 3434,
+    "cache_read": 335360,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 78.17,
+  "patch_non_empty": true
+}

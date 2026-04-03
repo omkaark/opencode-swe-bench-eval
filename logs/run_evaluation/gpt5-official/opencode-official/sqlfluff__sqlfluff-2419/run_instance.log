@@ -1,0 +1,59 @@
+2026-04-03 02:18:51,870 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L060.py...
+Applied patch src/sqlfluff/rules/L060.py cleanly.
+
+2026-04-03 02:18:52,887 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L060.py b/src/sqlfluff/rules/L060.py
+index 836941ed..8c34cb8c 100644
+--- a/src/sqlfluff/rules/L060.py
++++ b/src/sqlfluff/rules/L060.py
+@@ -47,7 +47,7 @@ class Rule_L060(BaseRule):
+         if context.segment.raw_upper not in {"IFNULL", "NVL"}:
+             return None
+ 
+-        # Create fix to replace ``IFNULL`` or ``NVL`` with ``COALESCE``.
++        # Create fix to replace the specific function with ``COALESCE``.
+         fix = LintFix.replace(
+             context.segment,
+             [
+@@ -59,4 +59,8 @@ class Rule_L060(BaseRule):
+             ],
+         )
+ 
+-        return LintResult(context.segment, [fix])
++        return LintResult(
++            context.segment,
++            [fix],
++            description=f"Use 'COALESCE' instead of '{context.segment.raw_upper}'.",
++        )
+
+2026-04-03 02:18:58,825 - INFO - Test runtime: 5.63 seconds
+2026-04-03 02:18:58,825 - INFO - Test output for sqlfluff__sqlfluff-2419 written to logs/run_evaluation/gpt5-official/opencode-official/sqlfluff__sqlfluff-2419/test_output.txt
+2026-04-03 02:18:59,203 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L060.py b/src/sqlfluff/rules/L060.py
+index 836941ed..8c34cb8c 100644
+--- a/src/sqlfluff/rules/L060.py
++++ b/src/sqlfluff/rules/L060.py
+@@ -47,7 +47,7 @@ class Rule_L060(BaseRule):
+         if context.segment.raw_upper not in {"IFNULL", "NVL"}:
+             return None
+ 
+-        # Create fix to replace ``IFNULL`` or ``NVL`` with ``COALESCE``.
++        # Create fix to replace the specific function with ``COALESCE``.
+         fix = LintFix.replace(
+             context.segment,
+             [
+@@ -59,4 +59,8 @@ class Rule_L060(BaseRule):
+             ],
+         )
+ 
+-        return LintResult(context.segment, [fix])
++        return LintResult(
++            context.segment,
++            [fix],
++            description=f"Use 'COALESCE' instead of '{context.segment.raw_upper}'.",
++        )
+
+2026-04-03 02:18:59,203 - INFO - Grading answer for sqlfluff__sqlfluff-2419...
+2026-04-03 02:18:59,205 - INFO - report: {'sqlfluff__sqlfluff-2419': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['test/rules/std_L060_test.py::test__rules__std_L060_raised'], 'failure': []}, 'PASS_TO_PASS': {'success': [], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-2419: resolved: True

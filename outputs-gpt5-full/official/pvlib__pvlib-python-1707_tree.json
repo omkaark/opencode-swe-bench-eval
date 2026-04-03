@@ -1,0 +1,123 @@
+{
+  "instance_id": "pvlib__pvlib-python-1707",
+  "variant": "official",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [
+    "/repo/pvlib/iam.py",
+    "/repo/pvlib/tests/test_iam.py"
+  ],
+  "per_file": {
+    "/repo/pvlib/iam.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "def ashrae(aoi, b=0.05)",
+            "def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_iam.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 160,
+          "signatures": [
+            "def test_ashrae()",
+            "def test_ashrae_scalar()",
+            "def test_physical()",
+            "def test_physical_ar()",
+            "def test_physical_noar()",
+            "def test_physical_scalar()",
+            "def test_martin_ruiz()",
+            "def test_martin_ruiz_exception()",
+            "def test_martin_ruiz_diffuse()",
+            "def test_iam_interp()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 5,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pvlib/tests/test_iam.py::test_physical_n1_L0",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted IAM regression test"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def\\s+physical\\s*\\(",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/iam.py:\n  Line 94: def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):"
+    },
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_physical_n1_L0|physical\\(",
+        "path": "/repo",
+        "include": "test_iam.py"
+      },
+      "output_preview": "Found 9 matches\n/repo/pvlib/tests/test_iam.py:\n  Line 39: def test_physical():\n  Line 44:     iam = _iam.physical(aoi, 1.526, 0.002, 4)\n  Line 49:     iam = _iam.physical(aoi, 1.526, 0.002, 4)\n  Line 57:     iam = _iam.physical(aoi, n_ar=1.29)\n  Line 63:     expected = _iam.physical(aoi)\n  Line 64: "
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_iam.py::test_physical_n1_L0",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted test with python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import numpy as np; from numpy.testing import assert_allclose; import pvlib; actual = pvlib.iam.physical(np.array([0., 90., 100., np.nan]), n=1, L=0); expected = np.array([1., 0., 0., np.nan]); assert_allclose(actual, expected, equal_nan=True); print(actual)\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Verifies IAM regression with Python"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'numpy'\n"
+    }
+  ],
+  "token_cost": {
+    "total": 114827,
+    "input": 15401,
+    "output": 2402,
+    "cache_read": 97024,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 45.8,
+  "patch_non_empty": true
+}

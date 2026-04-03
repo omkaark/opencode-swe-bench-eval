@@ -1,0 +1,102 @@
+{
+  "instance_id": "pylint-dev__astroid-1866",
+  "variant": "fork",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/astroid/brain/brain_builtin_inference.py"
+  ],
+  "per_file": {
+    "/repo/astroid/brain/brain_builtin_inference.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 900,
+          "limit": 120,
+          "signatures": [
+            "def _is_str_format_call(node: nodes.Call) -> bool",
+            "def _infer_str_format_call("
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_brain_builtin.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 80,
+          "limit": 80,
+          "signatures": [
+            "def test_string_format_uninferable(self, format_string: str) -> None",
+            "def test_string_format_with_specs(self) -> None"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/test*brain*builtin*.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "_infer_str_format_call|test_string_format_uninferable",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/tests/unittest_brain_builtin.py:\n  Line 108:     def test_string_format_uninferable(self, format_string: str) -> None:\n\n/repo/astroid/brain/brain_builtin_inference.py:\n  Line 927: def _infer_str_format_call(\n  Line 1001:     nodes.Call, inference_tip(_infer_str_format_call), _i"
+    },
+    {
+      "step": 5,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_brain_builtin.py -k 'string_format_uninferable or string_format_with_specs'",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted string format inference tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "python -c 'from astroid import extract_node; from astroid import util; node = extract_node(\"\\\"{:02d}\\\".format(None)\"); inferred = next(node.infer()); print(inferred is util.Uninferable)'",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks None format inference returns Uninferable"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/astroid/__init__.py\", line 42, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 17, in <module>\n    from astroid.nodes._base_nodes import Stateme"
+    }
+  ],
+  "token_cost": {
+    "total": 83573,
+    "input": 13664,
+    "output": 1813,
+    "cache_read": 68096,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 43.75,
+  "patch_non_empty": true
+}

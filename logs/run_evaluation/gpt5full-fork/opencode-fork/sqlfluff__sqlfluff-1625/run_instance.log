@@ -1,0 +1,55 @@
+2026-04-03 17:41:03,952 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L031.py...
+Checking patch test/cli/commands_test.py...
+Applied patch src/sqlfluff/rules/L031.py cleanly.
+Applied patch test/cli/commands_test.py cleanly.
+
+2026-04-03 17:41:05,494 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L031.py b/src/sqlfluff/rules/L031.py
+index 838c6ce5..95c55f75 100644
+--- a/src/sqlfluff/rules/L031.py
++++ b/src/sqlfluff/rules/L031.py
+@@ -211,7 +211,7 @@ class Rule_L031(BaseRule):
+             violation_buff.append(
+                 LintResult(
+                     anchor=alias_info.alias_identifier_ref,
+-                    description="Avoid using aliases in join condition",
++                    description="Avoid using aliases in from clauses and join conditions",
+                     fixes=fixes,
+                 )
+             )
+diff --git a/test/cli/commands_test.py b/test/cli/commands_test.py
+index 490cf360..5e62dfb7 100644
+--- a/test/cli/commands_test.py
++++ b/test/cli/commands_test.py
+@@ -49,7 +49,7 @@ def invoke_assert_code(
+ expected_output = """== [test/fixtures/linter/indentation_error_simple.sql] FAIL
+ L:   2 | P:   4 | L003 | Indentation not hanging or a multiple of 4 spaces
+ L:   5 | P:  10 | L010 | Keywords must be consistently upper case.
+-L:   5 | P:  13 | L031 | Avoid using aliases in join condition
++L:   5 | P:  13 | L031 | Avoid using aliases in from clauses and join conditions
+ """
+ 
+ 
+
+2026-04-03 17:42:25,875 - INFO - Test runtime: 79.94 seconds
+2026-04-03 17:42:25,884 - INFO - Test output for sqlfluff__sqlfluff-1625 written to logs/run_evaluation/gpt5full-fork/opencode-fork/sqlfluff__sqlfluff-1625/test_output.txt
+2026-04-03 17:42:26,463 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L031.py b/src/sqlfluff/rules/L031.py
+index 838c6ce5..95c55f75 100644
+--- a/src/sqlfluff/rules/L031.py
++++ b/src/sqlfluff/rules/L031.py
+@@ -211,7 +211,7 @@ class Rule_L031(BaseRule):
+             violation_buff.append(
+                 LintResult(
+                     anchor=alias_info.alias_identifier_ref,
+-                    description="Avoid using aliases in join condition",
++                    description="Avoid using aliases in from clauses and join conditions",
+                     fixes=fixes,
+                 )
+             )
+
+2026-04-03 17:42:26,463 - INFO - Git diff changed after running eval script
+2026-04-03 17:42:26,463 - INFO - Grading answer for sqlfluff__sqlfluff-1625...
+2026-04-03 17:42:26,526 - INFO - report: {'sqlfluff__sqlfluff-1625': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/cli/commands_test.py::test__cli__command_directed']}, 'PASS_TO_PASS': {'success': ['test/cli/commands_test.py::test__cli__command_dialect', 'test/cli/commands_test.py::test__cli__command_dialect_legacy', 'test/cli/commands_test.py::test__cli__command_lint_stdin[command0]', 'test/cli/commands_test.py::test__cli__command_lint_stdin[command1]', 'test/cli/commands_test.py::test__cli__command_lint_stdin[command2]', 'test/cli/commands_test.py::test__cli__command_lint_stdin[command3]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command0]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command1]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command2]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command3]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command4]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command5]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command6]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command7]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command8]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command9]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command10]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command11]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command12]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command13]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command14]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command15]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command16]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command17]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command18]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command19]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command20]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command21]', 'test/cli/commands_test.py::test__cli__command_lint_parse_with_retcode[command0-1]', 'test/cli/commands_test.py::test__cli__command_lint_parse_with_retcode[command1-1]', 'test/cli/commands_test.py::test__cli__command_lint_parse_with_retcode[command2-1]', 'test/cli/commands_test.py::test__cli__command_lint_warning_explicit_file_ignored', 'test/cli/commands_test.py::test__cli__command_lint_skip_ignore_files', 'test/cli/commands_test.py::test__cli__command_versioning', 'test/cli/commands_test.py::test__cli__command_version', 'test/cli/commands_test.py::test__cli__command_rules', 'test/cli/commands_test.py::test__cli__command_dialects', 'test/cli/commands_test.py::test__cli__command__fix[L001-test/fixtures/linter/indentation_errors.sql]', 'test/cli/commands_test.py::test__cli__command__fix[L008-test/fixtures/linter/whitespace_errors.sql]', 'test/cli/commands_test.py::test__cli__command__fix[L008-test/fixtures/linter/indentation_errors.sql]', 'test/cli/commands_test.py::test__cli__command__fix[L003-test/fixtures/linter/indentation_error_hard.sql]', 'test/cli/commands_test.py::test__cli__command_fix_stdin[select', 'test/cli/commands_test.py::test__cli__command_fix_stdin[', 'test/cli/commands_test.py::test__cli__command_fix_stdin[SELECT', 'test/cli/commands_test.py::test__cli__command_fix_stdin_logging_to_stderr', 'test/cli/commands_test.py::test__cli__command_fix_stdin_safety', 'test/cli/commands_test.py::test__cli__command_fix_stdin_error_exit_code[create', 'test/cli/commands_test.py::test__cli__command_fix_stdin_error_exit_code[select', 'test/cli/commands_test.py::test__cli__command__fix_no_force[L001-test/fixtures/linter/indentation_errors.sql-y-0-0]', 'test/cli/commands_test.py::test__cli__command__fix_no_force[L001-test/fixtures/linter/indentation_errors.sql-n-65-1]', 'test/cli/commands_test.py::test__cli__command_parse_serialize_from_stdin[yaml]', 'test/cli/commands_test.py::test__cli__command_parse_serialize_from_stdin[json]', 'test/cli/commands_test.py::test__cli__command_lint_serialize_from_stdin[select', 'test/cli/commands_test.py::test__cli__command_lint_serialize_from_stdin[SElect', 'test/cli/commands_test.py::test__cli__command_fail_nice_not_found[command0]', 'test/cli/commands_test.py::test__cli__command_fail_nice_not_found[command1]', 'test/cli/commands_test.py::test__cli__command_lint_serialize_multiple_files[yaml]', 'test/cli/commands_test.py::test__cli__command_lint_serialize_multiple_files[json]', 'test/cli/commands_test.py::test__cli__command_lint_serialize_multiple_files[github-annotation]', 'test/cli/commands_test.py::test__cli__command_lint_serialize_github_annotation', 'test/cli/commands_test.py::test___main___help', 'test/cli/commands_test.py::test_encoding[utf-8-ascii]', 'test/cli/commands_test.py::test_encoding[utf-8-sig-UTF-8-SIG]', 'test/cli/commands_test.py::test_encoding[utf-32-UTF-32]'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1625: resolved: False

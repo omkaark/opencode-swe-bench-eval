@@ -1,0 +1,44 @@
+diff --git a/pvlib/pvsystem.py b/pvlib/pvsystem.py
+index c277a77..600d4a7 100644
+--- a/pvlib/pvsystem.py
++++ b/pvlib/pvsystem.py
+@@ -101,8 +101,8 @@ class PVSystem:
+ 
+     Parameters
+     ----------
+-    arrays : iterable of Array, optional
+-        List of arrays that are part of the system. If not specified
++    arrays : Array or iterable of Array, optional
++        Array or list of arrays that are part of the system. If not specified
+         a single array is created from the other parameters (e.g.
+         `surface_tilt`, `surface_azimuth`). Must contain at least one Array,
+         if length of arrays is 0 a ValueError is raised. If `arrays` is
+@@ -220,6 +220,8 @@ class PVSystem:
+                 strings_per_inverter,
+                 array_losses_parameters,
+             ),)
++        elif isinstance(arrays, Array):
++            self.arrays = (arrays,)
+         elif len(arrays) == 0:
+             raise ValueError("PVSystem must have at least one Array. "
+                              "If you want to create a PVSystem instance "
+diff --git a/pvlib/tests/test_pvsystem.py b/pvlib/tests/test_pvsystem.py
+index b379dd4..a753942 100644
+--- a/pvlib/tests/test_pvsystem.py
++++ b/pvlib/tests/test_pvsystem.py
+@@ -55,6 +55,15 @@ def test_PVSystem_multi_array_get_iam():
+         system.get_iam((1,), iam_model='ashrae')
+ 
+ 
++def test_PVSystem_single_array():
++    mount = pvsystem.FixedMount(surface_tilt=35, surface_azimuth=180)
++    array = pvsystem.Array(mount=mount)
++
++    system = pvsystem.PVSystem(arrays=array)
++
++    assert system.arrays == (array,)
++
++
+ def test_PVSystem_get_iam_sapm(sapm_module_params, mocker):
+     system = pvsystem.PVSystem(module_parameters=sapm_module_params)
+     mocker.spy(_iam, 'sapm')

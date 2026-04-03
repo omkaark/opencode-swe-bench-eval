@@ -1,0 +1,28 @@
+diff --git a/astroid/nodes/as_string.py b/astroid/nodes/as_string.py
+index 427ccc15..8fa18c36 100644
+--- a/astroid/nodes/as_string.py
++++ b/astroid/nodes/as_string.py
+@@ -259,6 +259,9 @@ class AsStringVisitor:
+         """dummy method for visiting an Empty node"""
+         return ""
+ 
++    def visit_unknown(self, node):
++        return node.name
++
+     def visit_excepthandler(self, node):
+         if node.type:
+             if node.name:
+diff --git a/tests/unittest_nodes.py b/tests/unittest_nodes.py
+index 7c78cd23..c2a0bd88 100644
+--- a/tests/unittest_nodes.py
++++ b/tests/unittest_nodes.py
+@@ -111,6 +111,9 @@ class AsStringTest(resources.SysPathSetup, unittest.TestCase):
+         self.assertEqual(inferred.as_string(), "[Uninferable]")
+         self.assertEqual(binop.as_string(), "[arg] * 1")
+ 
++    def test_as_string_unknown(self) -> None:
++        self.assertEqual(nodes.Unknown().as_string(), "Unknown")
++
+     def test_frozenset_as_string(self) -> None:
+         ast_nodes = builder.extract_node(
+             """

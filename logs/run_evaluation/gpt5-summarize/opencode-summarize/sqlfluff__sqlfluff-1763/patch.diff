@@ -1,0 +1,229 @@
+diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py
+index 3a8593ed..aa664cda 100644
+--- a/src/sqlfluff/core/linter/linted_file.py
++++ b/src/sqlfluff/core/linter/linted_file.py
+@@ -7,6 +7,7 @@ post linting.
+ 
+ import os
+ import logging
++import tempfile
+ from typing import (
+     Any,
+     Iterable,
+@@ -223,7 +224,7 @@ class LintedFile(NamedTuple):
+         else:
+             post_hint = templated_file.templated_str[patch.templated_slice.stop :]
+         linter_logger.debug(
+-            "        Templated Hint: ...%r <> %r...", pre_hint, post_hint
++            "        Templated Hint: ...%s <> %s...", ascii(pre_hint), ascii(post_hint)
+         )
+ 
+     def fix_string(self) -> Tuple[Any, bool]:
+@@ -244,9 +245,11 @@ class LintedFile(NamedTuple):
+         completely dialect agnostic. A Segment is determined by the
+         Lexer from portions of strings after templating.
+         """
+-        linter_logger.debug("Original Tree: %r", self.templated_file.templated_str)
++        linter_logger.debug(
++            "Original Tree: %s", ascii(self.templated_file.templated_str)
++        )
+         assert self.tree
+-        linter_logger.debug("Fixed Tree: %r", self.tree.raw)
++        linter_logger.debug("Fixed Tree: %s", ascii(self.tree.raw))
+ 
+         # The sliced file is contiguous in the TEMPLATED space.
+         # NB: It has gaps and repeats in the source space.
+@@ -257,11 +260,13 @@ class LintedFile(NamedTuple):
+             s_str = self.templated_file.source_str[file_slice.source_slice]
+             if t_str == s_str:
+                 linter_logger.debug(
+-                    "    File slice: %s %r [invariant]", idx, file_slice
++                    "    File slice: %s %s [invariant]", idx, ascii(file_slice)
+                 )
+             else:
+-                linter_logger.debug("    File slice: %s %r", idx, file_slice)
+-                linter_logger.debug("    \t\t\ttemplated: %r\tsource: %r", t_str, s_str)
++                linter_logger.debug("    File slice: %s %s", idx, ascii(file_slice))
++                linter_logger.debug(
++                    "    \t\t\ttemplated: %s\tsource: %s", ascii(t_str), ascii(s_str)
++                )
+ 
+         original_source = self.templated_file.source_str
+ 
+@@ -281,7 +286,7 @@ class LintedFile(NamedTuple):
+         for idx, patch in enumerate(
+             self.tree.iter_patches(templated_str=self.templated_file.templated_str)
+         ):
+-            linter_logger.debug("  %s Yielded patch: %s", idx, patch)
++            linter_logger.debug("  %s Yielded patch: %s", idx, ascii(patch))
+             self._log_hints(patch, self.templated_file)
+ 
+             # Attempt to convert to source space.
+@@ -301,7 +306,7 @@ class LintedFile(NamedTuple):
+             dedupe_tuple = (source_slice, patch.fixed_raw)
+             if dedupe_tuple in dedupe_buffer:
+                 linter_logger.info(
+-                    "      - Skipping. Source space Duplicate: %s", dedupe_tuple
++                    "      - Skipping. Source space Duplicate: %s", ascii(dedupe_tuple)
+                 )
+                 continue
+ 
+@@ -331,7 +336,8 @@ class LintedFile(NamedTuple):
+             # Deal with the easy case of only literals
+             if set(local_type_list) == {"literal"}:
+                 linter_logger.info(
+-                    "      * Keeping patch on literal-only section: %s", enriched_patch
++                    "      * Keeping patch on literal-only section: %s",
++                    ascii(enriched_patch),
+                 )
+                 filtered_source_patches.append(enriched_patch)
+                 dedupe_buffer.append(enriched_patch.dedupe_tuple())
+@@ -342,27 +348,28 @@ class LintedFile(NamedTuple):
+             ):
+                 linter_logger.info(
+                     "      * Keeping insertion patch on slice boundary: %s",
+-                    enriched_patch,
++                    ascii(enriched_patch),
+                 )
+                 filtered_source_patches.append(enriched_patch)
+                 dedupe_buffer.append(enriched_patch.dedupe_tuple())
+             # If it's ONLY templated then we should skip it.
+             elif "literal" not in local_type_list:
+                 linter_logger.info(
+-                    "      - Skipping patch over templated section: %s", enriched_patch
++                    "      - Skipping patch over templated section: %s",
++                    ascii(enriched_patch),
+                 )
+             # If we span more than two slices then we should just skip it. Too Hard.
+             elif len(local_raw_slices) > 2:
+                 linter_logger.info(
+                     "      - Skipping patch over more than two raw slices: %s",
+-                    enriched_patch,
++                    ascii(enriched_patch),
+                 )
+             # If it's an insertion (i.e. the string in the pre-fix template is '') then we
+             # won't be able to place it, so skip.
+             elif not enriched_patch.templated_str:  # pragma: no cover TODO?
+                 linter_logger.info(
+                     "      - Skipping insertion patch in templated section: %s",
+-                    enriched_patch,
++                    ascii(enriched_patch),
+                 )
+             # If the string from the templated version isn't in the source, then we can't fix it.
+             elif (
+@@ -370,7 +377,7 @@ class LintedFile(NamedTuple):
+             ):  # pragma: no cover TODO?
+                 linter_logger.info(
+                     "      - Skipping edit patch on templated content: %s",
+-                    enriched_patch,
++                    ascii(enriched_patch),
+                 )
+             else:
+                 # Identify all the places the string appears in the source content.
+@@ -380,7 +387,7 @@ class LintedFile(NamedTuple):
+                 if len(positions) != 1:
+                     linter_logger.debug(
+                         "        - Skipping edit patch on non-unique templated content: %s",
+-                        enriched_patch,
++                        ascii(enriched_patch),
+                     )
+                     continue
+                 # We have a single occurrence of the thing we want to patch. This
+@@ -403,7 +410,7 @@ class LintedFile(NamedTuple):
+                     "      * Keeping Tricky Case. Positions: %s, New Slice: %s, Patch: %s",
+                     positions,
+                     new_source_slice,
+-                    enriched_patch,
++                    ascii(enriched_patch),
+                 )
+                 filtered_source_patches.append(enriched_patch)  # pragma: no cover
+                 dedupe_buffer.append(enriched_patch.dedupe_tuple())  # pragma: no cover
+@@ -463,20 +470,20 @@ class LintedFile(NamedTuple):
+                 if patch.source_slice == source_slice:
+                     # Use the patched version
+                     linter_logger.debug(
+-                        "%-30s    %s    %r > %r",
++                        "%-30s    %s    %s > %s",
+                         f"Appending {patch.patch_category} Patch:",
+                         patch.source_slice,
+-                        patch.source_str,
+-                        patch.fixed_raw,
++                        ascii(patch.source_str),
++                        ascii(patch.fixed_raw),
+                     )
+                     str_buff += patch.fixed_raw
+                     break
+             else:
+                 # Use the raw string
+                 linter_logger.debug(
+-                    "Appending Raw:                    %s     %r",
++                    "Appending Raw:                    %s     %s",
+                     source_slice,
+-                    self.templated_file.source_str[source_slice],
++                    ascii(self.templated_file.source_str[source_slice]),
+                 )
+                 str_buff += self.templated_file.source_str[source_slice]
+ 
+@@ -493,7 +500,23 @@ class LintedFile(NamedTuple):
+             if suffix:
+                 root, ext = os.path.splitext(fname)
+                 fname = root + suffix + ext
+-            # Actually write the file.
+-            with open(fname, "w", encoding=self.encoding) as f:
+-                f.write(write_buff)
++            # Write to a temporary file first, then atomically replace the
++            # destination only after the full write succeeds. This prevents
++            # truncated files if encoding fails midway through the write.
++            tmp_fname = None
++            try:
++                dir_name = os.path.dirname(fname) or "."
++                with tempfile.NamedTemporaryFile(
++                    mode="w", encoding=self.encoding, delete=False, dir=dir_name
++                ) as tmp_file:
++                    tmp_fname = tmp_file.name
++                    tmp_file.write(write_buff)
++                os.replace(tmp_fname, fname)
++            except Exception as exc:
++                if tmp_fname and os.path.exists(tmp_fname):
++                    os.unlink(tmp_fname)
++                linter_logger.warning(
++                    "Unable to persist fixed file %s: %s", fname, ascii(exc)
++                )
++                return False
+         return success
+diff --git a/test/core/linter_test.py b/test/core/linter_test.py
+index 0600adf2..ef4f7f2a 100644
+--- a/test/core/linter_test.py
++++ b/test/core/linter_test.py
+@@ -290,6 +290,31 @@ def test__linter__empty_file():
+     assert not parsed.violations
+ 
+ 
++def test__linter__persist_tree_does_not_truncate_on_write_error(tmp_path, monkeypatch):
++    """Test fixing preserves the original file if the write fails."""
++    path = tmp_path / "example.sql"
++    original = "SELECT 1\n"
++    path.write_text(original, encoding="utf-8")
++
++    linted_file = linter.LintedFile(
++        path=str(path),
++        violations=[],
++        time_dict={},
++        tree=None,
++        ignore_mask=[],
++        templated_file=TemplatedFile.from_string(original),
++        encoding="ascii",
++    )
++    monkeypatch.setattr(
++        linter.LintedFile,
++        "fix_string",
++        lambda self: ("SELECT → 1\n", True),
++    )
++
++    assert not linted_file.persist_tree()
++    assert path.read_text(encoding="utf-8") == original
++
++
+ @pytest.mark.parametrize(
+     "ignore_templated_areas,check_tuples",
+     [

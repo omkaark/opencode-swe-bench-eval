@@ -1,0 +1,128 @@
+{
+  "instance_id": "pvlib__pvlib-python-1606",
+  "variant": "summarize",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [
+    "/repo/pvlib/tools.py",
+    "/repo/pvlib/tests/test_tools.py"
+  ],
+  "per_file": {
+    "/repo/pvlib/tools.py": {
+      "reads": [
+        2,
+        9,
+        10
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 280,
+          "limit": 120,
+          "signatures": [
+            "def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8)",
+            "def _get_sample_intervals(times, win_length)"
+          ]
+        },
+        {
+          "offset": 356,
+          "limit": 50,
+          "signatures": [
+            "def _get_sample_intervals(times, win_length)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_tools.py": {
+      "reads": [
+        2,
+        9
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "def test_build_kwargs(keys, input_dict, expected)",
+            "def _obj_test_golden_sect(params, loc)",
+            "def test__golden_sect_DataFrame(params, lb, ub, expected, func)",
+            "def test__golden_sect_DataFrame_atol()",
+            "def test__golden_sect_DataFrame_vector()",
+            "def test__golden_sect_DataFrame_nans()",
+            "def test_degrees_to_index_1()"
+          ]
+        },
+        {
+          "offset": 18,
+          "limit": 60,
+          "signatures": [
+            "def test__golden_sect_DataFrame(params, lb, ub, expected, func)",
+            "def test__golden_sect_DataFrame_atol()",
+            "def test__golden_sect_DataFrame_vector()",
+            "def test__golden_sect_DataFrame_equal_bounds()",
+            "def test__golden_sect_DataFrame_nans()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pvlib/tests/test_tools.py -q",
+        "workdir": "/repo",
+        "description": "Runs targeted tools tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_tools.py -q",
+        "workdir": "/repo",
+        "description": "Runs pytest via python module"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport numpy as np\nfrom pvlib import tools\n\ndef obj(params, loc):\n    return params[loc] * (1. - params['c'] * params[loc]**params['n'])\n\nparams = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}\nlower = np.array([0.5, 0.25])\nupper = np.array([0.5, 0.25])\nv, x = tools._golden_sect_DataFrame(params, lower, upper, obj)\nprint(x)\nPY",
+        "workdir": "/repo",
+        "description": "Checks equal-bound golden search"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nModuleNotFoundError: No module named 'numpy'\n"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "python -m compileall pvlib/tools.py pvlib/tests/test_tools.py",
+        "workdir": "/repo",
+        "description": "Checks syntax of edited files"
+      },
+      "output_preview": "Compiling 'pvlib/tools.py'...\nCompiling 'pvlib/tests/test_tools.py'...\n"
+    }
+  ],
+  "token_cost": {
+    "total": 234846,
+    "input": 19977,
+    "output": 6485,
+    "cache_read": 208384,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 79.34,
+  "patch_non_empty": true
+}

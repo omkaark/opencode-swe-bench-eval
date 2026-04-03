@@ -1,0 +1,40 @@
+diff --git a/src/marshmallow/fields.py b/src/marshmallow/fields.py
+index 0b18e7d..20c3e52 100644
+--- a/src/marshmallow/fields.py
++++ b/src/marshmallow/fields.py
+@@ -1112,9 +1112,11 @@ class DateTime(Field):
+ 
+     def _bind_to_schema(self, field_name, schema):
+         super()._bind_to_schema(field_name, schema)
++        root = self.root
++        schema_opts = getattr(root, "opts", None)
+         self.format = (
+             self.format
+-            or getattr(schema.opts, self.SCHEMA_OPTS_VAR_NAME)
++            or getattr(schema_opts, self.SCHEMA_OPTS_VAR_NAME, None)
+             or self.DEFAULT_FORMAT
+         )
+ 
+diff --git a/tests/test_fields.py b/tests/test_fields.py
+index b0a5a77..e004d69 100644
+--- a/tests/test_fields.py
++++ b/tests/test_fields.py
+@@ -143,6 +143,18 @@ class TestParentAndName:
+     def test_list_field_inner_root(self, schema):
+         assert schema.fields["bar"].inner.root == schema
+ 
++    def test_datetime_list_inner_format(self):
++        fmt = "%Y-%m"
++
++        class MySchema(Schema):
++            times = fields.List(fields.DateTime())
++
++            class Meta:
++                datetimeformat = fmt
++
++        schema = MySchema()
++        assert schema.fields["times"].inner.format == fmt
++
+     def test_tuple_field_inner_root(self, schema):
+         for field in schema.fields["baz"].tuple_fields:
+             assert field.root == schema

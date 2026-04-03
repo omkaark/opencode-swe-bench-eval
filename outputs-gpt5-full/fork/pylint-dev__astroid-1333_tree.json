@@ -1,0 +1,554 @@
+{
+  "instance_id": "pylint-dev__astroid-1333",
+  "variant": "fork",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/astroid/modutils.py",
+    "/repo/setup.cfg",
+    "/repo/requirements_test_pre_commit.txt",
+    "/repo/requirements_test_min.txt",
+    "/repo/requirements_test_brain.txt",
+    "/repo/requirements_test.txt",
+    "/repo/doc/requirements.txt"
+  ],
+  "per_file": {
+    "/repo/tests/unittest_modutils.py": {
+      "reads": [
+        3,
+        5
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 300,
+          "limit": 120,
+          "signatures": [
+            "def test_known_values_is_relative_4(self) -> None",
+            "def test_known_values_is_relative_5(self) -> None",
+            "def test_deep_relative(self) -> None",
+            "def test_deep_relative2(self) -> None",
+            "def test_deep_relative3(self) -> None",
+            "def test_deep_relative4(self) -> None",
+            "def test_is_relative_bad_path(self) -> None",
+            "class GetModuleFilesTest(unittest.TestCase)",
+            "def test_get_module_files_1(self) -> None",
+            "def test_get_all_files(self) -> None",
+            "def test_load_module_set_attribute(self) -> None",
+            "class ExtensionPackageWhitelistTest(unittest.TestCase)",
+            "def test_is_module_name_part_of_extension_package_whitelist_true(self) -> None",
+            "def test_is_module_name_part_of_extension_package_whitelist_success(self) -> None"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "def _get_file_from_object(obj) -> str",
+            "class ModuleFileTest(unittest.TestCase)",
+            "def tearDown(self) -> None",
+            "def test_find_zipped_module(self) -> None",
+            "def test_find_egg_module(self) -> None",
+            "class LoadModuleFromNameTest(unittest.TestCase)",
+            "def test_known_values_load_module_from_name_1(self) -> None",
+            "def test_known_values_load_module_from_name_2(self) -> None",
+            "def test_raise_load_module_from_name_1(self) -> None",
+            "class GetModulePartTest(unittest.TestCase)",
+            "def test_known_values_get_module_part_1(self) -> None",
+            "def test_known_values_get_module_part_2(self) -> None",
+            "def test_known_values_get_module_part_3(self) -> None",
+            "def test_known_values_get_compiled_module_part(self) -> None",
+            "def test_known_values_get_builtin_module_part(self) -> None",
+            "def test_get_module_part_exception(self) -> None",
+            "class ModPathFromFileTest(unittest.TestCase)",
+            "def test_known_values_modpath_from_file_1(self) -> None",
+            "def test_raise_modpath_from_file_exception(self) -> None",
+            "def test_import_symlink_with_source_outside_of_path(self) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/modutils.py": {
+      "reads": [
+        3,
+        4,
+        7,
+        9,
+        24
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 320,
+          "signatures": [
+            "def _posix_path(path)",
+            "class NoSourceFile(Exception)",
+            "def _normalize_path(path: str) -> str",
+            "def _path_from_filename(filename, is_jython=IS_JYTHON)",
+            "def _handle_blacklist(blacklist, dirnames, filenames)",
+            "def _cache_normalize_path(path: str) -> str",
+            "def load_module_from_name(dotted_name: str) -> types.ModuleType",
+            "def load_module_from_modpath(parts)",
+            "def load_module_from_file(filepath: str)",
+            "def check_modpath_has_init(path, mod_path)",
+            "def _get_relative_base_path(filename, path_to_check)",
+            "def modpath_from_file_with_callback(filename, path=None, is_package_cb=None)"
+          ]
+        },
+        {
+          "offset": 321,
+          "limit": 220,
+          "signatures": [
+            "def modpath_from_file(filename, path=None)",
+            "def file_from_modpath(modpath, path=None, context_file=None)",
+            "def file_info_from_modpath(modpath, path=None, context_file=None)",
+            "def get_module_part(dotted_name, context_file=None)",
+            "def get_module_files(src_directory, blacklist, list_all=False)",
+            "def get_source_file(filename, include_no_ext=False)",
+            "def is_python_source(filename)",
+            "def is_standard_module(modname, std_path=None)"
+          ]
+        },
+        {
+          "offset": 620,
+          "limit": 80,
+          "signatures": [
+            "def _is_python_file(filename)",
+            "def _has_init(directory)",
+            "def is_namespace(specobj)",
+            "def is_directory(specobj)",
+            "def is_module_name_part_of_extension_package_whitelist("
+          ]
+        },
+        {
+          "offset": 560,
+          "limit": 90,
+          "signatures": [
+            "def is_relative(modname, from_file)",
+            "def _spec_from_modpath(modpath, path=None, context=None)",
+            "def _is_python_file(filename)",
+            "def _has_init(directory)"
+          ]
+        },
+        {
+          "offset": 300,
+          "limit": 40,
+          "signatures": [
+            "def modpath_from_file_with_callback(filename, path=None, is_package_cb=None)",
+            "def modpath_from_file(filename, path=None)"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/interpreter/_import/util.py": {
+      "reads": [
+        7
+      ],
+      "edits": [],
+      "first_read_step": 7,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def is_namespace(modname)"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/interpreter/_import/spec.py": {
+      "reads": [
+        7,
+        9,
+        9,
+        10,
+        14,
+        16
+      ],
+      "edits": [],
+      "first_read_step": 7,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 220,
+          "limit": 80,
+          "signatures": [
+            "def contribute_to_path(self, spec, processed)",
+            "def _is_setuptools_namespace(location)",
+            "def _cached_set_diff(left, right)",
+            "def _precache_zipimporters(path=None)"
+          ]
+        },
+        {
+          "offset": 120,
+          "limit": 80,
+          "signatures": [
+            "def contribute_to_path(self, spec, processed)",
+            "class ExplicitNamespacePackageFinder(ImportlibFinder)",
+            "def find_module(self, modname, module_parts, processed, submodule_path)",
+            "def contribute_to_path(self, spec, processed)",
+            "class ZipFinder(Finder)",
+            "def __init__(self, path)",
+            "def find_module(self, modname, module_parts, processed, submodule_path)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "class ModuleSpec(_ModuleSpec)",
+            "def __new__(",
+            "class Finder",
+            "def __init__(self, path=None)",
+            "def find_module(self, modname, module_parts, processed, submodule_path)",
+            "def contribute_to_path(self, spec, processed)",
+            "class ImportlibFinder(Finder)",
+            "def find_module(self, modname, module_parts, processed, submodule_path)"
+          ]
+        },
+        {
+          "offset": 200,
+          "limit": 40,
+          "signatures": [
+            "class PathSpecFinder(Finder)",
+            "def find_module(self, modname, module_parts, processed, submodule_path)",
+            "def contribute_to_path(self, spec, processed)"
+          ]
+        },
+        {
+          "offset": 300,
+          "limit": 50,
+          "signatures": [
+            "def _search_zip(modpath, pic)",
+            "def _find_spec_with_path(search_path, modname, module_parts, processed, submodule_path)",
+            "def find_spec(modpath, path=None)"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/manager.py": {
+      "reads": [
+        9,
+        12,
+        12
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 170,
+          "limit": 60,
+          "signatures": [
+            "def zip_import_data(self, filepath)"
+          ]
+        },
+        {
+          "offset": 90,
+          "limit": 40,
+          "signatures": [
+            "def unregister_transform(self)",
+            "def builtins_module(self)",
+            "def visit_transforms(self, node)",
+            "def ast_from_file(self, filepath, modname=None, fallback=True, source=False)",
+            "def ast_from_string(self, data, modname=\"\", filepath=None)"
+          ]
+        },
+        {
+          "offset": 240,
+          "limit": 50,
+          "signatures": [
+            "def file_from_module_name(self, modname, contextfile)",
+            "def ast_from_module(self, module: types.ModuleType, modname: Optional[str] = None)",
+            "def ast_from_class(self, klass, modname=None)"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/builder.py": {
+      "reads": [
+        12
+      ],
+      "edits": [],
+      "first_read_step": 12,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 100,
+          "limit": 60,
+          "signatures": [
+            "def file_build(self, path, modname=None)",
+            "def string_build(self, data, modname=\"\", path=None)",
+            "def _post_build(self, module, encoding)"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_manager.py": {
+      "reads": [
+        19
+      ],
+      "edits": [],
+      "first_read_step": 19,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 120,
+          "limit": 80,
+          "signatures": [
+            "def test_ast_from_namespace_pkgutil(self) -> None",
+            "def test_ast_from_namespace_pkg_resources(self) -> None",
+            "def test_implicit_namespace_package(self) -> None",
+            "def test_namespace_package_pth_support(self) -> None",
+            "def test_nested_namespace_import(self) -> None",
+            "def test_namespace_and_file_mismatch(self) -> None",
+            "def _test_ast_from_zip(self, archive: str) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/requirements_test_min.txt": {
+      "reads": [
+        26
+      ],
+      "edits": [],
+      "first_read_step": 26,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/setup.cfg": {
+      "reads": [
+        27
+      ],
+      "edits": [],
+      "first_read_step": 27,
+      "first_edit_step": null,
+      "content_snippets": []
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_load_packages_without_init",
+        "path": "/repo",
+        "include": "tests/*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/astroid/modutils.py",
+        "offset": 1,
+        "limit": 320
+      },
+      "output_preview": "<path>/repo/astroid/modutils.py</path>\n<type>file</type>\n<content>1: # Copyright (c) 2014-2018, 2020 Claudiu Popa <pcmanticore@gmail.com>\n2: # Copyright (c) 2014 Google, Inc.\n3: # Copyright (c) 2014 Denis Laxalde <denis.laxalde@logilab.fr>\n4: # Copyright (c) 2014 LOGILAB S.A. (Paris, FRANCE) <contac",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 21,
+      "tool": "glob",
+      "input": {
+        "pattern": "pyproject.toml",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "modpath_from_file|load_packages|__init__",
+        "path": "/repo",
+        "include": "**/*.py"
+      },
+      "output_preview": "Found 352 matches (showing first 100)\n/repo/tests/unittest_scoped_nodes.py:\n  Line 91:         self.pack = resources.build_file(\"data/__init__.py\", \"data\")\n  Line 243:         astroid = builder.parse(data, \"package\", \"data/package/__init__.py\")\n  Line 255:         astroid = builder.parse(data, \"pack"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "is_namespace\\(",
+        "path": "/repo",
+        "include": "astroid/**/*.py"
+      },
+      "output_preview": "Found 5 matches\n/repo/astroid/modutils.py:\n  Line 268:             old_namespace = util.is_namespace(\".\".join(modpath))\n  Line 560:         return not util.is_namespace(modname)\n  Line 654: def is_namespace(specobj):\n\n/repo/astroid/interpreter/_import/spec.py:\n  Line 174:         if util.is_namespac"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "def _has_init|def is_namespace|__init__\\.py",
+        "path": "/repo",
+        "include": "astroid/**/*.py"
+      },
+      "output_preview": "Found 12 matches\n/repo/astroid/nodes/scoped_nodes/scoped_nodes.py:\n  Line 772:                 and not os.path.exists(os.path.dirname(self.path[0]) + \"/__init__.py\")\n\n/repo/astroid/modutils.py:\n  Line 262:     \"\"\"check there are some __init__.py all along the way\"\"\"\n  Line 476:         get files fro"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "def _spec_from_modpath|PKG_DIRECTORY|PY_NAMESPACE",
+        "path": "/repo/astroid",
+        "include": "**/*.py"
+      },
+      "output_preview": "Found 12 matches\n/repo/astroid/modutils.py:\n  Line 600: def _spec_from_modpath(modpath, path=None, context=None):\n  Line 629:     elif found_spec.type == spec.ModuleType.PKG_DIRECTORY:\n  Line 655:     return specobj.type == spec.ModuleType.PY_NAMESPACE\n  Line 659:     return specobj.type == spec.Mod"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "pattern": "ast_from_file\\(|file_info_from_modpath\\(|modpath_from_file\\(",
+        "path": "/repo/astroid",
+        "include": "**/*.py"
+      },
+      "output_preview": "Found 10 matches\n/repo/astroid/modutils.py:\n  Line 257:     modpath = modpath_from_file(filepath)\n  Line 326: def modpath_from_file(filename, path=None):\n  Line 348:     return file_info_from_modpath(modpath, path, context_file).location\n  Line 351: def file_info_from_modpath(modpath, path=None, con"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "pattern": "Unable to load file|error while code parsing",
+        "path": "/repo",
+        "include": "**/*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/astroid/builder.py:\n  Line 124:                 \"Unable to load file {path}:\\n{error}\","
+    },
+    {
+      "step": 13,
+      "tool": "grep",
+      "input": {
+        "pattern": "class PathSpecFinder|namespace",
+        "path": "/repo/astroid/interpreter/_import/spec.py",
+        "include": "spec.py"
+      },
+      "output_preview": "Found 14 matches\n/repo/astroid/interpreter/_import/spec.py:\n  Line 83:                                   namespace.\n  Line 155:         if _is_setuptools_namespace(spec.location):\n  Line 169:     \"\"\"A finder for the explicit namespace packages, generated through pkg_resources.\"\"\"\n  Line 174:        "
+    },
+    {
+      "step": 15,
+      "tool": "grep",
+      "input": {
+        "pattern": "def _find_spec_with_path",
+        "path": "/repo/astroid/interpreter/_import/spec.py",
+        "include": "spec.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/astroid/interpreter/_import/spec.py:\n  Line 320: def _find_spec_with_path(search_path, modname, module_parts, processed, submodule_path):"
+    },
+    {
+      "step": 17,
+      "tool": "grep",
+      "input": {
+        "pattern": "__init__\\.py|__init__",
+        "path": "/repo/astroid",
+        "include": "**/*.py"
+      },
+      "output_preview": "Found 227 matches (showing first 100)\n/repo/astroid/util.py:\n  Line 74:     def __init__(self, operand, op, error):\n  Line 109:     def __init__(self, left_type, op, right_type):\n\n/repo/astroid/transforms.py:\n  Line 30:     def __init__(self):\n\n/repo/astroid/rebuilder.py:\n  Line 90:     def __init__"
+    },
+    {
+      "step": 18,
+      "tool": "grep",
+      "input": {
+        "pattern": "namespace|without_init|missing __init__|pkg_resources|PEP 420",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 33 matches\n/repo/tests/unittest_scoped_nodes.py:\n  Line 753:         # May want to stop locals from referencing namespaced variables in the future\n\n/repo/tests/unittest_nodes.py:\n  Line 844:     def test_primitive_without_initial_value(self) -> None:\n\n/repo/tests/unittest_manager.py:\n  Line 34"
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport os, sys, tempfile\nfrom astroid import modutils\nfrom astroid.manager import AstroidManager\n\ntmp = tempfile.mkdtemp()\nos.makedirs(os.path.join(tmp,'src','project'))\nopen(os.path.join(tmp,'src','__init__.py'),'w').close()\nopen(os.path.join(tmp,'src','project','file.py'),'w').close()\nsys.path.insert(0,tmp)\ntry:\n    path=os.path.join(tmp,'src','project','file.py')\n    try:\n        print('modpath', modutils.modpath_from_file(path))\n    except Exception as e:\n        print('modpath error', type(e), e)\n    try:\n        print('fileinfo', modutils.file_info_from_modpath(['src','project']))\n    except Exception as e:\n        print('fileinfo error', type(e), e)\n    mgr=AstroidManager()\n    try:\n        mod = mgr.ast_from_file(path)\n        print('ast_from_file name', mod.name)\n    except Exception as e:\n        print('ast_from_file error', type(e), e)\nfinally:\n    sys.path.pop(0)\nPY",
+        "workdir": "/repo",
+        "description": "Reproduce namespace package path issue"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 2, in <module>\n  File \"/repo/astroid/__init__.py\", line 51, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 27, in <module>\n    from astroid.nodes.node_classes import (  # py"
+    },
+    {
+      "step": 22,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport importlib.machinery, os, sys, tempfile\n\ntmp = tempfile.mkdtemp()\nos.makedirs(os.path.join(tmp,'src','project'))\nopen(os.path.join(tmp,'src','__init__.py'),'w').close()\nopen(os.path.join(tmp,'src','project','file.py'),'w').close()\nprint(importlib.machinery.PathFinder.find_spec('project', [os.path.join(tmp,'src')]))\nprint(importlib.machinery.PathFinder.find_spec('src', [tmp]))\nPY",
+        "workdir": "/repo",
+        "description": "Check PathFinder namespace package behavior"
+      },
+      "output_preview": "ModuleSpec(name='project', loader=None, submodule_search_locations=_NamespacePath(['/tmp/tmpx6mwrl3x/src/project']))\nModuleSpec(name='src', loader=<_frozen_importlib_external.SourceFileLoader object at 0x2ac4679dcad0>, origin='/tmp/tmpx6mwrl3x/src/__init__.py', submodule_search_locations=['/tmp/tmpx"
+    },
+    {
+      "step": 27,
+      "tool": "grep",
+      "input": {
+        "pattern": "install_requires|tests_require|wrapt|extras_require",
+        "path": "/repo",
+        "include": "setup.cfg"
+      },
+      "output_preview": "Found 3 matches\n/repo/setup.cfg:\n  Line 38: install_requires =\n  Line 40:     wrapt>=1.11,<1.14\n  Line 87: [mypy-wrapt.*]"
+    },
+    {
+      "step": 28,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pip install -q -e . pytest",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Install package and pytest dependencies"
+      },
+      "output_preview": "  error: subprocess-exited-with-error\n  \n  \u00d7 Preparing metadata (pyproject.toml) did not run successfully.\n  \u2502 exit code: 1\n  \u2570\u2500> [84 lines of output]\n      Traceback (most recent call last):\n        File \"/tmp/pip-build-env-tuhvcggd/overlay/lib/python3.12/site-packages/setuptools/config/expand.py\","
+    },
+    {
+      "step": 29,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pip install -q wrapt lazy_object_proxy pytest",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Install runtime dependencies for targeted tests"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 30,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_modutils.py -k load_packages_without_init",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Run targeted namespace package regression test"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0\nrootdir: /repo\nconfigfile: setup.cfg\nplugins: anyio-4.13.0\ncollected 0 items / 1 error\n\n==================================== ERRORS =========================="
+    },
+    {
+      "step": 31,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport os\nimport sys\nimport sysconfig\nimport tempfile\nimport types\n\n# Provide distutils compatibility for Python 3.12.\ndistutils = types.ModuleType('distutils')\nerrors = types.ModuleType('distutils.errors')\nsysconfig_mod = types.ModuleType('distutils.sysconfig')\nclass DistutilsPlatformError(Exception):\n    pass\nerrors.DistutilsPlatformError = DistutilsPlatformError\nsysconfig_mod.get_python_lib = lambda standard_lib=False, prefix=None: (\n    sysconfig.get_path('stdlib') if standard_lib else sysconfig.get_path('purelib')\n)\ndistutils.errors = errors\ndistutils.sysconfig = sysconfig_mod\nsys.modules.setdefault('distutils', distutils)\nsys.modules['distutils.errors'] = errors\nsys.modules['distutils.sysconfig'] = sysconfig_mod\n\nfrom astroid import modutils\n\nwith tempfile.TemporaryDirectory() as tempdir:\n    package = os.path.join(tempdir, 'src')\n    subpackage = os.path.join(package, 'project')\n    os.makedirs(subpackage)\n    open(os.path.join(package, '__init__.py'), 'w').close()\n    module_path = os.path.join(subpackage, 'file.py')\n    open(module_path, 'w').close()\n    sys.path.insert(0, tempdir)\n    try:\n        print(modutils.modpath_from_file(module_path))\n    finally:\n        sys.path.remove(tempdir)\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Verify modpath_from_file handles namespace packages"
+      },
+      "output_preview": "['src', 'project', 'file']\n"
+    }
+  ],
+  "token_cost": {
+    "total": 1064942,
+    "input": 43493,
+    "output": 7945,
+    "cache_read": 1013504,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 210.8,
+  "patch_non_empty": true
+}

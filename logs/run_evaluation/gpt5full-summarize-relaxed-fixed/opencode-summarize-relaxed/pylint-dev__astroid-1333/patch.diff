@@ -1,0 +1,47 @@
+diff --git a/astroid/modutils.py b/astroid/modutils.py
+index 6d698469..1eac5850 100644
+--- a/astroid/modutils.py
++++ b/astroid/modutils.py
+@@ -307,6 +307,9 @@ def _get_relative_base_path(filename, path_to_check):
+ 
+ def modpath_from_file_with_callback(filename, path=None, is_package_cb=None):
+     filename = os.path.expanduser(_path_from_filename(filename))
++    is_directory = os.path.isdir(filename)
++    if is_package_cb is None:
++        raise TypeError("is_package_cb cannot be None")
+     for pathname in itertools.chain(
+         path or [], map(_cache_normalize_path, sys.path), sys.path
+     ):
+@@ -315,7 +318,7 @@ def modpath_from_file_with_callback(filename, path=None, is_package_cb=None):
+         modpath = _get_relative_base_path(filename, pathname)
+         if not modpath:
+             continue
+-        if is_package_cb(pathname, modpath[:-1]):
++        if is_package_cb(pathname, modpath if is_directory else modpath[:-1]):
+             return modpath
+ 
+     raise ImportError(
+diff --git a/tests/unittest_modutils.py b/tests/unittest_modutils.py
+index d6fcb68e..eca95a0b 100644
+--- a/tests/unittest_modutils.py
++++ b/tests/unittest_modutils.py
+@@ -189,6 +189,19 @@ class ModPathFromFileTest(unittest.TestCase):
+         # this should be equivalent to: import secret
+         self.assertEqual(modutils.modpath_from_file(symlink_secret_path), ["secret"])
+ 
++    def test_dont_load_namespace_package_as_regular_package(self) -> None:
++        with tempfile.TemporaryDirectory() as tmp:
++            package = os.path.join(tmp, "src")
++            namespace = os.path.join(package, "project")
++            os.makedirs(namespace)
++            with open(os.path.join(package, "__init__.py"), "w", encoding="utf-8"):
++                pass
++            sys.path.insert(0, tmp)
++            try:
++                self.assertRaises(ImportError, modutils.modpath_from_file, namespace)
++            finally:
++                sys.path.pop(0)
++
+ 
+ class LoadModuleFromPathTest(resources.SysPathSetup, unittest.TestCase):
+     def test_do_not_load_twice(self) -> None:

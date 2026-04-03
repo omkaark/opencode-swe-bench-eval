@@ -1,0 +1,349 @@
+{
+  "instance_id": "pydicom__pydicom-901",
+  "variant": "summarize",
+  "repo": "pydicom/pydicom",
+  "repo_map": [
+    "/repo/pydicom/config.py",
+    "/repo/pydicom/tests/test_uid.py",
+    "/repo/pydicom/tests/test_unicode.py",
+    "/repo/pydicom/tests/test_util.py",
+    "/repo/pydicom/tests/test_valuerep.py",
+    "/repo/pydicom/tests/test_values.py",
+    "/repo/pydicom/tests/test_pillow_pixel_data.py",
+    "/repo/pydicom/tests/test_numpy_pixel_data.py",
+    "/repo/pydicom/tests/test_rawread.py",
+    "/repo/pydicom/tests/test_rle_pixel_data.py",
+    "/repo/pydicom/tests/test_misc.py",
+    "/repo/pydicom/tests/test_multival.py",
+    "/repo/pydicom/tests/test_sequence.py",
+    "/repo/pydicom/tests/test_tag.py",
+    "/repo/pydicom/tests/test_json.py",
+    "/repo/pydicom/tests/test_jpeg_ls_pixel_data.py",
+    "/repo/pydicom/tests/test_handler_util.py",
+    "/repo/pydicom/tests/test_gdcm_pixel_data.py",
+    "/repo/pydicom/tests/test_fixes.py",
+    "/repo/pydicom/tests/test_filewriter.py",
+    "/repo/pydicom/tests/test_filereader.py",
+    "/repo/pydicom/tests/test_filebase.py",
+    "/repo/pydicom/tests/test_errors.py",
+    "/repo/pydicom/tests/test_environment.py",
+    "/repo/pydicom/tests/test_encaps.py",
+    "/repo/pydicom/tests/test_dictionary.py",
+    "/repo/pydicom/tests/test_dicomdir.py",
+    "/repo/pydicom/tests/test_dataset.py",
+    "/repo/pydicom/tests/test_dataelem.py",
+    "/repo/pydicom/tests/test_compat.py",
+    "/repo/pydicom/tests/test_charset.py",
+    "/repo/pydicom/tests/test_JPEG_LS_transfer_syntax.py",
+    "/repo/pydicom/tests/performance/write_profiling.py",
+    "/repo/pydicom/tests/performance/time_test.py",
+    "/repo/pydicom/tests/performance/raw_convert_test.py",
+    "/repo/pydicom/tests/_write_stds.py",
+    "/repo/pydicom/tests/_handler_common.py",
+    "/repo/pydicom/tests/__init__.py",
+    "/repo/pydicom/tests/performance/__init__.py",
+    "/repo/pydicom/data/tests/__init__.py",
+    "/repo/pydicom/data/tests/test_data_manager.py"
+  ],
+  "per_file": {
+    "/repo/pydicom/tests/test_config.py": {
+      "reads": [
+        1,
+        15
+      ],
+      "edits": [],
+      "first_read_step": 1,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class TestDebug(object)",
+            "def setup(self)",
+            "def teardown(self)",
+            "def test_default(self, caplog)",
+            "def test_debug_on_handler_null(self, caplog)",
+            "def test_debug_off_handler_null(self, caplog)",
+            "def test_debug_on_handler_stream(self, caplog)",
+            "def test_debug_off_handler_stream(self, caplog)"
+          ]
+        }
+      ]
+    },
+    "/repo/pydicom/config.py": {
+      "reads": [
+        2,
+        15
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "def reset_data_element_callback()",
+            "def DS_decimal(use_Decimal_boolean=True)",
+            "def supports_transfer_syntax(ds)",
+            "def get_pixeldata(ds)",
+            "def debug(debug_on=True)"
+          ]
+        },
+        {
+          "offset": 60,
+          "limit": 75,
+          "signatures": [
+            "def supports_transfer_syntax(ds)",
+            "def get_pixeldata(ds)",
+            "def debug(debug_on=True, default_handler=True)"
+          ]
+        }
+      ]
+    },
+    "/repo/pydicom/__init__.py": {
+      "reads": [
+        4
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/pydicom/values.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def convert_tag(byte_string, is_little_endian, offset=0)",
+            "def convert_AE_string(byte_string, is_little_endian, struct_format=None)",
+            "def convert_ATvalue(byte_string, is_little_endian, struct_format=None)",
+            "def _DA_from_byte_string(byte_string)",
+            "def convert_DA_string(byte_string, is_little_endian, struct_format=None)",
+            "def convert_DS_string(byte_string, is_little_endian, struct_format=None)",
+            "def _DT_from_byte_string(byte_string)",
+            "def convert_DT_string(byte_string, is_little_endian, struct_format=None)",
+            "def convert_IS_string(byte_string, is_little_endian, struct_format=None)"
+          ]
+        }
+      ]
+    },
+    "/repo/pydicom/pixel_data_handlers/pillow_handler.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def is_available()",
+            "def supports_transfer_syntax(transfer_syntax)",
+            "def needs_to_convert_to_RGB(dicom_dataset)",
+            "def should_change_PhotometricInterpretation_to_RGB(dicom_dataset)",
+            "def get_pixeldata(dicom_dataset)"
+          ]
+        }
+      ]
+    },
+    "/repo/pydicom/data/__init__.py": {
+      "reads": [
+        10
+      ],
+      "edits": [],
+      "first_read_step": 10,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/pydicom/tests/__init__.py": {
+      "reads": [
+        10
+      ],
+      "edits": [],
+      "first_read_step": 10,
+      "first_edit_step": null,
+      "content_snippets": []
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/pydicom/tests/test_config.py"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/test_config.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "TestDebug|debug_on_handler|handler_null|handler_stream",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pydicom/tests/test_config.py::TestDebug::test_default pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_null pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_null pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_stream pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_stream",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted config logging tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 16,
+      "tool": "grep",
+      "input": {
+        "pattern": "config\\.handler|from pydicom\\.config import handler|from pydicom\\.config import formatter|config\\.formatter",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "getLogger\\(|basicConfig|NullHandler|setLevel|Handler",
+        "path": "/repo/pydicom",
+        "include": "*.py"
+      },
+      "output_preview": "Found 17 matches\n/repo/pydicom/tests/test_rle_pixel_data.py:\n  Line 191: class TestNoNumpy_NoRLEHandler(object):\n  Line 236: class TestNoNumpy_RLEHandler(object):\n  Line 294: class TestNumpy_NoRLEHandler(object):\n  Line 339: class TestNumpy_RLEHandler(object):\n\n/repo/pydicom/tests/test_numpy_pixel_d"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "config\\.debug|debug\\(|logger",
+        "path": "/repo/pydicom/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pydicom/tests/test_dataset.py:\n  Line 97:     def test_attribute_error_in_property_correct_debug(self):"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "import pydicom\\.config|from pydicom import config|from pydicom\\.config|pydicom\\.config",
+        "path": "/repo/pydicom",
+        "include": "*.py"
+      },
+      "output_preview": "Found 131 matches (showing first 100)\n/repo/pydicom/valuerep.py:\n  Line 10: from pydicom import config\n\n/repo/pydicom/values.py:\n  Line 10: from pydicom import config\n  Line 14: from pydicom.config import logger\n\n/repo/pydicom/util/fixer.py:\n  Line 5: from pydicom import config\n\n/repo/pydicom/tests/"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "debugging",
+        "path": "/repo/pydicom",
+        "include": "*.py"
+      },
+      "output_preview": "Found 19 matches\n/repo/pydicom/util/dump.py:\n  Line 2: \"\"\"Utility functions used in debugging writing and reading\"\"\"\n  Line 33:     This is a utility function for debugging file writing.\n  Line 73:     This is just like Dataset._pretty_str, but more useful for debugging as it\n\n/repo/pydicom/fileread"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "logger\\.",
+        "path": "/repo/pydicom",
+        "include": "*.py"
+      },
+      "output_preview": "Found 61 matches\n/repo/pydicom/values.py:\n  Line 55:         logger.warn(\"Expected length to be multiple of 4 for VR 'AT', \"\n  Line 98:         logger.warn(\"Expected length between 4 and 26, got length %d\", length)\n  Line 163:         logger.warning(\"Expected length to be even multiple of number siz"
+    },
+    {
+      "step": 10,
+      "tool": "grep",
+      "input": {
+        "pattern": "def get_testdata_files|get_testdata_files\\(",
+        "path": "/repo/pydicom",
+        "include": "*.py"
+      },
+      "output_preview": "Found 279 matches (showing first 100)\n/repo/pydicom/tests/test_valuerep.py:\n  Line 41: badvr_name = get_testdata_files(\"badVR.dcm\")[0]\n\n/repo/pydicom/tests/test_util.py:\n  Line 136:         filename = get_testdata_files(\"rtplan.dcm\")[0]\n\n/repo/pydicom/tests/test_rle_pixel_data.py:\n  Line 68: EXPL_8_"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pydicom/tests/test_config.py::TestDebug::test_default pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_null pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_null pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_stream pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_stream",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted config logging tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport logging\nfrom pydicom import dcmread\nfrom pydicom.config import debug\nfrom pydicom.data import get_testdata_files\n\npath = get_testdata_files('CT_small.dcm')[0]\nlogger = logging.getLogger('pydicom')\nassert len(logger.handlers) == 1\nassert isinstance(logger.handlers[0], logging.NullHandler)\n\ndebug(True, False)\nassert len(logger.handlers) == 1\nassert logger.level == logging.DEBUG\n\ndebug(False, False)\nassert len(logger.handlers) == 1\nassert logger.level == logging.WARNING\n\ndebug(True, True)\nassert len(logger.handlers) == 2\nassert isinstance(logger.handlers[1], logging.StreamHandler)\nlogger.handlers = [logger.handlers[0]]\n\ndebug(False, True)\nassert len(logger.handlers) == 2\nlogger.handlers = [logger.handlers[0]]\n\ndcmread(path)\nprint('ok')\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs manual logging behavior checks"
+      },
+      "output_preview": "ok\n"
+    },
+    {
+      "step": 16,
+      "tool": "grep",
+      "input": {
+        "pattern": "debug\\([^\\)]*,\\s*(True|False)\\)",
+        "path": "/repo/pydicom",
+        "include": "*.py"
+      },
+      "output_preview": "Found 5 matches\n/repo/pydicom/tests/test_config.py:\n  Line 35:         debug(True, False)\n  Line 53:         debug(False, False)\n  Line 66:         debug(True, True)\n  Line 85:         debug(False, True)\n\n/repo/pydicom/config.py:\n  Line 137: debug(False, False)"
+    },
+    {
+      "step": 19,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport logging\nfrom pydicom import dcmread\nfrom pydicom.config import debug\nfrom pydicom.data import get_testdata_files\n\npath = get_testdata_files('CT_small.dcm')[0]\nlogger = logging.getLogger('pydicom')\nassert len(logger.handlers) == 1\nassert isinstance(logger.handlers[0], logging.NullHandler)\n\ndebug(True, False)\nassert len(logger.handlers) == 1\nassert logger.level == logging.DEBUG\n\ndebug(False, False)\nassert len(logger.handlers) == 1\nassert logger.level == logging.WARNING\n\ndebug(True, True)\nassert len(logger.handlers) == 2\nassert isinstance(logger.handlers[1], logging.StreamHandler)\nlogger.handlers = [logger.handlers[0]]\n\ndebug(False, True)\nassert len(logger.handlers) == 2\nlogger.handlers = [logger.handlers[0]]\n\ndcmread(path)\nprint('ok')\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Re-runs manual logging behavior checks"
+      },
+      "output_preview": "ok\n"
+    }
+  ],
+  "token_cost": {
+    "total": 540417,
+    "input": 30194,
+    "output": 5135,
+    "cache_read": 505088,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 114.33,
+  "patch_non_empty": true
+}

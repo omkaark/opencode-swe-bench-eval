@@ -1,0 +1,35 @@
+diff --git a/pydicom/config.py b/pydicom/config.py
+index ae9c8bdf..60db0b52 100644
+--- a/pydicom/config.py
++++ b/pydicom/config.py
+@@ -60,12 +60,8 @@ data elements to datetime.date, datetime.datetime
+ and datetime.time respectively. Default: False
+ """
+ 
+-# Logging system and debug function to change logging level
+ logger = logging.getLogger('pydicom')
+-handler = logging.StreamHandler()
+-formatter = logging.Formatter("%(message)s")
+-handler.setFormatter(formatter)
+-logger.addHandler(handler)
++debugging = False
+ 
+ 
+ import pydicom.pixel_data_handlers.numpy_handler as np_handler  # noqa
+@@ -119,14 +115,5 @@ def debug(debug_on=True):
+     :param debug_on: True (default) to turn on debugging,
+     False to turn off.
+     """
+-    global logger, debugging
+-    if debug_on:
+-        logger.setLevel(logging.DEBUG)
+-        debugging = True
+-    else:
+-        logger.setLevel(logging.WARNING)
+-        debugging = False
+-
+-
+-# force level=WARNING, in case logging default is set differently (issue 103)
+-debug(False)
++    global debugging
++    debugging = bool(debug_on)

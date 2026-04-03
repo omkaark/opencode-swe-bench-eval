@@ -1,0 +1,156 @@
+2026-04-03 17:41:09,778 - INFO - >>>>> Applied Patch:
+Checking patch pvlib/tests/test_tools.py...
+Checking patch pvlib/tools.py...
+Applied patch pvlib/tests/test_tools.py cleanly.
+Applied patch pvlib/tools.py cleanly.
+
+2026-04-03 17:41:11,548 - INFO - Git diff before:
+diff --git a/pvlib/tests/test_tools.py b/pvlib/tests/test_tools.py
+index 167dca8..7ff7b44 100644
+--- a/pvlib/tests/test_tools.py
++++ b/pvlib/tests/test_tools.py
+@@ -47,6 +47,25 @@ def test__golden_sect_DataFrame_vector():
+     assert np.allclose(x, expected, atol=1e-8)
+ 
+ 
++def test__golden_sect_DataFrame_equal_bounds():
++    params = {'c': 1., 'n': 1.}
++    v, x = tools._golden_sect_DataFrame(params, 0., 0.,
++                                        _obj_test_golden_sect)
++    assert np.isclose(x, 0.)
++    assert np.isclose(v, 0.)
++
++
++def test__golden_sect_DataFrame_vector_equal_bounds():
++    params = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}
++    lower = np.array([0., 0.001])
++    upper = np.array([0., 1.2])
++    expected = np.array([0., 0.25])
++    v, x = tools._golden_sect_DataFrame(params, lower, upper,
++                                        _obj_test_golden_sect)
++    assert np.allclose(x, expected, atol=1e-8)
++    assert np.allclose(v, np.array([0., 0.125]), atol=1e-8)
++
++
+ def test__golden_sect_DataFrame_nans():
+     # nan in bounds
+     params = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..f5fac72 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -347,16 +347,26 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     df = params
+     df['VH'] = upper
+     df['VL'] = lower
+-
+-    converged = False
++    phi = phim1 * (df['VH'] - df['VL'])
++    df['V1'] = df['VL'] + phi
++    df['V2'] = df['VH'] - phi
++
++    err = abs(df['VH'] - df['VL'])
++    err = np.atleast_1d(np.asarray(err))
++    valid_err = err[~np.isnan(err)]
++    converged = valid_err.size == 0 or (valid_err < atol).all()
+     iterations = 0
++    iterlimit = 0
+ 
+     # handle all NaN case gracefully
+-    with warnings.catch_warnings():
+-        warnings.filterwarnings(action='ignore',
+-                                message='All-NaN slice encountered')
+-        iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++    needs_iteration = ~np.isnan(err) & (err >= atol)
++    if np.any(needs_iteration):
++        with warnings.catch_warnings():
++            warnings.filterwarnings(action='ignore',
++                                    message='All-NaN slice encountered')
++            iterlimit = 1 + np.nanmax(
++                np.trunc(np.log(atol / err[needs_iteration]) /
++                         np.log(phim1)))
+ 
+     while not converged and (iterations <= iterlimit):
+ 
+@@ -372,14 +382,13 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+         df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])
+ 
+         err = abs(df['V2'] - df['V1'])
+-
+-        # works with single value because err is np.float64
++        err = np.atleast_1d(np.asarray(err))
+         converged = (err[~np.isnan(err)] < atol).all()
+         # err will be less than atol before iterations hit the limit
+         # but just to be safe
+         iterations += 1
+ 
+-    if iterations > iterlimit:
++    if not converged:
+         raise Exception("Iterations exceeded maximum. Check that func",
+                         " is not NaN in (lower, upper)")  # pragma: no cover
+ 
+
+2026-04-03 17:41:26,758 - INFO - Test runtime: 14.47 seconds
+2026-04-03 17:41:26,759 - INFO - Test output for pvlib__pvlib-python-1606 written to logs/run_evaluation/gpt5full-fork/opencode-fork/pvlib__pvlib-python-1606/test_output.txt
+2026-04-03 17:41:27,230 - INFO - Git diff after:
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..f5fac72 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -347,16 +347,26 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     df = params
+     df['VH'] = upper
+     df['VL'] = lower
+-
+-    converged = False
++    phi = phim1 * (df['VH'] - df['VL'])
++    df['V1'] = df['VL'] + phi
++    df['V2'] = df['VH'] - phi
++
++    err = abs(df['VH'] - df['VL'])
++    err = np.atleast_1d(np.asarray(err))
++    valid_err = err[~np.isnan(err)]
++    converged = valid_err.size == 0 or (valid_err < atol).all()
+     iterations = 0
++    iterlimit = 0
+ 
+     # handle all NaN case gracefully
+-    with warnings.catch_warnings():
+-        warnings.filterwarnings(action='ignore',
+-                                message='All-NaN slice encountered')
+-        iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++    needs_iteration = ~np.isnan(err) & (err >= atol)
++    if np.any(needs_iteration):
++        with warnings.catch_warnings():
++            warnings.filterwarnings(action='ignore',
++                                    message='All-NaN slice encountered')
++            iterlimit = 1 + np.nanmax(
++                np.trunc(np.log(atol / err[needs_iteration]) /
++                         np.log(phim1)))
+ 
+     while not converged and (iterations <= iterlimit):
+ 
+@@ -372,14 +382,13 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+         df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])
+ 
+         err = abs(df['V2'] - df['V1'])
+-
+-        # works with single value because err is np.float64
++        err = np.atleast_1d(np.asarray(err))
+         converged = (err[~np.isnan(err)] < atol).all()
+         # err will be less than atol before iterations hit the limit
+         # but just to be safe
+         iterations += 1
+ 
+-    if iterations > iterlimit:
++    if not converged:
+         raise Exception("Iterations exceeded maximum. Check that func",
+                         " is not NaN in (lower, upper)")  # pragma: no cover
+ 
+
+2026-04-03 17:41:27,230 - INFO - Git diff changed after running eval script
+2026-04-03 17:41:27,230 - INFO - Grading answer for pvlib__pvlib-python-1606...
+2026-04-03 17:41:27,232 - INFO - report: {'pvlib__pvlib-python-1606': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test__golden_sect_DataFrame_vector']}, 'PASS_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test_build_kwargs[keys0-input_dict0-expected0]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys1-input_dict1-expected1]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys2-input_dict2-expected2]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys3-input_dict3-expected3]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params0-0.0-1.0-0.5-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params1-0.0-1.0-0.07230200263994839-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params2-0.0-100.0-89.14332727531685-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_atol', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_nans', 'pvlib/tests/test_tools.py::test_degrees_to_index_1']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pvlib__pvlib-python-1606: resolved: False

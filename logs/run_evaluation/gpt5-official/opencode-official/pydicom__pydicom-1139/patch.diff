@@ -1,0 +1,44 @@
+diff --git a/pydicom/tests/test_valuerep.py b/pydicom/tests/test_valuerep.py
+index ad5a62d9..c86dbaab 100644
+--- a/pydicom/tests/test_valuerep.py
++++ b/pydicom/tests/test_valuerep.py
+@@ -427,6 +427,22 @@ class TestPersonName:
+         )
+         assert hash(pn1) == hash(pn2)
+ 
++    def test_next(self):
++        pn = PersonName("SomeName")
++        pn_iter = iter(pn)
++        assert next(pn_iter) == "S"
++        assert next(pn_iter) == "o"
++
++    def test_iterator(self):
++        pn = PersonName("SomeName")
++        assert list(pn) == list("SomeName")
++
++    def test_contains(self):
++        pn = PersonName("SomeName")
++        assert "S" in pn
++        assert "meN" in pn
++        assert "Nope" not in pn
++
+ 
+ class TestDateTime:
+     """Unit tests for DA, DT, TM conversion to datetime objects"""
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f787..8002b34f 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -756,6 +756,12 @@ class PersonName:
+     def __hash__(self):
+         return hash(self.components)
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, item):
++        return item in str(self)
++
+     def decode(self, encodings=None):
+         """Return the patient name decoded by the given `encodings`.
+ 

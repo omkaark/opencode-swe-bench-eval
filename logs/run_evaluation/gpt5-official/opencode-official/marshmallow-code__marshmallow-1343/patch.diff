@@ -1,0 +1,71 @@
+diff --git a/src/marshmallow/schema.py b/src/marshmallow/schema.py
+index 085c509..68a796e 100644
+--- a/src/marshmallow/schema.py
++++ b/src/marshmallow/schema.py
+@@ -671,20 +671,22 @@ class BaseSchema(base.SchemaABC):
+                 )
+             except ValidationError as error:
+                 result = error.data
+-            self._invoke_field_validators(unmarshal, data=result, many=many)
+             errors = unmarshal.errors
+-            field_errors = bool(errors)
+-            # Run schema-level migration
+-            try:
+-                self._invoke_validators(unmarshal, pass_many=True, data=result, original_data=data,
+-                                        many=many, field_errors=field_errors)
+-            except ValidationError as err:
+-                errors.update(err.messages)
+-            try:
+-                self._invoke_validators(unmarshal, pass_many=False, data=result, original_data=data,
+-                                        many=many, field_errors=field_errors)
+-            except ValidationError as err:
+-                errors.update(err.messages)
++            if result is not None:
++                self._invoke_field_validators(unmarshal, data=result, many=many)
++                errors = unmarshal.errors
++                field_errors = bool(errors)
++                # Run schema-level migration
++                try:
++                    self._invoke_validators(unmarshal, pass_many=True, data=result, original_data=data,
++                                            many=many, field_errors=field_errors)
++                except ValidationError as err:
++                    errors.update(err.messages)
++                try:
++                    self._invoke_validators(unmarshal, pass_many=False, data=result, original_data=data,
++                                            many=many, field_errors=field_errors)
++                except ValidationError as err:
++                    errors.update(err.messages)
+         # Run post processors
+         if not errors and postprocess:
+             try:
+diff --git a/tests/test_marshalling.py b/tests/test_marshalling.py
+index 273dada..da9d0e1 100644
+--- a/tests/test_marshalling.py
++++ b/tests/test_marshalling.py
+@@ -2,7 +2,7 @@
+ 
+ import pytest
+ 
+-from marshmallow import fields, Schema
++from marshmallow import fields, Schema, validates
+ from marshmallow.marshalling import Marshaller, Unmarshaller, missing
+ from marshmallow.exceptions import ValidationError
+ 
+@@ -283,3 +283,17 @@ class TestUnmarshaller:
+ 
+             assert result is None
+             assert excinfo.value.messages == {'foo': {'_schema': ['Invalid input type.']}}
++
++    def test_deserialize_wrong_nested_type_with_validates_method(self):
++        class Bar(Schema):
++            value = fields.String()
++
++            @validates('value')
++            def validate_value(self, value):
++                pass
++
++        class Foo(Schema):
++            bar = fields.Nested(Bar)
++
++        errors = Foo().validate({'bar': 'invalid'})
++        assert errors == {'bar': {'_schema': ['Invalid input type.']}}

@@ -1,0 +1,59 @@
+diff --git a/src/marshmallow/schema.py b/src/marshmallow/schema.py
+index 085c509..826d274 100644
+--- a/src/marshmallow/schema.py
++++ b/src/marshmallow/schema.py
+@@ -877,7 +877,7 @@ class BaseSchema(base.SchemaABC):
+                 for idx, item in enumerate(data):
+                     try:
+                         value = item[field_obj.attribute or field_name]
+-                    except KeyError:
++                    except (KeyError, TypeError):
+                         pass
+                     else:
+                         validated_value = unmarshal.call_and_store(
+@@ -892,7 +892,7 @@ class BaseSchema(base.SchemaABC):
+             else:
+                 try:
+                     value = data[field_obj.attribute or field_name]
+-                except KeyError:
++                except (KeyError, TypeError):
+                     pass
+                 else:
+                     validated_value = unmarshal.call_and_store(
+diff --git a/tests/test_marshalling.py b/tests/test_marshalling.py
+index 273dada..6a199b2 100644
+--- a/tests/test_marshalling.py
++++ b/tests/test_marshalling.py
+@@ -2,7 +2,7 @@
+ 
+ import pytest
+ 
+-from marshmallow import fields, Schema
++from marshmallow import fields, Schema, validates
+ from marshmallow.marshalling import Marshaller, Unmarshaller, missing
+ from marshmallow.exceptions import ValidationError
+ 
+@@ -283,3 +283,23 @@ class TestUnmarshaller:
+ 
+             assert result is None
+             assert excinfo.value.messages == {'foo': {'_schema': ['Invalid input type.']}}
++
++    def test_deserialize_wrong_nested_type_with_validates_method(self, unmarshal):
++        class NestedSchema(Schema):
++            value = fields.String()
++
++            @validates('value')
++            def validate_value(self, value):
++                pass
++
++        data = {
++            'bar': 'invalid'
++        }
++        fields_dict = {
++            'bar': fields.Nested(NestedSchema)
++        }
++
++        with pytest.raises(ValidationError) as excinfo:
++            unmarshal.deserialize(data, fields_dict)
++
++        assert excinfo.value.messages == {'bar': {'_schema': ['Invalid input type.']}}

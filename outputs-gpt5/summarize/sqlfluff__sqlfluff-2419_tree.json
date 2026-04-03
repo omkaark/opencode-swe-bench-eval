@@ -1,0 +1,430 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-2419",
+  "variant": "summarize",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [
+    "/repo/test/test_testing.py",
+    "/repo/test/rules/yaml_test_cases_test.py",
+    "/repo/test/rules/std_test.py",
+    "/repo/test/rules/std_roundtrip_test.py",
+    "/repo/test/rules/std_fix_auto_test.py",
+    "/repo/test/rules/std_L054_test.py",
+    "/repo/test/rules/std_L048_test.py",
+    "/repo/test/rules/std_L027_test.py",
+    "/repo/test/rules/std_L020_test.py",
+    "/repo/test/rules/std_L019_test.py",
+    "/repo/test/rules/std_L016_L36_combo_test.py",
+    "/repo/test/rules/std_L009_L052_test.py",
+    "/repo/test/rules/std_L008_test.py",
+    "/repo/test/rules/std_L007_test.py",
+    "/repo/test/rules/std_L003_test.py",
+    "/repo/test/rules/std_L003_L036_L039_combo_test.py",
+    "/repo/test/generate_parse_fixture_yml.py",
+    "/repo/test/fixtures/templater/jinja_m_libraries_module/other/__init__.py",
+    "/repo/test/fixtures/templater/jinja_m_libraries_module/libs/foo/bar/baz.py",
+    "/repo/test/fixtures/templater/jinja_m_libraries_module/libs/foo/bar/__init__.py",
+    "/repo/test/fixtures/templater/jinja_m_libraries_module/libs/foo/__init__.py",
+    "/repo/test/fixtures/templater/jinja_m_libraries_module/libs/__init__.py",
+    "/repo/test/fixtures/templater/jinja_j_libraries/libs/foo.py",
+    "/repo/test/fixtures/templater/jinja_j_libraries/libs/bar.py",
+    "/repo/test/fixtures/rules/custom/bad_rule_name/E000.py",
+    "/repo/test/fixtures/rules/custom/S000.py",
+    "/repo/test/fixtures/rules/custom/L000.py",
+    "/repo/test/diff_quality_plugin_test.py",
+    "/repo/test/dialects/snowflake_test.py",
+    "/repo/test/dialects/postgres_test.py",
+    "/repo/test/dialects/exasol_test.py",
+    "/repo/test/dialects/dialects_test.py",
+    "/repo/test/dialects/conftest.py",
+    "/repo/test/dialects/bigquery_test.py",
+    "/repo/test/dialects/ansi_test.py",
+    "/repo/test/dialects/__init__.py",
+    "/repo/test/core/templaters/python_test.py",
+    "/repo/test/core/templaters/placeholder_test.py",
+    "/repo/test/core/templaters/jinja_test.py",
+    "/repo/test/core/templaters/base_test.py",
+    "/repo/test/core/templaters/__init__.py",
+    "/repo/test/core/string_helpers_test.py",
+    "/repo/test/core/rules/reference_test.py",
+    "/repo/test/core/rules/docstring_test.py",
+    "/repo/test/core/rules/config_test.py",
+    "/repo/test/core/rules/__init__.py",
+    "/repo/test/core/rules/functional/test_segments.py",
+    "/repo/test/core/rules/functional/test_raw_file_slices.py",
+    "/repo/test/core/plugin_test.py",
+    "/repo/test/core/parser/markers_test.py",
+    "/repo/test/core/parser/parse_test.py",
+    "/repo/test/core/parser/segments_base_test.py",
+    "/repo/test/core/parser/segments_common_test.py",
+    "/repo/test/core/parser/lexer_test.py",
+    "/repo/test/core/parser/helpers_test.py",
+    "/repo/test/core/parser/grammar_test.py",
+    "/repo/test/core/parser/conftest.py",
+    "/repo/test/core/parser/__init__.py",
+    "/repo/test/core/linter_test.py",
+    "/repo/test/core/file_helpers_test.py",
+    "/repo/test/core/config_test.py",
+    "/repo/test/core/__init__.py",
+    "/repo/test/conftest.py",
+    "/repo/test/cli/helpers_test.py",
+    "/repo/test/cli/formatters_test.py",
+    "/repo/test/cli/commands_test.py",
+    "/repo/test/cli/autocomplete_test.py",
+    "/repo/test/cli/__init__.py",
+    "/repo/test/api/classes_test.py",
+    "/repo/test/api/info_test.py",
+    "/repo/test/api/__init__.py",
+    "/repo/test/api/simple_test.py",
+    "/repo/test/__init__.py"
+  ],
+  "per_file": {
+    "/repo/src/sqlfluff/rules/L060.py": {
+      "reads": [
+        3,
+        19
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 200,
+          "signatures": [
+            "class Rule_L060(BaseRule)",
+            "def _eval(self, context: RuleContext) -> Optional[LintResult]"
+          ]
+        }
+      ]
+    },
+    "/repo/test/rules/std_test.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "def test__rules__std_file(rule, path, violations)",
+            "def test_improper_configs_are_rejected(rule_config_dict)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L007.py": {
+      "reads": [
+        9
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/rules/std_rule_cases/L060.yml": {
+      "reads": [
+        12
+      ],
+      "edits": [],
+      "first_read_step": 12,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/rules/L047.py": {
+      "reads": [
+        16
+      ],
+      "edits": [],
+      "first_read_step": 16,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "class Rule_L047(BaseRule)",
+            "def _eval(self, context: RuleContext) -> Optional[LintResult]"
+          ]
+        }
+      ]
+    },
+    "/repo/test/rules/yaml_test_cases_test.py": {
+      "reads": [
+        21
+      ],
+      "edits": [],
+      "first_read_step": 21,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "def test__rule_test_case(test_case, caplog)",
+            "def test__rule_test_global_config()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "test/rules/std_L060_test.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "std_L060_raised",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 4,
+      "tool": "glob",
+      "input": {
+        "pattern": "test/rules/*L060*",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 4,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/*L060*_test.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "L060",
+        "path": "/repo/test/rules",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "IFNULL|NVL|L060",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "description=.*raw_upper|raw_upper.*description",
+        "path": "/repo/src/sqlfluff/rules",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 13,
+      "tool": "grep",
+      "input": {
+        "pattern": "Use ``COALESCE`` instead of ``IFNULL`` or ``NVL``|Use 'COALESCE' instead of 'IFNULL' or 'NVL'|Use 'COALESCE' instead of",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 14,
+      "tool": "grep",
+      "input": {
+        "pattern": "std_L060_raised",
+        "path": "/repo",
+        "include": "*"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 17,
+      "tool": "grep",
+      "input": {
+        "pattern": "description\\s*=\\s*f?\"|description\\s*=\\s*'|description\\s*=\\s*format",
+        "path": "/repo/src/sqlfluff/rules",
+        "include": "*.py"
+      },
+      "output_preview": "Found 30 matches\n/repo/src/sqlfluff/rules/L059.py:\n  Line 76:                 description=f\"Unnecessary quoted identifier {context.segment.raw}.\",\n\n/repo/src/sqlfluff/rules/L056.py:\n  Line 75:                 description=\"'SP_' prefix should not be used for user-defined stored \"\n\n/repo/src/sqlfluff/",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 18,
+      "tool": "apply_patch",
+      "input": {
+        "patchText": "*** Begin Patch\n*** Update File: /repo/src/sqlfluff/rules/L060.py\n@@\n     def _eval(self, context: RuleContext) -> Optional[LintResult]:\n         \"\"\"Use ``COALESCE`` instead of ``IFNULL`` or ``NVL``.\"\"\"\n         # We only care about function names.\n         if context.segment.name != \"function_name_identifier\":\n             return None\n@@\n         if context.segment.raw_upper not in {\"IFNULL\", \"NVL\"}:\n             return None\n+\n+        description = f\"Use 'COALESCE' instead of '{context.segment.raw_upper}'.\"\n \n         # Create fix to replace ``IFNULL`` or ``NVL`` with ``COALESCE``.\n         fix = LintFix.replace(\n             context.segment,\n             [\n@@\n             ]\n         )\n \n-        return LintResult(context.segment, [fix])\n+        return LintResult(context.segment, [fix], description=description)\n*** End Patch"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 22,
+      "tool": "bash",
+      "input": {
+        "command": "pytest test/rules/yaml_test_cases_test.py -k L060",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs focused L060 rule tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "L060",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/src/sqlfluff/rules/L060.py:\n  Line 1: \"\"\"Implementation of Rule L060.\"\"\"\n  Line 11: class Rule_L060(BaseRule):"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "IFNULL|NVL|COALESCE",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 27 matches\n/repo/src/sqlfluff/rules/L060.py:\n  Line 12:     \"\"\"Use ``COALESCE`` instead of ``IFNULL`` or ``NVL``.\n  Line 15:     | ``IFNULL`` or ``NVL`` are used to fill ``NULL`` values.\n  Line 26:     | Use ``COALESCE`` instead.\n  Line 27:     | ``COALESCE`` is universally supported,\n  Line 2"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "LintResult\\(.*description",
+        "path": "/repo/src/sqlfluff/rules",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/src/sqlfluff/rules/L007.py:\n  Line 104:             return LintResult(anchor=anchor, memory=memory, description=description)"
+    },
+    {
+      "step": 10,
+      "tool": "grep",
+      "input": {
+        "pattern": "IFNULL|NVL|COALESCE",
+        "path": "/repo/test/fixtures",
+        "include": "*.sql"
+      },
+      "output_preview": "Found 10 matches\n/repo/test/fixtures/linter/autofix/bigquery/004_templating/before.sql:\n  Line 66:     ,COALESCE(IF(IS_NAN(o.{{metric}}_{{action}}), 0, o.{{metric}}_{{action}}), 0) AS {{metric}}_{{action}}\n  Line 67:     ,COALESCE(IF(IS_NAN(n.{{metric}}_{{action}}), 0, n.{{metric}}_{{action}}), 0) A"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "pattern": "L060",
+        "path": "/repo/test/fixtures",
+        "include": "*"
+      },
+      "output_preview": "Found 1 matches\n/repo/test/fixtures/rules/std_rule_cases/L060.yml:\n  Line 1: rule: L060"
+    },
+    {
+      "step": 15,
+      "tool": "grep",
+      "input": {
+        "pattern": "raw_upper",
+        "path": "/repo/src/sqlfluff/rules",
+        "include": "*.py"
+      },
+      "output_preview": "Found 14 matches\n/repo/src/sqlfluff/rules/L060.py:\n  Line 47:         if context.segment.raw_upper not in {\"IFNULL\", \"NVL\"}:\n\n/repo/src/sqlfluff/rules/L056.py:\n  Line 71:         if procedure_segment.raw_upper.lstrip('[\"').startswith(\"SP_\"):\n\n/repo/src/sqlfluff/rules/L047.py:\n  Line 69:             "
+    },
+    {
+      "step": 23,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest test/rules/yaml_test_cases_test.py -k L060",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs focused L060 rule tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 24,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"from sqlfluff.api.simple import lint; print(lint('select ifnull(a,1) from foo', dialect='ansi', rules='L060'))\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks L060 lint message"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'sqlfluff'\n"
+    },
+    {
+      "step": 25,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python -c \"from sqlfluff.api.simple import lint; print(lint('select ifnull(a,1) from foo', dialect='ansi', rules='L060'))\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks L060 lint message"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 3, in <module>\n    import pytest\nModuleNotFoundError: No module named 'pytest'\n"
+    },
+    {
+      "step": 26,
+      "tool": "bash",
+      "input": {
+        "command": "python -m compileall src/sqlfluff/rules/L060.py",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Compiles L060 rule file"
+      },
+      "output_preview": "Compiling 'src/sqlfluff/rules/L060.py'...\n"
+    },
+    {
+      "step": 27,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- src/sqlfluff/rules/L060.py",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Shows L060 code diff"
+      },
+      "output_preview": "diff --git a/src/sqlfluff/rules/L060.py b/src/sqlfluff/rules/L060.py\nindex 836941ed..08fa3d38 100644\n--- a/src/sqlfluff/rules/L060.py\n+++ b/src/sqlfluff/rules/L060.py\n@@ -47,6 +47,8 @@ class Rule_L060(BaseRule):\n         if context.segment.raw_upper not in {\"IFNULL\", \"NVL\"}:\n             return None"
+    }
+  ],
+  "token_cost": {
+    "total": 458452,
+    "input": 25985,
+    "output": 4435,
+    "cache_read": 428032,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 129.06,
+  "patch_non_empty": true
+}

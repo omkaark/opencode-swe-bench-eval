@@ -1,0 +1,55 @@
+diff --git a/astroid/modutils.py b/astroid/modutils.py
+index 6d698469..c1e7fbbe 100644
+--- a/astroid/modutils.py
++++ b/astroid/modutils.py
+@@ -260,13 +260,20 @@ def load_module_from_file(filepath: str):
+ 
+ def check_modpath_has_init(path, mod_path):
+     """check there are some __init__.py all along the way"""
++    base_path = path
+     modpath = []
+     for part in mod_path:
+         modpath.append(part)
+         path = os.path.join(path, part)
+         if not _has_init(path):
+             old_namespace = util.is_namespace(".".join(modpath))
+-            if not old_namespace:
++            if old_namespace:
++                continue
++            try:
++                found_spec = spec.find_spec(modpath, [base_path])
++            except ImportError:
++                return False
++            if found_spec.type != spec.ModuleType.PY_NAMESPACE:
+                 return False
+     return True
+ 
+diff --git a/tests/unittest_modutils.py b/tests/unittest_modutils.py
+index d6fcb68e..88492bf5 100644
+--- a/tests/unittest_modutils.py
++++ b/tests/unittest_modutils.py
+@@ -189,6 +189,24 @@ class ModPathFromFileTest(unittest.TestCase):
+         # this should be equivalent to: import secret
+         self.assertEqual(modutils.modpath_from_file(symlink_secret_path), ["secret"])
+ 
++    def test_load_packages_without_init(self) -> None:
++        with tempfile.TemporaryDirectory() as root_dir:
++            src_dir = os.path.join(root_dir, "src")
++            package_dir = os.path.join(src_dir, "project")
++            os.makedirs(package_dir)
++
++            with open(os.path.join(src_dir, "__init__.py"), "w", encoding="utf-8"):
++                pass
++
++            module_path = os.path.join(package_dir, "file.py")
++            with open(module_path, "w", encoding="utf-8"):
++                pass
++
++            self.assertEqual(
++                modutils.modpath_from_file(module_path, [root_dir]),
++                ["src", "project", "file"],
++            )
++
+ 
+ class LoadModuleFromPathTest(resources.SysPathSetup, unittest.TestCase):
+     def test_do_not_load_twice(self) -> None:

@@ -1,0 +1,189 @@
+{
+  "instance_id": "pvlib__pvlib-python-1154",
+  "variant": "summarize-relaxed",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [],
+  "per_file": {
+    "/repo/pvlib/irradiance.py": {
+      "reads": [
+        2,
+        4
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 793,
+          "limit": 140,
+          "signatures": [
+            "def king(surface_tilt, dhi, ghi, solar_zenith)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_irradiance.py": {
+      "reads": [
+        2,
+        9
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 180,
+          "limit": 80,
+          "signatures": [
+            "def test_haydavies(irrad_data, ephem_data, dni_et)",
+            "def test_reindl(irrad_data, ephem_data, dni_et)",
+            "def test_king(irrad_data, ephem_data)",
+            "def test_perez(irrad_data, ephem_data, dni_et, relative_airmass)",
+            "def test_perez_components(irrad_data, ephem_data, dni_et, relative_airmass)",
+            "def test_perez_arrays(irrad_data, ephem_data, dni_et, relative_airmass)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def times()",
+            "def irrad_data(times)",
+            "def ephem_data(times)",
+            "def dni_et(times)",
+            "def relative_airmass(times)",
+            "def test_get_extra_radiation(testval, expected, method)",
+            "def test_get_extra_radiation_epoch_year()",
+            "def test_get_extra_radiation_nrel_numba(times)",
+            "def test_get_extra_radiation_invalid()"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/conftest.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "def fail_on_pvlib_version(version)",
+            "def wrapper(func)",
+            "def inner(*args, **kwargs)",
+            "def _check_pandas_assert_kwargs(kwargs)",
+            "def assert_index_equal(left, right, **kwargs)",
+            "def assert_series_equal(left, right, **kwargs)",
+            "def assert_frame_equal(left, right, **kwargs)",
+            "def has_spa_c()",
+            "def has_numba()",
+            "def sam_data()",
+            "def pvsyst_module_params()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pvlib/tests/test_irradiance.py::test_reindl",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Run targeted reindl pytest"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def reindl\\(",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/irradiance.py:\n  Line 793: def reindl(surface_tilt, surface_azimuth, dhi, dni, ghi, dni_extra,"
+    },
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_reindl",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/tests/test_irradiance.py:\n  Line 201: def test_reindl(irrad_data, ephem_data, dni_et):"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "np\\.errstate|np\\.where\\(",
+        "path": "/repo/pvlib/irradiance.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 17 matches\n/repo/pvlib/irradiance.py:\n  Line 683:     with np.errstate(invalid='ignore'):\n  Line 690:         F = np.where(np.isnan(F), 0, F)\n  Line 1056:     with np.errstate(invalid='ignore'):\n  Line 1108:         sky_diffuse = np.where(np.isnan(airmass), 0, sky_diffuse)\n  Line 1125:        "
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "np\\.divide\\(|where=.*ghi|HB / ghi|divide by ghi",
+        "path": "/repo/pvlib",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/pvlib/irradiance.py:\n  Line 889:     term3 = 1 + np.sqrt(HB / ghi) * (tools.sind(0.5 * surface_tilt) ** 3)\n\n/repo/pvlib/inverter.py:\n  Line 393:         -0.0162 * zeta - np.divide(0.0059, zeta, out=eta, where=pdc_neq_0)"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_irradiance.py::test_reindl",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Run targeted pytest with python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "pattern": "def irrad_data|@pytest.fixture\\(.*irrad_data|dni_et|ephem_data",
+        "path": "/repo/pvlib/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 76 matches\n/repo/pvlib/tests/test_irradiance.py:\n  Line 35: def irrad_data(times):\n  Line 45: def ephem_data(times):\n  Line 61: def dni_et(times):\n  Line 178: def test_klucher_series(irrad_data, ephem_data):\n  Line 180:                                 ephem_data['apparent_zenith'],\n  Line 181:"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport numpy as np\nimport pandas as pd\nfrom pvlib import irradiance\n\ntimes = pd.date_range(start='20140624', freq='6H', periods=4, tz='US/Arizona')\nirrad_data = pd.DataFrame(np.array(\n    [[0., 0., 0.],\n     [79.73860422, 316.1949056, 40.46149818],\n     [1042.48031487, 939.95469881, 118.45831879],\n     [257.20751138, 646.22886049, 62.03376265]]),\n    columns=['ghi', 'dni', 'dhi'], index=times)\nephem_data = pd.DataFrame(np.array(\n    [[124.0390863, 124.0390863, -34.0390863, -34.0390863, 352.69550699, -2.36677158],\n     [82.85457044, 82.97705621, 7.14542956, 7.02294379, 66.71410338, -2.42072165],\n     [10.56413562, 10.56725766, 79.43586438, 79.43274234, 144.76567754, -2.47457321],\n     [72.41687122, 72.46903556, 17.58312878, 17.53096444, 287.04104128, -2.52831909]]),\n    columns=['apparent_zenith', 'zenith', 'apparent_elevation', 'elevation', 'azimuth', 'equation_of_time'],\n    index=times)\ndni_et = np.array([1321.1655834833093] * 4)\n\nresult = irradiance.reindl(\n    40, 180, irrad_data['dhi'], irrad_data['dni'], irrad_data['ghi'],\n    dni_et, ephem_data['apparent_zenith'], ephem_data['azimuth'])\nprint(result)\nprint(np.allclose(result.values, [0, 27.9412, 104.1317, 34.1663], atol=1e-4, equal_nan=True))\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Verify reindl output via python"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nModuleNotFoundError: No module named 'numpy'\n"
+    }
+  ],
+  "token_cost": {
+    "total": 167119,
+    "input": 20660,
+    "output": 2587,
+    "cache_read": 143872,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 74.44,
+  "patch_non_empty": true
+}

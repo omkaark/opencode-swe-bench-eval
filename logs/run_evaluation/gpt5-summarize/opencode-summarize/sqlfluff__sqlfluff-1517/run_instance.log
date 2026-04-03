@@ -1,0 +1,94 @@
+2026-04-03 04:48:42,086 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/core/parser/grammar/delimited.py...
+Checking patch test/dialects/ansi_test.py...
+Applied patch src/sqlfluff/core/parser/grammar/delimited.py cleanly.
+Applied patch test/dialects/ansi_test.py cleanly.
+
+2026-04-03 04:48:43,727 - INFO - Git diff before:
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..13a9a4e7 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -184,8 +184,23 @@ class Delimited(OneOf):
+                             ).format(delimiter_matcher)
+                         )
+                 else:
+-                    # Zero length section between delimiters, or zero code
+-                    # elements if appropriate. Return unmatched.
++                    # Zero length section between delimiters.
++                    #
++                    # If this grammar allows trailing delimiters, treat this as an
++                    # empty statement between delimiter tokens rather than a hard
++                    # failure. This lets repeated terminators like `;;` parse
++                    # cleanly at file scope without dropping the extra delimiter.
++                    if (
++                        delimiter_matcher is self.delimiter
++                        and self.allow_trailing
++                        and delimiters
++                    ):
++                        delimiters.append(delimiter_match.matched_segments)
++                        matched_segments += delimiter_match.matched_segments
++                        seg_buff = delimiter_match.unmatched_segments
++                        continue
++
++                    # Otherwise this is a genuine empty section, so fail.
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+diff --git a/test/dialects/ansi_test.py b/test/dialects/ansi_test.py
+index 1c83e4c6..a549f6e3 100644
+--- a/test/dialects/ansi_test.py
++++ b/test/dialects/ansi_test.py
+@@ -27,6 +27,13 @@ def test__dialect__ansi__file_lex(raw, res, caplog):
+     assert raw_list == res
+ 
+ 
++def test__dialect__ansi_multiple_semicolons():
++    """Test doubled terminators don't crash parsing."""
++    lnt = Linter()
++    parsed = lnt.parse_string("select id from tbl;;")
++    assert parsed is not None
++
++
+ # Develop test to check specific elements against specific grammars.
+ @pytest.mark.parametrize(
+     "segmentref,raw",
+
+2026-04-03 04:49:36,142 - INFO - Test runtime: 52.14 seconds
+2026-04-03 04:49:36,145 - INFO - Test output for sqlfluff__sqlfluff-1517 written to logs/run_evaluation/gpt5-summarize/opencode-summarize/sqlfluff__sqlfluff-1517/test_output.txt
+2026-04-03 04:49:36,534 - INFO - Git diff after:
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..13a9a4e7 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -184,8 +184,23 @@ class Delimited(OneOf):
+                             ).format(delimiter_matcher)
+                         )
+                 else:
+-                    # Zero length section between delimiters, or zero code
+-                    # elements if appropriate. Return unmatched.
++                    # Zero length section between delimiters.
++                    #
++                    # If this grammar allows trailing delimiters, treat this as an
++                    # empty statement between delimiter tokens rather than a hard
++                    # failure. This lets repeated terminators like `;;` parse
++                    # cleanly at file scope without dropping the extra delimiter.
++                    if (
++                        delimiter_matcher is self.delimiter
++                        and self.allow_trailing
++                        and delimiters
++                    ):
++                        delimiters.append(delimiter_match.matched_segments)
++                        matched_segments += delimiter_match.matched_segments
++                        seg_buff = delimiter_match.unmatched_segments
++                        continue
++
++                    # Otherwise this is a genuine empty section, so fail.
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+
+2026-04-03 04:49:36,535 - INFO - Git diff changed after running eval script
+2026-04-03 04:49:36,535 - INFO - Grading answer for sqlfluff__sqlfluff-1517...
+2026-04-03 04:49:36,561 - INFO - report: {'sqlfluff__sqlfluff-1517': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/dialects/ansi_test.py::test__dialect__ansi_multiple_semicolons[select']}, 'PASS_TO_PASS': {'success': ['test/dialects/ansi_test.py::test__dialect__ansi__file_lex[a', 'test/dialects/ansi_test.py::test__dialect__ansi__file_lex[b.c-res1]', 'test/dialects/ansi_test.py::test__dialect__ansi__file_lex[abc', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectKeywordSegment-select]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[NakedIdentifierSegment-online_sales]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[BareFunctionSegment-current_timestamp]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[FunctionSegment-current_timestamp()]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[NumericLiteralSegment-1000.0]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-online_sales', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[IntervalExpressionSegment-INTERVAL', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-CASE', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-CAST(ROUND(online_sales', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-name', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-MIN', "test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-DATE_ADD(CURRENT_DATE('America/New_York'),", 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-my_array[1]]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-my_array[OFFSET(1)]]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-my_array[5:8]]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-4', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-bits[OFFSET(0)]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-(count_18_24', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-count_18_24', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectStatementSegment-SELECT', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-t.val/t.id]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-CAST(num', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-a.*]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-a.b.*]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-a.b.c.*]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ObjectReferenceSegment-a..c.*]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment--some_variable]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment--', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-concat(left(uaid,', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-c', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-c', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[ExpressionSegment-NULL::INT]', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[SelectClauseElementSegment-NULL::INT', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_parses[TruncateStatementSegment-TRUNCATE', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_not_match[ObjectReferenceSegment-\\n', 'test/dialects/ansi_test.py::test__dialect__ansi_specific_segment_not_parse[SELECT', 'test/dialects/ansi_test.py::test__dialect__ansi_is_whitespace', 'test/dialects/ansi_test.py::test__dialect__ansi_parse_indented_joins[select'], 'failure': ['test/dialects/ansi_test.py::test__dialect__ansi_multiple_semicolons[;;-Line']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1517: resolved: False

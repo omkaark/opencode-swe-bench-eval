@@ -1,0 +1,1058 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1733",
+  "variant": "official",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [
+    "/repo/src/sqlfluff/rules/L003.py",
+    "/repo/src/sqlfluff/rules/L036.py",
+    "/repo/src/sqlfluff/rules/L039.py",
+    "/repo/test/rules/yaml_test_cases_test.py",
+    "/repo/test/rules/std_roundtrip_test.py",
+    "/repo/test/rules/std_fix_auto_test.py",
+    "/repo/test/rules/std_test.py",
+    "/repo/test/rules/std_L048_test.py",
+    "/repo/test/rules/std_L020_test.py",
+    "/repo/test/rules/std_L019_test.py",
+    "/repo/test/rules/std_L016_L36_combo.py",
+    "/repo/test/rules/std_L007_test.py",
+    "/repo/test/rules/std_L003_test.py",
+    "/repo/src/sqlfluff/__pycache__/__init__.cpython-312.pyc",
+    "/repo/util.py",
+    "/repo/tox.ini",
+    "/repo/test/test_testing.py",
+    "/repo/test/generate_parse_fixture_yml.py",
+    "/repo/src/sqlfluff/testing/rules.py",
+    "/repo/src/sqlfluff/testing/__init__.py",
+    "/repo/src/sqlfluff/rules/__init__.py",
+    "/repo/src/sqlfluff/rules/L049.py",
+    "/repo/src/sqlfluff/rules/L048.py",
+    "/repo/src/sqlfluff/rules/L047.py",
+    "/repo/src/sqlfluff/rules/L046.py",
+    "/repo/src/sqlfluff/rules/L045.py",
+    "/repo/src/sqlfluff/rules/L044.py",
+    "/repo/src/sqlfluff/rules/L043.py",
+    "/repo/src/sqlfluff/rules/L042.py",
+    "/repo/src/sqlfluff/rules/L041.py",
+    "/repo/src/sqlfluff/rules/L040.py",
+    "/repo/src/sqlfluff/rules/L038.py",
+    "/repo/src/sqlfluff/rules/L037.py",
+    "/repo/src/sqlfluff/rules/L035.py",
+    "/repo/src/sqlfluff/rules/L034.py",
+    "/repo/src/sqlfluff/rules/L033.py",
+    "/repo/src/sqlfluff/rules/L032.py",
+    "/repo/src/sqlfluff/rules/L031.py",
+    "/repo/src/sqlfluff/rules/L030.py",
+    "/repo/src/sqlfluff/rules/L029.py",
+    "/repo/src/sqlfluff/rules/L028.py",
+    "/repo/src/sqlfluff/rules/L027.py",
+    "/repo/src/sqlfluff/rules/L026.py",
+    "/repo/src/sqlfluff/rules/L025.py",
+    "/repo/src/sqlfluff/rules/L024.py",
+    "/repo/src/sqlfluff/rules/L023.py",
+    "/repo/src/sqlfluff/rules/L022.py",
+    "/repo/src/sqlfluff/rules/L021.py",
+    "/repo/src/sqlfluff/rules/L020.py",
+    "/repo/src/sqlfluff/rules/L004.py",
+    "/repo/src/sqlfluff/rules/L002.py",
+    "/repo/src/sqlfluff/rules/L005.py",
+    "/repo/src/sqlfluff/rules/L001.py",
+    "/repo/src/sqlfluff/rules/L006.py",
+    "/repo/src/sqlfluff/diff_quality_plugin.py",
+    "/repo/setup.py",
+    "/repo/requirements_dev.txt",
+    "/repo/requirements.txt",
+    "/repo/pytest.ini",
+    "/repo/mypy.ini",
+    "/repo/images/sqlfluff-wide.svg",
+    "/repo/images/sqlfluff-wide.png",
+    "/repo/plugins/sqlfluff-plugin-example/MANIFEST.in",
+    "/repo/plugins/sqlfluff-plugin-example/setup.py",
+    "/repo/images/sqlfluff-wide-lrg.png",
+    "/repo/images/sqlfluff-wide-media-preview-banner.png",
+    "/repo/images/sqlfluff-lrg-border.svg",
+    "/repo/images/sqlfluff-lrg-border.png",
+    "/repo/examples/04_getting_rules_and_dialects.py",
+    "/repo/examples/03_extracting_references.py",
+    "/repo/examples/02_timing_api_steps.py",
+    "/repo/examples/01_basic_api_usage.py",
+    "/repo/images/README.md",
+    "/repo/docs/requirements.txt",
+    "/repo/benchmarks/benchmarks.yml",
+    "/repo/benchmarks/bench_002/bench_002_pearson_fix.sql",
+    "/repo/benchmarks/bench_002/bench_002_pearson.sql",
+    "/repo/benchmarks/bench_002/.sqlfluff",
+    "/repo/docs/make.bat",
+    "/repo/docs/README.md",
+    "/repo/docs/Makefile",
+    "/repo/README.md",
+    "/repo/MANIFEST.in",
+    "/repo/LICENSE.md",
+    "/repo/CONTRIBUTING.md",
+    "/repo/benchmarks/bench_001_package.sql",
+    "/repo/CODE_OF_CONDUCT.md",
+    "/repo/CHANGELOG.md",
+    "/repo/.readthedocs.yml",
+    "/repo/.pre-commit-hooks.yaml",
+    "/repo/.gitignore",
+    "/repo/.github/workflows/publish-sqlfluff-release-to-pypi.yaml",
+    "/repo/.github/workflows/publish-dbt-templater-release-to-pypi.yaml",
+    "/repo/.github/release-drafter.yml",
+    "/repo/.github/codecov.yml",
+    "/repo/.github/PULL_REQUEST_TEMPLATE.md",
+    "/repo/.github/ISSUE_TEMPLATE/enhancement.md",
+    "/repo/.github/ISSUE_TEMPLATE/documention.md",
+    "/repo/.github/ISSUE_TEMPLATE/bug_report.md",
+    "/repo/.github/FUNDING.yml",
+    "/repo/test/fixtures/config/toml/pyproject.toml",
+    "/repo/test/fixtures/config/inheritance_a/nested/pyproject.toml",
+    "/repo/test/fixtures/config/inheritance_b/tox.ini",
+    "/repo/test/fixtures/config/inheritance_a/nested/tox.ini"
+  ],
+  "per_file": {
+    "/repo/src/sqlfluff/rules/L003.py": {
+      "reads": [
+        5,
+        19,
+        20
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class Rule_L003(BaseRule)",
+            "def _make_indent(",
+            "def _indent_size(segments: Sequence[RawSegment], tab_space_size: int = 4) -> int",
+            "def _reorder_raw_stack(",
+            "def segment_info(idx: int) -> Tuple[str, Optional[str]]",
+            "def move_indent_before_templated() -> None",
+            "def _process_raw_stack(",
+            "def _coerce_indent_to("
+          ]
+        },
+        {
+          "offset": 430,
+          "limit": 360,
+          "signatures": [
+            "def _get_element_template_info("
+          ]
+        },
+        {
+          "offset": 254,
+          "limit": 90,
+          "signatures": [
+            "def _strip_buffers(line_dict: dict) -> dict",
+            "def _is_last_segment(",
+            "def _eval(self, context: RuleContext) -> Optional[LintResult]"
+          ]
+        }
+      ]
+    },
+    "/repo/test/rules/std_fix_auto_test.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 240,
+          "signatures": [
+            "def make_dialect_path(dialect, fname)",
+            "def auto_fix_test(dialect, folder, caplog)",
+            "def test__std_fix_auto(dialect, folder, caplog)"
+          ]
+        }
+      ]
+    },
+    "/repo/test/rules/std_L016_L36_combo.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 200,
+          "signatures": [
+            "def test__rules__std_L016_L036_long_line_lint()",
+            "def test__rules__std_L016_L036_long_line_fix()",
+            "def test__rules__std_L016_L036_long_line_fix2()"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L036.py": {
+      "reads": [
+        6,
+        7
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class SelectTargetsInfo(NamedTuple)",
+            "class Rule_L036(BaseRule)",
+            "def _eval(self, context: RuleContext)",
+            "def _get_indexes(segment)",
+            "def _eval_multiple_select_target_elements(self, select_targets_info, segment)",
+            "def _eval_single_select_target_element("
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L039.py": {
+      "reads": [
+        12
+      ],
+      "edits": [],
+      "first_read_step": 12,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class Rule_L039(BaseRule)",
+            "def _eval(self, context: RuleContext) -> Optional[List[LintResult]]"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/dialects/dialect_ansi.py": {
+      "reads": [
+        13,
+        14,
+        15,
+        27
+      ],
+      "edits": [],
+      "first_read_step": 13,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1200,
+          "limit": 120,
+          "signatures": [
+            "class SelectClauseModifierSegment(BaseSegment)",
+            "class SelectClauseSegment(BaseSegment)",
+            "class JoinClauseSegment(BaseSegment)",
+            "def get_eventual_alias(self) -> AliasInfo",
+            "class JoinOnConditionSegment(BaseSegment)"
+          ]
+        },
+        {
+          "offset": 1838,
+          "limit": 40,
+          "signatures": [
+            "class SelectStatementSegment(BaseSegment)"
+          ]
+        },
+        {
+          "offset": 1918,
+          "limit": 70,
+          "signatures": [
+            "class CTEDefinitionSegment(BaseSegment)",
+            "def get_identifier(self) -> BaseSegment",
+            "class WithCompoundStatementSegment(BaseSegment)",
+            "class SetOperatorSegment(BaseSegment)"
+          ]
+        },
+        {
+          "offset": 1180,
+          "limit": 40,
+          "signatures": [
+            "class SelectClauseElementSegment(BaseSegment)",
+            "class SelectClauseModifierSegment(BaseSegment)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/parser/segments/base.py": {
+      "reads": [
+        17
+      ],
+      "edits": [],
+      "first_read_step": 17,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 660,
+          "limit": 80,
+          "signatures": [
+            "def is_raw(self)",
+            "def get_child(self, *seg_type)",
+            "def get_children(self, *seg_type)",
+            "def select_children(",
+            "def recursive_crawl(self, *seg_type, recurse_into=True)",
+            "def path_to(self, other)"
+          ]
+        }
+      ]
+    },
+    "/repo/requirements.txt": {
+      "reads": [
+        21
+      ],
+      "edits": [],
+      "first_read_step": 21,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/setup.py": {
+      "reads": [
+        21
+      ],
+      "edits": [],
+      "first_read_step": 21,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "def read(*names, **kwargs)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/__init__.py": {
+      "reads": [
+        21
+      ],
+      "edits": [],
+      "first_read_step": 21,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix": {
+      "reads": [
+        23
+      ],
+      "edits": [],
+      "first_read_step": 23,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix/ansi": {
+      "reads": [
+        24
+      ],
+      "edits": [],
+      "first_read_step": 24,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/007_with_clause/before.sql": {
+      "reads": [
+        25
+      ],
+      "edits": [],
+      "first_read_step": 25,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/007_with_clause/after.sql": {
+      "reads": [
+        25
+      ],
+      "edits": [],
+      "first_read_step": 25,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/008_with_clause/before.sql": {
+      "reads": [
+        25
+      ],
+      "edits": [],
+      "first_read_step": 25,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/008_with_clause/after.sql": {
+      "reads": [
+        25
+      ],
+      "edits": [],
+      "first_read_step": 25,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/010_CTEs_and_newlines/before.sql": {
+      "reads": [
+        25
+      ],
+      "edits": [],
+      "first_read_step": 25,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/010_CTEs_and_newlines/after.sql": {
+      "reads": [
+        25
+      ],
+      "edits": [],
+      "first_read_step": 25,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/core/linter/linter.py": {
+      "reads": [
+        48,
+        50
+      ],
+      "edits": [],
+      "first_read_step": 48,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 240,
+          "limit": 100,
+          "signatures": [
+            "def remove_templated_errors(",
+            "def _warn_unfixable(code: str)",
+            "def parse_rendered(cls, rendered: RenderedFile, recurse: bool = True)",
+            "def extract_ignore_from_comment(cls, comment: RawSegment)"
+          ]
+        },
+        {
+          "offset": 380,
+          "limit": 70,
+          "signatures": [
+            "def lint_parsed("
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/std_L003_L036_L039_combo_test.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 1,
+      "tool": "bash",
+      "input": {
+        "command": "git status --short",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Shows concise working tree status"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "test/rules/*L003*L036*L039*",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "sqlfluff/rules/L003.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "test__rules__std_L003_L036_L039",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "cte|common table expression|with_compound_statement",
+        "path": "/repo/src",
+        "include": "*.py"
+      },
+      "output_preview": "Found 154 matches (showing first 100)\n/repo/src/sqlfluff/testing/rules.py:\n  Line 68:         if e.desc().startswith(\"Unexpected exception\"):\n  Line 84:                 \"Expected errors on lines {}, but got errors on lines {}\".format(\n\n/repo/src/sqlfluff/rules/L045.py:\n  Line 20:         WITH cte1 A",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "L003.*L036.*L039|L036.*L039|move.*new line|single selects",
+        "path": "/repo",
+        "include": "*.yml"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "SELECT my_id,|WITH .*AS \\(|SELECT\\n\\s*my_id",
+        "path": "/repo/test/fixtures/linter/autofix",
+        "include": "*.sql"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 17,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/core/parser/segments/base.py",
+        "offset": 660,
+        "limit": 80
+      },
+      "output_preview": "<path>/repo/src/sqlfluff/core/parser/segments/base.py</path>\n<type>file</type>\n<content>660:             typs |= s.type_set()\n661:         return typs\n662: \n663:     def is_raw(self):\n664:         \"\"\"Return True if this segment has no children.\"\"\"\n665:         return len(self.segments) == 0\n666: \n66",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 18,
+      "tool": "grep",
+      "input": {
+        "pattern": "hanging_indent|clean_indent|desired_indent|indent_balance|Indent expected",
+        "path": "/repo/src/sqlfluff/rules/L003.py",
+        "include": "L003.py"
+      },
+      "output_preview": "Found 40 matches\n/repo/src/sqlfluff/rules/L003.py:\n  Line 151:         indent_balance = 0\n  Line 159:         this_indent_balance = 0\n  Line 160:         clean_indent = False\n  Line 165:             # Pin indent_balance to above zero\n  Line 166:             if indent_balance < 0:\n  Line 167:        ",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 19,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L003.py",
+        "offset": 430,
+        "limit": 360
+      },
+      "output_preview": "<path>/repo/src/sqlfluff/rules/L003.py</path>\n<type>file</type>\n<content>430:     def _process_current_line(self, res: dict, memory: dict) -> LintResult:\n431:         \"\"\"Checks indentation of one line of code, returning a LintResult.\n432: \n433:         The _eval() function calls it for the current l",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 22,
+      "tool": "grep",
+      "input": {
+        "pattern": "WITH .*AS \\(|WITH\\n|common table",
+        "path": "/repo/test/fixtures/linter/autofix/ansi",
+        "include": "before.sql"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 22,
+      "tool": "glob",
+      "input": {
+        "pattern": "test/fixtures/linter/autofix/ansi/*",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 59,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport logging\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\nlogging.basicConfig(level=logging.DEBUG)\nlogging.getLogger('sqlfluff.linter').setLevel(logging.INFO)\nlogging.getLogger('sqlfluff.rules').setLevel(logging.DEBUG)\nlogging.getLogger('sqlfluff.parser').setLevel(logging.WARNING)\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nres = lnt.lint_string(sql, fix=True)\nprint('FINAL:')\nprint(res.tree.raw)\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Logs rule fix loops for reproduced case"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nI",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 62,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- src/sqlfluff/rules/L003.py test/rules/std_L016_L36_combo.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Shows diff for touched files"
+      },
+      "output_preview": "diff --git a/src/sqlfluff/rules/L003.py b/src/sqlfluff/rules/L003.py\nindex 83ff13fe..f38adb54 100644\n--- a/src/sqlfluff/rules/L003.py\n+++ b/src/sqlfluff/rules/L003.py\n@@ -667,6 +667,14 @@ class Rule_L003(BaseRule):\n                     else:\n                         # It doesn't. That means we *shou",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "WITH|cte|indent|L003|L036|L039",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 965 matches (showing first 100)\n/repo/util.py:\n  Line 68:         click.echo(\"CI detected!\")\n\n/repo/test/test_testing.py:\n  Line 20: def test_assert_rule_fail_in_sql_should_fail_queries_that_unexpectedly_pass():\n  Line 52:         rule=\"L003\",\n\n/repo/test/rules/std_test.py:\n  Line 12:         "
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "WITH example AS|other_thing|one_more|my_id",
+        "path": "/repo",
+        "include": "*"
+      },
+      "output_preview": "Found 8 matches\n/repo/test/fixtures/dialects/snowflake/snowflake_alter_user_remove_delegate_auth.sql:\n  Line 1: ALTER USER my_user REMOVE DELEGATED AUTHORIZATION OF ROLE my_role FROM SECURITY INTEGRATION my_idp;\n\n/repo/test/fixtures/dialects/snowflake/snowflake_alter_user_remove_delegate_auth.yml:\n "
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "single selects should be on SELECT line|L036",
+        "path": "/repo/src/sqlfluff/rules",
+        "include": "L036.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/src/sqlfluff/rules/L036.py:\n  Line 1: \"\"\"Implementation of Rule L036.\"\"\"\n  Line 23: class Rule_L036(BaseRule):"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "L003|L036|L039",
+        "path": "/repo/test/fixtures/linter/autofix",
+        "include": "test-config.yml"
+      },
+      "output_preview": "Found 17 matches\n/repo/test/fixtures/linter/autofix/bigquery/005_unnest_spacing/test-config.yml:\n  Line 3:     - L003\n\n/repo/test/fixtures/linter/autofix/bigquery/004_templating/test-config.yml:\n  Line 4:     - L003\n\n/repo/test/fixtures/linter/autofix/bigquery/003_templating/test-config.yml:\n  Line "
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "select_clause|with_compound_statement|common_table_expression",
+        "path": "/repo/src/sqlfluff/dialects/dialect_ansi.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 6 matches\n/repo/src/sqlfluff/dialects/dialect_ansi.py:\n  Line 1192:     type = \"select_clause_element\"\n  Line 1213:     type = \"select_clause_modifier\"\n  Line 1224:     type = \"select_clause\"\n  Line 1929:     type = \"common_table_expression\"\n  Line 1960:     type = \"with_compound_statement\"\n  "
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nparsed = lnt.parse_string(sql)\n# dump select_clause segments\nfor seg in parsed.tree.recursive_crawl('select_clause'):\n    print('SELECT CLAUSE:', repr(seg.raw))\n    for i,s in enumerate(seg.segments):\n        print(i, s.type, repr(s.raw), getattr(s,'indent_val',None), s.pos_marker.working_line_no, s.pos_marker.working_line_pos)\n    print('---')\nres = lnt.lint_string(sql, fix=True)\nprint('FIXED SQL:')\nprint(res.tree.raw)\nprint('VIOLATIONS:', res.check_tuples())\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Reproduces CTE select indentation bug"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nModuleNotFoundError: No module named 'sqlfluff'\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nparsed = lnt.parse_string(sql)\nfor seg in parsed.tree.recursive_crawl('select_clause'):\n    print('SELECT CLAUSE:', repr(seg.raw))\n    for i,s in enumerate(seg.segments):\n        print(i, s.type, repr(s.raw), getattr(s,'indent_val',None), s.pos_marker.working_line_no, s.pos_marker.working_line_pos)\n    print('---')\nres = lnt.lint_string(sql, fix=True)\nprint('FIXED SQL:')\nprint(res.tree.raw)\nprint('VIOLATIONS:', res.check_tuples())\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Reproduces bug with project source path"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 3, in <module>\n    import pytest\nModuleNotFoundError: No module named 'pytest'\n"
+    },
+    {
+      "step": 13,
+      "tool": "grep",
+      "input": {
+        "pattern": "Indent|Dedent|implicit_indent|select_clause",
+        "path": "/repo/src/sqlfluff/dialects/dialect_ansi.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 44 matches\n/repo/src/sqlfluff/dialects/dialect_ansi.py:\n  Line 34:     Indent,\n  Line 35:     Dedent,\n  Line 418:         Indent,\n  Line 423:         # NB: The Dedent for the indent above lives in the\n  Line 1019:         Indent,\n  Line 1022:         Dedent,\n  Line 1113:         Indent,\n  Line"
+    },
+    {
+      "step": 16,
+      "tool": "grep",
+      "input": {
+        "pattern": "def select_children",
+        "path": "/repo/src",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/src/sqlfluff/core/parser/segments/base.py:\n  Line 682:     def select_children("
+    },
+    {
+      "step": 26,
+      "tool": "grep",
+      "input": {
+        "pattern": "random whitespace|other stuff aligns nicely|multiple select targets|WhitespaceSegment\\(\\)",
+        "path": "/repo/src/sqlfluff/rules",
+        "include": "*.py"
+      },
+      "output_preview": "Found 19 matches\n/repo/src/sqlfluff/rules/L049.py:\n  Line 80:                             WhitespaceSegment(),\n  Line 93:                         ] = [WhitespaceSegment()]\n  Line 96:                         edit = edit + [WhitespaceSegment()]\n\n/repo/src/sqlfluff/rules/L043.py:\n  Line 106:           "
+    },
+    {
+      "step": 26,
+      "tool": "grep",
+      "input": {
+        "pattern": "hanging indent|with clause|cte|L036",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "Found 130 matches (showing first 100)\n/repo/test/test_testing.py:\n  Line 20: def test_assert_rule_fail_in_sql_should_fail_queries_that_unexpectedly_pass():\n\n/repo/test/rules/std_test.py:\n  Line 76:         # Make sure that ignoring works as expected\n  Line 117: def test_improper_configs_are_rejected"
+    },
+    {
+      "step": 28,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pip install pytest",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Installs pytest for local reproduction"
+      },
+      "output_preview": "Collecting pytest\n  Downloading pytest-9.0.2-py3-none-any.whl.metadata (7.6 kB)\nCollecting iniconfig>=1.0.1 (from pytest)\n  Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)\nCollecting packaging>=22 (from pytest)\n  Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)\nCollecting"
+    },
+    {
+      "step": 29,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nparsed = lnt.parse_string(sql)\nfor seg in parsed.tree.recursive_crawl('select_clause'):\n    print('SELECT CLAUSE:', repr(seg.raw))\n    for i,s in enumerate(seg.segments):\n        print(i, s.type, repr(s.raw), getattr(s,'indent_val',None), s.pos_marker.working_line_no, s.pos_marker.working_line_pos)\n    print('---')\nres = lnt.lint_string(sql, fix=True)\nprint('FIXED SQL:')\nprint(res.tree.raw)\nprint('VIOLATIONS:', res.check_tuples())\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Reproduces bug with source path"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 6, in <module>\n    from sqlfluff.api import lint, fix, parse, list_rules, list_dialects  # noqa: F401\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File"
+    },
+    {
+      "step": 30,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pip install -r requirements.txt",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Installs project runtime dependencies"
+      },
+      "output_preview": "Ignoring dataclasses: markers 'python_version < \"3.7\"' don't match your environment\nRequirement already satisfied: click>=7.1 in /usr/local/lib/python3.12/site-packages (from -r requirements.txt (line 1)) (8.3.1)\nCollecting colorama>=0.3 (from -r requirements.txt (line 2))\n  Downloading colorama-0.4"
+    },
+    {
+      "step": 31,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nparsed = lnt.parse_string(sql)\nfor seg in parsed.tree.recursive_crawl('select_clause'):\n    print('SELECT CLAUSE:', repr(seg.raw))\n    for i,s in enumerate(seg.segments):\n        print(i, s.type, repr(s.raw), getattr(s,'indent_val',None), s.pos_marker.working_line_no, s.pos_marker.working_line_pos)\n    print('---')\nres = lnt.lint_string(sql, fix=True)\nprint('FIXED SQL:')\nprint(res.tree.raw)\nprint('VIOLATIONS:', res.check_tuples())\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Reproduces bug with installed deps"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 9, in <module>\n    import pkg_resources\nModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 32,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pip install setuptools",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Installs setuptools dependency"
+      },
+      "output_preview": "Collecting setuptools\n  Downloading setuptools-82.0.1-py3-none-any.whl.metadata (6.5 kB)\nDownloading setuptools-82.0.1-py3-none-any.whl (1.0 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 1.0/1.0 MB 55.2 MB/s eta 0:00:00\nInstalling collected packages: setuptools\nSuccessfully installed setuptools-82"
+    },
+    {
+      "step": 33,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nparsed = lnt.parse_string(sql)\nfor seg in parsed.tree.recursive_crawl('select_clause'):\n    print('SELECT CLAUSE:', repr(seg.raw))\n    for i,s in enumerate(seg.segments):\n        print(i, s.type, repr(s.raw), getattr(s,'indent_val',None), s.pos_marker.working_line_no, s.pos_marker.working_line_pos)\n    print('---')\nres = lnt.lint_string(sql, fix=True)\nprint('FIXED SQL:')\nprint(res.tree.raw)\nprint('VIOLATIONS:', res.check_tuples())\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Reproduces bug after installing setuptools"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 9, in <module>\n    import pkg_resources\nModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 34,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sys\nprint(sys.executable)\nprint(sys.version)\nimport pkg_resources\nprint('pkg_resources ok')\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Checks python environment and pkg_resources"
+      },
+      "output_preview": "/usr/local/bin/python\n3.12.10 (main, May 21 2025, 23:34:56) [GCC 12.2.0]\nTraceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\nModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 35,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pip show setuptools",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Shows installed setuptools details"
+      },
+      "output_preview": "Name: setuptools\nVersion: 82.0.1\nSummary: Most extensible Python build backend with support for C/C++ extension modules\nHome-page: \nAuthor: \nAuthor-email: Python Packaging Authority <distutils-sig@python.org>\nLicense-Expression: MIT\nLocation: /usr/local/lib/python3.12/site-packages\nRequires: \nRequir"
+    },
+    {
+      "step": 36,
+      "tool": "bash",
+      "input": {
+        "command": "ls \"/usr/local/lib/python3.12/site-packages\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Lists installed site-packages entries"
+      },
+      "output_preview": "4ef79d6367bb14396397__mypyc.cpython-312-x86_64-linux-gnu.so\n81d243bd2c585b0f4821__mypyc.cpython-312-x86_64-linux-gnu.so\nREADME.txt\n__pycache__\n_distutils_hack\n_pytest\n_yaml\nannotated_doc\nannotated_doc-0.0.4.dist-info\nannotated_types\nannotated_types-0.7.0.dist-info\nanyio\nanyio-4.13.0.dist-info\nappdir"
+    },
+    {
+      "step": 37,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pip install \"setuptools<81\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Installs setuptools with pkg_resources"
+      },
+      "output_preview": "Collecting setuptools<81\n  Downloading setuptools-80.10.2-py3-none-any.whl.metadata (6.6 kB)\nDownloading setuptools-80.10.2-py3-none-any.whl (1.1 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 1.1/1.1 MB 11.1 MB/s eta 0:00:00\nInstalling collected packages: setuptools\n  Attempting uninstall: setupto"
+    },
+    {
+      "step": 38,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport pkg_resources\nprint(pkg_resources.__file__)\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Verifies pkg_resources is available"
+      },
+      "output_preview": "<stdin>:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n/usr/local/lib/python3.12/site-packages/pkg_res"
+    },
+    {
+      "step": 39,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nparsed = lnt.parse_string(sql)\nfor seg in parsed.tree.recursive_crawl('select_clause'):\n    print('SELECT CLAUSE:', repr(seg.raw))\n    for i,s in enumerate(seg.segments):\n        print(i, s.type, repr(s.raw), getattr(s,'indent_val',None), s.pos_marker.working_line_no, s.pos_marker.working_line_pos)\n    print('---')\nres = lnt.lint_string(sql, fix=True)\nprint('FIXED SQL:')\nprint(res.tree.raw)\nprint('VIOLATIONS:', res.check_tuples())\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Reproduces bug after dependency setup"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nT"
+    },
+    {
+      "step": 40,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pip install -e .",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Installs project in editable mode"
+      },
+      "output_preview": "Obtaining file:///repo\n  Preparing metadata (setup.py): started\n  Preparing metadata (setup.py): finished with status 'done'\nRequirement already satisfied: click>=7.1 in /usr/local/lib/python3.12/site-packages (from sqlfluff==0.7.1) (8.3.1)\nRequirement already satisfied: colorama>=0.3 in /usr/local/"
+    },
+    {
+      "step": 41,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nparsed = lnt.parse_string(sql)\nfor seg in parsed.tree.recursive_crawl('select_clause'):\n    print('SELECT CLAUSE:', repr(seg.raw))\n    for i,s in enumerate(seg.segments):\n        print(i, s.type, repr(s.raw), getattr(s,'indent_val',None), s.pos_marker.working_line_no, s.pos_marker.working_line_pos)\n    print('---')\nres = lnt.lint_string(sql, fix=True)\nprint('FIXED SQL:')\nprint(res.tree.raw)\nprint('VIOLATIONS:', res.check_tuples())\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Reproduces bug using editable install"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nO"
+    },
+    {
+      "step": 42,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nres = lnt.lint_string(sql, fix=True)\nprint(type(res))\nfor v in res.violations:\n    print('VIOLATION', v.rule_code(), v.line_no(), v.line_pos(), v.desc())\n    print(' fixes:', getattr(v, 'fixes', None))\n    if getattr(v, 'fixes', None):\n        for f in v.fixes:\n            print('  ', f)\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Prints rule fixes for reproduced case"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nO"
+    },
+    {
+      "step": 43,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nres = lnt.lint_string(sql, fix=True)\nfor v in res.violations:\n    print('VIOLATION', getattr(v,'rule_code',lambda:None)() if callable(getattr(v,'rule_code',None)) else getattr(v,'rule_code',None), getattr(v,'line_no',None), getattr(v,'line_pos',None), v.desc())\n    print(' fixes:', getattr(v, 'fixes', None))\n    if getattr(v, 'fixes', None):\n        for f in v.fixes:\n            print('  type=', f.edit_type, 'anchor=', f.anchor, 'edit=', f.edit)\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Prints violations and fixes details"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nO"
+    },
+    {
+      "step": 44,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003,L036,L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nres = lnt.lint_string(sql, fix=False)\nfor v in res.violations:\n    code = v.rule_code() if callable(getattr(v,'rule_code',None)) else getattr(v,'rule_code',None)\n    print('VIOLATION', code, getattr(v,'line_no',None), getattr(v,'line_pos',None), v.desc())\n    if getattr(v, 'fixes', None):\n        for f in v.fixes:\n            print('  ', f)\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Prints violations without applying fixes"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nV"
+    },
+    {
+      "step": 45,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sqlfluff\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\nprint(sqlfluff.fix(sql, rules='L036', dialect='ansi'))\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Applies only L036 to reproduced case"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nW"
+    },
+    {
+      "step": 46,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sqlfluff\nsql = '''WITH example AS (\n    SELECT\nmy_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\nprint('L003 only result:')\nprint(sqlfluff.fix(sql, rules='L003', dialect='ansi'))\nprint('Violations:', sqlfluff.lint(sql, rules='L003', dialect='ansi'))\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Applies L003 after L036-shaped SQL"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nL"
+    },
+    {
+      "step": 47,
+      "tool": "grep",
+      "input": {
+        "pattern": "would re-cause the same error|not applied",
+        "path": "/repo/src",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/src/sqlfluff/core/linter/linter.py:\n  Line 287:             f\"One fix for {code} not applied, it would re-cause the same error.\""
+    },
+    {
+      "step": 49,
+      "tool": "grep",
+      "input": {
+        "pattern": "_warn_unfixable|re-cause|applied",
+        "path": "/repo/src/sqlfluff/core/linter/linter.py",
+        "include": "linter.py"
+      },
+      "output_preview": "Found 4 matches\n/repo/src/sqlfluff/core/linter/linter.py:\n  Line 285:     def _warn_unfixable(code: str):\n  Line 287:             f\"One fix for {code} not applied, it would re-cause the same error.\"\n  Line 412:                         cls._warn_unfixable(crawler.code)\n  Line 426:                    "
+    },
+    {
+      "step": 51,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sqlfluff\nsql = '''WITH example AS (\n    SELECT\n        my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\nprint(sqlfluff.fix(sql, rules='L039', dialect='ansi'))\nprint(sqlfluff.lint(sql, rules='L039', dialect='ansi'))\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Checks whether L039 collapses indent after newline"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nW"
+    },
+    {
+      "step": 52,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT\n        my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L039', dialect='ansi'))\nlnt = Linter(config=cfg)\nparsed = lnt.parse_string(sql)\nfor seg in parsed.tree.recursive_crawl('select_clause'):\n    print('SELECT CLAUSE:', repr(seg.raw))\n    for i,s in enumerate(seg.segments):\n        print(i, s.type, repr(s.raw), getattr(s,'indent_val',None), s.pos_marker.working_line_no, s.pos_marker.working_line_pos)\n    print('---')\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Dumps select clause segments for correctly indented SQL"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nS"
+    },
+    {
+      "step": 53,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT\nmy_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003', dialect='ansi'))\nlnt = Linter(config=cfg)\nparsed = lnt.parse_string(sql)\nfor seg in parsed.tree.recursive_crawl('select_clause'):\n    print('SELECT CLAUSE:', repr(seg.raw))\n    for i,s in enumerate(seg.segments):\n        print(i, s.type, repr(s.raw), getattr(s,'indent_val',None), s.pos_marker.working_line_no, s.pos_marker.working_line_pos)\n    print('---')\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Dumps select clause segments after L036-only output"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nS"
+    },
+    {
+      "step": 54,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom sqlfluff.core import Linter, FluffConfig\nsql = '''WITH example AS (\n    SELECT\nmy_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\ncfg = FluffConfig.from_root(overrides=dict(rules='L003', dialect='ansi'))\nlnt = Linter(config=cfg)\nres = lnt.lint_string(sql, fix=False)\nfor v in res.violations:\n    print(v.rule_code(), v.line_no, v.line_pos, v.desc())\n    for f in v.fixes:\n        print(' ', f.edit_type, getattr(f.anchor,'raw',f.anchor), f.edit)\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Prints L003 fixes on L036-only output"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nL"
+    },
+    {
+      "step": 56,
+      "tool": "bash",
+      "input": {
+        "command": "pytest test/rules/std_L016_L36_combo.py -q",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted L036 combo regression tests"
+      },
+      "output_preview": "...F                                                                     [100%]\n=================================== FAILURES ===================================\n_________________ test__rules__std_L003_L036_L039_with_cte_fix _________________\n\n    def test__rules__std_L003_L036_L039_with_cte_fix():\n "
+    },
+    {
+      "step": 57,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sqlfluff\nsql = '''WITH example AS (\n    SELECT\n    my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\nprint(sqlfluff.lint(sql, rules='L039', dialect='ansi'))\nprint(sqlfluff.fix(sql, rules='L039', dialect='ansi'))\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Checks L039 on partially indented CTE select"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\n["
+    },
+    {
+      "step": 58,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sqlfluff\nsql = '''WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n'''\nprint(sqlfluff.lint(sql, rules='L003', dialect='ansi'))\nprint(sqlfluff.fix(sql, rules='L003', dialect='ansi'))\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Checks L003 alone on original SQL"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\n["
+    },
+    {
+      "step": 61,
+      "tool": "bash",
+      "input": {
+        "command": "pytest test/rules/std_L016_L36_combo.py -q",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted combo regression tests"
+      },
+      "output_preview": "....                                                                     [100%]\n=============================== warnings summary ===============================\nsrc/sqlfluff/__init__.py:9\n  /repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.p"
+    },
+    {
+      "step": 62,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sqlfluff\nsql = '''WITH example AS (\\n    SELECT my_id,\\n        other_thing,\\n        one_more\\n    FROM\\n        my_table\\n)\\n\\nSELECT *\\nFROM example\\n'''\nprint(sqlfluff.fix(sql, rules='L003,L036,L039', dialect='ansi'))\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Verifies reproduced CTE formatting output"
+      },
+      "output_preview": "/repo/src/sqlfluff/__init__.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n  import pkg_resources\nW"
+    }
+  ],
+  "token_cost": {
+    "total": 2793011,
+    "input": 69730,
+    "output": 17745,
+    "cache_read": 2705536,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 391.61,
+  "patch_non_empty": true
+}

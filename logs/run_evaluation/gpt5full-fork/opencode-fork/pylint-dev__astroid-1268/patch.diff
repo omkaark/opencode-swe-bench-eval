@@ -1,0 +1,29 @@
+diff --git a/astroid/nodes/as_string.py b/astroid/nodes/as_string.py
+index 427ccc15..f12b2abc 100644
+--- a/astroid/nodes/as_string.py
++++ b/astroid/nodes/as_string.py
+@@ -206,6 +206,10 @@ class AsStringVisitor:
+             return "..."
+         return repr(node.value)
+ 
++    def visit_unknown(self, node):
++        """return an astroid.Unknown node as string"""
++        return node.qname()
++
+     def visit_continue(self, node):
+         """return an astroid.Continue node as string"""
+         return "continue"
+diff --git a/tests/unittest_nodes.py b/tests/unittest_nodes.py
+index 7c78cd23..5b4dafe9 100644
+--- a/tests/unittest_nodes.py
++++ b/tests/unittest_nodes.py
+@@ -131,6 +131,9 @@ class AsStringTest(resources.SysPathSetup, unittest.TestCase):
+         self.assertNotEqual(ast_nodes[3].as_string(), "frozenset(None)")
+         self.assertNotEqual(ast_nodes[4].as_string(), "frozenset(1)")
+ 
++    def test_as_string_unknown(self) -> None:
++        self.assertEqual(nodes.Unknown().as_string(), "Unknown")
++
+     def test_varargs_kwargs_as_string(self) -> None:
+         ast = abuilder.string_build("raise_string(*args, **kwargs)").body[0]
+         self.assertEqual(ast.as_string(), "raise_string(*args, **kwargs)")

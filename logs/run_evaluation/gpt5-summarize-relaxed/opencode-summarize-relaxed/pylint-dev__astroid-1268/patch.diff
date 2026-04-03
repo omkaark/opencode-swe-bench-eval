@@ -1,0 +1,27 @@
+diff --git a/astroid/nodes/as_string.py b/astroid/nodes/as_string.py
+index 427ccc15..a95819b4 100644
+--- a/astroid/nodes/as_string.py
++++ b/astroid/nodes/as_string.py
+@@ -273,6 +273,10 @@ class AsStringVisitor:
+         """return an Empty node as string"""
+         return ""
+ 
++    def visit_unknown(self, node):
++        """return an Unknown node as string"""
++        return ""
++
+     def visit_for(self, node):
+         """return an astroid.For node as string"""
+         fors = "for {} in {}:\n{}".format(
+diff --git a/tests/unittest_nodes.py b/tests/unittest_nodes.py
+index 7c78cd23..6d65216e 100644
+--- a/tests/unittest_nodes.py
++++ b/tests/unittest_nodes.py
+@@ -1194,6 +1194,7 @@ def test_unknown() -> None:
+     assert isinstance(next(nodes.Unknown().infer()), type(util.Uninferable))
+     assert isinstance(nodes.Unknown().name, str)
+     assert isinstance(nodes.Unknown().qname(), str)
++    assert nodes.Unknown().as_string() == ""
+ 
+ 
+ @pytest.mark.skipif(not HAS_TYPED_AST, reason="requires typed_ast")

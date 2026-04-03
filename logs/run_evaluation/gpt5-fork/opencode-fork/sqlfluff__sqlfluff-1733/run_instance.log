@@ -1,0 +1,53 @@
+2026-04-03 04:35:30,798 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L036.py...
+Applied patch src/sqlfluff/rules/L036.py cleanly.
+
+2026-04-03 04:35:32,436 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..5375d116 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -102,6 +102,15 @@ class Rule_L036(BaseRule):
+                 base_segment.pos_marker.working_line_no
+                 == select_target.pos_marker.working_line_no
+             ):
++                # If the target itself carries leading whitespace, remove it.
++                # This avoids preserving an extra space when the target is
++                # moved onto a new line.
++                leading_whitespace = select_target.select_children(
++                    select_if=lambda s: s.is_type("whitespace"),
++                    loop_while=lambda s: s.is_type("whitespace"),
++                )
++                fixes += [LintFix("delete", ws) for ws in leading_whitespace]
++
+                 # Find and delete any whitespace before the select target.
+                 start_seg = select_targets_info.select_idx
+                 # If any select modifier (e.g. distinct ) is present, start
+
+2026-04-03 04:35:41,743 - INFO - Test runtime: 8.89 seconds
+2026-04-03 04:35:41,743 - INFO - Test output for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/gpt5-fork/opencode-fork/sqlfluff__sqlfluff-1733/test_output.txt
+2026-04-03 04:35:42,328 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..5375d116 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -102,6 +102,15 @@ class Rule_L036(BaseRule):
+                 base_segment.pos_marker.working_line_no
+                 == select_target.pos_marker.working_line_no
+             ):
++                # If the target itself carries leading whitespace, remove it.
++                # This avoids preserving an extra space when the target is
++                # moved onto a new line.
++                leading_whitespace = select_target.select_children(
++                    select_if=lambda s: s.is_type("whitespace"),
++                    loop_while=lambda s: s.is_type("whitespace"),
++                )
++                fixes += [LintFix("delete", ws) for ws in leading_whitespace]
++
+                 # Find and delete any whitespace before the select target.
+                 start_seg = select_targets_info.select_idx
+                 # If any select modifier (e.g. distinct ) is present, start
+
+2026-04-03 04:35:42,328 - INFO - Grading answer for sqlfluff__sqlfluff-1733...
+2026-04-03 04:35:42,330 - INFO - report: {'sqlfluff__sqlfluff-1733': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/rules/std_L003_L036_L039_combo_test.py::test__rules__std_L003_L036_L039']}, 'PASS_TO_PASS': {'success': ['test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_lint', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix2'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1733: resolved: False

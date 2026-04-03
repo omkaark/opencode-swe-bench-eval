@@ -1,0 +1,212 @@
+{
+  "instance_id": "pylint-dev__astroid-1978",
+  "variant": "summarize",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/astroid/raw_building.py",
+    "/repo/tests/unittest_raw_building.py"
+  ],
+  "per_file": {
+    "/repo/astroid/raw_building.py": {
+      "reads": [
+        2,
+        3,
+        5,
+        11
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 420,
+          "limit": 120,
+          "signatures": [
+            "def imported_member(self, node, member, name: str) -> bool",
+            "def _set_proxied(const) -> nodes.ClassDef",
+            "def _astroid_bootstrapping() -> None"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def _attach_local_node(parent, node, name: str) -> None",
+            "def _add_dunder_class(func, member) -> None",
+            "def attach_dummy_node(node, name: str, runtime_object=_EMPTY_OBJECT_MARKER) -> None",
+            "def attach_const_node(node, name: str, value) -> None",
+            "def attach_import_node(node, modname: str, membername: str) -> None",
+            "def build_module(name: str, doc: str | None = None) -> nodes.Module",
+            "def build_class(",
+            "def build_function("
+          ]
+        },
+        {
+          "offset": 360,
+          "limit": 60,
+          "signatures": [
+            "def object_build("
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_raw_building.py": {
+      "reads": [
+        2,
+        11
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class RawBuildingTC(unittest.TestCase)",
+            "def test_attach_dummy_node(self) -> None",
+            "def test_build_module(self) -> None",
+            "def test_build_class(self) -> None",
+            "def test_build_function(self) -> None",
+            "def test_build_function_args(self) -> None",
+            "def test_build_function_defaults(self) -> None",
+            "def test_build_function_posonlyargs(self) -> None",
+            "def test_build_function_kwonlyargs(self) -> None",
+            "def test_build_from_import(self) -> None",
+            "def test_io_is__io(self)",
+            "def test_build_function_deepinspect_deprecation(self) -> None",
+            "def test_module_object_with_broken_getattr(self) -> None"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 170,
+          "signatures": [
+            "class RawBuildingTC(unittest.TestCase)",
+            "def test_attach_dummy_node(self) -> None",
+            "def test_build_module(self) -> None",
+            "def test_build_class(self) -> None",
+            "def test_build_function(self) -> None",
+            "def test_build_function_args(self) -> None",
+            "def test_build_function_defaults(self) -> None",
+            "def test_build_function_posonlyargs(self) -> None",
+            "def test_build_function_kwonlyargs(self) -> None",
+            "def test_build_from_import(self) -> None",
+            "def test_io_is__io(self)",
+            "def test_build_function_deepinspect_deprecation(self) -> None",
+            "def test_module_object_with_broken_getattr(self) -> None",
+            "def test_build_module_getattr_catch_output() -> None",
+            "def module_getattr(name)"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/testdata/python3/data/fake_module_with_warnings.py": {
+      "reads": [
+        3
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def __dir__()",
+            "def __getattr__(name)"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_modutils.py": {
+      "reads": [
+        7
+      ],
+      "edits": [],
+      "first_read_step": 7,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 70,
+          "limit": 50,
+          "signatures": [
+            "def test_known_values_load_module_from_name_1(self) -> None",
+            "def test_known_values_load_module_from_name_2(self) -> None",
+            "def test_raise_load_module_from_name_1(self) -> None",
+            "def test_import_dotted_library(",
+            "def function_with_stdout_and_stderr(expected_out, expected_err)",
+            "def mocked_function(*args, **kwargs)",
+            "class GetModulePartTest(unittest.TestCase)",
+            "def test_known_values_get_module_part_1(self) -> None"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "raw_building|np\\.long|FutureWarning|test_build_module_getattr_catch_output",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 15 matches\n/repo/tests/unittest_regrtest.py:\n  Line 17: from astroid.raw_building import build_module\n\n/repo/tests/unittest_raw_building.py:\n  Line 21: from astroid.raw_building import (\n  Line 91:         # is in astroid.raw_building.imported_member, which verifies\n\n/repo/tests/unittest_helpe"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "catch_warnings|simplefilter\\(|FutureWarning|warnings\\.",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 28 matches\n/repo/astroid/util.py:\n  Line 122:     warnings.warn(\n  Line 147:     https://docs.python.org/3/library/warnings.html#default-warning-filter\n  Line 153:         for filter in warnings.filters\n\n/repo/astroid/test_utils.py:\n  Line 58:     warnings.simplefilter(\"always\", warning)\n  Lin"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "catch_output|capsys|warnings",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 18 matches\n/repo/tests/unittest_scoped_nodes.py:\n  Line 16: import warnings\n  Line 2862:     with warnings.catch_warnings():\n  Line 2863:         # Modify warnings filter to raise error for DeprecationWarning\n  Line 2864:         warnings.simplefilter(\"error\", DeprecationWarning)\n\n/repo/tests/"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_raw_building.py -k \"build_module_getattr_catch_output or build_function_deepinspect_deprecation or module_object_with_broken_getattr\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted raw_building pytest tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python -c 'import sys, types, warnings; from astroid.builder import AstroidBuilder; warned_module = types.ModuleType(\"warned_module\"); imported_member = type(\"DeprecatedAlias\", (), {}); imported_member.__module__ = warned_module.__name__; \n\ndef module_getattr(name):\n    if name == \"DeprecatedAlias\":\n        warnings.warn(\"This is what numpy would do\", FutureWarning, stacklevel=2)\n        return imported_member\n    raise AttributeError(name)\n\nwarned_module.__getattr__ = module_getattr; sys.modules[warned_module.__name__] = warned_module; module = types.ModuleType(\"test\"); module.DeprecatedAlias = imported_member\nwith warnings.catch_warnings(record=True) as records:\n    warnings.simplefilter(\"always\")\n    AstroidBuilder().module_build(module, \"test\")\nassert not records, records\nsys.modules.pop(warned_module.__name__, None)\nprint(\"ok\")'",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks raw_building suppresses imported member warnings"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/astroid/__init__.py\", line 42, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 17, in <module>\n    from astroid.nodes._base_nodes import Stateme"
+    }
+  ],
+  "token_cost": {
+    "total": 189679,
+    "input": 21976,
+    "output": 3863,
+    "cache_read": 163840,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 91.54,
+  "patch_non_empty": true
+}

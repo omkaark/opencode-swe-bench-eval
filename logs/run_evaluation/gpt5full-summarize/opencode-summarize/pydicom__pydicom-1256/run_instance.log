@@ -1,0 +1,143 @@
+2026-04-03 17:57:15,966 - INFO - >>>>> Applied Patch:
+Checking patch pydicom/jsonrep.py...
+Checking patch pydicom/tests/test_json.py...
+Applied patch pydicom/jsonrep.py cleanly.
+Applied patch pydicom/tests/test_json.py cleanly.
+
+2026-04-03 17:57:16,776 - INFO - Git diff before:
+diff --git a/pydicom/jsonrep.py b/pydicom/jsonrep.py
+index c6ef519..2a677f4 100644
+--- a/pydicom/jsonrep.py
++++ b/pydicom/jsonrep.py
+@@ -4,7 +4,7 @@
+ import base64
+ from inspect import signature
+ import inspect
+-from typing import Callable, Optional, Union
++from typing import Callable, Optional, Union, cast
+ import warnings
+ 
+ from pydicom.tag import BaseTag
+@@ -97,15 +97,23 @@ class JsonDataElementConverter:
+         self.vr = vr
+         self.value = value
+         self.value_key = value_key
++        self.bulk_data_element_handler: Optional[
++            Callable[[BaseTag, str, str], object]
++        ] = None
+         if (
+             bulk_data_uri_handler and
+             len(signature(bulk_data_uri_handler).parameters) == 1
+         ):
++            uri_handler = cast(Callable[[str], object], bulk_data_uri_handler)
++
+             def wrapped_bulk_data_handler(tag, vr, value):
+-                return bulk_data_uri_handler(value)
++                return uri_handler(value)
+             self.bulk_data_element_handler = wrapped_bulk_data_handler
+         else:
+-            self.bulk_data_element_handler = bulk_data_uri_handler
++            self.bulk_data_element_handler = cast(
++                Optional[Callable[[BaseTag, str, str], object]],
++                bulk_data_uri_handler
++            )
+ 
+     def get_element_values(self):
+         """Return a the data element value or list of values.
+@@ -226,7 +234,8 @@ class JsonDataElementConverter:
+                     value_key = unique_value_keys[0]
+                     elem = DataElement.from_json(
+                         self.dataset_class, key, vr,
+-                        val[value_key], value_key
++                        val[value_key], value_key,
++                        self.bulk_data_element_handler
+                     )
+                 ds.add(elem)
+         return ds
+diff --git a/pydicom/tests/test_json.py b/pydicom/tests/test_json.py
+index e185057..f229b9f 100644
+--- a/pydicom/tests/test_json.py
++++ b/pydicom/tests/test_json.py
+@@ -354,3 +354,24 @@ class TestBinary:
+         ds = Dataset().from_json(json.dumps(json_data), bulk_data_reader)
+ 
+         assert b'xyzzy' == ds[0x00091002].value
++
++    def test_bulk_data_reader_is_called_within_SQ(self):
++        def bulk_data_reader(tag, vr, value):
++            return b'xyzzy'
++
++        json_data = {
++            "00081115": {
++                "vr": "SQ",
++                "Value": [
++                    {
++                        "00091002": {
++                            "vr": "OB",
++                            "BulkDataURI": "https://a.dummy.url"
++                        }
++                    }
++                ]
++            }
++        }
++        ds = Dataset().from_json(json.dumps(json_data), bulk_data_reader)
++
++        assert b'xyzzy' == ds[0x00081115].value[0][0x00091002].value
+
+2026-04-03 17:57:24,586 - INFO - Test runtime: 7.36 seconds
+2026-04-03 17:57:24,587 - INFO - Test output for pydicom__pydicom-1256 written to logs/run_evaluation/gpt5full-summarize/opencode-summarize/pydicom__pydicom-1256/test_output.txt
+2026-04-03 17:57:25,026 - INFO - Git diff after:
+diff --git a/pydicom/jsonrep.py b/pydicom/jsonrep.py
+index c6ef519..2a677f4 100644
+--- a/pydicom/jsonrep.py
++++ b/pydicom/jsonrep.py
+@@ -4,7 +4,7 @@
+ import base64
+ from inspect import signature
+ import inspect
+-from typing import Callable, Optional, Union
++from typing import Callable, Optional, Union, cast
+ import warnings
+ 
+ from pydicom.tag import BaseTag
+@@ -97,15 +97,23 @@ class JsonDataElementConverter:
+         self.vr = vr
+         self.value = value
+         self.value_key = value_key
++        self.bulk_data_element_handler: Optional[
++            Callable[[BaseTag, str, str], object]
++        ] = None
+         if (
+             bulk_data_uri_handler and
+             len(signature(bulk_data_uri_handler).parameters) == 1
+         ):
++            uri_handler = cast(Callable[[str], object], bulk_data_uri_handler)
++
+             def wrapped_bulk_data_handler(tag, vr, value):
+-                return bulk_data_uri_handler(value)
++                return uri_handler(value)
+             self.bulk_data_element_handler = wrapped_bulk_data_handler
+         else:
+-            self.bulk_data_element_handler = bulk_data_uri_handler
++            self.bulk_data_element_handler = cast(
++                Optional[Callable[[BaseTag, str, str], object]],
++                bulk_data_uri_handler
++            )
+ 
+     def get_element_values(self):
+         """Return a the data element value or list of values.
+@@ -226,7 +234,8 @@ class JsonDataElementConverter:
+                     value_key = unique_value_keys[0]
+                     elem = DataElement.from_json(
+                         self.dataset_class, key, vr,
+-                        val[value_key], value_key
++                        val[value_key], value_key,
++                        self.bulk_data_element_handler
+                     )
+                 ds.add(elem)
+         return ds
+
+2026-04-03 17:57:25,026 - INFO - Git diff changed after running eval script
+2026-04-03 17:57:25,026 - INFO - Grading answer for pydicom__pydicom-1256...
+2026-04-03 17:57:25,029 - INFO - report: {'pydicom__pydicom-1256': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['pydicom/tests/test_json.py::TestBinary::test_bulk_data_reader_is_called_within_SQ'], 'failure': []}, 'PASS_TO_PASS': {'success': ['pydicom/tests/test_json.py::TestPersonName::test_json_pn_from_file', 'pydicom/tests/test_json.py::TestPersonName::test_pn_components_to_json', 'pydicom/tests/test_json.py::TestPersonName::test_pn_components_from_json', 'pydicom/tests/test_json.py::TestPersonName::test_empty_value', 'pydicom/tests/test_json.py::TestPersonName::test_multi_value_to_json', 'pydicom/tests/test_json.py::TestPersonName::test_dataelem_from_json', 'pydicom/tests/test_json.py::TestAT::test_to_json', 'pydicom/tests/test_json.py::TestAT::test_from_json', 'pydicom/tests/test_json.py::TestAT::test_invalid_value_in_json', 'pydicom/tests/test_json.py::TestAT::test_invalid_tag_in_json', 'pydicom/tests/test_json.py::TestDataSetToJson::test_json_from_dicom_file', 'pydicom/tests/test_json.py::TestDataSetToJson::test_roundtrip', 'pydicom/tests/test_json.py::TestDataSetToJson::test_dataset_dumphandler', 'pydicom/tests/test_json.py::TestDataSetToJson::test_dataelement_dumphandler', 'pydicom/tests/test_json.py::TestDataSetToJson::test_sort_order', 'pydicom/tests/test_json.py::TestSequence::test_nested_sequences', 'pydicom/tests/test_json.py::TestBinary::test_inline_binary', 'pydicom/tests/test_json.py::TestBinary::test_invalid_inline_binary', 'pydicom/tests/test_json.py::TestBinary::test_valid_bulkdata_uri', 'pydicom/tests/test_json.py::TestBinary::test_invalid_bulkdata_uri', 'pydicom/tests/test_json.py::TestBinary::test_bulk_data_reader_is_called', 'pydicom/tests/test_json.py::TestBinary::test_bulk_data_reader_is_called_2'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pydicom__pydicom-1256: resolved: True

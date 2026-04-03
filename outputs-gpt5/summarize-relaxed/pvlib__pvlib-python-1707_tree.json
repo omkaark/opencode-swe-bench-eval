@@ -1,0 +1,183 @@
+{
+  "instance_id": "pvlib__pvlib-python-1707",
+  "variant": "summarize-relaxed",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [
+    "/repo/pvlib/tests/test_iam.py"
+  ],
+  "per_file": {
+    "/repo/pvlib/iam.py": {
+      "reads": [
+        2,
+        4
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "def ashrae(aoi, b=0.05)",
+            "def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None)"
+          ]
+        },
+        {
+          "offset": 520,
+          "limit": 60,
+          "signatures": [
+            "def marion_diffuse(model, surface_tilt, **kwargs)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_iam.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 240,
+          "signatures": [
+            "def test_ashrae()",
+            "def test_ashrae_scalar()",
+            "def test_physical()",
+            "def test_physical_ar()",
+            "def test_physical_noar()",
+            "def test_physical_scalar()",
+            "def test_martin_ruiz()",
+            "def test_martin_ruiz_exception()",
+            "def test_martin_ruiz_diffuse()",
+            "def test_iam_interp()",
+            "def test_sapm(sapm_module_params, aoi, expected)",
+            "def test_sapm_limits()",
+            "def test_marion_diffuse_model(mocker)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "physical_n1_L0",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "n1",
+        "path": "/repo/pvlib/tests/test_iam.py",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pvlib/tests/test_iam.py -q",
+        "workdir": "/repo",
+        "description": "Runs IAM unit tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile pvlib/iam.py pvlib/tests/test_iam.py",
+        "workdir": "/repo",
+        "description": "Syntax check edited files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def physical\\(",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/iam.py:\n  Line 94: def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "full_like\\(aoi",
+        "path": "/repo/pvlib",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/pvlib/iam.py:\n  Line 83:     aoi_gte_90 = np.full_like(aoi, False, dtype='bool')\n  Line 547:     aoi_lt_0 = np.full_like(aoi, False, dtype='bool')"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "np.where\\(aoi_gte_90",
+        "path": "/repo/pvlib",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/iam.py:\n  Line 85:     iam = np.where(aoi_gte_90, 0, iam)"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_iam.py -q",
+        "workdir": "/repo",
+        "description": "Runs IAM unit tests via python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom pvlib import iam\nimport numpy as np\nprint(iam.physical(np.array([0,45,90,100,np.nan]), n=1, K=4, L=0))\nprint(iam.physical(100, n=1, K=4, L=0))\nPY",
+        "workdir": "/repo",
+        "description": "Checks physical IAM regression"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/spectrum/__init__.py\", line 1, in <module>\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\n    ^^^^^"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- pvlib/iam.py pvlib/tests/test_iam.py",
+        "workdir": "/repo",
+        "description": "Shows focused code diff"
+      },
+      "output_preview": "diff --git a/pvlib/iam.py b/pvlib/iam.py\nindex 3eaa6b4..99aaac0 100644\n--- a/pvlib/iam.py\n+++ b/pvlib/iam.py\n@@ -214,6 +214,9 @@ def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):\n \n     # incidence angle modifier\n     iam = (tau_s + tau_p) / 2 / tau_0\n+    aoi_gte_90 = np.full_like(aoi, Fals"
+    }
+  ],
+  "token_cost": {
+    "total": 215710,
+    "input": 13441,
+    "output": 3613,
+    "cache_read": 198656,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 59.11,
+  "patch_non_empty": true
+}

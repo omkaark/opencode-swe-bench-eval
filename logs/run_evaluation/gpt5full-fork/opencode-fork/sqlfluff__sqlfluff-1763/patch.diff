@@ -1,0 +1,140 @@
+diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py
+index 3a8593ed..ba62b97c 100644
+--- a/src/sqlfluff/core/linter/linted_file.py
++++ b/src/sqlfluff/core/linter/linted_file.py
+@@ -5,8 +5,11 @@ contains all of the routines to apply fixes to that file
+ post linting.
+ """
+ 
+-import os
+ import logging
++import os
++import shutil
++import stat
++import tempfile
+ from typing import (
+     Any,
+     Iterable,
+@@ -493,7 +496,46 @@ class LintedFile(NamedTuple):
+             if suffix:
+                 root, ext = os.path.splitext(fname)
+                 fname = root + suffix + ext
+-            # Actually write the file.
+-            with open(fname, "w", encoding=self.encoding) as f:
+-                f.write(write_buff)
++            self._safe_create_replace_file(self.path, fname, write_buff, self.encoding)
+         return success
++
++    @staticmethod
++    def _safe_create_replace_file(
++        input_path: str, output_path: str, write_buff: str, encoding: str
++    ) -> None:
++        """Safely write a file by creating it first, then replacing."""
++
++        mode = None
++        try:
++            status = os.stat(input_path)
++        except FileNotFoundError:
++            pass
++        else:
++            if stat.S_ISREG(status.st_mode):
++                mode = stat.S_IMODE(status.st_mode)
++
++        dirname, basename = os.path.split(output_path)
++        tmp_file = None
++        try:
++            with tempfile.NamedTemporaryFile(
++                mode="w",
++                encoding=encoding,
++                newline="",
++                prefix=basename,
++                dir=dirname or None,
++                suffix=os.path.splitext(output_path)[1],
++                delete=False,
++            ) as tmp:
++                tmp_file = tmp.name
++                tmp.write(write_buff)
++                tmp.flush()
++                os.fsync(tmp.fileno())
++        except Exception:
++            if tmp_file and os.path.exists(tmp_file):
++                os.unlink(tmp_file)
++            raise
++
++        assert tmp_file is not None
++        if mode is not None:
++            os.chmod(tmp_file, mode)
++        shutil.move(tmp_file, output_path)
+diff --git a/test/core/linter_test.py b/test/core/linter_test.py
+index 0600adf2..b7d52b1f 100644
+--- a/test/core/linter_test.py
++++ b/test/core/linter_test.py
+@@ -1,10 +1,12 @@
+ """The Test file for the linter class."""
+ 
+-import pytest
+ import logging
++import os
+ from typing import List
+ from unittest.mock import patch
+ 
++import pytest
++
+ from sqlfluff.core import Linter, FluffConfig
+ from sqlfluff.core.linter import runner
+ from sqlfluff.core.errors import SQLLexError, SQLBaseError, SQLLintError, SQLParseError
+@@ -641,3 +643,54 @@ def test__attempt_to_change_templater_warning(caplog):
+         assert "Attempt to set templater to " in caplog.text
+     finally:
+         logger.propagate = original_propagate_value
++
++
++@pytest.mark.parametrize(
++    "mode",
++    ["create", "update", "special_char"],
++    ids=["utf8_create", "utf8_update", "utf8_special_char"],
++)
++def test_safe_create_replace_file(tmp_path, mode):
++    """Test safe file writing preserves files on encoding errors."""
++
++    target_path = tmp_path / "query.sql"
++
++    if mode == "create":
++        linter.LintedFile._safe_create_replace_file(
++            str(target_path),
++            str(target_path),
++            "SELECT 'a -> b';\n".replace("->", "\u2192"),
++            "utf-8",
++        )
++        assert target_path.read_text(encoding="utf-8") == "SELECT 'a -> b';\n".replace(
++            "->", "\u2192"
++        )
++    elif mode == "update":
++        target_path.write_text("SELECT 1;\n", encoding="utf-8")
++        os.chmod(target_path, 0o600)
++
++        linter.LintedFile._safe_create_replace_file(
++            str(target_path),
++            str(target_path),
++            "SELECT 'x -> y';\n".replace("->", "\u2192"),
++            "utf-8",
++        )
++
++        assert target_path.read_text(encoding="utf-8") == "SELECT 'x -> y';\n".replace(
++            "->", "\u2192"
++        )
++        assert os.stat(target_path).st_mode & 0o777 == 0o600
++    else:
++        original = "SELECT 'safe';\n"
++        target_path.write_text(original, encoding="cp1252")
++
++        with pytest.raises(UnicodeEncodeError):
++            linter.LintedFile._safe_create_replace_file(
++                str(target_path),
++                str(target_path),
++                "SELECT ' -> ';\n".replace("->", "\u2192"),
++                "cp1252",
++            )
++
++        assert target_path.read_text(encoding="cp1252") == original
++        assert list(tmp_path.iterdir()) == [target_path]

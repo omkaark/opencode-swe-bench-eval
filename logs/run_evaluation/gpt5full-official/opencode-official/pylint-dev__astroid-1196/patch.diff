@@ -1,0 +1,77 @@
+diff --git a/astroid/nodes/node_classes.py b/astroid/nodes/node_classes.py
+index 11136f8c..a243a9fd 100644
+--- a/astroid/nodes/node_classes.py
++++ b/astroid/nodes/node_classes.py
+@@ -2361,8 +2361,16 @@ class Dict(NodeNG, Instance):
+             # TODO(cpopa): no support for overriding yet, {1:2, **{1: 3}}.
+             if isinstance(key, DictUnpack):
+                 try:
+-                    return value.getitem(index, context)
+-                except (AstroidTypeError, AstroidIndexError):
++                    for inferred in value.infer(context):
++                        if inferred is util.Uninferable or not hasattr(
++                            inferred, "getitem"
++                        ):
++                            continue
++                        try:
++                            return inferred.getitem(index, context)
++                        except (AstroidTypeError, AstroidIndexError):
++                            continue
++                except InferenceError:
+                     continue
+             for inferredkey in key.infer(context):
+                 if inferredkey is util.Uninferable:
+diff --git a/tests/unittest_python3.py b/tests/unittest_python3.py
+index 9f60833e..4dc1a5c7 100644
+--- a/tests/unittest_python3.py
++++ b/tests/unittest_python3.py
+@@ -5,6 +5,7 @@
+ import unittest
+ from textwrap import dedent
+ 
++from astroid import exceptions
+ from astroid import nodes
+ from astroid.builder import AstroidBuilder, extract_node
+ from astroid.test_utils import require_version
+@@ -285,6 +286,41 @@ class Python3TC(unittest.TestCase):
+             self.assertIsInstance(value, nodes.Const)
+             self.assertEqual(value.value, expected)
+ 
++    def test_unpacking_in_dict_getitem_with_ref(self) -> None:
++        module = self.builder.string_build(
++            dedent(
++                """
++                x = {
++                    'A': 'B'
++                }
++
++                y = {
++                    **x
++                }
++
++                key = 'A'
++                """
++            )
++        )
++
++        value = module.body[1].value.getitem(module.body[2].value)
++        self.assertIsInstance(value, nodes.Const)
++        self.assertEqual(value.value, "B")
++
++    def test_unpacking_in_dict_getitem_uninferable(self) -> None:
++        module = self.builder.string_build(
++            dedent(
++                """
++                y = {
++                    **x
++                }
++                """
++            )
++        )
++
++        with self.assertRaises(exceptions.AstroidIndexError):
++            module.body[0].value.getitem(nodes.Const("A"))
++
+     def test_format_string(self) -> None:
+         code = "f'{greetings} {person}'"
+         node = extract_node(code)

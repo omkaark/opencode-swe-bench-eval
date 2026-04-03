@@ -1,0 +1,45 @@
+2026-04-03 16:10:28,405 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L060.py...
+Applied patch src/sqlfluff/rules/L060.py cleanly.
+
+2026-04-03 16:10:33,194 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L060.py b/src/sqlfluff/rules/L060.py
+index 836941ed..4912ab4a 100644
+--- a/src/sqlfluff/rules/L060.py
++++ b/src/sqlfluff/rules/L060.py
+@@ -59,4 +59,10 @@ class Rule_L060(BaseRule):
+             ],
+         )
+ 
+-        return LintResult(context.segment, [fix])
++        return LintResult(
++            context.segment,
++            [fix],
++            description=(
++                f"Use 'COALESCE' instead of '{context.segment.raw_upper}'."
++            ),
++        )
+
+2026-04-03 16:10:41,289 - INFO - Test runtime: 7.75 seconds
+2026-04-03 16:10:41,289 - INFO - Test output for sqlfluff__sqlfluff-2419 written to logs/run_evaluation/gpt5full-official/opencode-official/sqlfluff__sqlfluff-2419/test_output.txt
+2026-04-03 16:10:41,723 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L060.py b/src/sqlfluff/rules/L060.py
+index 836941ed..4912ab4a 100644
+--- a/src/sqlfluff/rules/L060.py
++++ b/src/sqlfluff/rules/L060.py
+@@ -59,4 +59,10 @@ class Rule_L060(BaseRule):
+             ],
+         )
+ 
+-        return LintResult(context.segment, [fix])
++        return LintResult(
++            context.segment,
++            [fix],
++            description=(
++                f"Use 'COALESCE' instead of '{context.segment.raw_upper}'."
++            ),
++        )
+
+2026-04-03 16:10:41,723 - INFO - Grading answer for sqlfluff__sqlfluff-2419...
+2026-04-03 16:10:41,724 - INFO - report: {'sqlfluff__sqlfluff-2419': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['test/rules/std_L060_test.py::test__rules__std_L060_raised'], 'failure': []}, 'PASS_TO_PASS': {'success': [], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-2419: resolved: True

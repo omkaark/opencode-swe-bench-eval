@@ -1,0 +1,73 @@
+2026-04-03 04:48:41,468 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L036.py...
+Applied patch src/sqlfluff/rules/L036.py cleanly.
+
+2026-04-03 04:48:42,828 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..bc9ef88b 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -169,6 +169,25 @@ class Rule_L036(BaseRule):
+                     select_clause.segments[select_targets_info.first_select_target_idx],
+                 ),
+             ]
++            if (
++                select_targets_info.first_select_target_idx
++                - select_targets_info.first_new_line_idx
++                == 2
++                and select_clause.segments[
++                    select_targets_info.first_new_line_idx + 1
++                ].is_whitespace
++            ):
++                # If the first target is preceded by a single whitespace segment,
++                # delete that as well. This avoids leaving an extra space when the
++                # target is moved onto a new line inside a CTE.
++                fixes.append(
++                    LintFix(
++                        "delete",
++                        select_clause.segments[
++                            select_targets_info.first_new_line_idx + 1
++                        ],
++                    )
++                )
+ 
+             start_idx = 0
+ 
+
+2026-04-03 04:48:51,775 - INFO - Test runtime: 8.68 seconds
+2026-04-03 04:48:51,775 - INFO - Test output for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/gpt5-summarize/opencode-summarize/sqlfluff__sqlfluff-1733/test_output.txt
+2026-04-03 04:48:52,148 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..bc9ef88b 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -169,6 +169,25 @@ class Rule_L036(BaseRule):
+                     select_clause.segments[select_targets_info.first_select_target_idx],
+                 ),
+             ]
++            if (
++                select_targets_info.first_select_target_idx
++                - select_targets_info.first_new_line_idx
++                == 2
++                and select_clause.segments[
++                    select_targets_info.first_new_line_idx + 1
++                ].is_whitespace
++            ):
++                # If the first target is preceded by a single whitespace segment,
++                # delete that as well. This avoids leaving an extra space when the
++                # target is moved onto a new line inside a CTE.
++                fixes.append(
++                    LintFix(
++                        "delete",
++                        select_clause.segments[
++                            select_targets_info.first_new_line_idx + 1
++                        ],
++                    )
++                )
+ 
+             start_idx = 0
+ 
+
+2026-04-03 04:48:52,148 - INFO - Grading answer for sqlfluff__sqlfluff-1733...
+2026-04-03 04:48:52,150 - INFO - report: {'sqlfluff__sqlfluff-1733': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/rules/std_L003_L036_L039_combo_test.py::test__rules__std_L003_L036_L039']}, 'PASS_TO_PASS': {'success': ['test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_lint', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix2'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1733: resolved: False

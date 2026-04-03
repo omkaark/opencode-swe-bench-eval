@@ -1,0 +1,37 @@
+diff --git a/pvlib/temperature.py b/pvlib/temperature.py
+index 1d98736..eb46d51 100644
+--- a/pvlib/temperature.py
++++ b/pvlib/temperature.py
+@@ -599,7 +599,7 @@ def fuentes(poa_global, temp_air, wind_speed, noct_installed, module_height=5,
+     # n.b. the way Fuentes calculates the first timedelta makes it seem like
+     # the value doesn't matter -- rather than recreate it here, just assume
+     # it's the same as the second timedelta:
+-    timedelta_hours = np.diff(poa_global.index).astype(float) / 1e9 / 60 / 60
++    timedelta_hours = np.diff(poa_global.index.asi8) / 1e9 / 60 / 60
+     timedelta_hours = np.append([timedelta_hours[0]], timedelta_hours)
+ 
+     tamb_array = temp_air + 273.15
+diff --git a/pvlib/tests/test_temperature.py b/pvlib/tests/test_temperature.py
+index 245c5d2..649ca92 100644
+--- a/pvlib/tests/test_temperature.py
++++ b/pvlib/tests/test_temperature.py
+@@ -190,3 +190,19 @@ def test_fuentes(filename, inoct):
+     night_difference = expected_tcell[is_night] - actual_tcell[is_night]
+     assert night_difference.max() < 6
+     assert night_difference.min() > 0
++
++
++@pytest.mark.parametrize('tz', ['Etc/GMT+5'])
++def test_fuentes_timezone(tz):
++    index = pd.date_range('2019-01-01', freq='h', periods=3, tz=tz)
++    kwargs = {
++        'poa_global': pd.Series(1000, index=index),
++        'temp_air': pd.Series(20, index=index),
++        'wind_speed': pd.Series(1, index=index),
++        'noct_installed': 45,
++    }
++    expected = pd.Series([47.85, 50.85, 50.85], index=index, name='tmod')
++
++    result = temperature.fuentes(**kwargs)
++
++    assert_series_equal(expected, result)

@@ -1,0 +1,83 @@
+diff --git a/src/sqlfluff/rules/L003.py b/src/sqlfluff/rules/L003.py
+index 83ff13fe..f38adb54 100644
+--- a/src/sqlfluff/rules/L003.py
++++ b/src/sqlfluff/rules/L003.py
+@@ -667,6 +667,14 @@ class Rule_L003(BaseRule):
+                     else:
+                         # It doesn't. That means we *should* have an indent when compared to
+                         # this line and we DON'T.
++                        desired_indent = "".join(
++                            elem.raw for elem in res[k]["indent_buffer"]
++                        ) + self._make_indent(
++                            num=indent_diff,
++                            indent_unit=self.indent_unit,
++                            tab_space_size=self.tab_space_size,
++                        )
++
+                         memory["problem_lines"].append(this_line_no)
+                         return LintResult(
+                             anchor=trigger_segment,
+@@ -674,19 +682,11 @@ class Rule_L003(BaseRule):
+                             description="Indent expected and not found compared to line #{}".format(
+                                 k
+                             ),
+-                            # Add in an extra bit of whitespace for the indent
+-                            fixes=[
+-                                LintFix(
+-                                    "create",
+-                                    trigger_segment,
+-                                    WhitespaceSegment(
+-                                        raw=self._make_indent(
+-                                            indent_unit=self.indent_unit,
+-                                            tab_space_size=self.tab_space_size,
+-                                        ),
+-                                    ),
+-                                )
+-                            ],
++                            fixes=self._coerce_indent_to(
++                                desired_indent=desired_indent,
++                                current_indent_buffer=this_line["indent_buffer"],
++                                current_anchor=trigger_segment,
++                            ),
+                         )
+                 elif this_indent_num < comp_indent_num:
+                     memory["problem_lines"].append(this_line_no)
+diff --git a/test/rules/std_L016_L36_combo.py b/test/rules/std_L016_L36_combo.py
+index e69ea81f..8a420045 100644
+--- a/test/rules/std_L016_L36_combo.py
++++ b/test/rules/std_L016_L36_combo.py
+@@ -29,3 +29,34 @@ def test__rules__std_L016_L036_long_line_fix2():
+         result
+         == "SELECT 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\n"
+     )
++
++
++def test__rules__std_L003_L036_L039_with_cte_fix():
++    """Verify select target reflow keeps the expected indent inside a CTE."""
++    sql = """WITH example AS (
++    SELECT my_id,
++        other_thing,
++        one_more
++    FROM
++        my_table
++)
++
++SELECT *
++FROM example
++"""
++    result = sqlfluff.fix(sql, rules="L003,L036,L039", dialect="ansi")
++    assert (
++        result
++        == """WITH example AS (
++    SELECT
++        my_id,
++        other_thing,
++        one_more
++    FROM
++        my_table
++)
++
++SELECT *
++FROM example
++"""
++    )

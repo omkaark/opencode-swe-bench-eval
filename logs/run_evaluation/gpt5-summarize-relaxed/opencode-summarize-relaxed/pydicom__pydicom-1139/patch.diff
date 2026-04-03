@@ -1,0 +1,48 @@
+diff --git a/pydicom/tests/test_valuerep.py b/pydicom/tests/test_valuerep.py
+index ad5a62d9..5c08ed0b 100644
+--- a/pydicom/tests/test_valuerep.py
++++ b/pydicom/tests/test_valuerep.py
+@@ -427,6 +427,21 @@ class TestPersonName:
+         )
+         assert hash(pn1) == hash(pn2)
+ 
++    def test_next(self):
++        pn = PersonName("SomeName")
++        it = iter(pn)
++        assert next(it) == "S"
++
++    def test_iterator(self):
++        pn = PersonName("SomeName")
++        assert list(pn) == list("SomeName")
++
++    def test_contains(self):
++        pn = PersonName("SomeName")
++        assert "S" in pn
++        assert "Name" in pn
++        assert "X" not in pn
++
+ 
+ class TestDateTime:
+     """Unit tests for DA, DT, TM conversion to datetime objects"""
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f787..9792d79f 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -747,6 +747,17 @@ class PersonName:
+     def __ne__(self, other):
+         return not self == other
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __next__(self):
++        if not hasattr(self, '_iter'):
++            self._iter = iter(str(self))
++        return next(self._iter)
++
++    def __contains__(self, item):
++        return item in str(self)
++
+     def __str__(self):
+         return '='.join(self.components).__str__()
+ 

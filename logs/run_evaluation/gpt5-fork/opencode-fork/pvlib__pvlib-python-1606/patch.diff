@@ -1,0 +1,45 @@
+diff --git a/pvlib/tests/test_tools.py b/pvlib/tests/test_tools.py
+index 167dca8..92b2575 100644
+--- a/pvlib/tests/test_tools.py
++++ b/pvlib/tests/test_tools.py
+@@ -47,6 +47,16 @@ def test__golden_sect_DataFrame_vector():
+     assert np.allclose(x, expected, atol=1e-8)
+ 
+ 
++def test__golden_sect_DataFrame_equal_bounds():
++    params = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}
++    lower = np.array([0.5, 0.25])
++    upper = np.array([0.5, 0.25])
++    expected = np.array([0.5, 0.25])
++    v, x = tools._golden_sect_DataFrame(params, lower, upper,
++                                        _obj_test_golden_sect)
++    assert np.allclose(x, expected, atol=1e-8)
++
++
+ def test__golden_sect_DataFrame_nans():
+     # nan in bounds
+     params = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..bbffc03 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -348,6 +348,19 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     df['VH'] = upper
+     df['VL'] = lower
+ 
++    # If every interval has zero width, there is nothing to optimize.
++    # Return the objective evaluated at the lower bound, which is equal to
++    # the upper bound for these entries.
++    delta = df['VH'] - df['VL']
++    if np.all((delta == 0) | np.isnan(delta)):
++        try:
++            func_result = func(df, 'VL')
++            x = np.where(np.isnan(func_result), np.nan, df['VL'])
++        except KeyError:
++            func_result = np.full_like(upper, np.nan)
++            x = func_result.copy()
++        return func_result, x
++
+     converged = False
+     iterations = 0
+ 

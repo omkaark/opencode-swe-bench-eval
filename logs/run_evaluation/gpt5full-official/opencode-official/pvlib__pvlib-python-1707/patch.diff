@@ -1,0 +1,44 @@
+diff --git a/pvlib/iam.py b/pvlib/iam.py
+index 3eaa6b4..850e3e3 100644
+--- a/pvlib/iam.py
++++ b/pvlib/iam.py
+@@ -156,6 +156,9 @@ def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):
+     pvlib.iam.sapm
+     """
+     n1, n3 = 1, n
++    aoi_gte_90 = np.full_like(aoi, False, dtype='bool')
++    np.greater_equal(np.abs(aoi), 90, where=~np.isnan(aoi), out=aoi_gte_90)
++
+     if n_ar is None or np.allclose(n_ar, n1):
+         # no AR coating
+         n2 = n
+@@ -215,6 +218,11 @@ def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):
+     # incidence angle modifier
+     iam = (tau_s + tau_p) / 2 / tau_0
+ 
++    iam = np.where(aoi_gte_90, 0, iam)
++
++    if isinstance(aoi, pd.Series):
++        iam = pd.Series(iam, index=aoi.index)
++
+     return iam
+ 
+ 
+diff --git a/pvlib/tests/test_iam.py b/pvlib/tests/test_iam.py
+index eba1c66..d8262d3 100644
+--- a/pvlib/tests/test_iam.py
++++ b/pvlib/tests/test_iam.py
+@@ -78,6 +78,13 @@ def test_physical_scalar():
+     assert_allclose(iam, expected, equal_nan=True)
+ 
+ 
++def test_physical_n1_L0():
++    aoi = np.array([0., 90., 100., np.nan])
++    expected = np.array([1., 0., 0., np.nan])
++    iam = _iam.physical(aoi, n=1, L=0)
++    assert_allclose(iam, expected, equal_nan=True)
++
++
+ def test_martin_ruiz():
+ 
+     aoi = 45.

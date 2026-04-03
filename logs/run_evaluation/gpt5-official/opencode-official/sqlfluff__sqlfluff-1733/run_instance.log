@@ -1,0 +1,53 @@
+2026-04-03 02:18:54,280 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L036.py...
+Applied patch src/sqlfluff/rules/L036.py cleanly.
+
+2026-04-03 02:18:55,799 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..ebd82941 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -117,6 +117,15 @@ class Rule_L036(BaseRule):
+                     select_if=lambda s: s.is_type("whitespace"),
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
++                if not i:
++                    # In a WITH clause, the first target can retain a stray
++                    # whitespace segment after SELECT unless we explicitly clear
++                    # any direct whitespace children before the target.
++                    for seg in segment.segments[
++                        select_targets_info.select_idx + 1 : select_targets_info.first_select_target_idx
++                    ]:
++                        if seg.is_type("whitespace") and seg not in ws_to_delete:
++                            ws_to_delete.append(seg)
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+                 fixes.append(LintFix("create", select_target, NewlineSegment()))
+         if fixes:
+
+2026-04-03 02:19:05,369 - INFO - Test runtime: 9.20 seconds
+2026-04-03 02:19:05,370 - INFO - Test output for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/gpt5-official/opencode-official/sqlfluff__sqlfluff-1733/test_output.txt
+2026-04-03 02:19:05,733 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..ebd82941 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -117,6 +117,15 @@ class Rule_L036(BaseRule):
+                     select_if=lambda s: s.is_type("whitespace"),
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
++                if not i:
++                    # In a WITH clause, the first target can retain a stray
++                    # whitespace segment after SELECT unless we explicitly clear
++                    # any direct whitespace children before the target.
++                    for seg in segment.segments[
++                        select_targets_info.select_idx + 1 : select_targets_info.first_select_target_idx
++                    ]:
++                        if seg.is_type("whitespace") and seg not in ws_to_delete:
++                            ws_to_delete.append(seg)
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+                 fixes.append(LintFix("create", select_target, NewlineSegment()))
+         if fixes:
+
+2026-04-03 02:19:05,733 - INFO - Grading answer for sqlfluff__sqlfluff-1733...
+2026-04-03 02:19:05,735 - INFO - report: {'sqlfluff__sqlfluff-1733': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/rules/std_L003_L036_L039_combo_test.py::test__rules__std_L003_L036_L039']}, 'PASS_TO_PASS': {'success': ['test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_lint', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix2'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1733: resolved: False

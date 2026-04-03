@@ -1,0 +1,468 @@
+{
+  "instance_id": "pylint-dev__astroid-1978",
+  "variant": "official",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/tests/unittest_utils.py",
+    "/repo/tests/unittest_transforms.py",
+    "/repo/tests/unittest_scoped_nodes.py",
+    "/repo/tests/unittest_regrtest.py",
+    "/repo/tests/unittest_raw_building.py",
+    "/repo/tests/unittest_python3.py",
+    "/repo/tests/unittest_protocols.py",
+    "/repo/tests/unittest_objects.py",
+    "/repo/tests/unittest_object_model.py",
+    "/repo/tests/unittest_nodes_position.py",
+    "/repo/tests/unittest_nodes_lineno.py",
+    "/repo/tests/unittest_nodes.py",
+    "/repo/tests/unittest_modutils.py",
+    "/repo/tests/unittest_manager.py",
+    "/repo/tests/unittest_lookup.py",
+    "/repo/tests/unittest_inference_calls.py",
+    "/repo/tests/unittest_inference.py",
+    "/repo/tests/unittest_helpers.py",
+    "/repo/tests/unittest_filter_statements.py",
+    "/repo/tests/unittest_decorators.py",
+    "/repo/tests/unittest_constraint.py",
+    "/repo/tests/unittest_builder.py",
+    "/repo/tests/unittest_brain_unittest.py",
+    "/repo/tests/unittest_brain_signal.py",
+    "/repo/tests/unittest_brain_qt.py",
+    "/repo/tests/unittest_brain_pathlib.py",
+    "/repo/tests/unittest_brain_numpy_random_mtrand.py",
+    "/repo/tests/unittest_brain_numpy_ndarray.py",
+    "/repo/tests/unittest_brain_numpy_ma.py",
+    "/repo/tests/unittest_brain_numpy_core_umath.py",
+    "/repo/tests/unittest_brain_numpy_core_numerictypes.py",
+    "/repo/tests/unittest_brain_numpy_core_numeric.py",
+    "/repo/tests/unittest_brain_numpy_core_multiarray.py",
+    "/repo/tests/unittest_brain_numpy_core_function_base.py",
+    "/repo/tests/unittest_brain_numpy_core_fromnumeric.py",
+    "/repo/tests/unittest_brain_numpy_core_einsumfunc.py",
+    "/repo/tests/unittest_brain_dataclasses.py",
+    "/repo/tests/unittest_brain_ctypes.py",
+    "/repo/tests/unittest_brain_builtin.py",
+    "/repo/tests/unittest_brain_argparse.py",
+    "/repo/tests/unittest_brain.py",
+    "/repo/tests/testdata/python3/data/unicode_package/core/__init__.py",
+    "/repo/tests/testdata/python3/data/unicode_package/__init__.py",
+    "/repo/tests/testdata/python3/data/tmp__init__.py",
+    "/repo/tests/testdata/python3/data/recursion.py",
+    "/repo/tests/testdata/python3/data/path_pkgutil_3/package/baz.py",
+    "/repo/tests/testdata/python3/data/path_pkgutil_3/package/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkgutil_1/package/foo.py",
+    "/repo/tests/testdata/python3/data/path_pkgutil_1/package/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_1/package/foo.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_1/package/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_3/package/baz.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_3/package/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_2/package/bar.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_2/package/__init__.py",
+    "/repo/tests/testdata/python3/data/parent_of_homonym/__init__.py",
+    "/repo/tests/testdata/python3/data/parent_of_homonym/doc/__init__.py",
+    "/repo/tests/testdata/python3/data/operator_precedence.py",
+    "/repo/tests/testdata/python3/data/package/import_package_subpackage_module.py",
+    "/repo/tests/testdata/python3/data/package/hello.py",
+    "/repo/tests/testdata/python3/data/package/absimport.py",
+    "/repo/tests/testdata/python3/data/package/__init__.py",
+    "/repo/tests/testdata/python3/data/package/subpackage/module.py",
+    "/repo/tests/testdata/python3/data/package/subpackage/__init__.py",
+    "/repo/tests/testdata/python3/data/noendingnewline.py",
+    "/repo/tests/testdata/python3/data/nonregr.py",
+    "/repo/tests/testdata/python3/data/namespace_pep_420/module.py",
+    "/repo/tests/testdata/python3/data/notall.py",
+    "/repo/tests/testdata/python3/data/module2.py",
+    "/repo/tests/testdata/python3/data/module1abs/core.py",
+    "/repo/tests/testdata/python3/data/module1abs/__init__.py",
+    "/repo/tests/testdata/python3/data/notamodule/file.py",
+    "/repo/tests/testdata/python3/data/module.py",
+    "/repo/tests/testdata/python3/data/max_inferable_limit_for_classes/main.py",
+    "/repo/tests/testdata/python3/data/max_inferable_limit_for_classes/other_funcs.py",
+    "/repo/tests/testdata/python3/data/metaclass_recursion/parent.py",
+    "/repo/tests/testdata/python3/data/metaclass_recursion/monkeypatch.py",
+    "/repo/tests/testdata/python3/data/metaclass_recursion/__init__.py",
+    "/repo/tests/testdata/python3/data/lmfp/foo.py",
+    "/repo/tests/testdata/python3/data/lmfp/__init__.py",
+    "/repo/tests/testdata/python3/data/max_inferable_limit_for_classes/nodes/roles.py",
+    "/repo/tests/testdata/python3/data/format.py",
+    "/repo/tests/testdata/python3/data/import_conflicting_names/math.py",
+    "/repo/tests/testdata/python3/data/invalid_encoding.py",
+    "/repo/tests/testdata/python3/data/fake_module_with_warnings.py",
+    "/repo/tests/testdata/python3/data/fake_module_with_broken_getattr.py",
+    "/repo/tests/testdata/python3/data/email.py",
+    "/repo/tests/testdata/python3/data/descriptor_crash.py",
+    "/repo/tests/testdata/python3/data/conditional.py",
+    "/repo/tests/testdata/python3/data/beyond_top_level_two/a.py",
+    "/repo/tests/testdata/python3/data/appl/myConnection.py",
+    "/repo/tests/testdata/python3/data/appl/__init__.py",
+    "/repo/tests/testdata/python3/data/all.py",
+    "/repo/tests/testdata/python3/data/absimport.py",
+    "/repo/tests/test_stdlib.py",
+    "/repo/tests/testdata/python3/data/absimp/__init__.py",
+    "/repo/tests/test_brain_ssl.py",
+    "/repo/tests/test_brain_regex.py",
+    "/repo/tests/resources.py",
+    "/repo/tests/__init__.py",
+    "/repo/astroid/util.py",
+    "/repo/astroid/typing.py",
+    "/repo/astroid/transforms.py",
+    "/repo/astroid/test_utils.py",
+    "/repo/astroid/scoped_nodes.py",
+    "/repo/astroid/rebuilder.py",
+    "/repo/astroid/raw_building.py",
+    "/repo/astroid/protocols.py",
+    "/repo/astroid/objects.py",
+    "/repo/astroid/nodes/utils.py",
+    "/repo/astroid/nodes/node_ng.py",
+    "/repo/astroid/nodes/scoped_nodes/utils.py",
+    "/repo/astroid/nodes/scoped_nodes/scoped_nodes.py",
+    "/repo/astroid/nodes/scoped_nodes/mixin.py",
+    "/repo/astroid/nodes/scoped_nodes/__init__.py",
+    "/repo/astroid/nodes/node_classes.py",
+    "/repo/astroid/nodes/const.py",
+    "/repo/astroid/nodes/as_string.py",
+    "/repo/astroid/modutils.py",
+    "/repo/astroid/mixins.py",
+    "/repo/astroid/manager.py",
+    "/repo/astroid/node_classes.py",
+    "/repo/astroid/nodes/_base_nodes.py",
+    "/repo/astroid/nodes/__init__.py",
+    "/repo/astroid/interpreter/objectmodel.py",
+    "/repo/astroid/helpers.py",
+    "/repo/astroid/inference_tip.py",
+    "/repo/astroid/inference.py",
+    "/repo/astroid/interpreter/dunder_lookup.py",
+    "/repo/astroid/interpreter/__init__.py",
+    "/repo/astroid/interpreter/_import/util.py",
+    "/repo/astroid/interpreter/_import/spec.py",
+    "/repo/astroid/interpreter/_import/__init__.py",
+    "/repo/astroid/const.py",
+    "/repo/astroid/filter_statements.py",
+    "/repo/astroid/exceptions.py",
+    "/repo/astroid/decorators.py",
+    "/repo/astroid/context.py",
+    "/repo/astroid/constraint.py",
+    "/repo/astroid/builder.py",
+    "/repo/astroid/brain/helpers.py",
+    "/repo/astroid/brain/brain_uuid.py",
+    "/repo/astroid/brain/brain_unittest.py",
+    "/repo/astroid/brain/brain_typing.py",
+    "/repo/astroid/brain/brain_type.py",
+    "/repo/astroid/brain/brain_threading.py",
+    "/repo/astroid/brain/brain_subprocess.py",
+    "/repo/astroid/brain/brain_ssl.py",
+    "/repo/astroid/brain/brain_sqlalchemy.py",
+    "/repo/astroid/brain/brain_six.py",
+    "/repo/astroid/brain/brain_signal.py",
+    "/repo/astroid/brain/brain_scipy_signal.py",
+    "/repo/astroid/brain/brain_responses.py",
+    "/repo/astroid/brain/brain_regex.py",
+    "/repo/astroid/brain/brain_re.py",
+    "/repo/astroid/brain/brain_random.py",
+    "/repo/astroid/brain/brain_qt.py",
+    "/repo/astroid/brain/brain_pytest.py",
+    "/repo/astroid/brain/brain_pkg_resources.py",
+    "/repo/astroid/brain/brain_pathlib.py",
+    "/repo/astroid/brain/brain_numpy_utils.py",
+    "/repo/astroid/brain/brain_numpy_random_mtrand.py",
+    "/repo/astroid/brain/brain_numpy_ndarray.py",
+    "/repo/astroid/brain/brain_numpy_ma.py",
+    "/repo/astroid/brain/brain_numpy_core_umath.py",
+    "/repo/astroid/brain/brain_numpy_core_numerictypes.py",
+    "/repo/astroid/brain/brain_numpy_core_numeric.py",
+    "/repo/astroid/brain/brain_numpy_core_multiarray.py",
+    "/repo/astroid/brain/brain_numpy_core_function_base.py",
+    "/repo/astroid/brain/brain_numpy_core_fromnumeric.py",
+    "/repo/astroid/brain/brain_numpy_core_einsumfunc.py",
+    "/repo/astroid/brain/brain_nose.py",
+    "/repo/astroid/brain/brain_fstrings.py",
+    "/repo/astroid/brain/brain_functools.py",
+    "/repo/astroid/brain/brain_gi.py",
+    "/repo/astroid/brain/brain_hashlib.py",
+    "/repo/astroid/brain/brain_http.py",
+    "/repo/astroid/brain/brain_hypothesis.py",
+    "/repo/astroid/brain/brain_io.py",
+    "/repo/astroid/brain/brain_namedtuple_enum.py",
+    "/repo/astroid/brain/brain_multiprocessing.py",
+    "/repo/astroid/brain/brain_mechanize.py",
+    "/repo/astroid/brain/brain_crypt.py",
+    "/repo/astroid/brain/brain_dataclasses.py",
+    "/repo/astroid/brain/brain_dateutil.py",
+    "/repo/astroid/brain/brain_curses.py",
+    "/repo/astroid/brain/brain_ctypes.py",
+    "/repo/astroid/brain/brain_collections.py",
+    "/repo/astroid/brain/brain_builtin_inference.py",
+    "/repo/astroid/brain/brain_boto3.py",
+    "/repo/astroid/bases.py",
+    "/repo/astroid/astroid_manager.py",
+    "/repo/astroid/arguments.py",
+    "/repo/astroid/_cache.py",
+    "/repo/astroid/_ast.py",
+    "/repo/astroid/__pkginfo__.py",
+    "/repo/astroid/brain/__init__.py",
+    "/repo/astroid/brain/brain_attrs.py",
+    "/repo/astroid/brain/brain_argparse.py",
+    "/repo/astroid/__init__.py"
+  ],
+  "per_file": {
+    "/repo/astroid/raw_building.py": {
+      "reads": [
+        2,
+        4,
+        5,
+        10,
+        15
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 430,
+          "limit": 80,
+          "signatures": [
+            "def imported_member(self, node, member, name: str) -> bool",
+            "def _set_proxied(const) -> nodes.ClassDef",
+            "def _astroid_bootstrapping() -> None"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 140,
+          "signatures": [
+            "def _attach_local_node(parent, node, name: str) -> None",
+            "def _add_dunder_class(func, member) -> None",
+            "def attach_dummy_node(node, name: str, runtime_object=_EMPTY_OBJECT_MARKER) -> None",
+            "def attach_const_node(node, name: str, value) -> None",
+            "def attach_import_node(node, modname: str, membername: str) -> None",
+            "def build_module(name: str, doc: str | None = None) -> nodes.Module",
+            "def build_class(",
+            "def build_function("
+          ]
+        },
+        {
+          "offset": 360,
+          "limit": 70,
+          "signatures": [
+            "def object_build("
+          ]
+        },
+        {
+          "offset": 312,
+          "limit": 28,
+          "signatures": [
+            "def _safe_has_attribute(obj, member: str) -> bool",
+            "class InspectBuilder"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_raw_building.py": {
+      "reads": [
+        2,
+        15
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class RawBuildingTC(unittest.TestCase)",
+            "def test_attach_dummy_node(self) -> None",
+            "def test_build_module(self) -> None",
+            "def test_build_class(self) -> None",
+            "def test_build_function(self) -> None",
+            "def test_build_function_args(self) -> None",
+            "def test_build_function_defaults(self) -> None",
+            "def test_build_function_posonlyargs(self) -> None",
+            "def test_build_function_kwonlyargs(self) -> None",
+            "def test_build_from_import(self) -> None",
+            "def test_io_is__io(self)",
+            "def test_build_function_deepinspect_deprecation(self) -> None",
+            "def test_module_object_with_broken_getattr(self) -> None"
+          ]
+        },
+        {
+          "offset": 108,
+          "limit": 30,
+          "signatures": [
+            "def test_module_object_with_broken_getattr(self) -> None",
+            "def test_build_module_getattr_catch_output() -> None",
+            "class Float64Index"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/testdata/python3/data/fake_module_with_warnings.py": {
+      "reads": [
+        3
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 200,
+          "signatures": [
+            "def __dir__()",
+            "def __getattr__(name)"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/testdata/python3/data/fake_module_with_broken_getattr.py": {
+      "reads": [
+        3
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 200,
+          "signatures": [
+            "def __getattr__(self, name)"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_modutils.py": {
+      "reads": [
+        8
+      ],
+      "edits": [],
+      "first_read_step": 8,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 70,
+          "limit": 50,
+          "signatures": [
+            "def test_known_values_load_module_from_name_1(self) -> None",
+            "def test_known_values_load_module_from_name_2(self) -> None",
+            "def test_raise_load_module_from_name_1(self) -> None",
+            "def test_import_dotted_library(",
+            "def function_with_stdout_and_stderr(expected_out, expected_err)",
+            "def mocked_function(*args, **kwargs)",
+            "class GetModulePartTest(unittest.TestCase)",
+            "def test_known_values_get_module_part_1(self) -> None"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_build_module_getattr_catch_output",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "pytest tests/unittest_raw_building.py -k \"build_module_getattr_catch_output or build_function_deepinspect_deprecation or module_object_with_broken_getattr\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted raw_building regression tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "raw_building|build_module_getattr_catch_output",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 14 matches\n/repo/tests/unittest_raw_building.py:\n  Line 21: from astroid.raw_building import (\n  Line 91:         # is in astroid.raw_building.imported_member, which verifies\n\n/repo/tests/unittest_regrtest.py:\n  Line 17: from astroid.raw_building import build_module\n\n/repo/tests/unittest_helpe"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "warn|FutureWarning|catch_warnings",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 59 matches\n/repo/tests/unittest_scoped_nodes.py:\n  Line 16: import warnings\n  Line 962:             with pytest.warns(DeprecationWarning) as records:\n  Line 2825:     with pytest.warns(DeprecationWarning) as records:\n  Line 2828:     with pytest.warns(DeprecationWarning) as records:\n  Line 283"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "warnings|catch_warnings|simplefilter",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 43 matches\n/repo/astroid/util.py:\n  Line 7: import warnings\n  Line 122:     warnings.warn(\n  Line 144: def check_warnings_filter() -> bool:\n  Line 147:     https://docs.python.org/3/library/warnings.html#default-warning-filter\n  Line 153:         for filter in warnings.filters\n\n/repo/astroid/t"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "catch_output|capsys|capfd|recwarn",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 5 matches\n/repo/tests/unittest_modutils.py:\n  Line 84:     capsys: CaptureFixture,\n  Line 106:         out, err = capsys.readouterr()\n\n/repo/tests/unittest_decorators.py:\n  Line 6: from _pytest.recwarn import WarningsRecorder\n  Line 98:     def test_deprecated_default_argument_values_ok(recwar"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "pattern": "def _safe_has_attribute|_safe_has_attribute\\(",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/astroid/raw_building.py:\n  Line 327: def _safe_has_attribute(obj, member: str) -> bool:\n  Line 433:             elif _safe_has_attribute(member, \"__all__\"):"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_raw_building.py -k \"build_module_getattr_catch_output or build_function_deepinspect_deprecation or module_object_with_broken_getattr\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted tests via Python module"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import types, warnings; import tests.testdata.python3.data.fake_module_with_warnings as fm; from astroid.builder import AstroidBuilder; module = types.ModuleType('test'); Float64Index = type('Float64Index', (), {}); Float64Index.__module__ = fm.__name__; module.Float64Index = Float64Index; warnings.simplefilter('error', FutureWarning); AstroidBuilder().module_build(module, 'test')\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Verifies FutureWarning regression stays suppressed"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/astroid/__init__.py\", line 42, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 17, in <module>\n    from astroid.nodes._base_nodes import Stateme"
+    }
+  ],
+  "token_cost": {
+    "total": 310218,
+    "input": 23412,
+    "output": 3542,
+    "cache_read": 283264,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 86.21,
+  "patch_non_empty": true
+}

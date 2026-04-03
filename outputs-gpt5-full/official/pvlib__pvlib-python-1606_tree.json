@@ -1,0 +1,98 @@
+{
+  "instance_id": "pvlib__pvlib-python-1606",
+  "variant": "official",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [],
+  "per_file": {
+    "/repo/pvlib/tools.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 300,
+          "limit": 120,
+          "signatures": [
+            "def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8)",
+            "def _get_sample_intervals(times, win_length)",
+            "def _degrees_to_index(degrees, coordinate)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_tools.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "def test_build_kwargs(keys, input_dict, expected)",
+            "def _obj_test_golden_sect(params, loc)",
+            "def test__golden_sect_DataFrame(params, lb, ub, expected, func)",
+            "def test__golden_sect_DataFrame_atol()",
+            "def test__golden_sect_DataFrame_vector()",
+            "def test__golden_sect_DataFrame_nans()",
+            "def test_degrees_to_index_1()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 5,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pvlib/tests/test_tools.py::test__golden_sect_DataFrame_vector pvlib/tests/test_tools.py::test__golden_sect_DataFrame_equal_bounds",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs focused golden-section regression tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_tools.py::test__golden_sect_DataFrame_vector pvlib/tests/test_tools.py::test__golden_sect_DataFrame_equal_bounds",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs focused regression tests via Python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport numpy as np\nfrom pvlib import tools\n\n\ndef f(params, loc):\n    return params[loc] * (1. - params['c'] * params[loc]**params['n'])\n\nparams = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}\nlower = np.array([0., 0.001, 0.])\nupper = np.array([1.1, 1.2, 0.])\n_, x = tools._golden_sect_DataFrame(params, lower, upper, f)\nprint(x)\n\nparams = {'c': 1., 'n': 1.}\nv, x = tools._golden_sect_DataFrame(params, 0., 0., f)\nprint(v, x)\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs direct golden-section regression check"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nModuleNotFoundError: No module named 'numpy'\n"
+    }
+  ],
+  "token_cost": {
+    "total": 146092,
+    "input": 15749,
+    "output": 4903,
+    "cache_read": 125440,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 91.52,
+  "patch_non_empty": true
+}

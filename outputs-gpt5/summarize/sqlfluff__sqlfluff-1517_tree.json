@@ -1,0 +1,521 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1517",
+  "variant": "summarize",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [
+    "/repo/src/sqlfluff/core/parser/helpers.py",
+    "/repo/src/sqlfluff/cli/helpers.py",
+    "/repo/test/dialects/ansi_test.py"
+  ],
+  "per_file": {
+    "/repo/src/sqlfluff/core/parser/helpers.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def join_segments_raw(segments: Tuple[\"BaseSegment\", ...]) -> str",
+            "def join_segments_raw_curtailed(segments: Tuple[\"BaseSegment\", ...], length=20) -> str",
+            "def check_still_complete(",
+            "def trim_non_code_segments(",
+            "def iter_indices(seq: List, val: Any) -> Iterator[int]"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/parser/grammar/sequence.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class Sequence(BaseGrammar)",
+            "def simple(self, parse_context: ParseContext) -> Optional[List[str]]",
+            "def match(self, segments, parse_context)",
+            "class Bracketed(Sequence)",
+            "def __init__(self, *args, **kwargs)",
+            "def simple(self, parse_context: ParseContext) -> Optional[List[str]]",
+            "def get_bracket_from_dialect(self, parse_context)",
+            "def match("
+          ]
+        }
+      ]
+    },
+    "/repo/test/dialects/ansi_test.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "def test__dialect__ansi__file_lex(raw, res, caplog)",
+            "def test__dialect__ansi_specific_segment_parses(",
+            "def test__dialect__ansi_specific_segment_not_match(",
+            "def test__dialect__ansi_specific_segment_not_parse(raw, err_locations, caplog)",
+            "def test__dialect__ansi_is_whitespace()",
+            "def test__dialect__ansi_parse_indented_joins(sql_string, indented_joins, meta_loc)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/parser/match_result.py": {
+      "reads": [
+        4
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class MatchResult(",
+            "def matched_length(self) -> int",
+            "def all_segments(self) -> Tuple[\"BaseSegment\", ...]",
+            "def __len__(self) -> int",
+            "def is_complete(self) -> bool",
+            "def has_match(self) -> bool",
+            "def __bool__(self) -> bool",
+            "def raw_matched(self) -> str",
+            "def __str__(self) -> str",
+            "def __eq__(self, other)",
+            "def seg_to_tuple(segs) -> Tuple[\"BaseSegment\", ...]",
+            "def from_unmatched(cls, unmatched: Tuple[\"BaseSegment\", ...]) -> \"MatchResult\"",
+            "def from_matched(cls, matched: Tuple[\"BaseSegment\", ...]) -> \"MatchResult\"",
+            "def from_empty(cls) -> \"MatchResult\"",
+            "def __add__(self, other) -> \"MatchResult\""
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/parser/segments/base.py": {
+      "reads": [
+        4
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/dialects/dialect_ansi.py": {
+      "reads": [
+        6,
+        8,
+        8
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 470,
+          "limit": 180,
+          "signatures": [
+            "class FileSegment(BaseFileSegment)",
+            "def get_table_references(self)",
+            "class IntervalExpressionSegment(BaseSegment)",
+            "class ArrayLiteralSegment(BaseSegment)",
+            "class DatatypeSegment(BaseSegment)",
+            "class ObjectReferenceSegment(BaseSegment)",
+            "class ObjectReferencePart(NamedTuple)",
+            "def _iter_reference_parts(cls, elem) -> Generator[ObjectReferencePart, None, None]",
+            "def iter_raw_references(self) -> Generator[ObjectReferencePart, None, None]"
+          ]
+        },
+        {
+          "offset": 2880,
+          "limit": 80,
+          "signatures": [
+            "class MLTableExpressionSegment(BaseSegment)",
+            "class StatementSegment(BaseSegment)",
+            "def get_table_references(self)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/parser/grammar/anyof.py": {
+      "reads": [
+        9
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class AnyNumberOf(BaseGrammar)",
+            "def __init__(self, *args, **kwargs)",
+            "def simple(self, parse_context: ParseContext) -> Optional[List[str]]",
+            "def is_optional(self) -> bool",
+            "def _prune_options(",
+            "def _match_once(",
+            "def match(",
+            "class OneOf(AnyNumberOf)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/parser/grammar/greedy.py": {
+      "reads": [
+        9
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class GreedyUntil(BaseGrammar)",
+            "def __init__(self, *args, **kwargs)",
+            "def match(self, segments, parse_context)",
+            "def greedy_match(",
+            "class StartsWith(GreedyUntil)",
+            "def __init__(self, target, *args, **kwargs)",
+            "def simple(self, parse_context: ParseContext) -> Optional[List[str]]",
+            "def match(self, segments, parse_context)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/parser/grammar/delimited.py": {
+      "reads": [
+        10,
+        11
+      ],
+      "edits": [],
+      "first_read_step": 10,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class Delimited(OneOf)",
+            "def __init__(",
+            "def match("
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/parser/grammar/base.py": {
+      "reads": [
+        17,
+        19,
+        21
+      ],
+      "edits": [],
+      "first_read_step": 17,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 760,
+          "limit": 180,
+          "signatures": [
+            "class Ref(BaseGrammar)",
+            "def simple(self, parse_context: ParseContext) -> Optional[List[str]]",
+            "def _get_ref(self)",
+            "def _get_elem(self, dialect)",
+            "def __repr__(self)",
+            "def match(self, segments, parse_context)",
+            "def keyword(cls, keyword, **kwargs)",
+            "class Anything(BaseGrammar)",
+            "def match(self, segments, parse_context)",
+            "class Nothing(BaseGrammar)",
+            "def match(self, segments, parse_context)"
+          ]
+        },
+        {
+          "offset": 150,
+          "limit": 140,
+          "signatures": [
+            "def is_optional(self)",
+            "def match(self, segments: Tuple[\"BaseSegment\", ...], parse_context: ParseContext)",
+            "def simple(self, parse_context: ParseContext) -> Optional[List[str]]",
+            "def _iter_raw_segs(segments)",
+            "def _longest_trimmed_match(",
+            "def _look_ahead_match(cls, segments, matchers, parse_context)"
+          ]
+        },
+        {
+          "offset": 440,
+          "limit": 260,
+          "signatures": [
+            "def _bracket_sensitive_look_ahead_match(",
+            "def __str__(self):  # pragma: no cover TODO?",
+            "def __repr__(self)",
+            "def __eq__(self, other)",
+            "def copy("
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/parser/match_wrapper.py": {
+      "reads": [
+        22
+      ],
+      "edits": [],
+      "first_read_step": 22,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class WrapParseMatchLogObject(ParseMatchLogObject)",
+            "def __init__(self, match, segments, **kwargs)",
+            "def __str__(self)",
+            "def match_wrapper(v_level=3)",
+            "class SomeMatchableObject(object)",
+            "def match(self, segments, parse_context)",
+            "def inner_match_wrapper(func)",
+            "def wrapped_match_method(self_cls, segments: tuple, parse_context)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 2,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/core/parser/grammar/sequence.py",
+        "offset": 1,
+        "limit": 260
+      },
+      "output_preview": "<path>/repo/src/sqlfluff/core/parser/grammar/sequence.py</path>\n<type>file</type>\n<content>1: \"\"\"Sequence and Bracketed Grammars.\"\"\"\n2: \n3: from typing import Optional, List, Tuple, cast\n4: \n5: from sqlfluff.core.errors import SQLParseError\n6: \n7: from sqlfluff.core.parser.segments import (\n8:     B",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "multiple_semicolons",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "select.*;;|;;",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "Dropped elements in sequence matching",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "ref\\(\"semicolon\"|RawSegment.*;|';'",
+        "path": "/repo/src/sqlfluff",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "pytest -q test/dialects/ansi_test.py -k multiple_semicolons -q",
+        "workdir": "/repo",
+        "description": "Run targeted semicolon test"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 17,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/core/parser/grammar/base.py",
+        "offset": 760,
+        "limit": 180
+      },
+      "output_preview": "<path>/repo/src/sqlfluff/core/parser/grammar/base.py</path>\n<type>file</type>\n<content>760:                     raise ValueError(\n761:                         \"Could not remove {} from copy of {}. Not Found.\".format(\n762:                             elem, self\n763:                         )\n764:    ",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 27,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile src/sqlfluff/core/parser/grammar/delimited.py test/dialects/ansi_test.py",
+        "workdir": "/repo",
+        "description": "Check modified files compile"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "check_still_complete|Dropped elements in sequence matching|multiple_semicolons",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 7 matches\n/repo/src/sqlfluff/core/parser/segments/base.py:\n  Line 25:     check_still_complete,\n  Line 283:         check_still_complete(segments, segs, ())\n  Line 821:             check_still_complete(segments, m.matched_segments, m.unmatched_segments)\n\n/repo/src/sqlfluff/core/parser/helpers."
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "semicolon|semi",
+        "path": "/repo/src/sqlfluff",
+        "include": "*.py"
+      },
+      "output_preview": "Found 18 matches\n/repo/src/sqlfluff/rules/L009.py:\n  Line 31:         -- Ending on a semi-colon means the last line is not a newline.\n  Line 57:         -- Even when ending on a semi-colon, ensure there is a newline after\n\n/repo/src/sqlfluff/dialects/dialect_tsql.py:\n  Line 67:     # is optional wit"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "StatementSegment=|FileSegment=|StatementGrammar|DelimiterSegment",
+        "path": "/repo/src/sqlfluff/dialects/dialect_ansi.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 4 matches\n/repo/src/sqlfluff/dialects/dialect_ansi.py:\n  Line 182:     DelimiterSegment=Ref(\"SemicolonSegment\"),\n  Line 501:         delimiter=Ref(\"DelimiterSegment\"),\n  Line 619:             Ref(\"DelimiterSegment\"),\n  Line 2923:     match_grammar = GreedyUntil(Ref(\"DelimiterSegment\"))"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "DelimiterSegment",
+        "path": "/repo/src/sqlfluff/dialects",
+        "include": "*.py"
+      },
+      "output_preview": "Found 17 matches\n/repo/src/sqlfluff/dialects/dialect_tsql.py:\n  Line 68:     DelimiterSegment=OneOf(\n\n/repo/src/sqlfluff/dialects/dialect_mysql.py:\n  Line 273:     DelimiterSegment=OneOf(Ref(\"SemicolonSegment\"), Ref(\"TildeSegment\")),\n\n/repo/src/sqlfluff/dialects/dialect_exasol.py:\n  Line 117:       "
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "pattern": "class Delimited|def match\\(|GreedyUntil",
+        "path": "/repo/src/sqlfluff/core/parser/grammar",
+        "include": "*.py"
+      },
+      "output_preview": "Found 21 matches\n/repo/src/sqlfluff/core/parser/grammar/sequence.py:\n  Line 51:     def match(self, segments, parse_context):\n  Line 233:     def match(\n\n/repo/src/sqlfluff/core/parser/grammar/greedy.py:\n  Line 1: \"\"\"GreedyUntil and StartsWith Grammars.\"\"\"\n  Line 17: class GreedyUntil(BaseGrammar):\n"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "ls",
+        "workdir": "/repo",
+        "description": "List repository root"
+      },
+      "output_preview": "CHANGELOG.md\nCODE_OF_CONDUCT.md\nCONTRIBUTING.md\nLICENSE.md\nMANIFEST.in\nREADME.md\nbenchmarks\ndocs\nexamples\nimages\nmypy.ini\nplugins\npytest.ini\nrequirements.txt\nrequirements_dev.txt\nsetup.py\nsrc\ntest\ntox.ini\nutil.py\n"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "ls .venv",
+        "workdir": "/repo",
+        "description": "Check virtualenv presence"
+      },
+      "output_preview": "ls: cannot access '.venv': No such file or directory\n"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest -q test/dialects/ansi_test.py -k multiple_semicolons -q",
+        "workdir": "/repo",
+        "description": "Run pytest via python module"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sys\nsys.path.insert(0, 'src')\nfrom sqlfluff.core import Linter\nlnt = Linter()\ntry:\n    parsed = lnt.parse_string('select id from tbl;;')\n    print('OK', parsed)\n    print(parsed.violations)\nexcept Exception as e:\n    import traceback\n    traceback.print_exc()\nPY",
+        "workdir": "/repo",
+        "description": "Reproduce parse error in python"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 3, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 3, in <module>\n    import pytest\nModuleNotFoundError: No module named 'pytest'\n"
+    },
+    {
+      "step": 18,
+      "tool": "grep",
+      "input": {
+        "pattern": "def _longest_trimmed_match",
+        "path": "/repo/src/sqlfluff/core/parser/grammar/base.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/src/sqlfluff/core/parser/grammar/base.py:\n  Line 188:     def _longest_trimmed_match("
+    },
+    {
+      "step": 20,
+      "tool": "grep",
+      "input": {
+        "pattern": "def _bracket_sensitive_look_ahead_match",
+        "path": "/repo/src/sqlfluff/core/parser/grammar/base.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/src/sqlfluff/core/parser/grammar/base.py:\n  Line 447:     def _bracket_sensitive_look_ahead_match("
+    },
+    {
+      "step": 28,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- src/sqlfluff/core/parser/grammar/delimited.py test/dialects/ansi_test.py",
+        "workdir": "/repo",
+        "description": "Show focused diff"
+      },
+      "output_preview": "diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py\nindex 39a35037..13a9a4e7 100644\n--- a/src/sqlfluff/core/parser/grammar/delimited.py\n+++ b/src/sqlfluff/core/parser/grammar/delimited.py\n@@ -184,8 +184,23 @@ class Delimited(OneOf):\n            "
+    }
+  ],
+  "token_cost": {
+    "total": 1024575,
+    "input": 40657,
+    "output": 16238,
+    "cache_read": 967680,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 228.72,
+  "patch_non_empty": true
+}

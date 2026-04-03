@@ -1,0 +1,55 @@
+diff --git a/src/sqlfluff/rules/L031.py b/src/sqlfluff/rules/L031.py
+index 838c6ce5..20f39174 100644
+--- a/src/sqlfluff/rules/L031.py
++++ b/src/sqlfluff/rules/L031.py
+@@ -62,6 +62,9 @@ class Rule_L031(BaseRule):
+             if not from_clause_segment:
+                 return None
+ 
++            if not list(from_clause_segment.recursive_crawl("join_clause")):
++                return None
++
+             from_expression = from_clause_segment.get_child("from_expression")
+             from_expression_element = None
+             if from_expression:
+diff --git a/test/cli/commands_test.py b/test/cli/commands_test.py
+index 490cf360..f3a8f805 100644
+--- a/test/cli/commands_test.py
++++ b/test/cli/commands_test.py
+@@ -49,7 +49,6 @@ def invoke_assert_code(
+ expected_output = """== [test/fixtures/linter/indentation_error_simple.sql] FAIL
+ L:   2 | P:   4 | L003 | Indentation not hanging or a multiple of 4 spaces
+ L:   5 | P:  10 | L010 | Keywords must be consistently upper case.
+-L:   5 | P:  13 | L031 | Avoid using aliases in join condition
+ """
+ 
+ 
+diff --git a/test/fixtures/rules/std_rule_cases/L031.yml b/test/fixtures/rules/std_rule_cases/L031.yml
+index 40b41639..f27eb064 100644
+--- a/test/fixtures/rules/std_rule_cases/L031.yml
++++ b/test/fixtures/rules/std_rule_cases/L031.yml
+@@ -79,12 +79,20 @@ test_fail_avoid_aliases_3:
+     order by o desc
+ 
+ alias_single_char_identifiers:
+-  fail_str: "select b from tbl as a"
+-  fix_str: "select b from tbl"
++  pass_str: "select b from tbl as a"
+ 
+ alias_with_wildcard_identifier:
+-  fail_str: "select * from tbl as a"
+-  fix_str: "select * from tbl"
++  pass_str: "select * from tbl as a"
++
++issue_tsql_no_join_alias:
++  pass_str: |
++    SELECT a.[hello]
++    FROM
++        mytable AS a
++
++  configs:
++    core:
++      dialect: tsql
+ 
+ select_from_values:
+   pass_str: |

@@ -1,0 +1,138 @@
+diff --git a/src/sqlfluff/core/file_helpers.py b/src/sqlfluff/core/file_helpers.py
+index 52f74f0b..5c8bfd27 100644
+--- a/src/sqlfluff/core/file_helpers.py
++++ b/src/sqlfluff/core/file_helpers.py
+@@ -12,6 +12,26 @@ def get_encoding(fname: str, config: FluffConfig) -> str:
+     if encoding_config == "autodetect":
+         with open(fname, "rb") as f:
+             data = f.read()
+-        return chardet.detect(data)["encoding"]
++        detected = chardet.detect(data)["encoding"]
++        if not detected:
++            return "utf-8"
++
++        # If chardet guesses a single-byte encoding for a file that is actually
++        # valid UTF-8, prefer UTF-8 so that fixes can be written back safely.
++        normalized = detected.lower().replace("_", "-")
++        if any(byte > 0x7F for byte in data):
++            if not normalized.startswith(("utf-16", "utf-32")) and normalized not in (
++                "utf-8",
++                "utf-8-sig",
++                "ascii",
++            ):
++                try:
++                    data.decode("utf-8")
++                except UnicodeDecodeError:
++                    pass
++                else:
++                    return "utf-8"
++
++        return detected
+ 
+     return encoding_config
+diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py
+index 3a8593ed..a715a7b4 100644
+--- a/src/sqlfluff/core/linter/linted_file.py
++++ b/src/sqlfluff/core/linter/linted_file.py
+@@ -7,6 +7,7 @@ post linting.
+ 
+ import os
+ import logging
++import tempfile
+ from typing import (
+     Any,
+     Iterable,
+@@ -493,7 +494,30 @@ class LintedFile(NamedTuple):
+             if suffix:
+                 root, ext = os.path.splitext(fname)
+                 fname = root + suffix + ext
+-            # Actually write the file.
+-            with open(fname, "w", encoding=self.encoding) as f:
+-                f.write(write_buff)
++            # Encode before opening the destination so that an encoding error
++            # can't truncate the original file.
++            try:
++                write_bytes = write_buff.encode(self.encoding)
++            except UnicodeEncodeError:
++                linter_logger.warning(
++                    "Unable to write %s using encoding %s.", fname, self.encoding
++                )
++                return False
++
++            tmp_fname = None
++            try:
++                with tempfile.NamedTemporaryFile(
++                    mode="wb",
++                    delete=False,
++                    dir=os.path.dirname(fname) or ".",
++                ) as f:
++                    tmp_fname = f.name
++                    f.write(write_bytes)
++                os.replace(tmp_fname, fname)
++            finally:
++                if tmp_fname and os.path.exists(tmp_fname):
++                    try:
++                        os.remove(tmp_fname)
++                    except OSError:
++                        pass
+         return success
+diff --git a/test/core/file_helpers_test.py b/test/core/file_helpers_test.py
+index 3bc3b0a0..41ccdb9b 100644
+--- a/test/core/file_helpers_test.py
++++ b/test/core/file_helpers_test.py
+@@ -3,6 +3,7 @@
+ import pytest
+ 
+ from sqlfluff.core import FluffConfig
++import sqlfluff.core.file_helpers as file_helpers
+ from sqlfluff.core.file_helpers import get_encoding
+ 
+ 
+@@ -49,3 +50,16 @@ def test__parser__helper_get_encoding(fname, config_encoding, result):
+         )
+         == result
+     )
++
++
++def test__parser__helper_get_encoding_prefers_utf8_for_valid_utf8(tmp_path, monkeypatch):
++    """Test autodetect keeps UTF-8 for valid UTF-8 with special chars."""
++    path = tmp_path / "utf8_special.sql"
++    path.write_text("select '→' as arrow\n", encoding="utf-8")
++    monkeypatch.setattr(
++        file_helpers.chardet,
++        "detect",
++        lambda data: {"encoding": "Windows-1252"},
++    )
++    config = FluffConfig(overrides={"encoding": "autodetect"})
++    assert get_encoding(fname=str(path), config=config) == "utf-8"
+diff --git a/test/core/linter_test.py b/test/core/linter_test.py
+index 0600adf2..b7d0d0ba 100644
+--- a/test/core/linter_test.py
++++ b/test/core/linter_test.py
+@@ -370,6 +370,26 @@ def test__linter__encoding(fname, config_encoding, lexerror):
+     assert lexerror == (SQLLexError in [type(v) for v in result.get_violations()])
+ 
+ 
++def test__linter__persist_tree_keeps_original_file_on_encoding_error(tmp_path):
++    """Test a failed fix write does not truncate the original file."""
++    fname = tmp_path / "example.sql"
++    fname.write_text("select '→' as arrow\n", encoding="utf-8")
++
++    lntr = Linter(
++        config=FluffConfig(
++            overrides={
++                "rules": "L010",
++                "encoding": "utf-8",
++            }
++        )
++    )
++    linted_dir = lntr.lint_path(str(fname), fix=True, ignore_non_existent_files=False)
++    linted_file = linted_dir.files[0]._replace(encoding="cp1252")
++
++    assert not linted_file.persist_tree()
++    assert fname.read_text(encoding="utf-8") == "select '→' as arrow\n"
++
++
+ @pytest.mark.parametrize(
+     "input,expected",
+     [

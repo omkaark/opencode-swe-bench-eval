@@ -1,0 +1,44 @@
+diff --git a/src/sqlfluff/rules/L031.py b/src/sqlfluff/rules/L031.py
+index 838c6ce5..9f9e99a6 100644
+--- a/src/sqlfluff/rules/L031.py
++++ b/src/sqlfluff/rules/L031.py
+@@ -83,6 +83,14 @@ class Rule_L031(BaseRule):
+             from_clause_index = segment.segments.index(from_clause_segment)
+             from_clause_and_after = segment.segments[from_clause_index:]
+ 
++            # If there are no joins, then aliases in a standalone FROM clause
++            # should not be flagged by this rule.
++            has_join_clause = any(
++                True for _ in from_clause_segment.recursive_crawl("join_clause")
++            )
++            if not has_join_clause:
++                return None
++
+             for clause in from_clause_and_after:
+                 for from_expression_element in clause.recursive_crawl(
+                     "from_expression_element"
+diff --git a/test/fixtures/rules/std_rule_cases/L031.yml b/test/fixtures/rules/std_rule_cases/L031.yml
+index 40b41639..7190fe40 100644
+--- a/test/fixtures/rules/std_rule_cases/L031.yml
++++ b/test/fixtures/rules/std_rule_cases/L031.yml
+@@ -79,12 +79,16 @@ test_fail_avoid_aliases_3:
+     order by o desc
+ 
+ alias_single_char_identifiers:
+-  fail_str: "select b from tbl as a"
+-  fix_str: "select b from tbl"
++  pass_str: "select b from tbl as a"
+ 
+ alias_with_wildcard_identifier:
+-  fail_str: "select * from tbl as a"
+-  fix_str: "select * from tbl"
++  pass_str: "select * from tbl as a"
++
++issue_tsql_031_no_join:
++  pass_str: |
++    SELECT a.[hello]
++    FROM
++        mytable AS a
+ 
+ select_from_values:
+   pass_str: |

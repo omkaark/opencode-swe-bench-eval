@@ -1,0 +1,405 @@
+{
+  "instance_id": "pylint-dev__astroid-1268",
+  "variant": "summarize-relaxed",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/tests/unittest_utils.py",
+    "/repo/tests/unittest_transforms.py",
+    "/repo/tests/unittest_scoped_nodes.py",
+    "/repo/tests/unittest_regrtest.py",
+    "/repo/tests/unittest_raw_building.py",
+    "/repo/tests/unittest_python3.py",
+    "/repo/tests/unittest_protocols.py",
+    "/repo/tests/unittest_objects.py",
+    "/repo/tests/unittest_object_model.py",
+    "/repo/tests/unittest_nodes.py",
+    "/repo/tests/unittest_modutils.py",
+    "/repo/tests/unittest_manager.py",
+    "/repo/tests/unittest_lookup.py",
+    "/repo/tests/unittest_inference_calls.py",
+    "/repo/tests/unittest_inference.py",
+    "/repo/tests/unittest_helpers.py",
+    "/repo/tests/unittest_decorators.py",
+    "/repo/tests/unittest_builder.py",
+    "/repo/tests/unittest_brain_unittest.py",
+    "/repo/tests/unittest_brain_signal.py",
+    "/repo/tests/unittest_brain_numpy_random_mtrand.py",
+    "/repo/tests/unittest_brain_numpy_ndarray.py",
+    "/repo/tests/unittest_brain_numpy_ma.py",
+    "/repo/tests/unittest_brain_numpy_core_umath.py",
+    "/repo/tests/unittest_brain_numpy_core_numerictypes.py",
+    "/repo/tests/unittest_brain_numpy_core_numeric.py",
+    "/repo/tests/unittest_brain_numpy_core_multiarray.py",
+    "/repo/tests/unittest_brain_numpy_core_function_base.py",
+    "/repo/tests/unittest_brain_numpy_core_fromnumeric.py",
+    "/repo/tests/unittest_brain_dataclasses.py",
+    "/repo/tests/unittest_brain_ctypes.py",
+    "/repo/tests/unittest_brain.py",
+    "/repo/tests/testdata/python3/data/recursion.py",
+    "/repo/tests/testdata/python3/data/unicode_package/__init__.py",
+    "/repo/tests/testdata/python3/data/tmp__init__.py",
+    "/repo/tests/testdata/python3/data/unicode_package/core/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkgutil_3/package/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkgutil_2/package/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_3/package/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkgutil_1/package/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkgutil_3/package/baz.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_1/package/__init__.py",
+    "/repo/tests/testdata/python3/data/package/import_package_subpackage_module.py",
+    "/repo/tests/testdata/python3/data/package/hello.py",
+    "/repo/tests/testdata/python3/data/package/absimport.py",
+    "/repo/tests/testdata/python3/data/package/subpackage/module.py",
+    "/repo/tests/testdata/python3/data/package/subpackage/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_2/package/__init__.py",
+    "/repo/tests/testdata/python3/data/path_pkgutil_2/package/bar.py",
+    "/repo/tests/testdata/python3/data/path_pkgutil_1/package/foo.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_1/package/foo.py",
+    "/repo/tests/testdata/python3/data/package/__init__.py",
+    "/repo/tests/testdata/python3/data/operator_precedence.py",
+    "/repo/tests/testdata/python3/data/notall.py",
+    "/repo/tests/testdata/python3/data/nonregr.py",
+    "/repo/tests/testdata/python3/data/noendingnewline.py",
+    "/repo/tests/testdata/python3/data/module2.py",
+    "/repo/tests/testdata/python3/data/namespace_pep_420/module.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_2/package/bar.py",
+    "/repo/tests/testdata/python3/data/module1abs/__init__.py",
+    "/repo/tests/testdata/python3/data/module1abs/core.py",
+    "/repo/tests/testdata/python3/data/path_pkg_resources_3/package/baz.py",
+    "/repo/tests/testdata/python3/data/notamodule/file.py",
+    "/repo/tests/testdata/python3/data/module.py",
+    "/repo/tests/testdata/python3/data/metaclass_recursion/parent.py",
+    "/repo/tests/testdata/python3/data/metaclass_recursion/monkeypatch.py",
+    "/repo/tests/testdata/python3/data/lmfp/foo.py",
+    "/repo/tests/testdata/python3/data/invalid_encoding.py",
+    "/repo/tests/testdata/python3/data/lmfp/__init__.py",
+    "/repo/tests/testdata/python3/data/format.py",
+    "/repo/tests/testdata/python3/data/foogle/fax/a.py",
+    "/repo/tests/testdata/python3/data/metaclass_recursion/__init__.py",
+    "/repo/tests/testdata/python3/data/email.py",
+    "/repo/tests/testdata/python3/data/descriptor_crash.py",
+    "/repo/tests/testdata/python3/data/contribute_to_namespace/namespace_pep_420/submodule.py",
+    "/repo/tests/testdata/python3/data/conditional.py",
+    "/repo/tests/testdata/python3/data/conditional_import/__init__.py",
+    "/repo/tests/testdata/python3/data/find_test/nonregr.py",
+    "/repo/tests/testdata/python3/data/find_test/noendingnewline.py",
+    "/repo/tests/testdata/python3/data/find_test/module2.py",
+    "/repo/tests/testdata/python3/data/find_test/module.py",
+    "/repo/tests/testdata/python3/data/find_test/__init__.py",
+    "/repo/tests/testdata/python3/data/foogle/fax/__init__.py",
+    "/repo/tests/testdata/python3/data/beyond_top_level_two/a.py",
+    "/repo/tests/testdata/python3/data/beyond_top_level_two/level1/beyond_top_level_two.py",
+    "/repo/tests/testdata/python3/data/beyond_top_level_two/level1/__init__.py",
+    "/repo/tests/testdata/python3/data/beyond_top_level_two/__init__.py",
+    "/repo/tests/testdata/python3/data/beyond_top_level/import_package.py",
+    "/repo/tests/testdata/python3/data/all.py",
+    "/repo/tests/testdata/python3/data/absimport.py",
+    "/repo/tests/testdata/python3/data/appl/myConnection.py",
+    "/repo/tests/testdata/python3/data/appl/__init__.py",
+    "/repo/tests/testdata/python3/data/beyond_top_level_three/double_name/__init__.py",
+    "/repo/tests/testdata/python3/data/__init__.py",
+    "/repo/tests/testdata/python3/data/SSL1/__init__.py",
+    "/repo/tests/testdata/python3/data/absimp/__init__.py",
+    "/repo/tests/testdata/python3/data/beyond_top_level_three/module/__init__.py",
+    "/repo/tests/resources.py",
+    "/repo/tests/testdata/python3/data/SSL1/Connection1.py",
+    "/repo/tests/__init__.py"
+  ],
+  "per_file": {
+    "/repo/astroid/nodes/as_string.py": {
+      "reads": [
+        2,
+        5,
+        7
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class AsStringVisitor",
+            "def __init__(self, indent=\"    \")",
+            "def __call__(self, node)",
+            "def _docs_dedent(self, doc)",
+            "def _stmt_list(self, stmts, indent=True)",
+            "def _precedence_parens(self, node, child, is_left=True)",
+            "def _should_wrap(self, node, child, is_left)",
+            "def visit_await(self, node)",
+            "def visit_asyncwith(self, node)",
+            "def visit_asyncfor(self, node)",
+            "def visit_arguments(self, node)",
+            "def visit_assignattr(self, node)",
+            "def visit_assert(self, node)",
+            "def visit_assignname(self, node)",
+            "def visit_assign(self, node)",
+            "def visit_augassign(self, node)",
+            "def visit_annassign(self, node)",
+            "def visit_binop(self, node)",
+            "def visit_boolop(self, node)",
+            "def visit_break(self, node)"
+          ]
+        },
+        {
+          "offset": 520,
+          "limit": 160,
+          "signatures": [
+            "def visit_with(self, node):  # 'with' without 'as' is possible",
+            "def visit_yield(self, node)",
+            "def visit_yieldfrom(self, node)",
+            "def visit_starred(self, node)",
+            "def visit_match(self, node: \"Match\") -> str",
+            "def visit_matchcase(self, node: \"MatchCase\") -> str",
+            "def visit_matchvalue(self, node: \"MatchValue\") -> str",
+            "def visit_matchsingleton(node: \"MatchSingleton\") -> str",
+            "def visit_matchsequence(self, node: \"MatchSequence\") -> str",
+            "def visit_matchmapping(self, node: \"MatchMapping\") -> str",
+            "def visit_matchclass(self, node: \"MatchClass\") -> str",
+            "def visit_matchstar(self, node: \"MatchStar\") -> str",
+            "def visit_matchas(self, node: \"MatchAs\") -> str",
+            "def visit_matchor(self, node: \"MatchOr\") -> str",
+            "def visit_frozenset(self, node)",
+            "def visit_super(self, node)",
+            "def visit_uninferable(self, node)",
+            "def visit_property(self, node)",
+            "def visit_evaluatedobject(self, node)",
+            "def _import_string(names)"
+          ]
+        },
+        {
+          "offset": 248,
+          "limit": 40,
+          "signatures": [
+            "def visit_expr(self, node)",
+            "def visit_emptynode(self, node)",
+            "def visit_excepthandler(self, node)",
+            "def visit_empty(self, node)",
+            "def visit_for(self, node)",
+            "def visit_importfrom(self, node)"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/nodes/node_classes.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 4310,
+          "limit": 80,
+          "signatures": [
+            "class Unknown(mixins.AssignTypeMixin, NodeNG)",
+            "def qname(self)",
+            "def _infer(self, context=None, **kwargs)",
+            "class EvaluatedObject(NodeNG)",
+            "def __init__(",
+            "def infer(self, context=None, **kwargs)",
+            "class Match(Statement)",
+            "def __init__("
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_nodes.py": {
+      "reads": [
+        4,
+        4
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 60,
+          "limit": 140,
+          "signatures": [
+            "class AsStringTest(resources.SysPathSetup, unittest.TestCase)",
+            "def test_tuple_as_string(self) -> None",
+            "def build(string: str) -> Tuple",
+            "def test_func_signature_issue_185(self) -> None",
+            "def test(a, b, c=42, *, x=42, **kwargs)",
+            "def test_as_string_for_list_containing_uninferable(self) -> None",
+            "def foo()",
+            "def test_frozenset_as_string(self) -> None",
+            "def test_varargs_kwargs_as_string(self) -> None",
+            "def test_module_as_string(self) -> None",
+            "def test_module2_as_string(self) -> None",
+            "def test_as_string(self) -> None",
+            "def test_3k_as_string(self) -> None",
+            "def function(var)",
+            "def test_3k_annotations_and_metaclass(self) -> None",
+            "def function(var: int)",
+            "class Language(metaclass=Natural)",
+            "def function(var: int)",
+            "class Language(metaclass=Natural)",
+            "def test_ellipsis(self) -> None"
+          ]
+        },
+        {
+          "offset": 1180,
+          "limit": 40,
+          "signatures": [
+            "def test_starred_load(self) -> None",
+            "def test_starred_store(self) -> None",
+            "def test_unknown() -> None",
+            "def test_type_comments_with() -> None",
+            "def test_type_comments_for() -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/nodes/node_ng.py": {
+      "reads": [
+        5,
+        6
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 180,
+          "limit": 80,
+          "signatures": [
+            "def __repr__(self)",
+            "def accept(self, visitor)",
+            "def get_children(self) -> Iterator[\"NodeNG\"]",
+            "def last_child(self) -> Optional[\"NodeNG\"]",
+            "def node_ancestors(self) -> Iterator[\"NodeNG\"]",
+            "def parent_of(self, node)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 80,
+          "signatures": [
+            "class NodeNG"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_as_string_unknown|Unknown\\(\\)\\.as_string|visit_unknown",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "Unknown\\)\\.as_string\\(|as_string\\(\\) == \"Unknown\"|\"Unknown\"",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile astroid/nodes/as_string.py tests/unittest_nodes.py",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Check edited files compile"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "class AsStringVisitor|visit_unknown|class Unknown",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/astroid/nodes/node_classes.py:\n  Line 4319: class Unknown(mixins.AssignTypeMixin, NodeNG):\n\n/repo/astroid/nodes/as_string.py:\n  Line 48: class AsStringVisitor:"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "as_string\\(",
+        "path": "/repo/tests/unittest_nodes.py"
+      },
+      "output_preview": "Found 65 matches\n/repo/tests/unittest_nodes.py:\n  Line 83:     def test_tuple_as_string(self) -> None:\n  Line 87:         self.assertEqual(build(\"1,\").as_string(), \"(1, )\")\n  Line 88:         self.assertEqual(build(\"1, 2, 3\").as_string(), \"(1, 2, 3)\")\n  Line 89:         self.assertEqual(build(\"(1, )"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "Unknown\\(|Unknown\\b",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 59 matches\n/repo/tests/unittest_nodes.py:\n  Line 1193:     \"\"\"Test Unknown node\"\"\"\n  Line 1194:     assert isinstance(next(nodes.Unknown().infer()), type(util.Uninferable))\n  Line 1195:     assert isinstance(nodes.Unknown().name, str)\n  Line 1196:     assert isinstance(nodes.Unknown().qname(),"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "visit_uninferable|Uninferable|visit_[a-z]+\\(",
+        "path": "/repo/astroid/nodes/as_string.py"
+      },
+      "output_preview": "Found 87 matches\n/repo/astroid/nodes/as_string.py:\n  Line 101:     def visit_await(self, node):\n  Line 104:     def visit_asyncwith(self, node):\n  Line 105:         return f\"async {self.visit_with(node)}\"\n  Line 107:     def visit_asyncfor(self, node):\n  Line 108:         return f\"async {self.visit_"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "def __str__",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 11 matches\n/repo/astroid/util.py:\n  Line 91:     def __str__(self):\n  Line 114:     def __str__(self):\n\n/repo/astroid/nodes/node_ng.py:\n  Line 179:     def __str__(self):\n\n/repo/astroid/exceptions.py:\n  Line 75:     def __str__(self):\n  Line 158:     def __str__(self):\n  Line 181:     def __st"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_nodes.py -k test_as_string_unknown",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Run targeted unknown as_string test"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import astroid; print(astroid.nodes.Unknown().as_string())\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Check Unknown as_string output"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/astroid/__init__.py\", line 51, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 27, in <module>\n    from astroid.nodes.node_classes import (  # p"
+    }
+  ],
+  "token_cost": {
+    "total": 242843,
+    "input": 25862,
+    "output": 2069,
+    "cache_read": 214912,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 59.31,
+  "patch_non_empty": true
+}

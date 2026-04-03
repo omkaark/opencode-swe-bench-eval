@@ -1,0 +1,53 @@
+diff --git a/src/marshmallow/schema.py b/src/marshmallow/schema.py
+index 085c509..ce82645 100644
+--- a/src/marshmallow/schema.py
++++ b/src/marshmallow/schema.py
+@@ -875,6 +875,8 @@ class BaseSchema(base.SchemaABC):
+ 
+             if many:
+                 for idx, item in enumerate(data):
++                    if not isinstance(item, Mapping):
++                        continue
+                     try:
+                         value = item[field_obj.attribute or field_name]
+                     except KeyError:
+@@ -890,6 +892,8 @@ class BaseSchema(base.SchemaABC):
+                         if validated_value is missing:
+                             data[idx].pop(field_name, None)
+             else:
++                if not isinstance(data, Mapping):
++                    return
+                 try:
+                     value = data[field_obj.attribute or field_name]
+                 except KeyError:
+diff --git a/tests/test_marshalling.py b/tests/test_marshalling.py
+index 273dada..da9d0e1 100644
+--- a/tests/test_marshalling.py
++++ b/tests/test_marshalling.py
+@@ -2,7 +2,7 @@
+ 
+ import pytest
+ 
+-from marshmallow import fields, Schema
++from marshmallow import fields, Schema, validates
+ from marshmallow.marshalling import Marshaller, Unmarshaller, missing
+ from marshmallow.exceptions import ValidationError
+ 
+@@ -283,3 +283,17 @@ class TestUnmarshaller:
+ 
+             assert result is None
+             assert excinfo.value.messages == {'foo': {'_schema': ['Invalid input type.']}}
++
++    def test_deserialize_wrong_nested_type_with_validates_method(self):
++        class Bar(Schema):
++            value = fields.String()
++
++            @validates('value')
++            def validate_value(self, value):
++                pass
++
++        class Foo(Schema):
++            bar = fields.Nested(Bar)
++
++        errors = Foo().validate({'bar': 'invalid'})
++        assert errors == {'bar': {'_schema': ['Invalid input type.']}}

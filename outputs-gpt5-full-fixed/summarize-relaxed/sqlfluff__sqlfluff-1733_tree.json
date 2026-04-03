@@ -1,0 +1,770 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1733",
+  "variant": "summarize-relaxed",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [
+    "/repo/src/sqlfluff/rules/L036.py",
+    "/repo/test/test_testing.py",
+    "/repo/test/rules/yaml_test_cases_test.py",
+    "/repo/test/rules/std_test.py",
+    "/repo/test/rules/std_roundtrip_test.py",
+    "/repo/test/rules/std_fix_auto_test.py",
+    "/repo/test/rules/std_L048_test.py",
+    "/repo/test/rules/std_L020_test.py",
+    "/repo/test/rules/std_L019_test.py",
+    "/repo/test/rules/std_L016_L36_combo.py",
+    "/repo/test/rules/std_L007_test.py",
+    "/repo/test/rules/std_L003_test.py",
+    "/repo/test/generate_parse_fixture_yml.py",
+    "/repo/test/fixtures/templater/jinja_j_libraries/libs/foo.py",
+    "/repo/test/fixtures/templater/jinja_j_libraries/libs/bar.py",
+    "/repo/test/fixtures/rules/custom/S000.py",
+    "/repo/test/fixtures/rules/custom/bad_rule_name/E000.py",
+    "/repo/test/fixtures/rules/custom/L000.py",
+    "/repo/test/diff_quality_plugin_test.py",
+    "/repo/test/dialects/snowflake_test.py",
+    "/repo/test/dialects/postgres_test.py",
+    "/repo/test/dialects/exasol_test.py",
+    "/repo/test/dialects/dialects_test.py",
+    "/repo/test/dialects/conftest.py",
+    "/repo/test/dialects/bigquery_test.py",
+    "/repo/test/dialects/ansi_test.py",
+    "/repo/test/dialects/__init__.py",
+    "/repo/test/core/templaters/__init__.py",
+    "/repo/test/core/templaters/python_test.py",
+    "/repo/test/core/templaters/jinja_test.py",
+    "/repo/test/core/templaters/base_test.py",
+    "/repo/test/core/string_helpers_test.py",
+    "/repo/test/core/plugin_test.py",
+    "/repo/test/core/rules/docstring_test.py",
+    "/repo/test/core/rules/config_test.py",
+    "/repo/test/core/rules/__init__.py",
+    "/repo/test/core/parser/lexer_test.py",
+    "/repo/test/core/parser/markers_test.py",
+    "/repo/test/core/parser/parse_test.py",
+    "/repo/test/core/parser/segments_base_test.py",
+    "/repo/test/core/parser/segments_common_test.py",
+    "/repo/test/core/linter_test.py",
+    "/repo/test/core/parser/__init__.py",
+    "/repo/test/core/parser/helpers_test.py",
+    "/repo/test/core/parser/grammar_test.py",
+    "/repo/test/core/parser/conftest.py",
+    "/repo/test/conftest.py",
+    "/repo/test/core/file_helpers_test.py",
+    "/repo/test/core/config_test.py",
+    "/repo/test/core/__init__.py",
+    "/repo/test/cli/helpers_test.py",
+    "/repo/test/cli/formatters_test.py",
+    "/repo/test/cli/commands_test.py",
+    "/repo/test/cli/__init__.py",
+    "/repo/test/api/util_test.py",
+    "/repo/test/__init__.py",
+    "/repo/test/api/simple_test.py",
+    "/repo/test/api/info_test.py",
+    "/repo/test/api/classes_test.py",
+    "/repo/test/api/__init__.py",
+    "/repo/src/sqlfluff/rules/L039.py",
+    "/repo/test/fixtures/config/toml/pyproject.toml",
+    "/repo/test/fixtures/config/inheritance_a/nested/pyproject.toml",
+    "/repo/setup.py",
+    "/repo/plugins/sqlfluff-templater-dbt/setup.py",
+    "/repo/plugins/sqlfluff-plugin-example/setup.py",
+    "/repo/tox.ini",
+    "/repo/test/fixtures/config/inheritance_b/tox.ini",
+    "/repo/test/fixtures/config/inheritance_a/nested/tox.ini",
+    "/repo/test/fixtures/rules/std_rule_cases/L045.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L047.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L049.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L046.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L048.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L041.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L042.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L044.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L043.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L040.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L038.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L039.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L037.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L036.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L035.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L034.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L033.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L032.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L031.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L030.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L029.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L028.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L027.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L026.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L025.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L024.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L022.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L023.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L021.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L020.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L019.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L017.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L015.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L014.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L013.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L016.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L018.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L012.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L011.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L010.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L008.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L007.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L006.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L005.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L004.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L003.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L002.yml",
+    "/repo/test/fixtures/rules/std_rule_cases/L001.yml",
+    "/repo/test/fixtures/linter/autofix/ansi/011_indentation/test-config.yml",
+    "/repo/test/fixtures/linter/autofix/ansi/011_indentation/before.sql",
+    "/repo/test/fixtures/linter/autofix/ansi/011_indentation/after.sql"
+  ],
+  "per_file": {
+    "/repo/test/rules/std_L003_L036_L039_combo_test.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/rules/std_L016_L36_combo.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "def test__rules__std_L016_L036_long_line_lint()",
+            "def test__rules__std_L016_L036_long_line_fix()",
+            "def test__rules__std_L016_L036_long_line_fix2()"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L036.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class SelectTargetsInfo(NamedTuple)",
+            "class Rule_L036(BaseRule)",
+            "def _eval(self, context: RuleContext)",
+            "def _get_indexes(segment)",
+            "def _eval_multiple_select_target_elements(self, select_targets_info, segment)",
+            "def _eval_single_select_target_element("
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L039.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class Rule_L039(BaseRule)",
+            "def _eval(self, context: RuleContext) -> Optional[List[LintResult]]"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L003.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class Rule_L003(BaseRule)",
+            "def _make_indent(",
+            "def _indent_size(segments: Sequence[RawSegment], tab_space_size: int = 4) -> int",
+            "def _reorder_raw_stack(",
+            "def segment_info(idx: int) -> Tuple[str, Optional[str]]",
+            "def move_indent_before_templated() -> None",
+            "def _process_raw_stack(",
+            "def _coerce_indent_to(",
+            "def _strip_buffers(line_dict: dict) -> dict",
+            "def _is_last_segment(",
+            "def _eval(self, context: RuleContext) -> Optional[LintResult]",
+            "def _process_current_line(self, res: dict, memory: dict) -> LintResult",
+            "def _get_element_template_info("
+          ]
+        }
+      ]
+    },
+    "/repo/setup.py": {
+      "reads": [
+        8
+      ],
+      "edits": [],
+      "first_read_step": 8,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "def read(*names, **kwargs)"
+          ]
+        }
+      ]
+    },
+    "/repo/tox.ini": {
+      "reads": [
+        8
+      ],
+      "edits": [],
+      "first_read_step": 8,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/__init__.py": {
+      "reads": [
+        10
+      ],
+      "edits": [],
+      "first_read_step": 10,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/rules/L018.py": {
+      "reads": [
+        12
+      ],
+      "edits": [],
+      "first_read_step": 12,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class Rule_L018(BaseRule)",
+            "def _eval(self, context: RuleContext) -> LintResult",
+            "def indent_size_up_to(segs)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/dialects/dialect_ansi.py": {
+      "reads": [
+        13,
+        13
+      ],
+      "edits": [],
+      "first_read_step": 13,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1210,
+          "limit": 40,
+          "signatures": [
+            "class SelectClauseSegment(BaseSegment)",
+            "class JoinClauseSegment(BaseSegment)"
+          ]
+        },
+        {
+          "offset": 1920,
+          "limit": 60,
+          "signatures": [
+            "class CTEDefinitionSegment(BaseSegment)",
+            "def get_identifier(self) -> BaseSegment",
+            "class WithCompoundStatementSegment(BaseSegment)",
+            "class SetOperatorSegment(BaseSegment)"
+          ]
+        }
+      ]
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/011_indentation/test-config.yml": {
+      "reads": [
+        15
+      ],
+      "edits": [],
+      "first_read_step": 15,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/rules/std_fix_auto_test.py": {
+      "reads": [
+        15
+      ],
+      "edits": [],
+      "first_read_step": 15,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "def make_dialect_path(dialect, fname)",
+            "def auto_fix_test(dialect, folder, caplog)",
+            "def test__std_fix_auto(dialect, folder, caplog)"
+          ]
+        }
+      ]
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/015_jinja_leading_whitespace/test-config.yml": {
+      "reads": [
+        16
+      ],
+      "edits": [],
+      "first_read_step": 16,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/015_jinja_leading_whitespace/before.sql": {
+      "reads": [
+        16
+      ],
+      "edits": [],
+      "first_read_step": 16,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/015_jinja_leading_whitespace/after.sql": {
+      "reads": [
+        16
+      ],
+      "edits": [],
+      "first_read_step": 16,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/autofix/ansi/016_no_fix_in_template_loops/test-config.yml": {
+      "reads": [
+        16
+      ],
+      "edits": [],
+      "first_read_step": 16,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/core/parser/segments/base.py": {
+      "reads": [
+        18
+      ],
+      "edits": [],
+      "first_read_step": 18,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 650,
+          "limit": 90,
+          "signatures": [
+            "def iter_unparsables(self)",
+            "def type_set(self)",
+            "def is_raw(self)",
+            "def get_child(self, *seg_type)",
+            "def get_children(self, *seg_type)",
+            "def select_children(",
+            "def recursive_crawl(self, *seg_type, recurse_into=True)",
+            "def path_to(self, other)"
+          ]
+        }
+      ]
+    },
+    "/repo/test/fixtures/rules/std_rule_cases/L003.yml": {
+      "reads": [
+        19
+      ],
+      "edits": [],
+      "first_read_step": 19,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/rules/std_rule_cases/L036.yml": {
+      "reads": [
+        19
+      ],
+      "edits": [],
+      "first_read_step": 19,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/rules/std_rule_cases/L039.yml": {
+      "reads": [
+        19
+      ],
+      "edits": [],
+      "first_read_step": 19,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/core/config.py": {
+      "reads": [
+        22
+      ],
+      "edits": [],
+      "first_read_step": 22,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "def coerce_value(val: str) -> Any",
+            "def nested_combine(*dicts: dict) -> dict",
+            "def dict_diff(left: dict, right: dict, ignore: Optional[List[str]] = None) -> dict",
+            "class ConfigLoader",
+            "def __init__(self)",
+            "def get_global(cls) -> \"ConfigLoader\"",
+            "def _walk_toml(cls, config: Dict[str, Any], base_key=())",
+            "def _get_config_elems_from_toml(cls, fpath: str) -> List[Tuple[tuple, Any]]",
+            "def _get_config_elems_from_file(fpath: str) -> List[Tuple[tuple, Any]]"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/plugin/host.py": {
+      "reads": [
+        23
+      ],
+      "edits": [],
+      "first_read_step": 23,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "def get_plugin_manager() -> pluggy.PluginManager"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/plugin/hookspecs.py": {
+      "reads": [
+        23
+      ],
+      "edits": [],
+      "first_read_step": 23,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class PluginSpec",
+            "def get_rules(self)",
+            "def load_default_config(self) -> dict",
+            "def get_configs_info(self) -> dict"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/plugin/lib.py": {
+      "reads": [
+        23
+      ],
+      "edits": [],
+      "first_read_step": 23,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "def get_rules()",
+            "def get_templaters()",
+            "def load_default_config() -> dict",
+            "def get_configs_info() -> dict"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 2,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/test/rules/std_L003_L036_L039_combo_test.py"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "WITH example AS|my_id|other_thing|one_more",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/*L003*L036*L039*test.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/std_L003_L036_L039_combo_test.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 4,
+      "tool": "glob",
+      "input": {
+        "pattern": "tests/**/*.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 5,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L003.py"
+      },
+      "output_preview": "<path>/repo/src/sqlfluff/rules/L003.py</path>\n<type>file</type>\n<content>1: \"\"\"Implementation of Rule L003.\"\"\"\n2: from typing import List, Optional, Sequence, Tuple\n3: \n4: from sqlfluff.core.parser import WhitespaceSegment\n5: from sqlfluff.core.parser.segments import BaseSegment, RawSegment\n6: from ",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 14,
+      "tool": "grep",
+      "input": {
+        "pattern": "L003.*L036.*L039|L036.*L039|WITH example AS",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 15,
+      "tool": "glob",
+      "input": {
+        "pattern": "test/fixtures/linter/autofix/ansi/*",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 18,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/core/parser/segments/base.py",
+        "offset": 650,
+        "limit": 90
+      },
+      "output_preview": "<path>/repo/src/sqlfluff/core/parser/segments/base.py</path>\n<type>file</type>\n<content>650: \n651:     def iter_unparsables(self):\n652:         \"\"\"Iterate through any unparsables this segment may contain.\"\"\"\n653:         for s in self.segments:\n654:             yield from s.iter_unparsables()\n655: \n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 20,
+      "tool": "grep",
+      "input": {
+        "pattern": "L003.*L036.*L039|L003.*L039|L036.*L039",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 29,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile \"src/sqlfluff/rules/L039.py\" \"test/rules/std_L003_L036_L039_combo_test.py\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks Python syntax for changed files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "indent.*WITH|WITH.*indent|newline.*select.*target|reflow|spacing",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/src/sqlfluff/rules/L036.py:\n  Line 95:         # Insert newline before every select target.\n\n/repo/src/sqlfluff/rules/L018.py:\n  Line 96:                         # indent of WITH keyword.\n\n/repo/src/sqlfluff/rules/L016.py:\n  Line 43:         combinations make most sense for ref"
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest test/rules/std_L016_L36_combo.py -q",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs related rule combo tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<\"PY\"\nimport sqlfluff\nsql = \"\"\"WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n\"\"\"\nprint(sqlfluff.fix(sql))\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Reproduces WITH select indentation fix"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nModuleNotFoundError: No module named 'sqlfluff'\n"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python - <<\"PY\"\nimport sqlfluff\nprint(sqlfluff.__file__)\nsql = \"\"\"WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n\"\"\"\nprint(sqlfluff.fix(sql))\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Reproduce fix using local package path"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 3, in <module>\n    import pytest\nModuleNotFoundError: No module named 'pytest'\n"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python - <<\"PY\"\nimport sys, types\nsys.modules['pytest'] = types.SimpleNamespace(register_assert_rewrite=lambda *a, **k: None)\nimport sqlfluff\nsql = \"\"\"WITH example AS (\n    SELECT my_id,\n        other_thing,\n        one_more\n    FROM\n        my_table\n)\n\nSELECT *\nFROM example\n\"\"\"\nprint(sqlfluff.fix(sql))\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Reproduce fix with pytest stub"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 3, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 6, in <module>\n    from sqlfluff.api import lint, fix, parse, list_rules, list_dialects  # noqa: F401\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File"
+    },
+    {
+      "step": 12,
+      "tool": "grep",
+      "input": {
+        "pattern": "with_compound_statement|common_table_expression|with_statement|select_clause",
+        "path": "/repo/src/sqlfluff",
+        "include": "*.py"
+      },
+      "output_preview": "Found 93 matches\n/repo/src/sqlfluff/rules/L042.py:\n  Line 82:                     \"with_compound_statement\",\n\n/repo/src/sqlfluff/rules/L041.py:\n  Line 37:         if context.segment.is_type(\"select_clause\"):\n  Line 39:             select_modifier = context.segment.get_child(\"select_clause_modifier\")"
+    },
+    {
+      "step": 14,
+      "tool": "grep",
+      "input": {
+        "pattern": "L036|L039|L003",
+        "path": "/repo/test/fixtures",
+        "include": "*.yml"
+      },
+      "output_preview": "Found 22 matches\n/repo/test/fixtures/rules/std_rule_cases/L039.yml:\n  Line 1: rule: L039\n\n/repo/test/fixtures/rules/std_rule_cases/L036.yml:\n  Line 1: rule: L036\n\n/repo/test/fixtures/rules/std_rule_cases/L003.yml:\n  Line 1: rule: L003\n  Line 8:   # Github Bug #99. Python2 Issues with fixing L003\n\n/r"
+    },
+    {
+      "step": 17,
+      "tool": "grep",
+      "input": {
+        "pattern": "def select_children",
+        "path": "/repo/src/sqlfluff",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/src/sqlfluff/core/parser/segments/base.py:\n  Line 682:     def select_children("
+    },
+    {
+      "step": 17,
+      "tool": "grep",
+      "input": {
+        "pattern": "def iter_segments|def get_child",
+        "path": "/repo/src/sqlfluff/core/parser",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/src/sqlfluff/core/parser/segments/base.py:\n  Line 641:     def iter_segments(self, expanding=None, pass_through=False):\n  Line 667:     def get_child(self, *seg_type):\n  Line 674:     def get_children(self, *seg_type):"
+    },
+    {
+      "step": 20,
+      "tool": "grep",
+      "input": {
+        "pattern": "sqlfluff\\.fix\\(|Linter\\(|auto_fix_test",
+        "path": "/repo/test/rules",
+        "include": "*.py"
+      },
+      "output_preview": "Found 7 matches\n/repo/test/rules/std_fix_auto_test.py:\n  Line 45: def auto_fix_test(dialect, folder, caplog):\n  Line 112:     lnt = Linter(config=cfg)\n  Line 153:     auto_fix_test(dialect=dialect, folder=folder, caplog=caplog)\n\n/repo/test/rules/std_L016_L36_combo.py:\n  Line 17:     result = sqlfluf"
+    },
+    {
+      "step": 21,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python - <<\"PY\"\nimport sys, types\nsys.modules['pytest'] = types.SimpleNamespace(register_assert_rewrite=lambda *a, **k: None)\ntblib = types.ModuleType('tblib')\npick = types.ModuleType('tblib.pickling_support')\npick.install = lambda *a, **k: None\ntblib.pickling_support = pick\nsys.modules['tblib'] = tblib\nsys.modules['tblib.pickling_support'] = pick\ntry:\n    import sqlfluff\n    print('imported sqlfluff')\nexcept Exception as e:\n    print(type(e).__name__, e)\n    raise\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Probe missing imports with lightweight stubs"
+      },
+      "output_preview": "ModuleNotFoundError No module named 'pluggy'\nTraceback (most recent call last):\n  File \"<stdin>\", line 10, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 6, in <module>\n    from sqlfluff.api import lint, fix, parse, list_rules, list_dialects  # noqa: F401\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+    },
+    {
+      "step": 22,
+      "tool": "grep",
+      "input": {
+        "pattern": "pluggy",
+        "path": "/repo/src/sqlfluff",
+        "include": "*.py"
+      },
+      "output_preview": "Found 10 matches\n/repo/src/sqlfluff/core/plugin/host.py:\n  Line 2: import pluggy\n  Line 8: def get_plugin_manager() -> pluggy.PluginManager:\n  Line 10:     pm = pluggy.PluginManager(plugin_base_name)\n\n/repo/src/sqlfluff/core/plugin/hookspecs.py:\n  Line 3: import pluggy\n  Line 6: hookspec = pluggy.Ho"
+    },
+    {
+      "step": 29,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest test/rules/std_L003_L036_L039_combo_test.py -q",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted combo regression test"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    }
+  ],
+  "token_cost": {
+    "total": 1127207,
+    "input": 60046,
+    "output": 8857,
+    "cache_read": 1058304,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 227.5,
+  "patch_non_empty": true
+}

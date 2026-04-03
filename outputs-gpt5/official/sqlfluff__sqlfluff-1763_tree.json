@@ -1,0 +1,740 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1763",
+  "variant": "official",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [
+    "/repo/test/core/linter_test.py",
+    "/repo/test/fixtures/dialects/snowflake/snowflake_alter_task_set_special_simple.yml",
+    "/repo/test/fixtures/dialects/snowflake/snowflake_alter_task_set_special_simple.sql",
+    "/repo/test/fixtures/dialects/snowflake/snowflake_alter_task_set_special_full.yml",
+    "/repo/test/fixtures/dialects/snowflake/snowflake_alter_task_set_special_full.sql",
+    "/repo/test/fixtures/linter/encoding-utf-8.sql",
+    "/repo/test/fixtures/linter/encoding-utf-8-sig.sql",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_lines_terminated.yml",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_lines_terminated.sql",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_lines_starting.yml",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_lines_starting.sql",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_fields_terminated.yml",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_fields_terminated.sql",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_fields_optionally_enclosed.yml",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_fields_optionally_enclosed.sql",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_fields_escaped.yml",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_fields_escaped.sql",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_fields_enclosed.yml",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile_fields_enclosed.sql",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile.yml",
+    "/repo/test/fixtures/dialects/mysql/select_into_outfile.sql",
+    "/repo/test/test_testing.py",
+    "/repo/test/rules/yaml_test_cases_test.py",
+    "/repo/test/rules/std_test.py",
+    "/repo/test/rules/std_roundtrip_test.py",
+    "/repo/test/rules/std_fix_auto_test.py",
+    "/repo/test/rules/std_L048_test.py",
+    "/repo/test/rules/std_L020_test.py",
+    "/repo/test/rules/std_L019_test.py",
+    "/repo/test/rules/std_L016_L36_combo_test.py",
+    "/repo/test/rules/std_L007_test.py",
+    "/repo/test/rules/std_L003_test.py",
+    "/repo/test/rules/std_L003_L036_L039_combo_test.py",
+    "/repo/test/generate_parse_fixture_yml.py",
+    "/repo/test/fixtures/templater/jinja_j_libraries/libs/bar.py",
+    "/repo/test/fixtures/templater/jinja_j_libraries/libs/foo.py",
+    "/repo/test/fixtures/rules/custom/bad_rule_name/E000.py",
+    "/repo/test/fixtures/rules/custom/S000.py",
+    "/repo/test/fixtures/rules/custom/L000.py",
+    "/repo/test/diff_quality_plugin_test.py",
+    "/repo/test/dialects/snowflake_test.py",
+    "/repo/test/dialects/postgres_test.py",
+    "/repo/test/dialects/exasol_test.py",
+    "/repo/test/dialects/dialects_test.py",
+    "/repo/test/dialects/conftest.py",
+    "/repo/test/dialects/bigquery_test.py",
+    "/repo/test/dialects/ansi_test.py",
+    "/repo/test/dialects/__init__.py",
+    "/repo/test/core/templaters/python_test.py",
+    "/repo/test/core/string_helpers_test.py",
+    "/repo/test/core/templaters/jinja_test.py",
+    "/repo/test/core/templaters/base_test.py",
+    "/repo/test/core/templaters/__init__.py",
+    "/repo/test/core/plugin_test.py",
+    "/repo/test/core/rules/docstring_test.py",
+    "/repo/test/core/rules/config_test.py",
+    "/repo/test/core/rules/__init__.py",
+    "/repo/test/core/parser/segments_common_test.py",
+    "/repo/test/core/parser/markers_test.py",
+    "/repo/test/core/parser/parse_test.py",
+    "/repo/test/core/parser/segments_base_test.py",
+    "/repo/test/core/parser/lexer_test.py",
+    "/repo/test/core/parser/grammar_test.py",
+    "/repo/test/core/parser/helpers_test.py",
+    "/repo/test/core/parser/conftest.py",
+    "/repo/test/core/parser/__init__.py",
+    "/repo/test/core/file_helpers_test.py",
+    "/repo/test/conftest.py",
+    "/repo/test/cli/helpers_test.py",
+    "/repo/test/cli/formatters_test.py",
+    "/repo/test/core/config_test.py",
+    "/repo/test/core/__init__.py",
+    "/repo/test/cli/commands_test.py",
+    "/repo/test/cli/__init__.py",
+    "/repo/test/api/util_test.py",
+    "/repo/test/api/simple_test.py",
+    "/repo/test/api/info_test.py",
+    "/repo/test/__init__.py",
+    "/repo/test/api/classes_test.py",
+    "/repo/test/api/__init__.py"
+  ],
+  "per_file": {
+    "/repo/src/sqlfluff/core/file_helpers.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 80,
+          "signatures": [
+            "def get_encoding(fname: str, config: FluffConfig) -> str"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/linter/linter.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 80,
+          "limit": 60,
+          "signatures": [
+            "def get_ruleset(self, config: Optional[FluffConfig] = None) -> List[BaseRule]",
+            "def rule_tuples(self) -> List[RuleTuple]",
+            "def _load_raw_file_and_config(fname, root_config)",
+            "def _lex_templated_file("
+          ]
+        }
+      ]
+    },
+    "/repo/test/core/linter_test.py": {
+      "reads": [
+        2,
+        3,
+        3,
+        3,
+        21
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 500,
+          "limit": 180,
+          "signatures": [
+            "def test_linted_file_ignore_masked_violations(",
+            "def test_linter_noqa()",
+            "def test_linter_noqa_with_templating()",
+            "def test_delayed_exception()",
+            "def test__attempt_to_change_templater_warning(caplog)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "class DummyLintError(SQLBaseError)",
+            "def __init__(self, line_no: int, code: str = \"L001\")",
+            "def normalise_paths(paths)",
+            "def test__linter__path_from_paths__dir()",
+            "def test__linter__path_from_paths__default()",
+            "def test__linter__path_from_paths__exts()",
+            "def test__linter__path_from_paths__file()",
+            "def test__linter__path_from_paths__not_exist()",
+            "def test__linter__path_from_paths__not_exist_ignore()",
+            "def test__linter__path_from_paths__explicit_ignore()",
+            "def test__linter__path_from_paths__dot()",
+            "def test__linter__path_from_paths__ignore(path)"
+          ]
+        },
+        {
+          "offset": 120,
+          "limit": 120,
+          "signatures": [
+            "def test__linter__lint_string_vs_file(path)",
+            "def test__linter__get_violations_filter_rules(rules, num_violations)",
+            "def test__linter__linting_result__sum_dicts()",
+            "def test__linter__linting_result__combine_dicts()",
+            "def test__linter__linting_result_check_tuples_by_path(by_path, result_type)",
+            "def test__linter__linting_result_get_violations(processes)",
+            "def test__linter__linting_parallel_thread(force_error, monkeypatch)",
+            "def _create_pool(*args, **kwargs)",
+            "class ErrorPool",
+            "def __enter__(self)",
+            "def __exit__(self, exc_type, exc_val, exc_tb)",
+            "def imap_unordered(self, *args, **kwargs)"
+          ]
+        },
+        {
+          "offset": 240,
+          "limit": 120,
+          "signatures": [
+            "def test_lint_path_parallel_wrapper_exception(patched_lint)",
+            "def test__linter__linting_unexpected_error_handled_gracefully(",
+            "def test__linter__raises_malformed_noqa()",
+            "def test__linter__empty_file()",
+            "def test__linter__mask_templated_violations(ignore_templated_areas, check_tuples)",
+            "def test__linter__encoding(fname, config_encoding, lexerror)"
+          ]
+        },
+        {
+          "offset": 540,
+          "limit": 60,
+          "signatures": [
+            "def test_linted_file_ignore_masked_violations(",
+            "def test_linted_file_persist_tree_is_atomic_on_encode_error(tmp_path, monkeypatch)",
+            "def test_linter_noqa()"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/linter/linted_file.py": {
+      "reads": [
+        2,
+        6,
+        21
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 430,
+          "limit": 120,
+          "signatures": [
+            "def persist_tree(self, suffix: str = \"\") -> bool"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class LintedFile(NamedTuple)",
+            "def check_tuples(self, raise_on_non_linting_violations=True) -> List[CheckTuple]",
+            "def get_violations(",
+            "def _ignore_masked_violations_single_line(",
+            "def _should_ignore_violation_line_range(",
+            "def _ignore_masked_violations_line_range(",
+            "def ignore_masked_violations(",
+            "def num_violations(self, **kwargs) -> int",
+            "def is_clean(self) -> bool",
+            "def _log_hints(",
+            "def fix_string(self) -> Tuple[Any, bool]"
+          ]
+        },
+        {
+          "offset": 486,
+          "limit": 30,
+          "signatures": [
+            "def persist_tree(self, suffix: str = \"\") -> bool"
+          ]
+        }
+      ]
+    },
+    "/repo/test/cli/commands_test.py": {
+      "reads": [
+        6,
+        10,
+        11,
+        12,
+        13
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 180,
+          "limit": 140,
+          "signatures": [
+            "def test__cli__command_lint_parse(command)",
+            "def test__cli__command_lint_parse_with_retcode(command, ret_code)",
+            "def test__cli__command_lint_warning_explicit_file_ignored()",
+            "def test__cli__command_lint_skip_ignore_files()",
+            "def test__cli__command_versioning()",
+            "def test__cli__command_version()"
+          ]
+        },
+        {
+          "offset": 420,
+          "limit": 140,
+          "signatures": [
+            "def test__cli__command_fix_stdin(stdin, rules, stdout)",
+            "def test__cli__command_fix_stdin_logging_to_stderr(monkeypatch)",
+            "class MockLinter(sqlfluff.core.Linter)",
+            "def lint_fix_parsed(cls, *args, **kwargs)",
+            "def test__cli__command_fix_stdin_safety()",
+            "def test__cli__command_fix_stdin_error_exit_code(",
+            "def test__cli__command__fix_no_force(rule, fname, prompt, exit_code, fix_exit_code)",
+            "def test__cli__command_parse_serialize_from_stdin(serialize)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 180,
+          "signatures": [
+            "def invoke_assert_code(",
+            "def test__cli__command_directed()",
+            "def test__cli__command_dialect()",
+            "def test__cli__command_dialect_legacy()",
+            "def test__cli__command_lint_stdin(command)"
+          ]
+        },
+        {
+          "offset": 700,
+          "limit": 80,
+          "signatures": [
+            "def test___main___help()",
+            "def test_encoding(encoding_in, encoding_out)"
+          ]
+        },
+        {
+          "offset": 320,
+          "limit": 60,
+          "signatures": [
+            "def test__cli__command_rules()",
+            "def test__cli__command_dialects()",
+            "def generic_roundtrip_test("
+          ]
+        }
+      ]
+    },
+    "/repo/test/core/file_helpers_test.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def test__parser__helper_get_encoding(fname, config_encoding, result)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/linter/linted_dir.py": {
+      "reads": [
+        10
+      ],
+      "edits": [],
+      "first_read_step": 10,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 180,
+          "signatures": [
+            "class LintedDir",
+            "def __init__(self, path: str) -> None",
+            "def add(self, file: LintedFile) -> None",
+            "def check_tuples(",
+            "def check_tuples(",
+            "def check_tuples(self, by_path: bool = False):  # pragma: no cover",
+            "def check_tuples(self, by_path=False, raise_on_non_linting_violations=True)",
+            "def num_violations(self, **kwargs) -> int",
+            "def get_violations(self, **kwargs) -> list",
+            "def violation_dict(self, **kwargs) -> Dict[str, list]",
+            "def stats(self) -> Dict[str, int]",
+            "def persist_changes(",
+            "def tree(self) -> Optional[BaseSegment]"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/api/simple.py": {
+      "reads": [
+        10
+      ],
+      "edits": [],
+      "first_read_step": 10,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "class APIParsingError(ValueError)",
+            "def __init__(self, violations, **kwargs)",
+            "def _unify_str_or_file(sql)",
+            "def lint(sql, dialect=\"ansi\", rules=None)",
+            "def fix(sql, dialect=\"ansi\", rules=None)",
+            "def parse(sql, dialect=\"ansi\")"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/cli/commands.py": {
+      "reads": [
+        14
+      ],
+      "edits": [],
+      "first_read_step": 14,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 450,
+          "limit": 120,
+          "signatures": [
+            "def fix("
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/cli/formatters.py": {
+      "reads": [
+        15
+      ],
+      "edits": [],
+      "first_read_step": 15,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 240,
+          "limit": 80,
+          "signatures": [
+            "def _format_config(self, linter: Linter) -> str",
+            "def dispatch_config(self, linter: Linter) -> None",
+            "def dispatch_persist_filename(self, filename, result)",
+            "def _format_path(path: str) -> str",
+            "def dispatch_path(self, path: str) -> None",
+            "def dispatch_template_header(",
+            "def dispatch_parse_header(self, fname: str) -> None",
+            "def dispatch_lint_header(self, fname: str) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/__init__.py": {
+      "reads": [
+        25
+      ],
+      "edits": [],
+      "first_read_step": 25,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/core/__init__.py": {
+      "reads": [
+        25
+      ],
+      "edits": [],
+      "first_read_step": 25,
+      "first_edit_step": null,
+      "content_snippets": []
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "safe_create_replace_file|utf8_create|utf8_update|utf8_special_char",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_safe_create_replace_file",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "create_replace_file",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "safe_create_replace_file",
+        "path": "/repo",
+        "include": "*"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "utf8_special_char|utf8_create|utf8_update",
+        "path": "/repo",
+        "include": "*"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 5,
+      "tool": "glob",
+      "input": {
+        "pattern": "test/fixtures/**/*utf8*",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "utf8",
+        "path": "/repo/test/cli/commands_test.py",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "special_char|utf8_update|utf8_create",
+        "path": "/repo/test",
+        "include": "*"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "pytest test/core/linter_test.py -k 'encoding or atomic_on_encode_error'",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Run targeted linter tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile src/sqlfluff/core/linter/linted_file.py test/core/linter_test.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Compile modified Python files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 23,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile src/sqlfluff/core/linter/linted_file.py test/core/linter_test.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Recompile modified files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 29,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile src/sqlfluff/core/linter/linted_file.py test/core/linter_test.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Recompile after chmod tweak"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "UnicodeEncodeError|charmap|encoding",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 64 matches\n/repo/test/core/linter_test.py:\n  Line 325:     \"fname,config_encoding,lexerror\",\n  Line 328:             \"test/fixtures/linter/encoding-utf-8.sql\",\n  Line 333:             \"test/fixtures/linter/encoding-utf-8-sig.sql\",\n  Line 338:             \"test/fixtures/linter/encoding-utf-8.sq"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "persist_tree\\(|fix_string\\(|write_buff",
+        "path": "/repo/src",
+        "include": "*.py"
+      },
+      "output_preview": "Found 8 matches\n/repo/src/sqlfluff/testing/rules.py:\n  Line 90:         fixed, _ = linted.fix_string()\n\n/repo/src/sqlfluff/core/linter/linted_dir.py:\n  Line 117:                 buffer[file.path] = file.persist_tree(suffix=fixed_file_suffix)\n\n/repo/src/sqlfluff/core/linter/linted_file.py:\n  Line 229"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "encoding-utf-8|utf8_special|special_char|unicode",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "Found 13 matches\n/repo/test/core/linter_test.py:\n  Line 328:             \"test/fixtures/linter/encoding-utf-8.sql\",\n  Line 333:             \"test/fixtures/linter/encoding-utf-8-sig.sql\",\n  Line 338:             \"test/fixtures/linter/encoding-utf-8.sql\",\n  Line 343:             \"test/fixtures/linter/"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "replace\\(",
+        "path": "/repo/src/sqlfluff",
+        "include": "*.py"
+      },
+      "output_preview": "Found 25 matches\n/repo/src/sqlfluff/rules/L047.py:\n  Line 105:                             f_content[0].edit(f_content[0].raw.replace(\"*\", preferred)),\n  Line 128:                                     expression_content[0].raw.replace(\n\n/repo/src/sqlfluff/rules/L018.py:\n  Line 77:                 ind"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "open\\(fname, \"w\", encoding=self.encoding\\)",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/src/sqlfluff/core/linter/linted_file.py:\n  Line 497:             with open(fname, \"w\", encoding=self.encoding) as f:"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "pattern": "persist_tree|fix_string|fixed-suffix|safe",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "Found 12 matches\n/repo/test/rules/std_fix_auto_test.py:\n  Line 76:         cfg = yaml.safe_load(cfg_file)\n\n/repo/test/core/rules/config_test.py:\n  Line 37:     \"\"\"Test that can safely add user rules.\"\"\"\n\n/repo/test/conftest.py:\n  Line 126:     obj = oyaml.safe_load(raw)\n\n/repo/test/cli/commands_test"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "pattern": "generic_roundtrip_test",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 7 matches\n/repo/test/rules/std_roundtrip_test.py:\n  Line 15: def generic_roundtrip_test(source_file, rulestring):\n  Line 118:     generic_roundtrip_test(path, rule)\n\n/repo/test/cli/commands_test.py:\n  Line 333: def generic_roundtrip_test(\n  Line 391:         generic_roundtrip_test(test_file, r"
+    },
+    {
+      "step": 12,
+      "tool": "grep",
+      "input": {
+        "pattern": "output_file_encoding",
+        "path": "/repo/test/cli/commands_test.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 4 matches\n/repo/test/cli/commands_test.py:\n  Line 341:     output_file_encoding=None,\n  Line 371:     if output_file_encoding:\n  Line 374:         assert chardet.detect(data)[\"encoding\"] == output_file_encoding\n  Line 742:             output_file_encoding=encoding_out,"
+    },
+    {
+      "step": 14,
+      "tool": "grep",
+      "input": {
+        "pattern": "dispatch_persist_filename|persist_changes|fix_string\\(",
+        "path": "/repo/src/sqlfluff/cli",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/src/sqlfluff/cli/formatters.py:\n  Line 278:     def dispatch_persist_filename(self, filename, result):\n\n/repo/src/sqlfluff/cli/commands.py:\n  Line 452:     res = result.persist_changes(formatter=formatter, **kwargs)\n  Line 527:             stdout = result.paths[0].files[0].fix_"
+    },
+    {
+      "step": 19,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest test/core/linter_test.py -k 'encoding or atomic_on_encode_error'",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Run targeted tests via python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 24,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python -c \"from pathlib import Path; import tempfile; from sqlfluff.core.linter.linted_file import LintedFile; from sqlfluff.core.templaters import TemplatedFile; d=Path(tempfile.mkdtemp()); p=d/'test.sql'; p.write_text('select 1\\n', encoding='ascii'); lf=LintedFile(path=str(p), violations=[], time_dict={}, tree=None, ignore_mask=[], templated_file=TemplatedFile.from_string(''), encoding='ascii'); LintedFile.fix_string=lambda self: ('\u2192', True); ok=lf.persist_tree(); print(ok); print(p.read_text(encoding='ascii'))\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Verify atomic write behavior"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 3, in <module>\n    import pytest\nModuleNotFoundError: No module named 'pytest'\n"
+    },
+    {
+      "step": 26,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python -c \"import sys, types; pytest=types.ModuleType('pytest'); pytest.register_assert_rewrite=lambda *a, **k: None; sys.modules['pytest']=pytest; tblib=types.ModuleType('tblib'); ps=types.ModuleType('tblib.pickling_support'); ps.install=lambda: None; tblib.pickling_support=ps; sys.modules['tblib']=tblib; sys.modules['tblib.pickling_support']=ps; from pathlib import Path; import tempfile; from sqlfluff.core.linter.linted_file import LintedFile; from sqlfluff.core.templaters import TemplatedFile; d=Path(tempfile.mkdtemp()); p=d/'test.sql'; p.write_text('select 1\\\\n', encoding='ascii'); lf=LintedFile(path=str(p), violations=[], time_dict={}, tree=None, ignore_mask=[], templated_file=TemplatedFile.from_string(''), encoding='ascii'); LintedFile.fix_string=lambda self: ('\u2192', True); ok=lf.persist_tree(); print(ok); print(p.read_text(encoding='ascii'))\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Verify atomic write with stubs"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 6, in <module>\n    from sqlfluff.api import lint, fix, parse, list_rules, list_dialects  # noqa: F401\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  Fil"
+    },
+    {
+      "step": 27,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- src/sqlfluff/core/linter/linted_file.py test/core/linter_test.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Show changed diff"
+      },
+      "output_preview": "diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py\nindex 3a8593ed..097655a9 100644\n--- a/src/sqlfluff/core/linter/linted_file.py\n+++ b/src/sqlfluff/core/linter/linted_file.py\n@@ -7,6 +7,7 @@ post linting.\n \n import os\n import logging\n+import tempfile\n from"
+    },
+    {
+      "step": 27,
+      "tool": "bash",
+      "input": {
+        "command": "git status --short",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Show git status"
+      },
+      "output_preview": " M src/sqlfluff/core/linter/linted_file.py\n M test/core/linter_test.py\n"
+    }
+  ],
+  "token_cost": {
+    "total": 1069873,
+    "input": 47664,
+    "output": 12033,
+    "cache_read": 1010176,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 173.38,
+  "patch_non_empty": true
+}

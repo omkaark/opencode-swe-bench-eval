@@ -1,0 +1,26 @@
+diff --git a/src/sqlfluff/rules/L031.py b/src/sqlfluff/rules/L031.py
+index 838c6ce5..69156f7c 100644
+--- a/src/sqlfluff/rules/L031.py
++++ b/src/sqlfluff/rules/L031.py
+@@ -83,6 +83,9 @@ class Rule_L031(BaseRule):
+             from_clause_index = segment.segments.index(from_clause_segment)
+             from_clause_and_after = segment.segments[from_clause_index:]
+ 
++            if not any(clause.is_type("join_clause") for clause in from_clause_and_after):
++                return None
++
+             for clause in from_clause_and_after:
+                 for from_expression_element in clause.recursive_crawl(
+                     "from_expression_element"
+diff --git a/test/cli/commands_test.py b/test/cli/commands_test.py
+index 490cf360..f3a8f805 100644
+--- a/test/cli/commands_test.py
++++ b/test/cli/commands_test.py
+@@ -49,7 +49,6 @@ def invoke_assert_code(
+ expected_output = """== [test/fixtures/linter/indentation_error_simple.sql] FAIL
+ L:   2 | P:   4 | L003 | Indentation not hanging or a multiple of 4 spaces
+ L:   5 | P:  10 | L010 | Keywords must be consistently upper case.
+-L:   5 | P:  13 | L031 | Avoid using aliases in join condition
+ """
+ 
+ 

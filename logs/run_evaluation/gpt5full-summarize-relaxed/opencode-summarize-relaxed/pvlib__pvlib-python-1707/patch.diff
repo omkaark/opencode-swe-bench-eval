@@ -1,0 +1,35 @@
+diff --git a/pvlib/iam.py b/pvlib/iam.py
+index 3eaa6b4..f34c938 100644
+--- a/pvlib/iam.py
++++ b/pvlib/iam.py
+@@ -214,6 +214,12 @@ def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):
+ 
+     # incidence angle modifier
+     iam = (tau_s + tau_p) / 2 / tau_0
++    iam = np.where(np.abs(aoi) >= 90, 0, iam)
++
++    if np.isscalar(aoi):
++        iam = iam.item()
++    elif isinstance(aoi, pd.Series):
++        iam = pd.Series(iam, index=aoi.index)
+ 
+     return iam
+ 
+diff --git a/pvlib/tests/test_iam.py b/pvlib/tests/test_iam.py
+index eba1c66..ca303de 100644
+--- a/pvlib/tests/test_iam.py
++++ b/pvlib/tests/test_iam.py
+@@ -78,6 +78,13 @@ def test_physical_scalar():
+     assert_allclose(iam, expected, equal_nan=True)
+ 
+ 
++def test_physical_n1_L0():
++    aoi = np.array([0., 45., 90., 100., np.nan])
++    expected = np.array([1., 1., 0., 0., np.nan])
++    iam = _iam.physical(aoi, n=1, L=0)
++    assert_allclose(iam, expected, equal_nan=True)
++
++
+ def test_martin_ruiz():
+ 
+     aoi = 45.

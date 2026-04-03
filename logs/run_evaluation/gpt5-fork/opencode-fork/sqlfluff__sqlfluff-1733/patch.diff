@@ -1,0 +1,20 @@
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..5375d116 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -102,6 +102,15 @@ class Rule_L036(BaseRule):
+                 base_segment.pos_marker.working_line_no
+                 == select_target.pos_marker.working_line_no
+             ):
++                # If the target itself carries leading whitespace, remove it.
++                # This avoids preserving an extra space when the target is
++                # moved onto a new line.
++                leading_whitespace = select_target.select_children(
++                    select_if=lambda s: s.is_type("whitespace"),
++                    loop_while=lambda s: s.is_type("whitespace"),
++                )
++                fixes += [LintFix("delete", ws) for ws in leading_whitespace]
++
+                 # Find and delete any whitespace before the select target.
+                 start_seg = select_targets_info.select_idx
+                 # If any select modifier (e.g. distinct ) is present, start

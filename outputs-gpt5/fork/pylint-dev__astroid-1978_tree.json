@@ -1,0 +1,342 @@
+{
+  "instance_id": "pylint-dev__astroid-1978",
+  "variant": "fork",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/astroid/raw_building.py",
+    "/repo/tests/unittest_raw_building.py"
+  ],
+  "per_file": {
+    "/repo/astroid/raw_building.py": {
+      "reads": [
+        2,
+        5
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 430,
+          "limit": 80,
+          "signatures": [
+            "def imported_member(self, node, member, name: str) -> bool",
+            "def _set_proxied(const) -> nodes.ClassDef",
+            "def _astroid_bootstrapping() -> None"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 430,
+          "signatures": [
+            "def _attach_local_node(parent, node, name: str) -> None",
+            "def _add_dunder_class(func, member) -> None",
+            "def attach_dummy_node(node, name: str, runtime_object=_EMPTY_OBJECT_MARKER) -> None",
+            "def attach_const_node(node, name: str, value) -> None",
+            "def attach_import_node(node, modname: str, membername: str) -> None",
+            "def build_module(name: str, doc: str | None = None) -> nodes.Module",
+            "def build_class(",
+            "def build_function(",
+            "def build_from_import(fromname: str, names: list[str]) -> nodes.ImportFrom",
+            "def register_arguments(func: nodes.FunctionDef, args: list | None = None) -> None",
+            "def object_build_class(",
+            "def _get_args_info_from_callable(",
+            "def object_build_function(",
+            "def object_build_datadescriptor(",
+            "def object_build_methoddescriptor(",
+            "def _base_class_object_build(",
+            "def _build_from_function(",
+            "def _safe_has_attribute(obj, member: str) -> bool",
+            "class InspectBuilder",
+            "def __init__(self, manager_instance: AstroidManager | None = None) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_raw_building.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 240,
+          "signatures": [
+            "class RawBuildingTC(unittest.TestCase)",
+            "def test_attach_dummy_node(self) -> None",
+            "def test_build_module(self) -> None",
+            "def test_build_class(self) -> None",
+            "def test_build_function(self) -> None",
+            "def test_build_function_args(self) -> None",
+            "def test_build_function_defaults(self) -> None",
+            "def test_build_function_posonlyargs(self) -> None",
+            "def test_build_function_kwonlyargs(self) -> None",
+            "def test_build_from_import(self) -> None",
+            "def test_io_is__io(self)",
+            "def test_build_function_deepinspect_deprecation(self) -> None",
+            "def test_module_object_with_broken_getattr(self) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_brain_numpy_core_numerictypes.py": {
+      "reads": [
+        7,
+        8
+      ],
+      "edits": [],
+      "first_read_step": 7,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 300,
+          "limit": 130,
+          "signatures": [
+            "def test_datetime_astype_return(self)",
+            "def test_generic_types_are_subscriptables(self)",
+            "class NumpyBrainUtilsTest(unittest.TestCase)",
+            "def test_get_numpy_version_do_not_crash(self)",
+            "def test_numpy_object_uninferable(self)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "class NumpyBrainCoreNumericTypesTest(unittest.TestCase)",
+            "def _inferred_numpy_attribute(self, attrib)",
+            "def test_numpy_core_types(self)",
+            "def test_generic_types_have_methods(self)"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_brain.py": {
+      "reads": [
+        7
+      ],
+      "edits": [],
+      "first_read_step": 7,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 90,
+          "signatures": [
+            "def assertEqualMro(klass: ClassDef, expected_mro: list[str]) -> None",
+            "class HashlibTest(unittest.TestCase)",
+            "def _assert_hashlib_class(self, class_obj: ClassDef) -> None"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/test_unittest_raw_building.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_build_module_getattr_catch_output",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "catch_output",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "build_module_getattr",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "pytest\\.warns\\(None",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "pytest tests/unittest_raw_building.py -k 'build_module_getattr_catch_output or module_object_with_broken_getattr or io_is__io'",
+        "workdir": "/repo",
+        "description": "Runs targeted raw-building tests",
+        "timeout": 120000
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "np\\.long|long",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 39 matches\n/repo/astroid/transforms.py:\n  Line 46:                     # Can no longer apply the rest of the transforms.\n\n/repo/astroid/protocols.py:\n  Line 212:     # For tuples and list the boundnode is no longer the tuple or list instance\n\n/repo/astroid/nodes/scoped_nodes/scoped_nodes.py:\n "
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "FutureWarning",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/tests/testdata/python3/data/fake_module_with_warnings.py:\n  Line 16:         warnings.warn(\"This is what pandas would do\", FutureWarning, stacklevel=2)"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "getattr\\(sys\\.modules\\[modname\\], name\\)",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/astroid/raw_building.py:\n  Line 474:                 getattr(sys.modules[modname], name)"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "imported_member\\(",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/astroid/raw_building.py:\n  Line 406:                 if self.imported_member(node, member, name):\n  Line 410:                 if self.imported_member(node, member, name):\n  Line 443:     def imported_member(self, node, member, name: str) -> bool:"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "import numpy as np",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 13 matches\n/repo/tests/unittest_brain_numpy_ndarray.py:\n  Line 110:         import numpy as np\n  Line 120:         import numpy as np\n  Line 164:         import numpy as np\n\n/repo/tests/unittest_brain_numpy_ma.py:\n  Line 35:             \"import numpy as np\"\n\n/repo/tests/unittest_brain_numpy_co"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "warnings\\.catch_warnings",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/tests/unittest_scoped_nodes.py:\n  Line 2862:     with warnings.catch_warnings():\n\n/repo/tests/unittest_brain.py:\n  Line 41:     with warnings.catch_warnings():"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "HAS_NUMPY",
+        "path": "/repo/tests/unittest_brain_numpy_core_numerictypes.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 5 matches\n/repo/tests/unittest_brain_numpy_core_numerictypes.py:\n  Line 10:     HAS_NUMPY = True\n  Line 12:     HAS_NUMPY = False\n  Line 22: @unittest.skipUnless(HAS_NUMPY, \"This test requires the numpy library.\")\n  Line 333:         HAS_NUMPY and numpy_supports_type_hints(),\n  Line 385:     H"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_raw_building.py -k 'build_module_getattr_catch_output or module_object_with_broken_getattr or io_is__io'",
+        "workdir": "/repo",
+        "description": "Runs targeted raw-building tests via python",
+        "timeout": 120000
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport importlib.util\nprint('numpy', importlib.util.find_spec('numpy') is not None)\nprint('pytest', importlib.util.find_spec('pytest') is not None)\nPY",
+        "workdir": "/repo",
+        "description": "Checks available test dependencies",
+        "timeout": 120000
+      },
+      "output_preview": "numpy False\npytest False\n"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "python -m compileall astroid/raw_building.py tests/unittest_raw_building.py",
+        "workdir": "/repo",
+        "description": "Compiles edited Python files",
+        "timeout": 120000
+      },
+      "output_preview": "Compiling 'astroid/raw_building.py'...\nCompiling 'tests/unittest_raw_building.py'...\n"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- astroid/raw_building.py tests/unittest_raw_building.py",
+        "workdir": "/repo",
+        "description": "Shows diff for edited files",
+        "timeout": 120000
+      },
+      "output_preview": "diff --git a/astroid/raw_building.py b/astroid/raw_building.py\nindex cc3aa015..cff66437 100644\n--- a/astroid/raw_building.py\n+++ b/astroid/raw_building.py\n@@ -471,7 +471,9 @@ class InspectBuilder:\n             # check if it sounds valid and then add an import node, else use a\n             # dummy no"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "git status --short",
+        "workdir": "/repo",
+        "description": "Shows working tree status",
+        "timeout": 120000
+      },
+      "output_preview": " M astroid/raw_building.py\n M tests/unittest_raw_building.py\n"
+    }
+  ],
+  "token_cost": {
+    "total": 404134,
+    "input": 28606,
+    "output": 5864,
+    "cache_read": 369664,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 84.61,
+  "patch_non_empty": true
+}

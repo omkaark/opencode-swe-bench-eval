@@ -1,0 +1,38 @@
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..3a430c4d 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -185,7 +185,14 @@ class Delimited(OneOf):
+                         )
+                 else:
+                     # Zero length section between delimiters, or zero code
+-                    # elements if appropriate. Return unmatched.
++                    # elements if appropriate. If we already matched content,
++                    # allow trailing delimiters to be consumed so repeated
++                    # terminators at the end of a file don't trigger parser
++                    # failures.
++                    if self.allow_trailing and matched_segments:
++                        matched_segments += delimiter_match.matched_segments
++                        seg_buff = delimiter_match.unmatched_segments
++                        continue
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+diff --git a/test/dialects/ansi_test.py b/test/dialects/ansi_test.py
+index 1c83e4c6..fd6e52d3 100644
+--- a/test/dialects/ansi_test.py
++++ b/test/dialects/ansi_test.py
+@@ -184,6 +184,13 @@ def test__dialect__ansi_is_whitespace():
+             assert raw_seg.is_whitespace
+ 
+ 
++def test__dialect__ansi_multiple_semicolons():
++    """Test repeated trailing semicolons do not crash parsing."""
++    lnt = Linter()
++    parsed = lnt.parse_string("select id from tbl;;")
++    assert parsed.tree is not None
++
++
+ @pytest.mark.parametrize(
+     "sql_string, indented_joins,meta_loc",
+     [

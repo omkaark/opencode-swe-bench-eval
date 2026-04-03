@@ -1,0 +1,412 @@
+{
+  "instance_id": "pylint-dev__astroid-1196",
+  "variant": "summarize-relaxed",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [],
+  "per_file": {
+    "/repo/astroid/nodes/node_classes.py": {
+      "reads": [
+        2,
+        3,
+        5,
+        11
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 2210,
+          "limit": 120,
+          "signatures": [
+            "def postinit(self, targets: list[NodeNG] | None = None) -> None",
+            "def get_children(self)",
+            "class Dict(NodeNG, Instance)",
+            "def __init__(",
+            "def postinit(self, items: list[tuple[NodeNG, NodeNG]]) -> None",
+            "def from_elements(cls, items=None)",
+            "def pytype(self)",
+            "def get_children(self)"
+          ]
+        },
+        {
+          "offset": 2330,
+          "limit": 120,
+          "signatures": [
+            "def last_child(self)",
+            "def itered(self)",
+            "def getitem(self, index, context=None)",
+            "def bool_value(self, context=None)",
+            "class Expr(Statement)",
+            "def __init__(",
+            "def postinit(self, value: NodeNG | None = None) -> None",
+            "def get_children(self)",
+            "def _get_yield_nodes_skip_lambdas(self)",
+            "class Ellipsis(mixins.NoChildrenMixin, NodeNG):  # pylint: disable=redefined-builtin"
+          ]
+        },
+        {
+          "offset": 4528,
+          "limit": 40,
+          "signatures": [
+            "def postinit(self, value: NodeNG | None = None) -> None",
+            "def get_children(self)",
+            "def _get_yield_nodes_skip_lambdas(self)",
+            "class YieldFrom(Yield):  # TODO value is required, not optional",
+            "class DictUnpack(mixins.NoChildrenMixin, NodeNG)",
+            "class FormattedValue(NodeNG)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def _is_const(value)",
+            "def unpack_infer(stmt, context=None)",
+            "def are_exclusive(stmt1, stmt2, exceptions: list[str] | None = None) -> bool"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_python3.py": {
+      "reads": [
+        2,
+        9
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 250,
+          "limit": 80,
+          "signatures": [
+            "def test_annotation_as_string(self) -> None",
+            "def test(a, b: int = 4, c=2, f: 'lala' = 4) -> 2",
+            "def test(a: typing.Generic[T], c: typing.Any = 24) -> typing.Iterable",
+            "def test_unpacking_in_dicts(self) -> None",
+            "def test_nested_unpacking_in_dicts(self) -> None",
+            "def test_unpacking_in_dict_getitem(self) -> None",
+            "def test_format_string(self) -> None",
+            "def test_underscores_in_numeral_literal(self) -> None",
+            "def test_async_comprehensions(self) -> None",
+            "def test_async_comprehensions_outside_coroutine(self)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "class Python3TC(unittest.TestCase)",
+            "def setUpClass(cls)",
+            "def test_starred_notation(self) -> None",
+            "def test_yield_from(self) -> None",
+            "def func()",
+            "def test_yield_from_is_generator(self) -> None",
+            "def func()",
+            "def test_yield_from_as_string(self) -> None",
+            "def func()",
+            "def test_simple_metaclass(self) -> None",
+            "def test_metaclass_error(self) -> None",
+            "def test_metaclass_imported(self) -> None",
+            "class Test(metaclass=ABCMeta): pass\"\"\"",
+            "def test_metaclass_multiple_keywords(self) -> None",
+            "def test_as_string(self) -> None",
+            "class Test(metaclass=ABCMeta): pass\"\"\"",
+            "def test_old_syntax_works(self) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/exceptions.py": {
+      "reads": [
+        2,
+        5
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class AstroidError(Exception)",
+            "def __init__(self, message=\"\", **kws)",
+            "def __str__(self)",
+            "class AstroidBuildingError(AstroidError)",
+            "def __init__(self, message=\"Failed to import module {modname}.\", **kws)",
+            "class AstroidImportError(AstroidBuildingError)",
+            "class TooManyLevelsError(AstroidImportError)",
+            "def __init__(",
+            "class AstroidSyntaxError(AstroidBuildingError)",
+            "class NoDefault(AstroidError)",
+            "def __init__(self, message=\"{func!r} has no default for {name!r}.\", **kws)",
+            "class ResolveError(AstroidError)",
+            "class MroError(ResolveError)",
+            "def __str__(self)",
+            "class DuplicateBasesError(MroError)",
+            "class InconsistentMroError(MroError)",
+            "class SuperError(ResolveError)",
+            "def __str__(self)",
+            "class InferenceError(ResolveError)",
+            "def __init__(self, message=\"Inference failed for {node!r}.\", **kws)"
+          ]
+        },
+        {
+          "offset": 228,
+          "limit": 40,
+          "signatures": [
+            "class _NonDeducibleTypeHierarchy(Exception)",
+            "class AstroidIndexError(AstroidError)",
+            "class AstroidTypeError(AstroidError)",
+            "class AstroidValueError(AstroidError)",
+            "class InferenceOverwriteError(AstroidError)",
+            "class ParentMissingError(AstroidError)",
+            "def __init__(self, target: nodes.NodeNG) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/inference.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 100,
+          "limit": 90,
+          "signatures": [
+            "def infer_map(self, context=None)",
+            "def _update_with_replacement(lhs_dict, rhs_dict)",
+            "def _infer_map(node, context)",
+            "def _higher_function_scope(node)"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/helpers.py": {
+      "reads": [
+        6,
+        7
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def _build_proxy_class(cls_name, builtins)",
+            "def _function_type(function, builtins)",
+            "def _object_type(node, context=None)",
+            "def object_type(node, context=None)",
+            "def _object_type_is_subclass(obj_type, class_or_seq, context=None)",
+            "def object_isinstance(node, class_or_seq, context=None)"
+          ]
+        },
+        {
+          "offset": 141,
+          "limit": 80,
+          "signatures": [
+            "def has_known_bases(klass, context=None)",
+            "def _type_check(type1, type2)",
+            "def is_subtype(type1, type2)",
+            "def is_supertype(type1, type2)",
+            "def class_instance_as_index(node)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 2,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/astroid/exceptions.py",
+        "offset": 1,
+        "limit": 220
+      },
+      "output_preview": "<path>/repo/astroid/exceptions.py</path>\n<type>file</type>\n<content>1: # Licensed under the LGPL: https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html\n2: # For details: https://github.com/PyCQA/astroid/blob/main/LICENSE\n3: # Copyright (c) https://github.com/PyCQA/astroid/blob/main/CONTRIBUTORS",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 5,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/astroid/exceptions.py",
+        "offset": 228,
+        "limit": 40
+      },
+      "output_preview": "<path>/repo/astroid/exceptions.py</path>\n<type>file</type>\n<content>228: class UseInferenceDefault(Exception):\n229:     \"\"\"exception to be raised in custom inference function to indicate that it\n230:     should go back to the default behaviour\n231:     \"\"\"\n232: \n233: \n234: class _NonDeducibleTypeHie",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "getitem\\(.*AstroidIndexError|assertRaises\\(AstroidIndexError|with self.assertRaises\\(AstroidIndexError",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 10,
+      "tool": "grep",
+      "input": {
+        "pattern": "AstroidIndexError",
+        "path": "/repo/tests/unittest_python3.py",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 12,
+      "tool": "grep",
+      "input": {
+        "pattern": "from astroid import helpers|import helpers",
+        "path": "/repo/astroid/nodes/node_classes.py",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile astroid/nodes/node_classes.py tests/unittest_python3.py",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks syntax of modified Python files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile astroid/nodes/node_classes.py tests/unittest_python3.py",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Rechecks syntax of modified Python files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def getitem\\(",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 6 matches\n/repo/astroid/nodes/scoped_nodes/scoped_nodes.py:\n  Line 2721:     def getitem(self, index, context=None):\n\n/repo/astroid/nodes/node_classes.py:\n  Line 1942:     def getitem(self, index, context=None):\n  Line 2349:     def getitem(self, index, context=None):\n  Line 3409:     def geti"
+    },
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_unpacking_in_dict_getitem",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/tests/unittest_python3.py:\n  Line 281:     def test_unpacking_in_dict_getitem(self) -> None:"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "DictUnpack",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 13 matches\n/repo/astroid/rebuilder.py:\n  Line 1059:                 rebuilt_key = nodes.DictUnpack(\n\n/repo/astroid/nodes/node_classes.py:\n  Line 2362:             if isinstance(key, DictUnpack):\n  Line 4550: class DictUnpack(mixins.NoChildrenMixin, NodeNG):\n\n/repo/astroid/nodes/as_string.py:\n "
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "AstroidIndexError\\(",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 4 matches\n/repo/astroid/nodes/node_classes.py:\n  Line 221:         raise AstroidIndexError(\n  Line 1965:             raise AstroidIndexError(\n  Line 2374:         raise AstroidIndexError(index)\n\n/repo/astroid/exceptions.py:\n  Line 238: class AstroidIndexError(AstroidError):"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "def safe_infer",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/astroid/helpers.py:\n  Line 141: def safe_infer(node, context=None):"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "\\*\\*.*not.*dict|DictUnpack|unpacking_in_dict_getitem_uninferable",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/tests/unittest_python3.py:\n  Line 274:         self.assertIsInstance(keys[1], nodes.DictUnpack)\n\n/repo/tests/unittest_nodes_lineno.py:\n  Line 705:         \"\"\"Dict, DictUnpack.\"\"\"\n  Line 729:         assert isinstance(d2, nodes.DictUnpack)"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_python3.py -k \"unpacking_in_dict_getitem\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted dict getitem tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "python -m unittest tests.unittest_python3.Python3TC.test_unpacking_in_dict_getitem tests.unittest_python3.Python3TC.test_unpacking_in_dict_getitem_with_ref tests.unittest_python3.Python3TC.test_unpacking_in_dict_getitem_uninferable",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted unittest cases"
+      },
+      "output_preview": "EEE\n======================================================================\nERROR: unittest_python3 (unittest.loader._FailedTest.unittest_python3)\n----------------------------------------------------------------------\nImportError: Failed to import test module: unittest_python3\nTraceback (most recent "
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- astroid/nodes/node_classes.py tests/unittest_python3.py",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Shows diff for modified files"
+      },
+      "output_preview": "diff --git a/astroid/nodes/node_classes.py b/astroid/nodes/node_classes.py\nindex 11136f8c..79202710 100644\n--- a/astroid/nodes/node_classes.py\n+++ b/astroid/nodes/node_classes.py\n@@ -2361,9 +2361,24 @@ class Dict(NodeNG, Instance):\n             # TODO(cpopa): no support for overriding yet, {1:2, **{"
+    }
+  ],
+  "token_cost": {
+    "total": 450566,
+    "input": 29152,
+    "output": 4390,
+    "cache_read": 417024,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 117.81,
+  "patch_non_empty": true
+}

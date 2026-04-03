@@ -1,0 +1,291 @@
+{
+  "instance_id": "pylint-dev__astroid-1978",
+  "variant": "summarize-relaxed",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/astroid/raw_building.py",
+    "/repo/tests/unittest_raw_building.py",
+    "/repo/tests/unittest_brain_numpy_random_mtrand.py",
+    "/repo/tests/unittest_brain_numpy_ndarray.py",
+    "/repo/tests/unittest_brain_numpy_ma.py",
+    "/repo/tests/unittest_brain_numpy_core_umath.py",
+    "/repo/tests/unittest_brain_numpy_core_numerictypes.py",
+    "/repo/tests/unittest_brain_numpy_core_numeric.py",
+    "/repo/tests/unittest_brain_numpy_core_multiarray.py",
+    "/repo/tests/unittest_brain_numpy_core_function_base.py",
+    "/repo/tests/unittest_brain_numpy_core_fromnumeric.py",
+    "/repo/tests/unittest_brain_numpy_core_einsumfunc.py"
+  ],
+  "per_file": {
+    "/repo/astroid/brain/brain_numpy_core_numerictypes.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 340,
+          "signatures": [
+            "def numpy_core_numerictypes_transform()",
+            "class generic(object)",
+            "def __init__(self, value)",
+            "def all(self): return uninferable",
+            "def any(self): return uninferable",
+            "def argmax(self): return uninferable",
+            "def argmin(self): return uninferable",
+            "def argsort(self): return uninferable",
+            "def astype(self, dtype, order='K', casting='unsafe', subok=True, copy=True): return np.ndarray([0, 0])",
+            "def base(self): return uninferable",
+            "def byteswap(self): return uninferable",
+            "def choose(self): return uninferable",
+            "def clip(self): return uninferable",
+            "def compress(self): return uninferable",
+            "def conj(self): return uninferable",
+            "def conjugate(self): return uninferable",
+            "def copy(self): return uninferable",
+            "def cumprod(self): return uninferable",
+            "def cumsum(self): return uninferable",
+            "def data(self): return uninferable"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_raw_building.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class RawBuildingTC(unittest.TestCase)",
+            "def test_attach_dummy_node(self) -> None",
+            "def test_build_module(self) -> None",
+            "def test_build_class(self) -> None",
+            "def test_build_function(self) -> None",
+            "def test_build_function_args(self) -> None",
+            "def test_build_function_defaults(self) -> None",
+            "def test_build_function_posonlyargs(self) -> None",
+            "def test_build_function_kwonlyargs(self) -> None",
+            "def test_build_from_import(self) -> None",
+            "def test_io_is__io(self)",
+            "def test_build_function_deepinspect_deprecation(self) -> None",
+            "def test_module_object_with_broken_getattr(self) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/raw_building.py": {
+      "reads": [
+        3,
+        4
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 420,
+          "signatures": [
+            "def _attach_local_node(parent, node, name: str) -> None",
+            "def _add_dunder_class(func, member) -> None",
+            "def attach_dummy_node(node, name: str, runtime_object=_EMPTY_OBJECT_MARKER) -> None",
+            "def attach_const_node(node, name: str, value) -> None",
+            "def attach_import_node(node, modname: str, membername: str) -> None",
+            "def build_module(name: str, doc: str | None = None) -> nodes.Module",
+            "def build_class(",
+            "def build_function(",
+            "def build_from_import(fromname: str, names: list[str]) -> nodes.ImportFrom",
+            "def register_arguments(func: nodes.FunctionDef, args: list | None = None) -> None",
+            "def object_build_class(",
+            "def _get_args_info_from_callable(",
+            "def object_build_function(",
+            "def object_build_datadescriptor(",
+            "def object_build_methoddescriptor(",
+            "def _base_class_object_build(",
+            "def _build_from_function(",
+            "def _safe_has_attribute(obj, member: str) -> bool",
+            "class InspectBuilder",
+            "def __init__(self, manager_instance: AstroidManager | None = None) -> None"
+          ]
+        },
+        {
+          "offset": 421,
+          "limit": 180,
+          "signatures": [
+            "def imported_member(self, node, member, name: str) -> bool",
+            "def _set_proxied(const) -> nodes.ClassDef",
+            "def _astroid_bootstrapping() -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_brain_numpy_core_numerictypes.py": {
+      "reads": [
+        9
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class NumpyBrainCoreNumericTypesTest(unittest.TestCase)",
+            "def _inferred_numpy_attribute(self, attrib)",
+            "def test_numpy_core_types(self)",
+            "def test_generic_types_have_methods(self)",
+            "def test_generic_types_have_attributes(self)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "build_module_getattr_catch_output",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "pytest -q tests/unittest_raw_building.py -k 'build_module_getattr_catch_output or module_object_with_broken_getattr'",
+        "workdir": "/repo",
+        "description": "Runs targeted raw_building tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile astroid/raw_building.py tests/unittest_raw_building.py",
+        "workdir": "/repo",
+        "description": "Checks syntax of modified files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile astroid/raw_building.py tests/unittest_raw_building.py",
+        "workdir": "/repo",
+        "description": "Rechecks syntax after import reorder"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "np\\.long|long",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 60 matches\n/repo/tests/unittest_scoped_nodes.py:\n  Line 681:             def long_classmethod_decorator(platform=None, order=50):\n  Line 730:                 @long_classmethod_decorator()\n  Line 731:                 def long_classmethod(cls):\n  Line 742:         self.assertEqual(node.locals[\"l"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "getattr\\(sys\\.modules|dir\\(|inspect\\.getmembers|hasattr\\(",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 48 matches\n/repo/astroid/util.py:\n  Line 91:         if hasattr(self.operand, \"name\"):\n  Line 95:             if hasattr(object_type, \"name\"):\n\n/repo/astroid/transforms.py:\n  Line 51:         if hasattr(node, \"_astroid_fields\"):\n\n/repo/astroid/raw_building.py:\n  Line 333:         return hasatt"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "catch_output|FutureWarning|warnings",
+        "path": "/repo/tests",
+        "include": "unittest_raw_building.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/tests/unittest_raw_building.py:\n  Line 2: 'tests.testdata.python3.data.fake_module_with_warnings' and\n  Line 3: 'tests.testdata.python3.data.fake_module_with_warnings' are fake modules\n  Line 18: import tests.testdata.python3.data.fake_module_with_warnings as fm"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "FutureWarning|catch_warnings|simplefilter\\(\"ignore\"",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 5 matches\n/repo/astroid/raw_building.py:\n  Line 394:                 with warnings.catch_warnings():\n  Line 395:                     warnings.simplefilter(\"ignore\")\n\n/repo/astroid/brain/brain_gi.py:\n  Line 179:                     with warnings.catch_warnings():\n  Line 188:                    "
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest -q tests/unittest_raw_building.py -k 'build_module_getattr_catch_output or module_object_with_broken_getattr'",
+        "workdir": "/repo",
+        "description": "Runs targeted raw_building tests via python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sys\nimport types\nimport warnings\nfrom astroid.builder import AstroidBuilder\n\nsource_module = types.ModuleType('source_module')\ntarget_module = types.ModuleType('target_module')\n\nclass Dummy:\n    pass\n\nDummy.__module__ = target_module.__name__\n\ndef __getattr__(name):\n    warnings.warn('deprecated attribute', FutureWarning)\n    if name == 'Dummy':\n        return Dummy\n    raise AttributeError(name)\n\ntarget_module.__getattr__ = __getattr__\nsource_module.Dummy = Dummy\nsys.modules[target_module.__name__] = target_module\ntry:\n    with warnings.catch_warnings(record=True) as records:\n        warnings.simplefilter('always')\n        AstroidBuilder().inspect_build(source_module, source_module.__name__)\n    print(len(records))\nfinally:\n    sys.modules.pop(target_module.__name__, None)\nPY",
+        "workdir": "/repo",
+        "description": "Exercises warning suppression path"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\n  File \"/repo/astroid/__init__.py\", line 42, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 17, in <module>\n    from astroid.nodes._base_nodes import Statemen"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- astroid/raw_building.py tests/unittest_raw_building.py",
+        "workdir": "/repo",
+        "description": "Shows current diff"
+      },
+      "output_preview": "diff --git a/astroid/raw_building.py b/astroid/raw_building.py\nindex cc3aa015..cff66437 100644\n--- a/astroid/raw_building.py\n+++ b/astroid/raw_building.py\n@@ -471,7 +471,9 @@ class InspectBuilder:\n             # check if it sounds valid and then add an import node, else use a\n             # dummy no"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "git status --short",
+        "workdir": "/repo",
+        "description": "Shows modified files"
+      },
+      "output_preview": " M astroid/raw_building.py\n M tests/unittest_raw_building.py\n"
+    }
+  ],
+  "token_cost": {
+    "total": 457622,
+    "input": 34098,
+    "output": 5732,
+    "cache_read": 417792,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 83.58,
+  "patch_non_empty": true
+}

@@ -1,0 +1,43 @@
+diff --git a/src/marshmallow/fields.py b/src/marshmallow/fields.py
+index 0b18e7d..c9884f2 100644
+--- a/src/marshmallow/fields.py
++++ b/src/marshmallow/fields.py
+@@ -1112,11 +1112,12 @@ class DateTime(Field):
+ 
+     def _bind_to_schema(self, field_name, schema):
+         super()._bind_to_schema(field_name, schema)
+-        self.format = (
+-            self.format
+-            or getattr(schema.opts, self.SCHEMA_OPTS_VAR_NAME)
+-            or self.DEFAULT_FORMAT
+-        )
++        if self.format is None:
++            schema_opts = getattr(schema, "opts", None)
++            self.format = (
++                getattr(schema_opts, self.SCHEMA_OPTS_VAR_NAME, None)
++                or self.DEFAULT_FORMAT
++            )
+ 
+     def _serialize(self, value, attr, obj, **kwargs):
+         if value is None:
+diff --git a/tests/test_fields.py b/tests/test_fields.py
+index b0a5a77..f00e2bd 100644
+--- a/tests/test_fields.py
++++ b/tests/test_fields.py
+@@ -147,6 +147,16 @@ class TestParentAndName:
+         for field in schema.fields["baz"].tuple_fields:
+             assert field.root == schema
+ 
++    def test_datetime_list_inner_format(self):
++        class MySchema(Schema):
++            times = fields.List(fields.DateTime())
++            row = fields.Tuple([fields.DateTime(), fields.DateTime(format="%Y")])
++
++        schema = MySchema()
++        assert schema.fields["times"].inner.format == "iso"
++        assert schema.fields["row"].tuple_fields[0].format == "iso"
++        assert schema.fields["row"].tuple_fields[1].format == "%Y"
++
+     def test_list_root_inheritance(self, schema):
+         class OtherSchema(TestParentAndName.MySchema):
+             pass

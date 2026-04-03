@@ -1,0 +1,108 @@
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..2c5f71b6 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -59,6 +59,12 @@ class Delimited(OneOf):
+         # delimiters is a list of tuples containing delimiter segments as we find them.
+         delimiters: List[BaseSegment] = []
+ 
++        def _trim_to_current_pos(unmatched: Tuple[BaseSegment, ...]) -> MatchResult:
++            """Preserve any earlier matches when the current section fails."""
++            if matched_segments:
++                return MatchResult(matched_segments.matched_segments, unmatched)
++            return MatchResult.from_unmatched(unmatched)
++
+         # First iterate through all the segments, looking for the delimiter.
+         # Second, split the list on each of the delimiters, and ensure that
+         # each sublist in turn matches one of the elements.
+@@ -127,9 +133,7 @@ class Delimited(OneOf):
+                     if not self.allow_gaps and any(
+                         seg.is_whitespace for seg in pre_non_code + post_non_code
+                     ):
+-                        return MatchResult.from_unmatched(
+-                            mutated_segments
+-                        )  # pragma: no cover TODO?
++                        return _trim_to_current_pos(mutated_segments)
+ 
+                     with parse_context.deeper_match() as ctx:
+                         match, _ = self._longest_trimmed_match(
+@@ -141,7 +145,7 @@ class Delimited(OneOf):
+                         )
+                     # No match, or an incomplete match: Not allowed
+                     if not match or not match.is_complete():
+-                        return MatchResult.from_unmatched(mutated_segments)
++                        return _trim_to_current_pos(mutated_segments)
+ 
+                     # We have a complete match!
+ 
+@@ -170,7 +174,7 @@ class Delimited(OneOf):
+                             self.min_delimiters
+                             and len(delimiters) < self.min_delimiters
+                         ):
+-                            return MatchResult.from_unmatched(mutated_segments)
++                            return _trim_to_current_pos(mutated_segments)
+                         else:
+                             return MatchResult(
+                                 matched_segments.matched_segments,
+@@ -186,7 +190,7 @@ class Delimited(OneOf):
+                 else:
+                     # Zero length section between delimiters, or zero code
+                     # elements if appropriate. Return unmatched.
+-                    return MatchResult.from_unmatched(mutated_segments)
++                    return _trim_to_current_pos(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+                 # at the end. In this case we look for a potential partial match
+@@ -196,7 +200,7 @@ class Delimited(OneOf):
+                 # First check we're had enough delimiters, because if we haven't then
+                 # there's no sense to try matching
+                 if self.min_delimiters and len(delimiters) < self.min_delimiters:
+-                    return MatchResult.from_unmatched(mutated_segments)
++                    return _trim_to_current_pos(mutated_segments)
+ 
+                 # We use the whitespace padded match to hoover up whitespace if enabled,
+                 # and default to the longest matcher. We don't care which one matches.
+@@ -210,9 +214,7 @@ class Delimited(OneOf):
+                 if not self.allow_gaps and any(
+                     seg.is_whitespace for seg in pre_non_code + post_non_code
+                 ):
+-                    return MatchResult.from_unmatched(
+-                        mutated_segments
+-                    )  # pragma: no cover TODO?
++                    return _trim_to_current_pos(mutated_segments)
+ 
+                 with parse_context.deeper_match() as ctx:
+                     mat, _ = self._longest_trimmed_match(
+@@ -248,4 +250,4 @@ class Delimited(OneOf):
+                     if self.allow_trailing:
+                         return MatchResult(matched_segments.matched_segments, seg_buff)
+                     else:
+-                        return MatchResult.from_unmatched(mutated_segments)
++                        return _trim_to_current_pos(mutated_segments)
+diff --git a/test/dialects/ansi_test.py b/test/dialects/ansi_test.py
+index 1c83e4c6..bd6ef27c 100644
+--- a/test/dialects/ansi_test.py
++++ b/test/dialects/ansi_test.py
+@@ -173,6 +173,22 @@ def test__dialect__ansi_specific_segment_not_parse(raw, err_locations, caplog):
+     assert locs == err_locations
+ 
+ 
++@pytest.mark.parametrize(
++    "raw",
++    [
++        "select id from tbl;;",
++    ],
++)
++def test__dialect__ansi_multiple_semicolons(raw):
++    """Test doubled semicolons do not drop matched content."""
++    lnt = Linter(dialect="ansi")
++    parsed = lnt.parse_string(raw)
++
++    assert parsed.tree.raw == raw
++    assert len(parsed.violations) > 0
++    assert "unparsable" in parsed.tree.type_set()
++
++
+ def test__dialect__ansi_is_whitespace():
+     """Test proper tagging with is_whitespace."""
+     lnt = Linter()

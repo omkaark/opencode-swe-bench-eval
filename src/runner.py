@@ -164,7 +164,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--api-key-env-var",
-        default="OPENCODE_API_KEY",
+        default="OPENAI_API_KEY",
         help="Environment variable that holds the API key.",
     )
     parser.add_argument(
@@ -641,9 +641,9 @@ async def main() -> None:
 
     output_dir = Path(args.output_dir).resolve()
     secret_payload = {
-        "OPENCODE_API_KEY": api_key,
+        "OPENAI_API_KEY": api_key,
     }
-    if args.api_key_env_var != "OPENCODE_API_KEY":
+    if args.api_key_env_var != "OPENAI_API_KEY":
         secret_payload[args.api_key_env_var] = api_key
     secret = modal.Secret.from_dict(secret_payload)
 

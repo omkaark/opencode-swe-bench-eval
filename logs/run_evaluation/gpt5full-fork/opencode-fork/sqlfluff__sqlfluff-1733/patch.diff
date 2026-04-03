@@ -1,0 +1,69 @@
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..0d789c36 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -56,6 +56,39 @@ class Rule_L036(BaseRule):
+                     select_targets_info, context.segment
+                 )
+ 
++    @staticmethod
++    def _strip_leading_whitespace(segment):
++        """Return segment contents without leading whitespace.
++
++        Select clause elements can contain their own leading whitespace. When
++        moving an element onto its own line, preserve any leading meta segments
++        but drop that whitespace so indentation rules can recreate it cleanly.
++        """
++        stripped = []
++        code_started = False
++        for child in segment.segments:
++            if not code_started and child.is_meta:
++                stripped.append(child)
++            elif not code_started and child.is_type("whitespace"):
++                continue
++            else:
++                code_started = True
++                stripped.append(child)
++        return stripped
++
++    @staticmethod
++    def _leading_whitespace_segments(segment):
++        """Return leading whitespace segments inside a select target."""
++        whitespace = []
++        for child in segment.segments:
++            if child.is_meta:
++                continue
++            if child.is_type("whitespace"):
++                whitespace.append(child)
++                continue
++            break
++        return whitespace
++
+     @staticmethod
+     def _get_indexes(segment):
+         select_idx = -1
+@@ -118,6 +151,10 @@ class Rule_L036(BaseRule):
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
++                fixes += [
++                    LintFix("delete", ws)
++                    for ws in self._leading_whitespace_segments(select_target)
++                ]
+                 fixes.append(LintFix("create", select_target, NewlineSegment()))
+         if fixes:
+             return LintResult(anchor=segment, fixes=fixes)
+@@ -147,9 +184,12 @@ class Rule_L036(BaseRule):
+             # the statement and a newline, but in some cases however (see #1424)
+             # we don't need the final newline.
+             copy_with_newline = True
++            first_select_target = select_clause.segments[
++                select_targets_info.first_select_target_idx
++            ]
+             insert_buff = [
+                 WhitespaceSegment(),
+-                select_clause.segments[select_targets_info.first_select_target_idx],
++                *self._strip_leading_whitespace(first_select_target),
+             ]
+ 
+             # Check if the modifier is one we care about

@@ -1,0 +1,87 @@
+diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py
+index 3a8593ed..04d4f1fd 100644
+--- a/src/sqlfluff/core/linter/linted_file.py
++++ b/src/sqlfluff/core/linter/linted_file.py
+@@ -7,6 +7,7 @@ post linting.
+ 
+ import os
+ import logging
++import tempfile
+ from typing import (
+     Any,
+     Iterable,
+@@ -493,7 +494,33 @@ class LintedFile(NamedTuple):
+             if suffix:
+                 root, ext = os.path.splitext(fname)
+                 fname = root + suffix + ext
+-            # Actually write the file.
+-            with open(fname, "w", encoding=self.encoding) as f:
+-                f.write(write_buff)
++            # Write to a temporary file first so we never truncate the target
++            # file unless the full write succeeds.
++            dirname = os.path.dirname(fname) or "."
++            tmp_fname = None
++            try:
++                with tempfile.NamedTemporaryFile(
++                    mode="w",
++                    encoding=self.encoding,
++                    dir=dirname,
++                    delete=False,
++                ) as f:
++                    tmp_fname = f.name
++                    f.write(write_buff)
++                os.replace(tmp_fname, fname)
++            except UnicodeEncodeError as err:
++                linter_logger.warning(
++                    "Failed to persist %s using encoding %s: %s",
++                    fname,
++                    self.encoding,
++                    err,
++                )
++                if tmp_fname and os.path.exists(tmp_fname):
++                    os.remove(tmp_fname)
++                return False
++            except OSError as err:
++                linter_logger.warning("Failed to persist %s: %s", fname, err)
++                if tmp_fname and os.path.exists(tmp_fname):
++                    os.remove(tmp_fname)
++                return False
+         return success
+diff --git a/test/core/linter_test.py b/test/core/linter_test.py
+index 0600adf2..1eefea9c 100644
+--- a/test/core/linter_test.py
++++ b/test/core/linter_test.py
+@@ -370,6 +370,33 @@ def test__linter__encoding(fname, config_encoding, lexerror):
+     assert lexerror == (SQLLexError in [type(v) for v in result.get_violations()])
+ 
+ 
++def test__linted_file__persist_tree_does_not_truncate_on_encoding_error(
++    tmp_path, monkeypatch
++):
++    """Test that a failed write leaves the original file intact."""
++    path = tmp_path / "test.sql"
++    original = "SELECT '→' AS direction\n"
++    path.write_text(original, encoding="utf-8")
++
++    lf = linter.LintedFile(
++        path=str(path),
++        violations=[],
++        time_dict={},
++        tree=None,
++        ignore_mask=[],
++        templated_file=TemplatedFile.from_string(original),
++        encoding="ascii",
++    )
++
++    def _fake_fix_string(self):
++        return "SELECT '→' AS direction\n", True
++
++    monkeypatch.setattr(linter.LintedFile, "fix_string", _fake_fix_string)
++
++    assert not lf.persist_tree()
++    assert path.read_text(encoding="utf-8") == original
++
++
+ @pytest.mark.parametrize(
+     "input,expected",
+     [

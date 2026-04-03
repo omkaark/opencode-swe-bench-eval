@@ -1,0 +1,153 @@
+{
+  "instance_id": "pvlib__pvlib-python-1606",
+  "variant": "official",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [
+    "/repo/pvlib/tools.py",
+    "/repo/pvlib/tests/test_tools.py"
+  ],
+  "per_file": {
+    "/repo/pvlib/tools.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 302,
+          "limit": 110,
+          "signatures": [
+            "def _get_sample_intervals(times, win_length)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_tools.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 180,
+          "signatures": [
+            "def test_build_kwargs(keys, input_dict, expected)",
+            "def _obj_test_golden_sect(params, loc)",
+            "def test__golden_sect_DataFrame(params, lb, ub, expected, func)",
+            "def test__golden_sect_DataFrame_atol()",
+            "def test__golden_sect_DataFrame_vector()",
+            "def test__golden_sect_DataFrame_nans()",
+            "def test_degrees_to_index_1()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pvlib/tests/test_tools.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Run targeted tools tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "golden_sect_DataFrame|_golden_sect_DataFrame",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 13 matches\n/repo/pvlib/tools.py:\n  Line 302: def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):\n\n/repo/pvlib/tests/test_tools.py:\n  Line 27: def test__golden_sect_DataFrame(params, lb, ub, expected, func):\n  Line 28:     v, x = tools._golden_sect_DataFrame(params, lb, ub, func)"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_tools.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Run pytest module for tools tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import numpy as np; from pvlib import tools;\\n\\ndef obj(params, loc):\\n    return params[loc] * (1. - params['c'] * params[loc]**params['n'])\\n\\nparams = {'c': 1., 'n': 1.}; v, x = tools._golden_sect_DataFrame(params, 0., 0., obj); assert np.isclose(x, 0.).all() if hasattr(x, 'all') else np.isclose(x, 0.); assert np.isclose(v, 0.).all() if hasattr(v, 'all') else np.isclose(v, 0.);\\nparams = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}; lower = np.array([0., 0.001]); upper = np.array([1.1, 1.2]); v, x = tools._golden_sect_DataFrame(params, lower, upper, obj); assert np.allclose(x, np.array([0.5, 0.25]), atol=1e-8); print('ok')\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Run direct regression checks"
+      },
+      "output_preview": "  File \"<string>\", line 1\n    import numpy as np; from pvlib import tools;\\n\\ndef obj(params, loc):\\n    return params[loc] * (1. - params['c'] * params[loc]**params['n'])\\n\\nparams = {'c': 1., 'n': 1.}; v, x = tools._golden_sect_DataFrame(params, 0., 0., obj); assert np.isclose(x, 0.).all() if hasa"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import numpy as np; from pvlib import tools; obj=lambda params, loc: params[loc] * (1. - params['c'] * params[loc]**params['n']); params={'c':1., 'n':1.}; v, x = tools._golden_sect_DataFrame(params, 0., 0., obj); assert np.isclose(x, 0.).all() if hasattr(x, 'all') else np.isclose(x, 0.); assert np.isclose(v, 0.).all() if hasattr(v, 'all') else np.isclose(v, 0.); params={'c':np.array([1., 2.]), 'n':np.array([1., 1.])}; lower=np.array([0., 0.001]); upper=np.array([1.1, 1.2]); v, x = tools._golden_sect_DataFrame(params, lower, upper, obj); assert np.allclose(x, np.array([0.5, 0.25]), atol=1e-8); print('ok')\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Run direct regression checks"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'numpy'\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python -m compileall pvlib/tools.py pvlib/tests/test_tools.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Compile edited Python files"
+      },
+      "output_preview": "Compiling 'pvlib/tools.py'...\nCompiling 'pvlib/tests/test_tools.py'...\n"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- pvlib/tools.py pvlib/tests/test_tools.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Show diff for edited files"
+      },
+      "output_preview": "diff --git a/pvlib/tests/test_tools.py b/pvlib/tests/test_tools.py\nindex 167dca8..6977cb7 100644\n--- a/pvlib/tests/test_tools.py\n+++ b/pvlib/tests/test_tools.py\n@@ -37,6 +37,13 @@ def test__golden_sect_DataFrame_atol():\n     assert np.isclose(x, expected, atol=1e-12)\n \n \n+def test__golden_sect_DataF"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "git status --short",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Show worktree status"
+      },
+      "output_preview": " M pvlib/tests/test_tools.py\n M pvlib/tools.py\n"
+    }
+  ],
+  "token_cost": {
+    "total": 208511,
+    "input": 10430,
+    "output": 6081,
+    "cache_read": 192000,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 90.42,
+  "patch_non_empty": true
+}

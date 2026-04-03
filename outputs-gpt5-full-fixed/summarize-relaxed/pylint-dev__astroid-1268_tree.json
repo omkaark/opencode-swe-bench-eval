@@ -1,0 +1,243 @@
+{
+  "instance_id": "pylint-dev__astroid-1268",
+  "variant": "summarize-relaxed",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/astroid/nodes/as_string.py"
+  ],
+  "per_file": {
+    "/repo/tests/unittest_nodes.py": {
+      "reads": [
+        1
+      ],
+      "edits": [],
+      "first_read_step": 1,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class AsStringTest(resources.SysPathSetup, unittest.TestCase)",
+            "def test_tuple_as_string(self) -> None",
+            "def build(string: str) -> Tuple",
+            "def test_func_signature_issue_185(self) -> None",
+            "def test(a, b, c=42, *, x=42, **kwargs)",
+            "def test_as_string_for_list_containing_uninferable(self) -> None",
+            "def foo()",
+            "def test_frozenset_as_string(self) -> None",
+            "def test_varargs_kwargs_as_string(self) -> None",
+            "def test_module_as_string(self) -> None",
+            "def test_module2_as_string(self) -> None",
+            "def test_as_string(self) -> None",
+            "def test_3k_as_string(self) -> None",
+            "def function(var)",
+            "def test_3k_annotations_and_metaclass(self) -> None",
+            "def function(var: int)",
+            "class Language(metaclass=Natural)",
+            "def function(var: int)",
+            "class Language(metaclass=Natural)",
+            "def test_ellipsis(self) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/nodes/as_string.py": {
+      "reads": [
+        2,
+        4
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class AsStringVisitor",
+            "def __init__(self, indent=\"    \")",
+            "def __call__(self, node)",
+            "def _docs_dedent(self, doc)",
+            "def _stmt_list(self, stmts, indent=True)",
+            "def _precedence_parens(self, node, child, is_left=True)",
+            "def _should_wrap(self, node, child, is_left)",
+            "def visit_await(self, node)",
+            "def visit_asyncwith(self, node)",
+            "def visit_asyncfor(self, node)",
+            "def visit_arguments(self, node)",
+            "def visit_assignattr(self, node)",
+            "def visit_assert(self, node)",
+            "def visit_assignname(self, node)",
+            "def visit_assign(self, node)",
+            "def visit_augassign(self, node)",
+            "def visit_annassign(self, node)",
+            "def visit_binop(self, node)",
+            "def visit_boolop(self, node)",
+            "def visit_break(self, node)"
+          ]
+        },
+        {
+          "offset": 620,
+          "limit": 40,
+          "signatures": [
+            "def visit_matchor(self, node: \"MatchOr\") -> str",
+            "def visit_frozenset(self, node)",
+            "def visit_super(self, node)",
+            "def visit_uninferable(self, node)",
+            "def visit_property(self, node)",
+            "def visit_evaluatedobject(self, node)",
+            "def _import_string(names)"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/nodes/node_classes.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 4290,
+          "limit": 120,
+          "signatures": [
+            "def set_local(self, name: str, stmt: AssignName) -> None",
+            "class Unknown(mixins.AssignTypeMixin, NodeNG)",
+            "def qname(self)",
+            "def _infer(self, context=None, **kwargs)",
+            "class EvaluatedObject(NodeNG)",
+            "def __init__(",
+            "def infer(self, context=None, **kwargs)",
+            "class Match(Statement)",
+            "def __init__(",
+            "def postinit(",
+            "class Pattern(NodeNG)"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/nodes/node_ng.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 160,
+          "limit": 80,
+          "signatures": [
+            "def _repr_name(self)",
+            "def __str__(self)",
+            "def __repr__(self)",
+            "def accept(self, visitor)",
+            "def get_children(self) -> Iterator[\"NodeNG\"]",
+            "def last_child(self) -> Optional[\"NodeNG\"]"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_as_string_unknown|Unknown\\(\\)\\.as_string|as_string\\(\\).*Unknown",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "class\\s+Unknown|visit_unknown|Unknown\\(",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 15 matches\n/repo/tests/unittest_nodes.py:\n  Line 1194:     assert isinstance(next(nodes.Unknown().infer()), type(util.Uninferable))\n  Line 1195:     assert isinstance(nodes.Unknown().name, str)\n  Line 1196:     assert isinstance(nodes.Unknown().qname(), str)\n\n/repo/tests/unittest_brain.py:\n  L"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "visit_uninferable|Uninferable|EvaluatedObject|Unknown",
+        "path": "/repo/astroid/nodes/as_string.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/astroid/nodes/as_string.py:\n  Line 637:     def visit_uninferable(self, node):"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "\\[Uninferable\\]|Unknown",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 36 matches\n/repo/tests/unittest_nodes.py:\n  Line 111:         self.assertEqual(inferred.as_string(), \"[Uninferable]\")\n  Line 1193:     \"\"\"Test Unknown node\"\"\"\n  Line 1194:     assert isinstance(next(nodes.Unknown().infer()), type(util.Uninferable))\n  Line 1195:     assert isinstance(nodes.Unkn"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "class\\s+NodeNG|def\\s+__str__|def\\s+as_string|def\\s+accept",
+        "path": "/repo/astroid/nodes",
+        "include": "*.py"
+      },
+      "output_preview": "Found 4 matches\n/repo/astroid/nodes/node_ng.py:\n  Line 54: class NodeNG:\n  Line 179:     def __str__(self):\n  Line 218:     def accept(self, visitor):\n  Line 607:     def as_string(self) -> str:"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_nodes.py::AsStringTest::test_as_string_unknown",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted Unknown as_string test"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python -m unittest tests.unittest_nodes.AsStringTest.test_as_string_unknown",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted unittest for Unknown"
+      },
+      "output_preview": "E\n======================================================================\nERROR: unittest_nodes (unittest.loader._FailedTest.unittest_nodes)\n----------------------------------------------------------------------\nImportError: Failed to import test module: unittest_nodes\nTraceback (most recent call las"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import astroid; print(astroid.nodes.Unknown().as_string())\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks Unknown as_string directly"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/astroid/__init__.py\", line 51, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 27, in <module>\n    from astroid.nodes.node_classes import (  # p"
+    }
+  ],
+  "token_cost": {
+    "total": 209755,
+    "input": 20784,
+    "output": 1579,
+    "cache_read": 187392,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 46.89,
+  "patch_non_empty": true
+}

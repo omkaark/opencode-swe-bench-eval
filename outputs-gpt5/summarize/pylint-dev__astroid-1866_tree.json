@@ -1,0 +1,138 @@
+{
+  "instance_id": "pylint-dev__astroid-1866",
+  "variant": "summarize",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/astroid/brain/brain_builtin_inference.py",
+    "/repo/tests/unittest_brain_builtin.py"
+  ],
+  "per_file": {
+    "/repo/astroid/brain/brain_builtin_inference.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 900,
+          "limit": 140,
+          "signatures": [
+            "def _is_str_format_call(node: nodes.Call) -> bool",
+            "def _infer_str_format_call("
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_brain_builtin.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class BuiltinsTest(unittest.TestCase)",
+            "def test_infer_property(self)",
+            "class Something",
+            "def getter()",
+            "class TestStringNodes",
+            "def test_string_format(self, format_string: str) -> None",
+            "def test_string_format_uninferable(self, format_string: str) -> None",
+            "def test_string_format_with_specs(self) -> None"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/test_string_format*",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "pytest tests/unittest_brain_builtin.py -q",
+        "workdir": "/repo",
+        "description": "Runs targeted brain builtin tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "NoneType.__format__|format\\(",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 73 matches\n/repo/tests/unittest_scoped_nodes.py:\n  Line 1705:             mixin_name = '{}Mixin'.format(cls.__name__)\n  Line 1732:                 # We don't recognize what 'cls' is at time of .format() call, only\n\n/repo/tests/unittest_regrtest.py:\n  Line 324:         collections.namedtuple('{"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "catch TypeError|except \\(IndexError, KeyError\\)",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/astroid/brain/brain_builtin_inference.py:\n  Line 957:     except (IndexError, KeyError):"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_brain_builtin.py -q",
+        "workdir": "/repo",
+        "description": "Runs targeted pytest module"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom astroid.builder import _extract_single_node\nfrom astroid import util\nnode = _extract_single_node('''\nvalue = None\n\"My name is {:s}\".format(value)\n''')\nresult = next(node.infer())\nprint(type(result).__name__)\nprint(result is util.Uninferable)\nPY",
+        "workdir": "/repo",
+        "description": "Checks None format inference manually"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/astroid/__init__.py\", line 42, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 17, in <module>\n    from astroid.nodes._base_nodes import Statemen"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "git status --short && git diff -- astroid/brain/brain_builtin_inference.py tests/unittest_brain_builtin.py",
+        "workdir": "/repo",
+        "description": "Shows changed files and diff"
+      },
+      "output_preview": " M astroid/brain/brain_builtin_inference.py\n M tests/unittest_brain_builtin.py\ndiff --git a/astroid/brain/brain_builtin_inference.py b/astroid/brain/brain_builtin_inference.py\nindex af1ddf4d..d55740f0 100644\n--- a/astroid/brain/brain_builtin_inference.py\n+++ b/astroid/brain/brain_builtin_inference.p"
+    }
+  ],
+  "token_cost": {
+    "total": 187745,
+    "input": 11166,
+    "output": 1987,
+    "cache_read": 174592,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 33.58,
+  "patch_non_empty": true
+}

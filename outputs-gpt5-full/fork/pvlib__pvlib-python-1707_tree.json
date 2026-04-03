@@ -1,0 +1,171 @@
+{
+  "instance_id": "pvlib__pvlib-python-1707",
+  "variant": "fork",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [],
+  "per_file": {
+    "/repo/pvlib/iam.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "def ashrae(aoi, b=0.05)",
+            "def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_iam.py": {
+      "reads": [
+        3
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 160,
+          "signatures": [
+            "def test_ashrae()",
+            "def test_ashrae_scalar()",
+            "def test_physical()",
+            "def test_physical_ar()",
+            "def test_physical_noar()",
+            "def test_physical_scalar()",
+            "def test_martin_ruiz()",
+            "def test_martin_ruiz_exception()",
+            "def test_martin_ruiz_diffuse()",
+            "def test_iam_interp()"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tools.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 80,
+          "signatures": [
+            "def cosd(angle)",
+            "def sind(angle)",
+            "def tand(angle)",
+            "def asind(number)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_physical_n1_L0",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pvlib/tests/test_iam.py -k \"physical_n1_L0 or physical\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted IAM pytest cases"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def physical\\(",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/iam.py:\n  Line 94: def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "physical\\(",
+        "path": "/repo/pvlib/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 14 matches\n/repo/pvlib/tests/test_solarposition.py:\n  Line 92: def test_spa_c_physical(expected_solpos, golden_mst):\n  Line 115: def test_spa_python_numpy_physical(expected_solpos, golden_mst):\n  Line 319: def test_pyephem_physical(expected_solpos, golden_mst):\n  Line 377: def test_ephemeris_p"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "def cosd\\(",
+        "path": "/repo/pvlib",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/tools.py:\n  Line 12: def cosd(angle):"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "def sind\\(",
+        "path": "/repo/pvlib",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/tools.py:\n  Line 31: def sind(angle):"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_iam.py -k \"physical_n1_L0 or physical\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted IAM tests via python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom pvlib import iam\nprint(iam.physical(aoi=100, n=1, L=0))\nprint(iam.physical(aoi=90, n=1, L=0))\nprint(iam.physical(aoi=float('nan'), n=1, L=0))\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks physical IAM regression values"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/spectrum/__init__.py\", line 1, in <module>\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\n    ^^^^^"
+    }
+  ],
+  "token_cost": {
+    "total": 167490,
+    "input": 18538,
+    "output": 4184,
+    "cache_read": 144768,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 93.65,
+  "patch_non_empty": true
+}

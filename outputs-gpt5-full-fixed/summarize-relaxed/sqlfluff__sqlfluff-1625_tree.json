@@ -1,0 +1,240 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1625",
+  "variant": "summarize-relaxed",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [
+    "/repo/test/fixtures/rules/std_rule_cases/L031.yml",
+    "/repo/src/sqlfluff/rules/L031.py"
+  ],
+  "per_file": {
+    "/repo/src/sqlfluff/rules/L031.py": {
+      "reads": [
+        2,
+        11
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class Rule_L031(BaseRule)",
+            "def _eval(self, segment, **kwargs)",
+            "class TableAliasInfo(NamedTuple)",
+            "def _filter_table_expressions(",
+            "def _lint_aliases_in_join("
+          ]
+        }
+      ]
+    },
+    "/repo/test/cli/commands_test.py": {
+      "reads": [
+        2,
+        11
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def invoke_assert_code(",
+            "def test__cli__command_directed()",
+            "def test__cli__command_dialect()",
+            "def test__cli__command_dialect_legacy()"
+          ]
+        },
+        {
+          "offset": 49,
+          "limit": 10,
+          "signatures": [
+            "def test__cli__command_directed()"
+          ]
+        }
+      ]
+    },
+    "/repo/test/fixtures/rules/std_rule_cases/L031.yml": {
+      "reads": [
+        2,
+        11
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/indentation_error_simple.sql": {
+      "reads": [
+        3
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/rules/std_test.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 180,
+          "signatures": [
+            "def test__rules__std_file(rule, path, violations)",
+            "def test__rules__std_file_dbt(rule, path, violations, project_dir):  # noqa",
+            "def test_improper_configs_are_rejected(rule_config_dict)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "tsql|TSQL",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "Avoid using aliases in join condition",
+        "path": "/repo/test",
+        "include": "*.yml"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "tsql",
+        "path": "/repo/src/sqlfluff/rules",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "alias_single_char_identifiers|alias_with_wildcard_identifier",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "pytest test/cli/commands_test.py::test__cli__command_directed test/rules/yaml_test_cases_test.py -k L031",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Run targeted CLI and L031 tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "L031|Avoid using aliases in join condition",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 14 matches\n/repo/test/rules/std_test.py:\n  Line 86:             \"L031\",\n\n/repo/test/dialects/postgres_test.py:\n  Line 79:         configs={\"core\": {\"exclude_rules\": \"L009,L016,L031\", \"dialect\": \"postgres\"}}\n\n/repo/test/core/linter_test.py:\n  Line 145:     \"rules,num_violations\", [(None, 7), (\""
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "mytable AS a|\\[hello\\]|issue_.*031|L031",
+        "path": "/repo/test/fixtures",
+        "include": "*.yml"
+      },
+      "output_preview": "Found 4 matches\n/repo/test/fixtures/rules/std_rule_cases/L031.yml:\n  Line 1: rule: L031\n  Line 4:   # L031 Allow self-joins\n  Line 34:   # L031 order by\n  Line 58:   # L031 order by identifier which is the same raw as an alias but refers to a column"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "AS a",
+        "path": "/repo/test/fixtures",
+        "include": "*.sql"
+      },
+      "output_preview": "Found 19 matches\n/repo/test/fixtures/linter/parse_lex_error.sql:\n  Line 10: FROM tbl AS a\n\n/repo/test/fixtures/linter/operator_errors_ignore.sql:\n  Line 11: FROM tbl AS a\n\n/repo/test/fixtures/linter/operator_errors.sql:\n  Line 10: FROM tbl AS a\n\n/repo/test/fixtures/linter/autofix/ansi/021_fix_respec"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "dialect",
+        "path": "/repo/src/sqlfluff/rules",
+        "include": "L0*.py"
+      },
+      "output_preview": "Found 40 matches\n/repo/src/sqlfluff/rules/L045.py:\n  Line 4: from sqlfluff.core.dialects.base import Dialect\n  Line 50:         dialect: Dialect,\n  Line 55:                 select_info.select_statement, queries, dialect\n  Line 58:                     cls._visit_sources(source, dialect, queries)\n  Li"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "std_rule_cases|L031.yml|yaml",
+        "path": "/repo/test/rules",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/test/rules/yaml_test_cases_test.py:\n  Line 14:     test_cases_path=os.path.join(\"test/fixtures/rules/std_rule_cases\", \"*.yml\")\n\n/repo/test/rules/std_fix_auto_test.py:\n  Line 13: import yaml\n  Line 76:         cfg = yaml.safe_load(cfg_file)"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "fixtures/rules/std_rule_cases",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/test/rules/yaml_test_cases_test.py:\n  Line 14:     test_cases_path=os.path.join(\"test/fixtures/rules/std_rule_cases\", \"*.yml\")"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest test/cli/commands_test.py::test__cli__command_directed test/rules/yaml_test_cases_test.py -k L031",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Run targeted tests with Python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    }
+  ],
+  "token_cost": {
+    "total": 223910,
+    "input": 20641,
+    "output": 3845,
+    "cache_read": 199424,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 84.4,
+  "patch_non_empty": true
+}

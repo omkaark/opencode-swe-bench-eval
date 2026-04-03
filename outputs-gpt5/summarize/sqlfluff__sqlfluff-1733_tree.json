@@ -1,0 +1,335 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1733",
+  "variant": "summarize",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [
+    "/repo/test/rules/yaml_test_cases_test.py",
+    "/repo/test/rules/std_test.py",
+    "/repo/test/rules/std_L020_test.py",
+    "/repo/test/rules/std_L019_test.py",
+    "/repo/test/rules/std_L016_L36_combo.py",
+    "/repo/test/rules/std_L007_test.py",
+    "/repo/test/rules/std_roundtrip_test.py",
+    "/repo/test/rules/std_fix_auto_test.py",
+    "/repo/test/rules/std_L048_test.py",
+    "/repo/test/rules/std_L003_test.py"
+  ],
+  "per_file": {
+    "/repo/test/rules/std_L016_L36_combo.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 200,
+          "signatures": [
+            "def test__rules__std_L016_L036_long_line_lint()",
+            "def test__rules__std_L016_L036_long_line_fix()",
+            "def test__rules__std_L016_L036_long_line_fix2()"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L036.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 380,
+          "signatures": [
+            "class SelectTargetsInfo(NamedTuple)",
+            "class Rule_L036(BaseRule)",
+            "def _eval(self, context: RuleContext)",
+            "def _get_indexes(segment)",
+            "def _eval_multiple_select_target_elements(self, select_targets_info, segment)",
+            "def _eval_single_select_target_element("
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L018.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class Rule_L018(BaseRule)",
+            "def _eval(self, context: RuleContext) -> LintResult",
+            "def indent_size_up_to(segs)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L003.py": {
+      "reads": [
+        6,
+        9
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 520,
+          "signatures": [
+            "class Rule_L003(BaseRule)",
+            "def _make_indent(",
+            "def _indent_size(segments: Sequence[RawSegment], tab_space_size: int = 4) -> int",
+            "def _reorder_raw_stack(",
+            "def segment_info(idx: int) -> Tuple[str, Optional[str]]",
+            "def move_indent_before_templated() -> None",
+            "def _process_raw_stack(",
+            "def _coerce_indent_to(",
+            "def _strip_buffers(line_dict: dict) -> dict",
+            "def _is_last_segment(",
+            "def _eval(self, context: RuleContext) -> Optional[LintResult]",
+            "def _process_current_line(self, res: dict, memory: dict) -> LintResult"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L039.py": {
+      "reads": [
+        12
+      ],
+      "edits": [],
+      "first_read_step": 12,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class Rule_L039(BaseRule)",
+            "def _eval(self, context: RuleContext) -> Optional[List[LintResult]]"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "test/rules/std_L003_L036_L039_combo_test.py",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/*L003*combo*.py",
+        "path": "/repo/test/rules"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/*L036*combo*.py",
+        "path": "/repo/test/rules"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/*L039*.py",
+        "path": "/repo/test/rules"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "pytest -q test/rules/std_L016_L36_combo.py::test__rules__std_L016_L036_long_line_fix -q",
+        "workdir": "/repo",
+        "description": "Run targeted combo test"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "with_compound_statement|common_table_expression|CTE|with_clause|WITH clause",
+        "path": "/repo/src/sqlfluff/rules/L003.py",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 9,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L003.py",
+        "offset": 520,
+        "limit": 220
+      },
+      "output_preview": "<path>/repo/src/sqlfluff/rules/L003.py</path>\n<type>file</type>\n<content>520:             if not any(elem.is_code for elem in res[k][\"line_buffer\"]):\n521:                 # Skip if it is\n522:                 continue\n523: \n524:             # Work out the difference in indent\n525:             indent_",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "pattern": "std_L003_L036_L039|L003_L036_L039|L036_L039|L003.*L036",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile src/sqlfluff/rules/L036.py",
+        "workdir": "/repo",
+        "description": "Syntax check L036"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "WITH statement|CTE|L036|L039|indent",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 624 matches (showing first 100)\n/repo/test/rules/std_test.py:\n  Line 12:         (\"L001\", \"indentation_errors.sql\", [(4, 24)]),\n  Line 13:         (\"L002\", \"indentation_errors.sql\", [(3, 1), (4, 1)]),\n  Line 16:             \"indentation_errors.sql\",\n  Line 21:             \"indentation_errors.s"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "single selects should be on SELECT line|L036|select_clause|WITH",
+        "path": "/repo/src",
+        "include": "*.py"
+      },
+      "output_preview": "Found 212 matches (showing first 100)\n/repo/src/sqlfluff/rules/L044.py:\n  Line 37:         WITH cte AS (\n  Line 50:         WITH cte AS (\n\n/repo/src/sqlfluff/rules/L041.py:\n  Line 37:         if context.segment.is_type(\"select_clause\"):\n  Line 39:             select_modifier = context.segment.get_ch"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "L003|indentation",
+        "path": "/repo/src",
+        "include": "*.py"
+      },
+      "output_preview": "Found 40 matches\n/repo/src/sqlfluff/rules/L016.py:\n  Line 12: from sqlfluff.rules.L003 import Rule_L003\n  Line 17: class Rule_L016(Rule_L003):\n  Line 398:             # other lint rules add indentation or other whitespace. In that\n\n/repo/src/sqlfluff/rules/L003.py:\n  Line 1: \"\"\"Implementation of Rul"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "hanging_indent|clean_indent|indent_balance",
+        "path": "/repo/src/sqlfluff/rules/L003.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 25 matches\n/repo/src/sqlfluff/rules/L003.py:\n  Line 151:         indent_balance = 0\n  Line 159:         this_indent_balance = 0\n  Line 160:         clean_indent = False\n  Line 165:             # Pin indent_balance to above zero\n  Line 166:             if indent_balance < 0:\n  Line 167:        "
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sqlfluff, sys\nprint(sqlfluff.__version__)\nPY",
+        "workdir": "/repo",
+        "description": "Check sqlfluff import availability"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nModuleNotFoundError: No module named 'sqlfluff'\n"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "pattern": "class Rule_L039|Rule_L039|L039",
+        "path": "/repo/src/sqlfluff/rules",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/src/sqlfluff/rules/L039.py:\n  Line 1: \"\"\"Implementation of Rule L039.\"\"\"\n  Line 11: class Rule_L039(BaseRule):\n\n/repo/src/sqlfluff/rules/L006.py:\n  Line 89:         whitespace is handled by L039."
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "git log --oneline -- src/sqlfluff/rules/L036.py | head -n 20",
+        "workdir": "/repo",
+        "description": "Show recent L036 history"
+      },
+      "output_preview": "6f229e44 added type hints to some rule files (#1616)\nda719195 fix spelling of \"preceding\" (#1455)\n250fe285 Further fix for L036 (#1428)\ncd2184a5 Rule L036 bug fixes (#1427)\n69f5e7bf PR feedback and single element test cases\na8ca134a linting\n07642ddf Fix #1024\nf4d38422 Fix type checking and new segme"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "git show --stat --patch 6911329 -- src/sqlfluff/rules/L036.py",
+        "workdir": "/repo",
+        "description": "Inspect earlier L036 fix"
+      },
+      "output_preview": "commit 6911329d7e33d04c675dee504aeffeaf49bcec38\nAuthor: Barry Hart <barry.hart@mailchimp.com>\nDate:   Thu May 6 21:22:06 2021 -0400\n\n    Issue 1022: When L036 moves single select target to another line, remove whitespace\n---\n src/sqlfluff/rules/L036.py | 19 +++++++++++++++++++\n 1 file changed, 19 in"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "git show --stat --patch 250fe285 -- src/sqlfluff/rules/L036.py",
+        "workdir": "/repo",
+        "description": "Inspect further L036 fixes"
+      },
+      "output_preview": "commit 250fe2852cbd4f14d396477318bdd6ddbd175b9b\nAuthor: Barry Pollard <barry@tunetheweb.com>\nDate:   Tue Sep 21 13:38:24 2021 +0100\n\n    Further fix for L036 (#1428)\n    \n    * Further fix for L036\n    \n    * Typo fixes to CHANGELOG\n---\n src/sqlfluff/rules/L036.py | 19 ++++++++++++++++---\n 1 file ch"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- src/sqlfluff/rules/L036.py",
+        "workdir": "/repo",
+        "description": "Show L036 diff"
+      },
+      "output_preview": "diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py\nindex ed5533b8..bc9ef88b 100644\n--- a/src/sqlfluff/rules/L036.py\n+++ b/src/sqlfluff/rules/L036.py\n@@ -169,6 +169,25 @@ class Rule_L036(BaseRule):\n                     select_clause.segments[select_targets_info.first_select_target_i"
+    }
+  ],
+  "token_cost": {
+    "total": 523976,
+    "input": 27567,
+    "output": 8985,
+    "cache_read": 487424,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 119.18,
+  "patch_non_empty": true
+}

@@ -1,0 +1,12 @@
+diff --git a/src/sqlfluff/rules/L039.py b/src/sqlfluff/rules/L039.py
+index 0e084672..253a112e 100644
+--- a/src/sqlfluff/rules/L039.py
++++ b/src/sqlfluff/rules/L039.py
+@@ -44,7 +44,6 @@ class Rule_L039(BaseRule):
+                 # This is to avoid indents
+                 if not prev_newline:
+                     prev_whitespace = seg
+-                prev_newline = False
+             elif seg.is_type("comment"):
+                 prev_newline = False
+                 prev_whitespace = None

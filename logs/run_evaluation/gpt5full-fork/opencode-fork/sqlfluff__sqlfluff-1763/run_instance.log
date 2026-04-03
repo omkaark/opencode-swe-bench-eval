@@ -1,0 +1,223 @@
+2026-04-03 17:41:07,477 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/core/linter/linted_file.py...
+Checking patch test/core/linter_test.py...
+Applied patch src/sqlfluff/core/linter/linted_file.py cleanly.
+Applied patch test/core/linter_test.py cleanly.
+
+2026-04-03 17:41:08,409 - INFO - Git diff before:
+diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py
+index 3a8593ed..ba62b97c 100644
+--- a/src/sqlfluff/core/linter/linted_file.py
++++ b/src/sqlfluff/core/linter/linted_file.py
+@@ -5,8 +5,11 @@ contains all of the routines to apply fixes to that file
+ post linting.
+ """
+ 
+-import os
+ import logging
++import os
++import shutil
++import stat
++import tempfile
+ from typing import (
+     Any,
+     Iterable,
+@@ -493,7 +496,46 @@ class LintedFile(NamedTuple):
+             if suffix:
+                 root, ext = os.path.splitext(fname)
+                 fname = root + suffix + ext
+-            # Actually write the file.
+-            with open(fname, "w", encoding=self.encoding) as f:
+-                f.write(write_buff)
++            self._safe_create_replace_file(self.path, fname, write_buff, self.encoding)
+         return success
++
++    @staticmethod
++    def _safe_create_replace_file(
++        input_path: str, output_path: str, write_buff: str, encoding: str
++    ) -> None:
++        """Safely write a file by creating it first, then replacing."""
++
++        mode = None
++        try:
++            status = os.stat(input_path)
++        except FileNotFoundError:
++            pass
++        else:
++            if stat.S_ISREG(status.st_mode):
++                mode = stat.S_IMODE(status.st_mode)
++
++        dirname, basename = os.path.split(output_path)
++        tmp_file = None
++        try:
++            with tempfile.NamedTemporaryFile(
++                mode="w",
++                encoding=encoding,
++                newline="",
++                prefix=basename,
++                dir=dirname or None,
++                suffix=os.path.splitext(output_path)[1],
++                delete=False,
++            ) as tmp:
++                tmp_file = tmp.name
++                tmp.write(write_buff)
++                tmp.flush()
++                os.fsync(tmp.fileno())
++        except Exception:
++            if tmp_file and os.path.exists(tmp_file):
++                os.unlink(tmp_file)
++            raise
++
++        assert tmp_file is not None
++        if mode is not None:
++            os.chmod(tmp_file, mode)
++        shutil.move(tmp_file, output_path)
+diff --git a/test/core/linter_test.py b/test/core/linter_test.py
+index 0600adf2..b7d52b1f 100644
+--- a/test/core/linter_test.py
++++ b/test/core/linter_test.py
+@@ -1,10 +1,12 @@
+ """The Test file for the linter class."""
+ 
+-import pytest
+ import logging
++import os
+ from typing import List
+ from unittest.mock import patch
+ 
++import pytest
++
+ from sqlfluff.core import Linter, FluffConfig
+ from sqlfluff.core.linter import runner
+ from sqlfluff.core.errors import SQLLexError, SQLBaseError, SQLLintError, SQLParseError
+@@ -641,3 +643,54 @@ def test__attempt_to_change_templater_warning(caplog):
+         assert "Attempt to set templater to " in caplog.text
+     finally:
+         logger.propagate = original_propagate_value
++
++
++@pytest.mark.parametrize(
++    "mode",
++    ["create", "update", "special_char"],
++    ids=["utf8_create", "utf8_update", "utf8_special_char"],
++)
++def test_safe_create_replace_file(tmp_path, mode):
++    """Test safe file writing preserves files on encoding errors."""
++
++    target_path = tmp_path / "query.sql"
++
++    if mode == "create":
++        linter.LintedFile._safe_create_replace_file(
++            str(target_path),
++            str(target_path),
++            "SELECT 'a -> b';\n".replace("->", "\u2192"),
++            "utf-8",
++        )
++        assert target_path.read_text(encoding="utf-8") == "SELECT 'a -> b';\n".replace(
++            "->", "\u2192"
++        )
++    elif mode == "update":
++        target_path.write_text("SELECT 1;\n", encoding="utf-8")
++        os.chmod(target_path, 0o600)
++
++        linter.LintedFile._safe_create_replace_file(
++            str(target_path),
++            str(target_path),
++            "SELECT 'x -> y';\n".replace("->", "\u2192"),
++            "utf-8",
++        )
++
++        assert target_path.read_text(encoding="utf-8") == "SELECT 'x -> y';\n".replace(
++            "->", "\u2192"
++        )
++        assert os.stat(target_path).st_mode & 0o777 == 0o600
++    else:
++        original = "SELECT 'safe';\n"
++        target_path.write_text(original, encoding="cp1252")
++
++        with pytest.raises(UnicodeEncodeError):
++            linter.LintedFile._safe_create_replace_file(
++                str(target_path),
++                str(target_path),
++                "SELECT ' -> ';\n".replace("->", "\u2192"),
++                "cp1252",
++            )
++
++        assert target_path.read_text(encoding="cp1252") == original
++        assert list(tmp_path.iterdir()) == [target_path]
+
+2026-04-03 17:41:17,270 - INFO - Test runtime: 8.74 seconds
+2026-04-03 17:41:17,270 - INFO - Test output for sqlfluff__sqlfluff-1763 written to logs/run_evaluation/gpt5full-fork/opencode-fork/sqlfluff__sqlfluff-1763/test_output.txt
+2026-04-03 17:41:17,527 - INFO - Git diff after:
+diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py
+index 3a8593ed..ba62b97c 100644
+--- a/src/sqlfluff/core/linter/linted_file.py
++++ b/src/sqlfluff/core/linter/linted_file.py
+@@ -5,8 +5,11 @@ contains all of the routines to apply fixes to that file
+ post linting.
+ """
+ 
+-import os
+ import logging
++import os
++import shutil
++import stat
++import tempfile
+ from typing import (
+     Any,
+     Iterable,
+@@ -493,7 +496,46 @@ class LintedFile(NamedTuple):
+             if suffix:
+                 root, ext = os.path.splitext(fname)
+                 fname = root + suffix + ext
+-            # Actually write the file.
+-            with open(fname, "w", encoding=self.encoding) as f:
+-                f.write(write_buff)
++            self._safe_create_replace_file(self.path, fname, write_buff, self.encoding)
+         return success
++
++    @staticmethod
++    def _safe_create_replace_file(
++        input_path: str, output_path: str, write_buff: str, encoding: str
++    ) -> None:
++        """Safely write a file by creating it first, then replacing."""
++
++        mode = None
++        try:
++            status = os.stat(input_path)
++        except FileNotFoundError:
++            pass
++        else:
++            if stat.S_ISREG(status.st_mode):
++                mode = stat.S_IMODE(status.st_mode)
++
++        dirname, basename = os.path.split(output_path)
++        tmp_file = None
++        try:
++            with tempfile.NamedTemporaryFile(
++                mode="w",
++                encoding=encoding,
++                newline="",
++                prefix=basename,
++                dir=dirname or None,
++                suffix=os.path.splitext(output_path)[1],
++                delete=False,
++            ) as tmp:
++                tmp_file = tmp.name
++                tmp.write(write_buff)
++                tmp.flush()
++                os.fsync(tmp.fileno())
++        except Exception:
++            if tmp_file and os.path.exists(tmp_file):
++                os.unlink(tmp_file)
++            raise
++
++        assert tmp_file is not None
++        if mode is not None:
++            os.chmod(tmp_file, mode)
++        shutil.move(tmp_file, output_path)
+
+2026-04-03 17:41:17,527 - INFO - Git diff changed after running eval script
+2026-04-03 17:41:17,527 - INFO - Grading answer for sqlfluff__sqlfluff-1763...
+2026-04-03 17:41:17,530 - INFO - report: {'sqlfluff__sqlfluff-1763': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/core/linter_test.py::test_safe_create_replace_file[utf8_create]', 'test/core/linter_test.py::test_safe_create_replace_file[utf8_update]', 'test/core/linter_test.py::test_safe_create_replace_file[utf8_special_char]']}, 'PASS_TO_PASS': {'success': ['test/core/linter_test.py::test__linter__path_from_paths__dir', 'test/core/linter_test.py::test__linter__path_from_paths__default', 'test/core/linter_test.py::test__linter__path_from_paths__exts', 'test/core/linter_test.py::test__linter__path_from_paths__file', 'test/core/linter_test.py::test__linter__path_from_paths__not_exist', 'test/core/linter_test.py::test__linter__path_from_paths__not_exist_ignore', 'test/core/linter_test.py::test__linter__path_from_paths__explicit_ignore', 'test/core/linter_test.py::test__linter__path_from_paths__dot', 'test/core/linter_test.py::test__linter__path_from_paths__ignore[test/fixtures/linter/sqlfluffignore]', 'test/core/linter_test.py::test__linter__path_from_paths__ignore[test/fixtures/linter/sqlfluffignore/]', 'test/core/linter_test.py::test__linter__path_from_paths__ignore[test/fixtures/linter/sqlfluffignore/.]', 'test/core/linter_test.py::test__linter__lint_string_vs_file[test/fixtures/linter/indentation_errors.sql]', 'test/core/linter_test.py::test__linter__lint_string_vs_file[test/fixtures/linter/whitespace_errors.sql]', 'test/core/linter_test.py::test__linter__get_violations_filter_rules[None-7]', 'test/core/linter_test.py::test__linter__get_violations_filter_rules[L010-2]', 'test/core/linter_test.py::test__linter__get_violations_filter_rules[rules2-2]', 'test/core/linter_test.py::test__linter__linting_result__sum_dicts', 'test/core/linter_test.py::test__linter__linting_result__combine_dicts', 'test/core/linter_test.py::test__linter__linting_result_check_tuples_by_path[False-list]', 'test/core/linter_test.py::test__linter__linting_result_check_tuples_by_path[True-dict]', 'test/core/linter_test.py::test__linter__linting_result_get_violations[1]', 'test/core/linter_test.py::test__linter__linting_result_get_violations[2]', 'test/core/linter_test.py::test__linter__linting_parallel_thread[False]', 'test/core/linter_test.py::test__linter__linting_parallel_thread[True]', 'test/core/linter_test.py::test_lint_path_parallel_wrapper_exception', 'test/core/linter_test.py::test__linter__linting_unexpected_error_handled_gracefully', 'test/core/linter_test.py::test__linter__raises_malformed_noqa', 'test/core/linter_test.py::test__linter__empty_file', 'test/core/linter_test.py::test__linter__mask_templated_violations[True-check_tuples0]', 'test/core/linter_test.py::test__linter__mask_templated_violations[False-check_tuples1]', 'test/core/linter_test.py::test__linter__encoding[test/fixtures/linter/encoding-utf-8.sql-autodetect-False]', 'test/core/linter_test.py::test__linter__encoding[test/fixtures/linter/encoding-utf-8-sig.sql-autodetect-False]', 'test/core/linter_test.py::test__linter__encoding[test/fixtures/linter/encoding-utf-8.sql-utf-8-False]', 'test/core/linter_test.py::test__linter__encoding[test/fixtures/linter/encoding-utf-8-sig.sql-utf-8-True]', 'test/core/linter_test.py::test__linter__encoding[test/fixtures/linter/encoding-utf-8.sql-utf-8-sig-False]', 'test/core/linter_test.py::test__linter__encoding[test/fixtures/linter/encoding-utf-8-sig.sql-utf-8-sig-False]', 'test/core/linter_test.py::test_parse_noqa[-None]', 'test/core/linter_test.py::test_parse_noqa[noqa-expected1]', 'test/core/linter_test.py::test_parse_noqa[noqa?-SQLParseError]', 'test/core/linter_test.py::test_parse_noqa[noqa:-expected3]', 'test/core/linter_test.py::test_parse_noqa[noqa:L001,L002-expected4]', 'test/core/linter_test.py::test_parse_noqa[noqa:', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_no_ignore]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_ignore_specific_line]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_ignore_different_specific_line]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_ignore_different_specific_rule]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_ignore_enable_this_range]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_ignore_disable_this_range]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_line_1_ignore_disable_specific_2_3]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_line_2_ignore_disable_specific_2_3]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_line_3_ignore_disable_specific_2_3]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_line_4_ignore_disable_specific_2_3]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_line_1_ignore_disable_all_2_3]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_line_2_ignore_disable_all_2_3]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_line_3_ignore_disable_all_2_3]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[1_violation_line_4_ignore_disable_all_2_3]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[4_violations_two_types_disable_specific_enable_all]', 'test/core/linter_test.py::test_linted_file_ignore_masked_violations[4_violations_two_types_disable_all_enable_specific]', 'test/core/linter_test.py::test_linter_noqa', 'test/core/linter_test.py::test_linter_noqa_with_templating', 'test/core/linter_test.py::test_delayed_exception', 'test/core/linter_test.py::test__attempt_to_change_templater_warning', 'test/core/linter_test.py::test_safe_create_replace_file[incorrect_encoding]'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1763: resolved: False

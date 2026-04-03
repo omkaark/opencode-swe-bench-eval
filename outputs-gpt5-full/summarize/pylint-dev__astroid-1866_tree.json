@@ -1,0 +1,142 @@
+{
+  "instance_id": "pylint-dev__astroid-1866",
+  "variant": "summarize",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [],
+  "per_file": {
+    "/repo/astroid/brain/brain_builtin_inference.py": {
+      "reads": [
+        3,
+        5
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 900,
+          "limit": 120,
+          "signatures": [
+            "def _is_str_format_call(node: nodes.Call) -> bool",
+            "def _infer_str_format_call("
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 80,
+          "signatures": [
+            "class whatever(object)",
+            "def join(self, iterable)",
+            "def replace(self, old, new, count=None)",
+            "def format(self, *args, **kwargs)",
+            "def encode(self, encoding='ascii', errors=None)",
+            "def decode(self, encoding='ascii', errors=None)",
+            "def capitalize(self)",
+            "def title(self)",
+            "def lower(self)",
+            "def upper(self)",
+            "def swapcase(self)",
+            "def index(self, sub, start=None, end=None)",
+            "def find(self, sub, start=None, end=None)",
+            "def count(self, sub, start=None, end=None)",
+            "def strip(self, chars=None)",
+            "def lstrip(self, chars=None)",
+            "def rstrip(self, chars=None)",
+            "def rjust(self, width, fillchar=None)",
+            "def center(self, width, fillchar=None)",
+            "def ljust(self, width, fillchar=None)"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_brain_builtin.py": {
+      "reads": [
+        3
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 180,
+          "signatures": [
+            "class BuiltinsTest(unittest.TestCase)",
+            "def test_infer_property(self)",
+            "class Something",
+            "def getter()",
+            "class TestStringNodes",
+            "def test_string_format(self, format_string: str) -> None",
+            "def test_string_format_uninferable(self, format_string: str) -> None",
+            "def test_string_format_with_specs(self) -> None"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [],
+  "successful_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "def _infer_str_format_call|_infer_str_format_call",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/astroid/brain/brain_builtin_inference.py:\n  Line 927: def _infer_str_format_call(\n  Line 1001:     nodes.Call, inference_tip(_infer_str_format_call), _is_str_format_call"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_string_format_uninferable",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/tests/unittest_brain_builtin.py:\n  Line 108:     def test_string_format_uninferable(self, format_string: str) -> None:"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "unsupported format string passed to NoneType|format\\(\\*pos_values|ValueError\\)|TypeError",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 89 matches\n/repo/astroid/util.py:\n  Line 56:     \"\"\"Object which describes a TypeError occurred somewhere in the inference chain\n\n/repo/astroid/raw_building.py:\n  Line 291:             raise TypeError\n  Line 292:     except TypeError:\n  Line 446:         except TypeError:\n\n/repo/astroid/protoc"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_brain_builtin.py::TestStringNodes::test_string_format_uninferable",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted string format regression test"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"from astroid.builder import _extract_single_node; from astroid import util; node = _extract_single_node('\\\"{:0.2f}\\\".format(None)'); inferred = next(node.infer()); print(inferred is util.Uninferable)\"",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks None format inference fallback"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/astroid/__init__.py\", line 42, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 17, in <module>\n    from astroid.nodes._base_nodes import Stateme"
+    }
+  ],
+  "token_cost": {
+    "total": 153685,
+    "input": 17262,
+    "output": 1767,
+    "cache_read": 134656,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 55.49,
+  "patch_non_empty": true
+}

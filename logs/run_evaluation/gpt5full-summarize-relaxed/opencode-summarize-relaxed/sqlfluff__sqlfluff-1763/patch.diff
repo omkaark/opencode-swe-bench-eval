@@ -1,0 +1,97 @@
+diff --git a/src/sqlfluff/core/file_helpers.py b/src/sqlfluff/core/file_helpers.py
+index 52f74f0b..6ce7242e 100644
+--- a/src/sqlfluff/core/file_helpers.py
++++ b/src/sqlfluff/core/file_helpers.py
+@@ -1,5 +1,8 @@
+ """File Helpers for the parser module."""
+ 
++import os
++import tempfile
++
+ import chardet
+ 
+ from sqlfluff.core.config import FluffConfig
+@@ -15,3 +18,21 @@ def get_encoding(fname: str, config: FluffConfig) -> str:
+         return chardet.detect(data)["encoding"]
+ 
+     return encoding_config
++
++
++def safe_create_replace_file(fname: str, write_buff: str, encoding: str) -> None:
++    """Write a file without truncating the original on failure."""
++    dirname = os.path.dirname(os.path.abspath(fname))
++    tmp_file = None
++
++    try:
++        with tempfile.NamedTemporaryFile(
++            mode="w", encoding=encoding, dir=dirname, delete=False
++        ) as tmp_file:
++            tmp_file.write(write_buff)
++
++        os.replace(tmp_file.name, fname)
++    except Exception:
++        if tmp_file and os.path.exists(tmp_file.name):
++            os.unlink(tmp_file.name)
++        raise
+diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py
+index 3a8593ed..764176fb 100644
+--- a/src/sqlfluff/core/linter/linted_file.py
++++ b/src/sqlfluff/core/linter/linted_file.py
+@@ -24,6 +24,7 @@ from sqlfluff.core.errors import (
+     SQLLintError,
+     CheckTuple,
+ )
++from sqlfluff.core.file_helpers import safe_create_replace_file
+ from sqlfluff.core.string_helpers import findall
+ from sqlfluff.core.templaters import TemplatedFile
+ 
+@@ -494,6 +495,5 @@ class LintedFile(NamedTuple):
+                 root, ext = os.path.splitext(fname)
+                 fname = root + suffix + ext
+             # Actually write the file.
+-            with open(fname, "w", encoding=self.encoding) as f:
+-                f.write(write_buff)
++            safe_create_replace_file(fname, write_buff, self.encoding)
+         return success
+diff --git a/test/core/file_helpers_test.py b/test/core/file_helpers_test.py
+index 3bc3b0a0..27ef8a98 100644
+--- a/test/core/file_helpers_test.py
++++ b/test/core/file_helpers_test.py
+@@ -3,7 +3,7 @@
+ import pytest
+ 
+ from sqlfluff.core import FluffConfig
+-from sqlfluff.core.file_helpers import get_encoding
++from sqlfluff.core.file_helpers import get_encoding, safe_create_replace_file
+ 
+ 
+ @pytest.mark.parametrize(
+@@ -49,3 +49,28 @@ def test__parser__helper_get_encoding(fname, config_encoding, result):
+         )
+         == result
+     )
++
++
++@pytest.mark.parametrize(
++    "initial,write_buff,encoding,expected",
++    [
++        (None, "SELECT 1\n", "utf-8", "SELECT 1\n"),
++        ("SELECT 1\n", "SELECT 2\n", "utf-8", "SELECT 2\n"),
++        ("SELECT 'keep me'\n", "SELECT 'a → b'\n", "ascii", "SELECT 'keep me'\n"),
++    ],
++    ids=["utf8_create", "utf8_update", "utf8_special_char"],
++)
++def test_safe_create_replace_file(tmp_path, initial, write_buff, encoding, expected):
++    """Test safe file writes do not wipe existing files on failure."""
++    path = tmp_path / "test.sql"
++
++    if initial is not None:
++        path.write_text(initial, encoding="utf-8")
++
++    if encoding == "ascii":
++        with pytest.raises(UnicodeEncodeError):
++            safe_create_replace_file(str(path), write_buff, encoding)
++    else:
++        safe_create_replace_file(str(path), write_buff, encoding)
++
++    assert path.read_text(encoding="utf-8") == expected

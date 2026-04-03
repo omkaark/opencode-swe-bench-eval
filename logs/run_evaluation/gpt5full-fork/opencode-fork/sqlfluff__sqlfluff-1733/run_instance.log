@@ -1,0 +1,151 @@
+2026-04-03 17:41:04,436 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L036.py...
+Applied patch src/sqlfluff/rules/L036.py cleanly.
+
+2026-04-03 17:41:06,118 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..0d789c36 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -56,6 +56,39 @@ class Rule_L036(BaseRule):
+                     select_targets_info, context.segment
+                 )
+ 
++    @staticmethod
++    def _strip_leading_whitespace(segment):
++        """Return segment contents without leading whitespace.
++
++        Select clause elements can contain their own leading whitespace. When
++        moving an element onto its own line, preserve any leading meta segments
++        but drop that whitespace so indentation rules can recreate it cleanly.
++        """
++        stripped = []
++        code_started = False
++        for child in segment.segments:
++            if not code_started and child.is_meta:
++                stripped.append(child)
++            elif not code_started and child.is_type("whitespace"):
++                continue
++            else:
++                code_started = True
++                stripped.append(child)
++        return stripped
++
++    @staticmethod
++    def _leading_whitespace_segments(segment):
++        """Return leading whitespace segments inside a select target."""
++        whitespace = []
++        for child in segment.segments:
++            if child.is_meta:
++                continue
++            if child.is_type("whitespace"):
++                whitespace.append(child)
++                continue
++            break
++        return whitespace
++
+     @staticmethod
+     def _get_indexes(segment):
+         select_idx = -1
+@@ -118,6 +151,10 @@ class Rule_L036(BaseRule):
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
++                fixes += [
++                    LintFix("delete", ws)
++                    for ws in self._leading_whitespace_segments(select_target)
++                ]
+                 fixes.append(LintFix("create", select_target, NewlineSegment()))
+         if fixes:
+             return LintResult(anchor=segment, fixes=fixes)
+@@ -147,9 +184,12 @@ class Rule_L036(BaseRule):
+             # the statement and a newline, but in some cases however (see #1424)
+             # we don't need the final newline.
+             copy_with_newline = True
++            first_select_target = select_clause.segments[
++                select_targets_info.first_select_target_idx
++            ]
+             insert_buff = [
+                 WhitespaceSegment(),
+-                select_clause.segments[select_targets_info.first_select_target_idx],
++                *self._strip_leading_whitespace(first_select_target),
+             ]
+ 
+             # Check if the modifier is one we care about
+
+2026-04-03 17:41:16,469 - INFO - Test runtime: 9.87 seconds
+2026-04-03 17:41:16,470 - INFO - Test output for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/gpt5full-fork/opencode-fork/sqlfluff__sqlfluff-1733/test_output.txt
+2026-04-03 17:41:16,921 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..0d789c36 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -56,6 +56,39 @@ class Rule_L036(BaseRule):
+                     select_targets_info, context.segment
+                 )
+ 
++    @staticmethod
++    def _strip_leading_whitespace(segment):
++        """Return segment contents without leading whitespace.
++
++        Select clause elements can contain their own leading whitespace. When
++        moving an element onto its own line, preserve any leading meta segments
++        but drop that whitespace so indentation rules can recreate it cleanly.
++        """
++        stripped = []
++        code_started = False
++        for child in segment.segments:
++            if not code_started and child.is_meta:
++                stripped.append(child)
++            elif not code_started and child.is_type("whitespace"):
++                continue
++            else:
++                code_started = True
++                stripped.append(child)
++        return stripped
++
++    @staticmethod
++    def _leading_whitespace_segments(segment):
++        """Return leading whitespace segments inside a select target."""
++        whitespace = []
++        for child in segment.segments:
++            if child.is_meta:
++                continue
++            if child.is_type("whitespace"):
++                whitespace.append(child)
++                continue
++            break
++        return whitespace
++
+     @staticmethod
+     def _get_indexes(segment):
+         select_idx = -1
+@@ -118,6 +151,10 @@ class Rule_L036(BaseRule):
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
++                fixes += [
++                    LintFix("delete", ws)
++                    for ws in self._leading_whitespace_segments(select_target)
++                ]
+                 fixes.append(LintFix("create", select_target, NewlineSegment()))
+         if fixes:
+             return LintResult(anchor=segment, fixes=fixes)
+@@ -147,9 +184,12 @@ class Rule_L036(BaseRule):
+             # the statement and a newline, but in some cases however (see #1424)
+             # we don't need the final newline.
+             copy_with_newline = True
++            first_select_target = select_clause.segments[
++                select_targets_info.first_select_target_idx
++            ]
+             insert_buff = [
+                 WhitespaceSegment(),
+-                select_clause.segments[select_targets_info.first_select_target_idx],
++                *self._strip_leading_whitespace(first_select_target),
+             ]
+ 
+             # Check if the modifier is one we care about
+
+2026-04-03 17:41:16,921 - INFO - Grading answer for sqlfluff__sqlfluff-1733...
+2026-04-03 17:41:16,923 - INFO - report: {'sqlfluff__sqlfluff-1733': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/rules/std_L003_L036_L039_combo_test.py::test__rules__std_L003_L036_L039']}, 'PASS_TO_PASS': {'success': ['test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_lint', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix2'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1733: resolved: False

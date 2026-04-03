@@ -1,0 +1,80 @@
+diff --git a/pyvista/core/grid.py b/pyvista/core/grid.py
+index 6ce23688..355590be 100644
+--- a/pyvista/core/grid.py
++++ b/pyvista/core/grid.py
+@@ -123,6 +123,15 @@ class RectilinearGrid(_vtk.vtkRectilinearGrid, Grid, RectilinearGridFilters):
+ 
+     _WRITERS = {'.vtk': _vtk.vtkRectilinearGridWriter, '.vtr': _vtk.vtkXMLRectilinearGridWriter}
+ 
++    @staticmethod
++    def _coerce_array_like(array_like):
++        """Return an ndarray for array-like coordinate inputs."""
++        if isinstance(array_like, np.ndarray):
++            return array_like
++        if isinstance(array_like, Sequence) and not isinstance(array_like, (str, bytes)):
++            return np.asarray(array_like)
++        return None
++
+     def __init__(self, *args, check_duplicates=False, deep=False, **kwargs):
+         """Initialize the rectilinear grid."""
+         super().__init__()
+@@ -135,23 +144,22 @@ class RectilinearGrid(_vtk.vtkRectilinearGrid, Grid, RectilinearGridFilters):
+                     self.shallow_copy(args[0])
+             elif isinstance(args[0], (str, pathlib.Path)):
+                 self._from_file(args[0], **kwargs)
+-            elif isinstance(args[0], np.ndarray):
+-                self._from_arrays(args[0], None, None, check_duplicates)
+             else:
+-                raise TypeError(f'Type ({type(args[0])}) not understood by `RectilinearGrid`')
++                x = self._coerce_array_like(args[0])
++                if x is not None:
++                    self._from_arrays(x, None, None, check_duplicates)
++                else:
++                    raise TypeError(f'Type ({type(args[0])}) not understood by `RectilinearGrid`')
+ 
+         elif len(args) == 3 or len(args) == 2:
+-            arg0_is_arr = isinstance(args[0], np.ndarray)
+-            arg1_is_arr = isinstance(args[1], np.ndarray)
+-            if len(args) == 3:
+-                arg2_is_arr = isinstance(args[2], np.ndarray)
+-            else:
+-                arg2_is_arr = False
+-
+-            if all([arg0_is_arr, arg1_is_arr, arg2_is_arr]):
+-                self._from_arrays(args[0], args[1], args[2], check_duplicates)
+-            elif all([arg0_is_arr, arg1_is_arr]):
+-                self._from_arrays(args[0], args[1], None, check_duplicates)
++            arg0 = self._coerce_array_like(args[0])
++            arg1 = self._coerce_array_like(args[1])
++            arg2 = self._coerce_array_like(args[2]) if len(args) == 3 else None
++
++            if all([arg0 is not None, arg1 is not None, arg2 is not None]):
++                self._from_arrays(arg0, arg1, arg2, check_duplicates)
++            elif all([arg0 is not None, arg1 is not None]):
++                self._from_arrays(arg0, arg1, None, check_duplicates)
+             else:
+                 raise TypeError("Arguments not understood by `RectilinearGrid`.")
+ 
+diff --git a/tests/test_grid.py b/tests/test_grid.py
+index 1f3645b9..754a5467 100644
+--- a/tests/test_grid.py
++++ b/tests/test_grid.py
+@@ -725,12 +725,18 @@ def test_create_rectilinear_grid_from_specs():
+     xrng = np.arange(-10, 10, 2)
+     yrng = np.arange(-10, 10, 5)
+     zrng = np.arange(-10, 10, 1)
++    grid = pyvista.RectilinearGrid(xrng.tolist())
++    assert grid.n_cells == 9
++    assert grid.n_points == 10
+     grid = pyvista.RectilinearGrid(xrng)
+     assert grid.n_cells == 9
+     assert grid.n_points == 10
+     grid = pyvista.RectilinearGrid(xrng, yrng)
+     assert grid.n_cells == 9 * 3
+     assert grid.n_points == 10 * 4
++    grid = pyvista.RectilinearGrid(xrng.tolist(), yrng.tolist())
++    assert grid.n_cells == 9 * 3
++    assert grid.n_points == 10 * 4
+     grid = pyvista.RectilinearGrid(xrng, yrng, zrng)
+     assert grid.n_cells == 9 * 3 * 19
+     assert grid.n_points == 10 * 4 * 20

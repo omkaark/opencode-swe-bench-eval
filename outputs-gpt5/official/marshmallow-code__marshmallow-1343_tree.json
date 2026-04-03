@@ -1,0 +1,335 @@
+{
+  "instance_id": "marshmallow-code__marshmallow-1343",
+  "variant": "official",
+  "repo": "marshmallow-code/marshmallow",
+  "repo_map": [
+    "/repo/tests/test_marshalling.py"
+  ],
+  "per_file": {
+    "/repo/src/marshmallow/schema.py": {
+      "reads": [
+        3,
+        5,
+        5,
+        7,
+        19
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 840,
+          "limit": 80,
+          "signatures": [
+            "def _invoke_dump_processors(self, tag_name, data, many, original_data=None)",
+            "def _invoke_load_processors(self, tag_name, data, many, original_data=None)",
+            "def _invoke_field_validators(self, unmarshal, data, many)",
+            "def _invoke_validators("
+          ]
+        },
+        {
+          "offset": 560,
+          "limit": 70,
+          "signatures": [
+            "def load(self, data, many=None, partial=None)",
+            "def loads(self, json_data, many=None, *args, **kwargs)",
+            "def validate(self, data, many=None, partial=None)"
+          ]
+        },
+        {
+          "offset": 620,
+          "limit": 90,
+          "signatures": [
+            "def _do_load(self, data, many=None, partial=None, postprocess=True)"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/test_marshalling.py": {
+      "reads": [
+        3,
+        4,
+        7,
+        19,
+        20
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "def test_missing_is_falsy()",
+            "class TestMarshaller",
+            "def marshal(self)",
+            "def test_prefix(self)",
+            "def test_marshalling_generator(self, marshal)",
+            "def test_default_to_missing(self, marshal)",
+            "def test_serialize_fields_with_load_only_param(self, marshal)",
+            "def test_missing_data_are_skipped(self, marshal)",
+            "def test_serialize_with_load_only_doesnt_validate(self, marshal)",
+            "def test_serialize_fields_with_dump_to_param(self, marshal)",
+            "def test_serialize_fields_with_dump_to_and_prefix_params(self)",
+            "def test_stores_indices_of_errors_when_many_equals_true(self, marshal)",
+            "def test_doesnt_store_errors_when_index_errors_equals_false(self, marshal)",
+            "class TestUnmarshaller",
+            "def unmarshal(self)",
+            "def test_extra_data_is_ignored(self, unmarshal)",
+            "def test_stores_errors(self, unmarshal)",
+            "def test_stores_indices_of_errors_when_many_equals_true(self, unmarshal)",
+            "def test_doesnt_store_errors_when_index_errors_equals_false(self, unmarshal)",
+            "def test_deserialize(self, unmarshal)"
+          ]
+        },
+        {
+          "offset": 260,
+          "limit": 80,
+          "signatures": [
+            "def test_deserialize_wrong_type_root_data(self, unmarshal)",
+            "def test_deserialize_wrong_type_nested_data(self, unmarshal)",
+            "class TestSchema(Schema)"
+          ]
+        },
+        {
+          "offset": 260,
+          "limit": 40,
+          "signatures": [
+            "def test_deserialize_wrong_type_root_data(self, unmarshal)",
+            "def test_deserialize_wrong_type_nested_data(self, unmarshal)",
+            "class TestSchema(Schema)"
+          ]
+        },
+        {
+          "offset": 264,
+          "limit": 30,
+          "signatures": [
+            "def test_deserialize_wrong_type_nested_data(self, unmarshal)",
+            "class TestSchema(Schema)",
+            "def test_deserialize_wrong_nested_type_with_validates_method(self)",
+            "class Bar(Schema)",
+            "def validate_value(self, value)"
+          ]
+        },
+        {
+          "offset": 294,
+          "limit": 20,
+          "signatures": [
+            "class Foo(Schema)"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/test_schema.py": {
+      "reads": [
+        3
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1840,
+          "limit": 80,
+          "signatures": [
+            "class OuterSchema(Schema)",
+            "def test_all_errors_on_many_nested_field_with_validates_decorator(self)",
+            "class Inner(Schema)",
+            "class Outer(Schema)",
+            "def validates_inner(self, data)",
+            "def test_missing_required_nested_field(self)",
+            "class Inner(Schema)",
+            "class Middle(Schema)",
+            "class Outer(Schema)",
+            "class TestSelfReference",
+            "def employer(self)",
+            "def user(self, employer)",
+            "def test_nesting_schema_within_itself(self, user, employer)",
+            "class SelfSchema(Schema)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/marshmallow/fields.py": {
+      "reads": [
+        4
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 420,
+          "limit": 120,
+          "signatures": [
+            "def _nested_normalized_option(self, option_name)",
+            "def _serialize(self, nested_obj, attr, obj)",
+            "def _deserialize(self, value, attr, data)",
+            "def _validate_missing(self, value)",
+            "def _check_required(self)",
+            "class List(Field)",
+            "def __init__(self, cls_or_instance, **kwargs)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/marshmallow/marshalling.py": {
+      "reads": [
+        6,
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 140,
+          "signatures": [
+            "class ErrorStore(object)",
+            "def __init__(self)",
+            "def get_errors(self, index=None)",
+            "def call_and_store(self, getter_func, data, field_name, field_obj, index=None)",
+            "class Marshaller(ErrorStore)",
+            "def __init__(self, prefix='')",
+            "def serialize(self, obj, fields_dict, many=False,"
+          ]
+        },
+        {
+          "offset": 140,
+          "limit": 180,
+          "signatures": [
+            "class Unmarshaller(ErrorStore)",
+            "def run_validator(self, validator_func, output,",
+            "def deserialize(self, data, fields_dict, many=False, partial=False,"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_deserialize_wrong_nested_type_with_validates_method",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "pytest tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted regression test"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "_invoke_field_validators|field_validators|validates\\(",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 17 matches\n/repo/tests/test_serialization.py:\n  Line 342:     def test_email_field_validates(self, user):\n  Line 380:     def test_url_field_validates(self, user):\n\n/repo/tests/test_schema.py:\n  Line 1492:             @validates('num')\n  Line 1581:             @validates('a')\n  Line 1585:     "
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "class Nested|def _deserialize|load_from|attribute or field_name",
+        "path": "/repo/src/marshmallow/fields.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 20 matches\n/repo/src/marshmallow/fields.py:\n  Line 68:     :param str load_from: Additional key to look for when deserializing. Will only\n  Line 126:     def __init__(self, default=missing_, attribute=None, load_from=None, dump_to=None,\n  Line 131:         self.load_from = load_from  # this fl"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted test via python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python -c \"from marshmallow import Schema, fields, validates;\\nclass Bar(Schema):\\n    value = fields.String()\\n    @validates('value')\\n    def validate_value(self, value):\\n        pass\\nclass Foo(Schema):\\n    bar = fields.Nested(Bar)\\nprint(Foo().validate({'bar': 'invalid'}))\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Validates nested repro via Python"
+      },
+      "output_preview": "  File \"<string>\", line 1\n    from marshmallow import Schema, fields, validates;\\nclass Bar(Schema):\\n    value = fields.String()\\n    @validates('value')\\n    def validate_value(self, value):\\n        pass\\nclass Foo(Schema):\\n    bar = fields.Nested(Bar)\\nprint(Foo().validate({'bar': 'invalid'}))\n"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python - <<'PY'\nfrom marshmallow import Schema, fields, validates\n\nclass Bar(Schema):\n    value = fields.String()\n\n    @validates('value')\n    def validate_value(self, value):\n        pass\n\nclass Foo(Schema):\n    bar = fields.Nested(Bar)\n\nprint(Foo().validate({'bar': 'invalid'}))\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Validates nested repro via heredoc"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/src/marshmallow/__init__.py\", line 16, in <module>\n    from distutils.version import LooseVersion\nModuleNotFoundError: No module named 'distutils'\n"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "python3.11 -c \"import sys; print(sys.version)\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Checks alternate Python version"
+      },
+      "output_preview": "3.11.2 (main, Apr 28 2025, 14:11:48) [GCC 12.2.0]\n"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python3.11 - <<'PY'\nfrom marshmallow import Schema, fields, validates\n\nclass Bar(Schema):\n    value = fields.String()\n\n    @validates('value')\n    def validate_value(self, value):\n        pass\n\nclass Foo(Schema):\n    bar = fields.Nested(Bar)\n\nprint(Foo().validate({'bar': 'invalid'}))\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Validates repro under Python 3.11"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 13, in <module>\n  File \"/repo/src/marshmallow/schema.py\", line 628, in validate\n    _, errors = self._do_load(data, many, partial=partial, postprocess=False)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "PYTHONPATH=src python3.11 - <<'PY'\nimport collections\nimport collections.abc\ncollections.Mapping = collections.abc.Mapping\n\nfrom marshmallow import Schema, fields, validates\n\nclass Bar(Schema):\n    value = fields.String()\n\n    @validates('value')\n    def validate_value(self, value):\n        pass\n\nclass Foo(Schema):\n    bar = fields.Nested(Bar)\n\nprint(Foo().validate({'bar': 'invalid'}))\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Exercises repro with compatibility shim"
+      },
+      "output_preview": "{'bar': {'_schema': ['Invalid input type.']}}\n"
+    }
+  ],
+  "token_cost": {
+    "total": 528751,
+    "input": 26226,
+    "output": 8445,
+    "cache_read": 494080,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 128.88,
+  "patch_non_empty": true
+}

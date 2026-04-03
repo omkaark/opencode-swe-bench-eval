@@ -1,0 +1,85 @@
+2026-04-03 04:35:31,736 - INFO - >>>>> Applied Patch:
+Checking patch pvlib/tests/test_tools.py...
+Checking patch pvlib/tools.py...
+Applied patch pvlib/tests/test_tools.py cleanly.
+Applied patch pvlib/tools.py cleanly.
+
+2026-04-03 04:35:32,993 - INFO - Git diff before:
+diff --git a/pvlib/tests/test_tools.py b/pvlib/tests/test_tools.py
+index 167dca8..92b2575 100644
+--- a/pvlib/tests/test_tools.py
++++ b/pvlib/tests/test_tools.py
+@@ -47,6 +47,16 @@ def test__golden_sect_DataFrame_vector():
+     assert np.allclose(x, expected, atol=1e-8)
+ 
+ 
++def test__golden_sect_DataFrame_equal_bounds():
++    params = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}
++    lower = np.array([0.5, 0.25])
++    upper = np.array([0.5, 0.25])
++    expected = np.array([0.5, 0.25])
++    v, x = tools._golden_sect_DataFrame(params, lower, upper,
++                                        _obj_test_golden_sect)
++    assert np.allclose(x, expected, atol=1e-8)
++
++
+ def test__golden_sect_DataFrame_nans():
+     # nan in bounds
+     params = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..bbffc03 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -348,6 +348,19 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     df['VH'] = upper
+     df['VL'] = lower
+ 
++    # If every interval has zero width, there is nothing to optimize.
++    # Return the objective evaluated at the lower bound, which is equal to
++    # the upper bound for these entries.
++    delta = df['VH'] - df['VL']
++    if np.all((delta == 0) | np.isnan(delta)):
++        try:
++            func_result = func(df, 'VL')
++            x = np.where(np.isnan(func_result), np.nan, df['VL'])
++        except KeyError:
++            func_result = np.full_like(upper, np.nan)
++            x = func_result.copy()
++        return func_result, x
++
+     converged = False
+     iterations = 0
+ 
+
+2026-04-03 04:35:46,467 - INFO - Test runtime: 13.14 seconds
+2026-04-03 04:35:46,469 - INFO - Test output for pvlib__pvlib-python-1606 written to logs/run_evaluation/gpt5-fork/opencode-fork/pvlib__pvlib-python-1606/test_output.txt
+2026-04-03 04:35:46,824 - INFO - Git diff after:
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..bbffc03 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -348,6 +348,19 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     df['VH'] = upper
+     df['VL'] = lower
+ 
++    # If every interval has zero width, there is nothing to optimize.
++    # Return the objective evaluated at the lower bound, which is equal to
++    # the upper bound for these entries.
++    delta = df['VH'] - df['VL']
++    if np.all((delta == 0) | np.isnan(delta)):
++        try:
++            func_result = func(df, 'VL')
++            x = np.where(np.isnan(func_result), np.nan, df['VL'])
++        except KeyError:
++            func_result = np.full_like(upper, np.nan)
++            x = func_result.copy()
++        return func_result, x
++
+     converged = False
+     iterations = 0
+ 
+
+2026-04-03 04:35:46,826 - INFO - Git diff changed after running eval script
+2026-04-03 04:35:46,826 - INFO - Grading answer for pvlib__pvlib-python-1606...
+2026-04-03 04:35:46,828 - INFO - report: {'pvlib__pvlib-python-1606': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test__golden_sect_DataFrame_vector']}, 'PASS_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test_build_kwargs[keys0-input_dict0-expected0]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys1-input_dict1-expected1]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys2-input_dict2-expected2]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys3-input_dict3-expected3]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params0-0.0-1.0-0.5-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params1-0.0-1.0-0.07230200263994839-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params2-0.0-100.0-89.14332727531685-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_atol', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_nans', 'pvlib/tests/test_tools.py::test_degrees_to_index_1']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pvlib__pvlib-python-1606: resolved: False

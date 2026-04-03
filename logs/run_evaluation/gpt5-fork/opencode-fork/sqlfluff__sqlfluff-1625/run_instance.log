@@ -1,0 +1,121 @@
+2026-04-03 04:35:44,547 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L031.py...
+Checking patch test/fixtures/rules/std_rule_cases/L031.yml...
+Applied patch src/sqlfluff/rules/L031.py cleanly.
+Applied patch test/fixtures/rules/std_rule_cases/L031.yml cleanly.
+
+2026-04-03 04:36:38,590 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L031.py b/src/sqlfluff/rules/L031.py
+index 838c6ce5..8d6f68a7 100644
+--- a/src/sqlfluff/rules/L031.py
++++ b/src/sqlfluff/rules/L031.py
+@@ -46,12 +46,13 @@ class Rule_L031(BaseRule):
+ 
+     """
+ 
+-    def _eval(self, segment, **kwargs):
++    def _eval(self, **kwargs):
+         """Identify aliases in from clause and join conditions.
+ 
+         Find base table, table expressions in join, and other expressions in select clause
+         and decide if it's needed to report them.
+         """
++        segment = kwargs["segment"]
+         if segment.is_type("select_statement"):
+             # A buffer for all table expressions in join conditions
+             from_expression_elements = []
+@@ -62,6 +63,13 @@ class Rule_L031(BaseRule):
+             if not from_clause_segment:
+                 return None
+ 
++            dialect = kwargs.get("dialect")
++            # TSQL allows aliases on standalone FROM clauses in cases where
++            # this rule would otherwise raise a false positive.
++            if dialect and dialect.name == "tsql":
++                if not any(from_clause_segment.recursive_crawl("join_clause")):
++                    return None
++
+             from_expression = from_clause_segment.get_child("from_expression")
+             from_expression_element = None
+             if from_expression:
+diff --git a/test/fixtures/rules/std_rule_cases/L031.yml b/test/fixtures/rules/std_rule_cases/L031.yml
+index 40b41639..cbd5461a 100644
+--- a/test/fixtures/rules/std_rule_cases/L031.yml
++++ b/test/fixtures/rules/std_rule_cases/L031.yml
+@@ -78,6 +78,15 @@ test_fail_avoid_aliases_3:
+     JOIN orders on users.id = orders.user_id
+     order by o desc
+ 
++test_pass_single_table_alias_tsql:
++  pass_str: |
++    SELECT a.[hello]
++    FROM mytable AS a
++
++  configs:
++    core:
++      dialect: tsql
++
+ alias_single_char_identifiers:
+   fail_str: "select b from tbl as a"
+   fix_str: "select b from tbl"
+
+2026-04-03 04:38:51,626 - INFO - Test runtime: 131.24 seconds
+2026-04-03 04:38:51,631 - INFO - Test output for sqlfluff__sqlfluff-1625 written to logs/run_evaluation/gpt5-fork/opencode-fork/sqlfluff__sqlfluff-1625/test_output.txt
+2026-04-03 04:38:52,576 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L031.py b/src/sqlfluff/rules/L031.py
+index 838c6ce5..8d6f68a7 100644
+--- a/src/sqlfluff/rules/L031.py
++++ b/src/sqlfluff/rules/L031.py
+@@ -46,12 +46,13 @@ class Rule_L031(BaseRule):
+ 
+     """
+ 
+-    def _eval(self, segment, **kwargs):
++    def _eval(self, **kwargs):
+         """Identify aliases in from clause and join conditions.
+ 
+         Find base table, table expressions in join, and other expressions in select clause
+         and decide if it's needed to report them.
+         """
++        segment = kwargs["segment"]
+         if segment.is_type("select_statement"):
+             # A buffer for all table expressions in join conditions
+             from_expression_elements = []
+@@ -62,6 +63,13 @@ class Rule_L031(BaseRule):
+             if not from_clause_segment:
+                 return None
+ 
++            dialect = kwargs.get("dialect")
++            # TSQL allows aliases on standalone FROM clauses in cases where
++            # this rule would otherwise raise a false positive.
++            if dialect and dialect.name == "tsql":
++                if not any(from_clause_segment.recursive_crawl("join_clause")):
++                    return None
++
+             from_expression = from_clause_segment.get_child("from_expression")
+             from_expression_element = None
+             if from_expression:
+diff --git a/test/fixtures/rules/std_rule_cases/L031.yml b/test/fixtures/rules/std_rule_cases/L031.yml
+index 40b41639..cbd5461a 100644
+--- a/test/fixtures/rules/std_rule_cases/L031.yml
++++ b/test/fixtures/rules/std_rule_cases/L031.yml
+@@ -78,6 +78,15 @@ test_fail_avoid_aliases_3:
+     JOIN orders on users.id = orders.user_id
+     order by o desc
+ 
++test_pass_single_table_alias_tsql:
++  pass_str: |
++    SELECT a.[hello]
++    FROM mytable AS a
++
++  configs:
++    core:
++      dialect: tsql
++
+ alias_single_char_identifiers:
+   fail_str: "select b from tbl as a"
+   fix_str: "select b from tbl"
+
+2026-04-03 04:38:52,576 - INFO - Grading answer for sqlfluff__sqlfluff-1625...
+2026-04-03 04:38:52,631 - INFO - report: {'sqlfluff__sqlfluff-1625': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/cli/commands_test.py::test__cli__command_directed']}, 'PASS_TO_PASS': {'success': ['test/cli/commands_test.py::test__cli__command_dialect', 'test/cli/commands_test.py::test__cli__command_dialect_legacy', 'test/cli/commands_test.py::test__cli__command_lint_stdin[command0]', 'test/cli/commands_test.py::test__cli__command_lint_stdin[command1]', 'test/cli/commands_test.py::test__cli__command_lint_stdin[command2]', 'test/cli/commands_test.py::test__cli__command_lint_stdin[command3]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command0]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command1]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command2]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command3]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command4]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command5]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command6]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command7]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command8]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command9]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command10]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command11]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command12]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command13]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command14]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command15]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command16]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command17]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command18]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command19]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command20]', 'test/cli/commands_test.py::test__cli__command_lint_parse[command21]', 'test/cli/commands_test.py::test__cli__command_lint_parse_with_retcode[command0-1]', 'test/cli/commands_test.py::test__cli__command_lint_parse_with_retcode[command1-1]', 'test/cli/commands_test.py::test__cli__command_lint_parse_with_retcode[command2-1]', 'test/cli/commands_test.py::test__cli__command_lint_warning_explicit_file_ignored', 'test/cli/commands_test.py::test__cli__command_lint_skip_ignore_files', 'test/cli/commands_test.py::test__cli__command_versioning', 'test/cli/commands_test.py::test__cli__command_version', 'test/cli/commands_test.py::test__cli__command_rules', 'test/cli/commands_test.py::test__cli__command_dialects', 'test/cli/commands_test.py::test__cli__command__fix[L001-test/fixtures/linter/indentation_errors.sql]', 'test/cli/commands_test.py::test__cli__command__fix[L008-test/fixtures/linter/whitespace_errors.sql]', 'test/cli/commands_test.py::test__cli__command__fix[L008-test/fixtures/linter/indentation_errors.sql]', 'test/cli/commands_test.py::test__cli__command__fix[L003-test/fixtures/linter/indentation_error_hard.sql]', 'test/cli/commands_test.py::test__cli__command_fix_stdin[select', 'test/cli/commands_test.py::test__cli__command_fix_stdin[', 'test/cli/commands_test.py::test__cli__command_fix_stdin[SELECT', 'test/cli/commands_test.py::test__cli__command_fix_stdin_logging_to_stderr', 'test/cli/commands_test.py::test__cli__command_fix_stdin_safety', 'test/cli/commands_test.py::test__cli__command_fix_stdin_error_exit_code[create', 'test/cli/commands_test.py::test__cli__command_fix_stdin_error_exit_code[select', 'test/cli/commands_test.py::test__cli__command__fix_no_force[L001-test/fixtures/linter/indentation_errors.sql-y-0-0]', 'test/cli/commands_test.py::test__cli__command__fix_no_force[L001-test/fixtures/linter/indentation_errors.sql-n-65-1]', 'test/cli/commands_test.py::test__cli__command_parse_serialize_from_stdin[yaml]', 'test/cli/commands_test.py::test__cli__command_parse_serialize_from_stdin[json]', 'test/cli/commands_test.py::test__cli__command_lint_serialize_from_stdin[select', 'test/cli/commands_test.py::test__cli__command_lint_serialize_from_stdin[SElect', 'test/cli/commands_test.py::test__cli__command_fail_nice_not_found[command0]', 'test/cli/commands_test.py::test__cli__command_fail_nice_not_found[command1]', 'test/cli/commands_test.py::test__cli__command_lint_serialize_multiple_files[yaml]', 'test/cli/commands_test.py::test__cli__command_lint_serialize_multiple_files[json]', 'test/cli/commands_test.py::test__cli__command_lint_serialize_multiple_files[github-annotation]', 'test/cli/commands_test.py::test__cli__command_lint_serialize_github_annotation', 'test/cli/commands_test.py::test___main___help', 'test/cli/commands_test.py::test_encoding[utf-8-ascii]', 'test/cli/commands_test.py::test_encoding[utf-8-sig-UTF-8-SIG]', 'test/cli/commands_test.py::test_encoding[utf-32-UTF-32]'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1625: resolved: False

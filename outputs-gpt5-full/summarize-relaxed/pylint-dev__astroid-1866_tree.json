@@ -1,0 +1,121 @@
+{
+  "instance_id": "pylint-dev__astroid-1866",
+  "variant": "summarize-relaxed",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/astroid/brain/brain_builtin_inference.py",
+    "/repo/tests/unittest_brain_builtin.py"
+  ],
+  "per_file": {
+    "/repo/astroid/brain/brain_builtin_inference.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/tests/unittest_brain_builtin.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class BuiltinsTest(unittest.TestCase)",
+            "def test_infer_property(self)",
+            "class Something",
+            "def getter()",
+            "class TestStringNodes",
+            "def test_string_format(self, format_string: str) -> None",
+            "def test_string_format_uninferable(self, format_string: str) -> None",
+            "def test_string_format_with_specs(self) -> None"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "_infer_str_format_call|test_string_format_uninferable",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/tests/unittest_brain_builtin.py:\n  Line 108:     def test_string_format_uninferable(self, format_string: str) -> None:\n\n/repo/astroid/brain/brain_builtin_inference.py:\n  Line 927: def _infer_str_format_call(\n  Line 1001:     nodes.Call, inference_tip(_infer_str_format_call), _i"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "format\\(",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 73 matches\n/repo/tests/unittest_scoped_nodes.py:\n  Line 1705:             mixin_name = '{}Mixin'.format(cls.__name__)\n  Line 1732:                 # We don't recognize what 'cls' is at time of .format() call, only\n\n/repo/tests/unittest_regrtest.py:\n  Line 324:         collections.namedtuple('{"
+    },
+    {
+      "step": 5,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_brain_builtin.py -k string_format",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted string format tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nfrom astroid.builder import _extract_single_node\nfrom astroid import util\n\ncases = [\n    ('\"My name is {:.2f}\".format(None)', util.Uninferable),\n    ('\"My name is {}, I\\'m {}\".format(\"Daniel\", 12)', \"My name is Daniel, I'm 12\"),\n]\nfor code, expected in cases:\n    node = _extract_single_node(code)\n    inferred = next(node.infer())\n    if expected is util.Uninferable:\n        assert inferred is util.Uninferable, (code, inferred)\n    else:\n        assert inferred.value == expected, (code, inferred)\nprint('ok')\nPY",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks str.format inference directly"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/repo/astroid/__init__.py\", line 42, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 17, in <module>\n    from astroid.nodes._base_nodes import Statemen"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- astroid/brain/brain_builtin_inference.py tests/unittest_brain_builtin.py",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Shows diff for modified files"
+      },
+      "output_preview": "diff --git a/astroid/brain/brain_builtin_inference.py b/astroid/brain/brain_builtin_inference.py\nindex af1ddf4d..d55740f0 100644\n--- a/astroid/brain/brain_builtin_inference.py\n+++ b/astroid/brain/brain_builtin_inference.py\n@@ -954,7 +954,7 @@ def _infer_str_format_call(\n \n     try:\n         formatte"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "git status --short",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Shows working tree status"
+      },
+      "output_preview": " M astroid/brain/brain_builtin_inference.py\n M tests/unittest_brain_builtin.py\n"
+    }
+  ],
+  "token_cost": {
+    "total": 106813,
+    "input": 16200,
+    "output": 1781,
+    "cache_read": 88832,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 46.42,
+  "patch_non_empty": true
+}

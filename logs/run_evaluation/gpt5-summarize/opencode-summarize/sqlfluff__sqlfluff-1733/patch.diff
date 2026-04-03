@@ -1,0 +1,30 @@
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..bc9ef88b 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -169,6 +169,25 @@ class Rule_L036(BaseRule):
+                     select_clause.segments[select_targets_info.first_select_target_idx],
+                 ),
+             ]
++            if (
++                select_targets_info.first_select_target_idx
++                - select_targets_info.first_new_line_idx
++                == 2
++                and select_clause.segments[
++                    select_targets_info.first_new_line_idx + 1
++                ].is_whitespace
++            ):
++                # If the first target is preceded by a single whitespace segment,
++                # delete that as well. This avoids leaving an extra space when the
++                # target is moved onto a new line inside a CTE.
++                fixes.append(
++                    LintFix(
++                        "delete",
++                        select_clause.segments[
++                            select_targets_info.first_new_line_idx + 1
++                        ],
++                    )
++                )
+ 
+             start_idx = 0
+ 

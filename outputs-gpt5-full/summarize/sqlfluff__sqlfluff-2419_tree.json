@@ -1,0 +1,364 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-2419",
+  "variant": "summarize",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [
+    "/repo/test/fixtures/rules/std_rule_cases/L060.yml",
+    "/repo/src/sqlfluff/rules/L060.py",
+    "/repo/test/test_testing.py",
+    "/repo/test/rules/yaml_test_cases_test.py",
+    "/repo/test/rules/std_test.py",
+    "/repo/test/rules/std_roundtrip_test.py",
+    "/repo/test/rules/std_L027_test.py",
+    "/repo/test/rules/std_L054_test.py",
+    "/repo/test/rules/std_fix_auto_test.py",
+    "/repo/test/rules/std_L048_test.py",
+    "/repo/test/rules/std_L020_test.py",
+    "/repo/test/rules/std_L019_test.py",
+    "/repo/test/rules/std_L016_L36_combo_test.py",
+    "/repo/test/rules/std_L009_L052_test.py",
+    "/repo/test/rules/std_L008_test.py",
+    "/repo/test/rules/std_L007_test.py",
+    "/repo/test/rules/std_L003_test.py",
+    "/repo/test/generate_parse_fixture_yml.py",
+    "/repo/test/rules/std_L003_L036_L039_combo_test.py",
+    "/repo/test/fixtures/templater/jinja_m_libraries_module/other/__init__.py",
+    "/repo/test/fixtures/templater/jinja_m_libraries_module/libs/__init__.py",
+    "/repo/test/fixtures/templater/jinja_m_libraries_module/libs/foo/__init__.py",
+    "/repo/test/fixtures/templater/jinja_m_libraries_module/libs/foo/bar/baz.py",
+    "/repo/test/fixtures/templater/jinja_m_libraries_module/libs/foo/bar/__init__.py",
+    "/repo/test/fixtures/templater/jinja_j_libraries/libs/foo.py",
+    "/repo/test/fixtures/templater/jinja_j_libraries/libs/bar.py",
+    "/repo/test/fixtures/rules/custom/bad_rule_name/E000.py",
+    "/repo/test/fixtures/rules/custom/S000.py",
+    "/repo/test/fixtures/rules/custom/L000.py",
+    "/repo/test/diff_quality_plugin_test.py",
+    "/repo/test/dialects/ansi_test.py",
+    "/repo/test/dialects/bigquery_test.py",
+    "/repo/test/dialects/conftest.py",
+    "/repo/test/dialects/snowflake_test.py",
+    "/repo/test/dialects/postgres_test.py",
+    "/repo/test/dialects/exasol_test.py",
+    "/repo/test/dialects/dialects_test.py",
+    "/repo/test/dialects/__init__.py",
+    "/repo/test/core/string_helpers_test.py",
+    "/repo/test/core/templaters/python_test.py",
+    "/repo/test/core/templaters/placeholder_test.py",
+    "/repo/test/core/templaters/jinja_test.py",
+    "/repo/test/core/templaters/base_test.py",
+    "/repo/test/core/templaters/__init__.py",
+    "/repo/test/core/rules/docstring_test.py",
+    "/repo/test/core/rules/config_test.py",
+    "/repo/test/core/rules/__init__.py",
+    "/repo/test/core/plugin_test.py",
+    "/repo/test/core/rules/reference_test.py",
+    "/repo/test/core/rules/functional/test_raw_file_slices.py",
+    "/repo/test/core/rules/functional/test_segments.py",
+    "/repo/test/core/parser/segments_common_test.py",
+    "/repo/test/core/parser/segments_base_test.py",
+    "/repo/test/core/parser/parse_test.py",
+    "/repo/test/core/linter_test.py",
+    "/repo/test/core/file_helpers_test.py",
+    "/repo/test/core/parser/markers_test.py",
+    "/repo/test/core/parser/lexer_test.py",
+    "/repo/test/core/parser/helpers_test.py",
+    "/repo/test/core/parser/grammar_test.py",
+    "/repo/test/core/parser/conftest.py",
+    "/repo/test/core/parser/__init__.py",
+    "/repo/test/conftest.py",
+    "/repo/test/cli/helpers_test.py",
+    "/repo/test/cli/formatters_test.py",
+    "/repo/test/cli/commands_test.py",
+    "/repo/test/cli/autocomplete_test.py",
+    "/repo/test/cli/__init__.py",
+    "/repo/test/core/config_test.py",
+    "/repo/test/core/__init__.py",
+    "/repo/test/api/simple_test.py",
+    "/repo/test/api/info_test.py",
+    "/repo/test/api/classes_test.py",
+    "/repo/test/api/__init__.py",
+    "/repo/test/__init__.py"
+  ],
+  "per_file": {
+    "/repo/test/rules/std_L060_test.py": {
+      "reads": [
+        1
+      ],
+      "edits": [],
+      "first_read_step": 1,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/rules/L060.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class Rule_L060(BaseRule)",
+            "def _eval(self, context: RuleContext) -> Optional[LintResult]"
+          ]
+        }
+      ]
+    },
+    "/repo/test/fixtures/rules/std_rule_cases/L060.yml": {
+      "reads": [
+        3
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/core/rules/base.py": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class RuleLoggingAdapter(logging.LoggerAdapter)",
+            "def process(self, msg, kwargs)",
+            "class LintResult",
+            "def __init__(",
+            "def to_linting_error(self, rule) -> Optional[SQLLintError]",
+            "class LintFix",
+            "def __init__(",
+            "def is_trivial(self)",
+            "def __repr__(self)",
+            "def __eq__(self, other)",
+            "def delete(cls, anchor_segment: BaseSegment) -> \"LintFix\"",
+            "def replace(",
+            "def create_before(",
+            "def create_after("
+          ]
+        }
+      ]
+    },
+    "/repo/test/rules/yaml_test_cases_test.py": {
+      "reads": [
+        7
+      ],
+      "edits": [],
+      "first_read_step": 7,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "def test__rule_test_case(test_case, caplog)",
+            "def test__rule_test_global_config()"
+          ]
+        }
+      ]
+    },
+    "/repo/test/rules/std_test.py": {
+      "reads": [
+        7
+      ],
+      "edits": [],
+      "first_read_step": 7,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 240,
+          "signatures": [
+            "def test__rules__std_file(rule, path, violations)",
+            "def test_improper_configs_are_rejected(rule_config_dict)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/testing/rules.py": {
+      "reads": [
+        8
+      ],
+      "edits": [],
+      "first_read_step": 8,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 320,
+          "signatures": [
+            "class RuleTestCase(NamedTuple)",
+            "def load_test_cases(",
+            "def get_rule_from_set(code, config)",
+            "def assert_rule_fail_in_sql(code, sql, configs=None, line_numbers=None)",
+            "def assert_rule_pass_in_sql(code, sql, configs=None)",
+            "def assert_rule_raises_violations_in_file(rule, fpath, violations, fluff_config)",
+            "def rules__test_helper(test_case)"
+          ]
+        }
+      ]
+    },
+    "/repo/test/rules/std_L054_test.py": {
+      "reads": [
+        9
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "def test__rules__std_L054_raised() -> None",
+            "def test__rules__std_L054_unparsable() -> None",
+            "def test__rules__std_L054_noqa() -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/test/rules/std_L048_test.py": {
+      "reads": [
+        9
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "def test__rules__std_L048_raised() -> None"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/test/rules/std_L060_test.py"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "LintResult\\(.*description=|description=",
+        "path": "/repo/src/sqlfluff/rules",
+        "include": "*.py"
+      },
+      "output_preview": "Found 33 matches\n/repo/src/sqlfluff/rules/L056.py:\n  Line 75:                 description=\"'SP_' prefix should not be used for user-defined stored \"\n\n/repo/src/sqlfluff/rules/L059.py:\n  Line 76:                 description=f\"Unnecessary quoted identifier {context.segment.raw}.\",\n\n/repo/src/sqlfluff/",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "test__rules__std_L060_raised",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "pytest test/rules/std_L060_test.py::test__rules__std_L060_raised",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted L060 pytest"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest test/rules/std_L060_test.py::test__rules__std_L060_raised",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted L060 pytest via Python"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "L060|IFNULL|NVL|COALESCE",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 29 matches\n/repo/src/sqlfluff/rules/L060.py:\n  Line 1: \"\"\"Implementation of Rule L060.\"\"\"\n  Line 11: class Rule_L060(BaseRule):\n  Line 12:     \"\"\"Use ``COALESCE`` instead of ``IFNULL`` or ``NVL``.\n  Line 15:     | ``IFNULL`` or ``NVL`` are used to fill ``NULL`` values.\n  Line 26:     | Use ``C"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "Use 'COALESCE' instead of 'IFNULL' or 'NVL'|Use ``COALESCE`` instead of ``IFNULL`` or ``NVL``",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/src/sqlfluff/rules/L060.py:\n  Line 12:     \"\"\"Use ``COALESCE`` instead of ``IFNULL`` or ``NVL``.\n  Line 41:         \"\"\"Use ``COALESCE`` instead of ``IFNULL`` or ``NVL``.\"\"\""
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "desc|description",
+        "path": "/repo/test/fixtures/rules/std_rule_cases",
+        "include": "*.yml"
+      },
+      "output_preview": "Found 29 matches\n/repo/test/fixtures/rules/std_rule_cases/L045.yml:\n  Line 31:   desc: Two CTEs defined but only one used in final query.\n  Line 45:   desc: CTE defined but unused in final query even though table alias mimics CTE's name.\n  Line 70:   desc: Two CTEs are defined. CTE2 references CTE1 "
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "std_rule_cases|desc:|raised",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "Found 25 matches\n/repo/test/rules/yaml_test_cases_test.py:\n  Line 14:     test_cases_path=os.path.join(\"test/fixtures/rules/std_rule_cases\", \"*.yml\")\n\n/repo/test/rules/std_fix_auto_test.py:\n  Line 118:     # violations are raised, and the test fails.\n\n/repo/test/rules/std_L054_test.py:\n  Line 5: def"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "desc",
+        "path": "/repo/src/sqlfluff/testing",
+        "include": "*.py"
+      },
+      "output_preview": "Found 4 matches\n/repo/src/sqlfluff/testing/rules.py:\n  Line 17:     desc: Optional[str] = None\n  Line 68:         if e.desc().startswith(\"Unexpected exception\"):\n  Line 69:             pytest.fail(f\"Linter failed with {e.desc()}\")  # pragma: no cover\n  Line 101:         pytest.fail(parsed.violations"
+    }
+  ],
+  "token_cost": {
+    "total": 211103,
+    "input": 22704,
+    "output": 1775,
+    "cache_read": 186624,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 55.14,
+  "patch_non_empty": true
+}

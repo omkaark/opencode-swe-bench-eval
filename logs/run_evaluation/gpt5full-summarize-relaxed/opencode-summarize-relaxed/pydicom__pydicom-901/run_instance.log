@@ -1,0 +1,113 @@
+2026-04-03 18:11:44,515 - INFO - >>>>> Applied Patch:
+Checking patch pydicom/config.py...
+Applied patch pydicom/config.py cleanly.
+
+2026-04-03 18:11:45,374 - INFO - Git diff before:
+diff --git a/pydicom/config.py b/pydicom/config.py
+index ae9c8bd..e4f305f 100644
+--- a/pydicom/config.py
++++ b/pydicom/config.py
+@@ -62,10 +62,7 @@ and datetime.time respectively. Default: False
+ 
+ # Logging system and debug function to change logging level
+ logger = logging.getLogger('pydicom')
+-handler = logging.StreamHandler()
+-formatter = logging.Formatter("%(message)s")
+-handler.setFormatter(formatter)
+-logger.addHandler(handler)
++logger.addHandler(logging.NullHandler())
+ 
+ 
+ import pydicom.pixel_data_handlers.numpy_handler as np_handler  # noqa
+@@ -110,7 +107,7 @@ syntax, then this fact is announced in a NotImplementedError exception.
+ """
+ 
+ 
+-def debug(debug_on=True):
++def debug(debug_on=True, default_handler=True):
+     """Turn debugging of DICOM file reading and writing on or off.
+     When debugging is on, file location and details about the
+     elements read at that location are logged to the 'pydicom'
+@@ -118,8 +115,18 @@ def debug(debug_on=True):
+ 
+     :param debug_on: True (default) to turn on debugging,
+     False to turn off.
++    :param default_handler: True (default) to use a
++    logging.StreamHandler for log messages, False to leave
++    the existing handlers unchanged.
+     """
+     global logger, debugging
++
++    if default_handler:
++        handler = logging.StreamHandler()
++        formatter = logging.Formatter("%(message)s")
++        handler.setFormatter(formatter)
++        logger.addHandler(handler)
++
+     if debug_on:
+         logger.setLevel(logging.DEBUG)
+         debugging = True
+@@ -129,4 +136,4 @@ def debug(debug_on=True):
+ 
+ 
+ # force level=WARNING, in case logging default is set differently (issue 103)
+-debug(False)
++debug(False, False)
+
+2026-04-03 18:11:54,578 - INFO - Test runtime: 8.90 seconds
+2026-04-03 18:11:54,579 - INFO - Test output for pydicom__pydicom-901 written to logs/run_evaluation/gpt5full-summarize-relaxed/opencode-summarize-relaxed/pydicom__pydicom-901/test_output.txt
+2026-04-03 18:11:54,957 - INFO - Git diff after:
+diff --git a/pydicom/config.py b/pydicom/config.py
+index ae9c8bd..e4f305f 100644
+--- a/pydicom/config.py
++++ b/pydicom/config.py
+@@ -62,10 +62,7 @@ and datetime.time respectively. Default: False
+ 
+ # Logging system and debug function to change logging level
+ logger = logging.getLogger('pydicom')
+-handler = logging.StreamHandler()
+-formatter = logging.Formatter("%(message)s")
+-handler.setFormatter(formatter)
+-logger.addHandler(handler)
++logger.addHandler(logging.NullHandler())
+ 
+ 
+ import pydicom.pixel_data_handlers.numpy_handler as np_handler  # noqa
+@@ -110,7 +107,7 @@ syntax, then this fact is announced in a NotImplementedError exception.
+ """
+ 
+ 
+-def debug(debug_on=True):
++def debug(debug_on=True, default_handler=True):
+     """Turn debugging of DICOM file reading and writing on or off.
+     When debugging is on, file location and details about the
+     elements read at that location are logged to the 'pydicom'
+@@ -118,8 +115,18 @@ def debug(debug_on=True):
+ 
+     :param debug_on: True (default) to turn on debugging,
+     False to turn off.
++    :param default_handler: True (default) to use a
++    logging.StreamHandler for log messages, False to leave
++    the existing handlers unchanged.
+     """
+     global logger, debugging
++
++    if default_handler:
++        handler = logging.StreamHandler()
++        formatter = logging.Formatter("%(message)s")
++        handler.setFormatter(formatter)
++        logger.addHandler(handler)
++
+     if debug_on:
+         logger.setLevel(logging.DEBUG)
+         debugging = True
+@@ -129,4 +136,4 @@ def debug(debug_on=True):
+ 
+ 
+ # force level=WARNING, in case logging default is set differently (issue 103)
+-debug(False)
++debug(False, False)
+
+2026-04-03 18:11:54,957 - INFO - Grading answer for pydicom__pydicom-901...
+2026-04-03 18:11:54,965 - INFO - report: {'pydicom__pydicom-901': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['pydicom/tests/test_config.py::TestDebug::test_default', 'pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_null', 'pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_null', 'pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_stream', 'pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_stream'], 'failure': []}, 'PASS_TO_PASS': {'success': [], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pydicom__pydicom-901: resolved: True

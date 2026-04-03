@@ -1,0 +1,54 @@
+diff --git a/pvlib/tests/test_tools.py b/pvlib/tests/test_tools.py
+index 167dca8..483cf75 100644
+--- a/pvlib/tests/test_tools.py
++++ b/pvlib/tests/test_tools.py
+@@ -38,15 +38,23 @@ def test__golden_sect_DataFrame_atol():
+ 
+ 
+ def test__golden_sect_DataFrame_vector():
+-    params = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}
+-    lower = np.array([0., 0.001])
+-    upper = np.array([1.1, 1.2])
+-    expected = np.array([0.5, 0.25])
++    params = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}
++    lower = np.array([0., 0.001, 0.])
++    upper = np.array([1.1, 1.2, 0.])
++    expected = np.array([0.5, 0.25, 0.])
+     v, x = tools._golden_sect_DataFrame(params, lower, upper,
+                                         _obj_test_golden_sect)
+     assert np.allclose(x, expected, atol=1e-8)
+ 
+ 
++def test__golden_sect_DataFrame_equal_bounds():
++    params = {'c': 1., 'n': 1.}
++    v, x = tools._golden_sect_DataFrame(params, 0., 0.,
++                                        _obj_test_golden_sect)
++    assert np.isclose(v, 0.)
++    assert np.isclose(x, 0.)
++
++
+ def test__golden_sect_DataFrame_nans():
+     # nan in bounds
+     params = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..e3364f5 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -351,12 +351,16 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     converged = False
+     iterations = 0
+ 
++    # Treat zero-width intervals as already converged so the first loop
++    # iteration can evaluate `func` at the shared bound.
++    span = np.where(df['VH'] == df['VL'], atol, df['VH'] - df['VL'])
++
+     # handle all NaN case gracefully
+     with warnings.catch_warnings():
+         warnings.filterwarnings(action='ignore',
+                                 message='All-NaN slice encountered')
+         iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++            np.trunc(np.log(atol / span) / np.log(phim1)))
+ 
+     while not converged and (iterations <= iterlimit):
+ 

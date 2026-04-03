@@ -1,0 +1,82 @@
+2026-04-03 16:10:33,948 - INFO - >>>>> Applied Patch:
+Checking patch pydicom/dataset.py...
+Checking patch pydicom/tests/test_json.py...
+Applied patch pydicom/dataset.py cleanly.
+Applied patch pydicom/tests/test_json.py cleanly.
+
+2026-04-03 16:10:34,796 - INFO - Git diff before:
+diff --git a/pydicom/dataset.py b/pydicom/dataset.py
+index e323150..a6f8879 100644
+--- a/pydicom/dataset.py
++++ b/pydicom/dataset.py
+@@ -2492,8 +2492,8 @@ class Dataset:
+         json_dataset = {}
+         for key in self.keys():
+             json_key = '{:08X}'.format(key)
+-            data_element = self[key]
+             try:
++                data_element = self[key]
+                 json_dataset[json_key] = data_element.to_json_dict(
+                     bulk_data_element_handler=bulk_data_element_handler,
+                     bulk_data_threshold=bulk_data_threshold
+diff --git a/pydicom/tests/test_json.py b/pydicom/tests/test_json.py
+index 0b2cbef..ae6cecc 100644
+--- a/pydicom/tests/test_json.py
++++ b/pydicom/tests/test_json.py
+@@ -6,6 +6,7 @@ from unittest import mock
+ import pytest
+ 
+ from pydicom import dcmread
++from pydicom.dataelem import RawDataElement
+ from pydicom.data import get_testdata_file
+ from pydicom.dataelem import DataElement
+ from pydicom.dataset import Dataset
+@@ -286,6 +287,25 @@ class TestDataSetToJson:
+ 
+         assert ds_json.get("00100010") is None
+ 
++    def test_suppress_invalid_tags_with_failed_dataelement(self):
++        ds = Dataset()
++        ds.PatientName = 'Jane^Doe'
++        ds.__setitem__(
++            0x00091014,
++            RawDataElement(0x00091014, 'IS', 3, b'2.0', 0, True, True)
++        )
++
++        with pytest.raises(TypeError, match='Could not convert value'):
++            ds.to_json_dict()
++
++        ds_json = ds.to_json_dict(suppress_invalid_tags=True)
++
++        assert ds_json == {
++            '00100010': {
++                'vr': 'PN', 'Value': [{'Alphabetic': 'Jane^Doe'}]
++            }
++        }
++
+ 
+ class TestSequence:
+     def test_nested_sequences(self, disable_value_validation):
+
+2026-04-03 16:10:42,915 - INFO - Test runtime: 7.52 seconds
+2026-04-03 16:10:42,915 - INFO - Test output for pydicom__pydicom-1694 written to logs/run_evaluation/gpt5full-official/opencode-official/pydicom__pydicom-1694/test_output.txt
+2026-04-03 16:10:43,215 - INFO - Git diff after:
+diff --git a/pydicom/dataset.py b/pydicom/dataset.py
+index e323150..a6f8879 100644
+--- a/pydicom/dataset.py
++++ b/pydicom/dataset.py
+@@ -2492,8 +2492,8 @@ class Dataset:
+         json_dataset = {}
+         for key in self.keys():
+             json_key = '{:08X}'.format(key)
+-            data_element = self[key]
+             try:
++                data_element = self[key]
+                 json_dataset[json_key] = data_element.to_json_dict(
+                     bulk_data_element_handler=bulk_data_element_handler,
+                     bulk_data_threshold=bulk_data_threshold
+
+2026-04-03 16:10:43,215 - INFO - Git diff changed after running eval script
+2026-04-03 16:10:43,215 - INFO - Grading answer for pydicom__pydicom-1694...
+2026-04-03 16:10:43,218 - INFO - report: {'pydicom__pydicom-1694': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement'], 'failure': []}, 'PASS_TO_PASS': {'success': ['pydicom/tests/test_json.py::TestPersonName::test_json_pn_from_file', 'pydicom/tests/test_json.py::TestPersonName::test_pn_components_to_json', 'pydicom/tests/test_json.py::TestPersonName::test_pn_components_from_json', 'pydicom/tests/test_json.py::TestPersonName::test_empty_value', 'pydicom/tests/test_json.py::TestPersonName::test_multi_value_to_json', 'pydicom/tests/test_json.py::TestPersonName::test_dataelem_from_json', 'pydicom/tests/test_json.py::TestAT::test_to_json', 'pydicom/tests/test_json.py::TestAT::test_from_json', 'pydicom/tests/test_json.py::TestAT::test_invalid_value_in_json', 'pydicom/tests/test_json.py::TestAT::test_invalid_tag_in_json', 'pydicom/tests/test_json.py::TestDataSetToJson::test_json_from_dicom_file', 'pydicom/tests/test_json.py::TestDataSetToJson::test_roundtrip', 'pydicom/tests/test_json.py::TestDataSetToJson::test_dataset_dumphandler', 'pydicom/tests/test_json.py::TestDataSetToJson::test_dataelement_dumphandler', 'pydicom/tests/test_json.py::TestDataSetToJson::test_sort_order', 'pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags', 'pydicom/tests/test_json.py::TestSequence::test_nested_sequences', 'pydicom/tests/test_json.py::TestBinary::test_inline_binary', 'pydicom/tests/test_json.py::TestBinary::test_invalid_inline_binary', 'pydicom/tests/test_json.py::TestBinary::test_valid_bulkdata_uri', 'pydicom/tests/test_json.py::TestBinary::test_invalid_bulkdata_uri', 'pydicom/tests/test_json.py::TestBinary::test_bulk_data_reader_is_called', 'pydicom/tests/test_json.py::TestBinary::test_bulk_data_reader_is_called_2', 'pydicom/tests/test_json.py::TestBinary::test_bulk_data_reader_is_called_within_SQ', 'pydicom/tests/test_json.py::TestNumeric::test_numeric_values', 'pydicom/tests/test_json.py::TestNumeric::test_numeric_types'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pydicom__pydicom-1694: resolved: True

@@ -1,0 +1,48 @@
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..0d139e9f 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -56,6 +56,25 @@ class Rule_L036(BaseRule):
+                     select_targets_info, context.segment
+                 )
+ 
++    @staticmethod
++    def _strip_leading_whitespace(select_target: BaseSegment) -> BaseSegment:
++        """Return a select target without leading whitespace segments."""
++        first_code_idx = 0
++        for first_code_idx, seg in enumerate(select_target.segments):
++            if not seg.is_type("whitespace"):
++                break
++        else:  # pragma: no cover
++            return select_target
++
++        if first_code_idx == 0:
++            return select_target
++
++        return select_target.__class__(
++            segments=select_target.segments[first_code_idx:],
++            pos_marker=select_target.pos_marker,
++            **{k: getattr(select_target, k) for k in select_target.additional_kwargs},
++        )
++
+     @staticmethod
+     def _get_indexes(segment):
+         select_idx = -1
+@@ -118,7 +137,16 @@ class Rule_L036(BaseRule):
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+-                fixes.append(LintFix("create", select_target, NewlineSegment()))
++                fixes.append(
++                    LintFix(
++                        "edit",
++                        select_target,
++                        [
++                            NewlineSegment(),
++                            self._strip_leading_whitespace(select_target),
++                        ],
++                    )
++                )
+         if fixes:
+             return LintResult(anchor=segment, fixes=fixes)
+ 

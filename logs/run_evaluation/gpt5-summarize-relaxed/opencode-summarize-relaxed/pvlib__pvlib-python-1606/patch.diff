@@ -1,0 +1,52 @@
+diff --git a/pvlib/tests/test_tools.py b/pvlib/tests/test_tools.py
+index 167dca8..cd09150 100644
+--- a/pvlib/tests/test_tools.py
++++ b/pvlib/tests/test_tools.py
+@@ -47,6 +47,16 @@ def test__golden_sect_DataFrame_vector():
+     assert np.allclose(x, expected, atol=1e-8)
+ 
+ 
++def test__golden_sect_DataFrame_equal_bounds():
++    params = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}
++    lower = np.array([0., 0.])
++    upper = np.array([1.1, 0.])
++    expected = np.array([0.5, 0.])
++    v, x = tools._golden_sect_DataFrame(params, lower, upper,
++                                        _obj_test_golden_sect)
++    assert np.allclose(x, expected, atol=1e-8)
++
++
+ def test__golden_sect_DataFrame_nans():
+     # nan in bounds
+     params = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..ced82d3 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -347,16 +347,21 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+     df = params
+     df['VH'] = upper
+     df['VL'] = lower
++    width = np.atleast_1d(np.asarray(df['VH'] - df['VL']))
+ 
+     converged = False
+     iterations = 0
+ 
+     # handle all NaN case gracefully
+-    with warnings.catch_warnings():
+-        warnings.filterwarnings(action='ignore',
+-                                message='All-NaN slice encountered')
+-        iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++    active_width = width[np.isfinite(width) & (width > 0)]
++    if active_width.size:
++        with warnings.catch_warnings():
++            warnings.filterwarnings(action='ignore',
++                                    message='All-NaN slice encountered')
++            iterlimit = 1 + np.nanmax(
++                np.trunc(np.log(atol / active_width) / np.log(phim1)))
++    else:
++        iterlimit = 0
+ 
+     while not converged and (iterations <= iterlimit):
+ 

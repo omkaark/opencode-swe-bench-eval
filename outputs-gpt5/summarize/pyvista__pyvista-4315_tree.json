@@ -1,0 +1,227 @@
+{
+  "instance_id": "pyvista__pyvista-4315",
+  "variant": "summarize",
+  "repo": "pyvista/pyvista",
+  "repo_map": [
+    "/repo/tests/test_grid.py",
+    "/repo/tests/filters/test_rectilinear_grid.py",
+    "/repo/pyvista/core/grid.py",
+    "/repo/pyvista/core/filters/unstructured_grid.py",
+    "/repo/pyvista/core/filters/uniform_grid.py",
+    "/repo/pyvista/core/filters/structured_grid.py",
+    "/repo/pyvista/core/filters/rectilinear_grid.py",
+    "/repo/examples/00-load/create-uniform-grid.py",
+    "/repo/examples/00-load/create-explicit-structured-grid.py"
+  ],
+  "per_file": {
+    "/repo/pyvista/core/grid.py": {
+      "reads": [
+        2,
+        4,
+        15
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 220,
+          "signatures": [
+            "class Grid(DataSet)",
+            "def __init__(self, *args, **kwargs)",
+            "def dimensions(self) -> Tuple[int, int, int]",
+            "def dimensions(self, dims: Sequence[int])",
+            "def _get_attrs(self)",
+            "class RectilinearGrid(_vtk.vtkRectilinearGrid, Grid, RectilinearGridFilters)",
+            "def __init__(self, *args, check_duplicates=False, deep=False, **kwargs)",
+            "def __repr__(self)",
+            "def __str__(self)",
+            "def _update_dimensions(self)",
+            "def _from_arrays(",
+            "def meshgrid(self) -> list"
+          ]
+        },
+        {
+          "offset": 460,
+          "limit": 80,
+          "signatures": [
+            "def __init__("
+          ]
+        },
+        {
+          "offset": 124,
+          "limit": 50,
+          "signatures": [
+            "def __init__(self, *args, check_duplicates=False, deep=False, **kwargs)",
+            "def _as_array(value)",
+            "def __repr__(self)",
+            "def __str__(self)"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/test_grid.py": {
+      "reads": [
+        2,
+        6
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 700,
+          "limit": 80,
+          "signatures": [
+            "def test_create_rectilinear_grid_from_specs()",
+            "def test_create_rectilinear_after_init()",
+            "def test_create_rectilinear_grid_from_file()",
+            "def test_read_rectilinear_grid_from_file()"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 40,
+          "signatures": [
+            "def test_volume(hexbeam)",
+            "def test_struct_example()",
+            "def test_init_from_polydata(sphere)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "np.asarray\\(args\\[0\\]|np.asanyarray\\(args\\[0\\]",
+        "path": "/repo/pyvista",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "pytest tests/test_grid.py::test_create_rectilinear_grid_from_specs",
+        "workdir": "/repo",
+        "description": "Run rectilinear grid regression test"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "pytest -q tests/test_grid.py::test_create_rectilinear_grid_from_specs",
+        "workdir": "/repo",
+        "description": "Verify rectilinear grid test passes"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest -q tests/test_grid.py::test_create_rectilinear_grid_from_specs",
+        "workdir": "/repo",
+        "description": "Run targeted pytest via python"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest -q tests/test_grid.py::test_create_rectilinear_grid_from_specs && python -c \"print('ok')\"",
+        "workdir": "/repo",
+        "description": "Confirm targeted test passes"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "git diff -- pyvista/core/grid.py tests/test_grid.py",
+        "workdir": "/repo",
+        "description": "Show focused diff"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "git status --short",
+        "workdir": "/repo",
+        "description": "Show modified files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport pyvista as pv\n\ngrid = pv.RectilinearGrid([0, 1], [0, 1], [0, 1])\nprint(grid.dimensions)\nPY",
+        "workdir": "/repo",
+        "description": "Check list inputs construct grid"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_create_rectilinear_grid_from_specs",
+        "path": "/repo",
+        "include": "tests/**/*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/tests/test_grid.py:\n  Line 723: def test_create_rectilinear_grid_from_specs():"
+    },
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "class RectilinearGrid|RectilinearGrid\\(",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 37 matches\n/repo/tests/utilities/test_reader.py:\n  Line 66:     mesh = pyvista.RectilinearGrid()\n\n/repo/tests/test_grid.py:\n  Line 606:     mesh = pyvista.RectilinearGrid(xrng, yrng, zrng)\n  Line 728:     grid = pyvista.RectilinearGrid(xrng)\n  Line 731:     grid = pyvista.RectilinearGrid(xrng,"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "isinstance\\(args\\[0\\], Sequence\\)|Sequence\\) and",
+        "path": "/repo/pyvista",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/pyvista/core/texture.py:\n  Line 125:         elif isinstance(uinput, Sequence) and len(uinput) == 6:\n\n/repo/pyvista/core/grid.py:\n  Line 493:         if isinstance(uinput, Sequence) and not isinstance(uinput, str):"
+    }
+  ],
+  "token_cost": {
+    "total": 284536,
+    "input": 13235,
+    "output": 6085,
+    "cache_read": 265216,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 1169.36,
+  "patch_non_empty": true
+}

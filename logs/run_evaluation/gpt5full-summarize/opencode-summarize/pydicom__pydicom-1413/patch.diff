@@ -1,0 +1,93 @@
+diff --git a/pydicom/dataelem.py b/pydicom/dataelem.py
+index b2709f13..c5a8166e 100644
+--- a/pydicom/dataelem.py
++++ b/pydicom/dataelem.py
+@@ -39,7 +39,7 @@ if TYPE_CHECKING:  # pragma: no cover
+ 
+ BINARY_VR_VALUES = [
+     'US', 'SS', 'UL', 'SL', 'OW', 'OB', 'OL', 'UN',
+-    'OB or OW', 'US or OW', 'US or SS or OW', 'FL', 'FD', 'OF', 'OD'
++    'OB or OW', 'US or OW', 'US or SS or OW', 'FL', 'FD', 'OF', 'OD', 'OV'
+ ]
+ 
+ 
+@@ -99,11 +99,6 @@ def _is_bytes(val: object) -> bool:
+     return isinstance(val, bytes)
+ 
+ 
+-# double '\' because it is used as escape chr in Python
+-_backslash_str = "\\"
+-_backslash_byte = b"\\"
+-
+-
+ _DataElement = TypeVar("_DataElement", bound="DataElement")
+ _Dataset = TypeVar("_Dataset", bound="Dataset")
+ 
+@@ -437,15 +432,15 @@ class DataElement:
+         # If so, turn them into a list of separate strings
+         #  Last condition covers 'US or SS' etc
+         if isinstance(val, (str, bytes)) and self.VR not in \
+-                ['UT', 'ST', 'LT', 'FL', 'FD', 'AT', 'OB', 'OW', 'OF', 'SL',
++                ['UT', 'ST', 'LT', 'FL', 'FD', 'AT', 'OB', 'OD', 'OF', 'OL',
++                 'OV', 'OW', 'SL',
+                  'SQ', 'SS', 'UL', 'OB/OW', 'OW/OB', 'OB or OW',
+                  'OW or OB', 'UN'] and 'US' not in self.VR:
+-            try:
+-                if _backslash_str in val:
+-                    val = cast(str, val).split(_backslash_str)
+-            except TypeError:
+-                if _backslash_byte in val:
+-                    val = val.split(_backslash_byte)
++            if isinstance(val, str):
++                if "\\" in val:
++                    val = val.split("\\")
++            elif b"\\" in val:
++                val = val.split(b"\\")
+         self._value = self._convert_value(val)
+ 
+     @property
+diff --git a/pydicom/jsonrep.py b/pydicom/jsonrep.py
+index f46d0a11..b57e7783 100644
+--- a/pydicom/jsonrep.py
++++ b/pydicom/jsonrep.py
+@@ -12,7 +12,7 @@ from pydicom.tag import BaseTag
+ # Order of keys is significant!
+ JSON_VALUE_KEYS = ('Value', 'BulkDataURI', 'InlineBinary',)
+ 
+-BINARY_VR_VALUES = ['OW', 'OB', 'OD', 'OF', 'OL', 'UN',
++BINARY_VR_VALUES = ['OW', 'OB', 'OD', 'OF', 'OL', 'OV', 'UN',
+                     'OB or OW', 'US or OW', 'US or SS or OW']
+ VRs_TO_BE_FLOATS = ['DS', 'FL', 'FD', ]
+ VRs_TO_BE_INTS = ['IS', 'SL', 'SS', 'UL', 'US', 'US or SS']
+diff --git a/pydicom/tests/test_dataelem.py b/pydicom/tests/test_dataelem.py
+index 8fb15aee..b1d20ddf 100644
+--- a/pydicom/tests/test_dataelem.py
++++ b/pydicom/tests/test_dataelem.py
+@@ -115,6 +115,14 @@ class TestDataElement:
+         data_element = DataElement((1, 2), "DS", r"42.1\42.2\42.3")
+         assert 3 == data_element.VM
+ 
++    @pytest.mark.parametrize("vr", ["OD", "OL", "OV"])
++    def test_binary_value_with_backslash(self, vr):
++        """DataElement: bytes for binary VRs keep embedded backslashes."""
++        value = b"\x00\\\x01"
++        data_element = DataElement((0x0009, 0x0010), vr, value)
++        assert data_element.value == value
++        assert isinstance(data_element.value, bytes)
++
+     def test_UID(self):
+         """DataElement: setting or changing UID results in UID type."""
+         ds = Dataset()
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index d3b2e47d..93377913 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -23,7 +23,7 @@ default_encoding = "iso8859"
+ # For reading/writing data elements,
+ # these ones have longer explicit VR format
+ # Taken from PS3.5 Section 7.1.2
+-extra_length_VRs = ('OB', 'OD', 'OF', 'OL', 'OW', 'SQ', 'UC', 'UN', 'UR', 'UT')
++extra_length_VRs = ('OB', 'OD', 'OF', 'OL', 'OV', 'OW', 'SQ', 'UC', 'UN', 'UR', 'UT')
+ 
+ # VRs that can be affected by character repertoire
+ # in (0008,0005) Specific Character Set

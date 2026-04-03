@@ -1,0 +1,176 @@
+{
+  "instance_id": "pvlib__pvlib-python-1854",
+  "variant": "official",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [
+    "/repo/pvlib/pvsystem.py",
+    "/repo/pvlib/tests/test_pvsystem.py"
+  ],
+  "per_file": {
+    "/repo/pvlib/pvsystem.py": {
+      "reads": [
+        2
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 360,
+          "signatures": [
+            "def _unwrap_single_value(func)",
+            "def f(*args, **kwargs)",
+            "class PVSystem",
+            "def __init__(self,",
+            "def __repr__(self)",
+            "def _validate_per_array(self, values, system_wide=False)",
+            "def _infer_cell_type(self)",
+            "def get_aoi(self, solar_zenith, solar_azimuth)",
+            "def get_irradiance(self, solar_zenith, solar_azimuth, dni, ghi, dhi,"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_pvsystem.py": {
+      "reads": [
+        2,
+        4,
+        4
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "def test_PVSystem_get_iam(mocker, iam_model, model_params)",
+            "def test_PVSystem_multi_array_get_iam()",
+            "def test_PVSystem_get_iam_sapm(sapm_module_params, mocker)",
+            "def test_PVSystem_get_iam_interp(mocker)",
+            "def test__normalize_sam_product_names()",
+            "def test_PVSystem_get_iam_invalid(sapm_module_params, mocker)",
+            "def test_retrieve_sam_raise_no_parameters()",
+            "def test_retrieve_sam_cecmod()",
+            "def test_retrieve_sam_cecinverter()",
+            "def test_sapm(sapm_module_params)",
+            "def test_PVSystem_sapm(sapm_module_params, mocker)",
+            "def test_PVSystem_multi_array_sapm(sapm_module_params)"
+          ]
+        },
+        {
+          "offset": 1860,
+          "limit": 60,
+          "signatures": [
+            "def test_PVSystem_get_ac_invalid(cec_inverter_parameters)",
+            "def test_PVSystem_creation()",
+            "def test_PVSystem_multiple_array_creation()",
+            "def test_PVSystem_get_aoi()",
+            "def test_PVSystem_multiple_array_get_aoi()",
+            "def solar_pos()"
+          ]
+        },
+        {
+          "offset": 2340,
+          "limit": 40,
+          "signatures": [
+            "def test_PVSystem_num_arrays()",
+            "def test_PVSystem_at_least_one_array()",
+            "def test_combine_loss_factors()",
+            "def test_no_extra_kwargs()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_PVSystem_single_array",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pvlib/tests/test_pvsystem.py::test_PVSystem_multiple_array_creation",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Run targeted PVSystem constructor test"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "single_array",
+        "path": "/repo/pvlib/tests/test_pvsystem.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/tests/test_pvsystem.py:\n  Line 1808: def test_PVSystem_get_ac_single_array_tuple_input("
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "PVSystem\\(",
+        "path": "/repo/pvlib/tests/test_pvsystem.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 57 matches\n/repo/pvlib/tests/test_pvsystem.py:\n  Line 35:     system = pvsystem.PVSystem(module_parameters=model_params)\n  Line 44:     system = pvsystem.PVSystem(\n  Line 59:     system = pvsystem.PVSystem(module_parameters=sapm_module_params)\n  Line 69:     system = pvsystem.PVSystem(module_p"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "^class Array",
+        "path": "/repo/pvlib/pvsystem.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/pvsystem.py:\n  Line 891: class Array:"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "class Array",
+        "path": "/repo/pvlib/pvsystem.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/pvsystem.py:\n  Line 891: class Array:"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_pvsystem.py::test_PVSystem_multiple_array_creation",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Run targeted PVSystem constructor test via python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    }
+  ],
+  "token_cost": {
+    "total": 174712,
+    "input": 13408,
+    "output": 1560,
+    "cache_read": 159744,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 36.65,
+  "patch_non_empty": true
+}

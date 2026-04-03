@@ -1,0 +1,416 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1625",
+  "variant": "official",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [
+    "/repo/test/fixtures/rules/std_rule_cases/L031.yml",
+    "/repo/src/sqlfluff/rules/L031.py"
+  ],
+  "per_file": {
+    "/repo/src/sqlfluff/rules/L031.py": {
+      "reads": [
+        2,
+        15
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 320,
+          "signatures": [
+            "class Rule_L031(BaseRule)",
+            "def _eval(self, segment, **kwargs)",
+            "class TableAliasInfo(NamedTuple)",
+            "def _filter_table_expressions(",
+            "def _lint_aliases_in_join("
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 110,
+          "signatures": [
+            "class Rule_L031(BaseRule)",
+            "def _eval(self, segment, **kwargs)"
+          ]
+        }
+      ]
+    },
+    "/repo/test/cli/commands_test.py": {
+      "reads": [
+        2,
+        7,
+        8,
+        15
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def invoke_assert_code(",
+            "def test__cli__command_directed()",
+            "def test__cli__command_dialect()",
+            "def test__cli__command_dialect_legacy()"
+          ]
+        },
+        {
+          "offset": 160,
+          "limit": 70,
+          "signatures": [
+            "def test__cli__command_lint_parse(command)"
+          ]
+        },
+        {
+          "offset": 396,
+          "limit": 35,
+          "signatures": [
+            "def test__cli__command_fix_stdin(stdin, rules, stdout)",
+            "def test__cli__command_fix_stdin_logging_to_stderr(monkeypatch)"
+          ]
+        },
+        {
+          "offset": 49,
+          "limit": 8,
+          "signatures": [
+            "def test__cli__command_directed()"
+          ]
+        }
+      ]
+    },
+    "/repo/test/fixtures/rules/std_rule_cases/L031.yml": {
+      "reads": [
+        2,
+        15
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/fixtures/linter/indentation_error_simple.sql": {
+      "reads": [
+        4
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/core/rules/analysis/select.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 180,
+          "signatures": [
+            "class SelectStatementColumnsAndTables(NamedTuple)",
+            "def get_select_statement_info(",
+            "def get_aliases_from_select(segment, dialect=None)",
+            "def _has_value_table_function(table_expr, dialect)",
+            "def _get_pivot_table_columns(segment, dialect)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/rules/L032.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "class Rule_L032(BaseRule)",
+            "def _eval(self, segment, **kwargs)"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/dialects/dialect_ansi.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1348,
+          "limit": 60,
+          "signatures": [
+            "def get_eventual_aliases(self) -> List[Tuple[BaseSegment, AliasInfo]]",
+            "class CaseExpressionSegment(BaseSegment)"
+          ]
+        }
+      ]
+    },
+    "/repo/test/core/linter_test.py": {
+      "reads": [
+        9
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 130,
+          "limit": 30,
+          "signatures": [
+            "def test__linter__lint_string_vs_file(path)",
+            "def test__linter__get_violations_filter_rules(rules, num_violations)",
+            "def test__linter__linting_result__sum_dicts()"
+          ]
+        }
+      ]
+    },
+    "/repo/test/rules/std_test.py": {
+      "reads": [
+        9
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 130,
+          "signatures": [
+            "def test__rules__std_file(rule, path, violations)",
+            "def test__rules__std_file_dbt(rule, path, violations, project_dir):  # noqa"
+          ]
+        }
+      ]
+    },
+    "/repo/test/rules/yaml_test_cases_test.py": {
+      "reads": [
+        12
+      ],
+      "edits": [],
+      "first_read_step": 12,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def test__rule_test_case(test_case, caplog)",
+            "def test__rule_test_global_config()"
+          ]
+        }
+      ]
+    },
+    "/repo/test/conftest.py": {
+      "reads": [
+        12
+      ],
+      "edits": [],
+      "first_read_step": 12,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 100,
+          "limit": 80,
+          "signatures": [
+            "def compute_parse_tree_hash(tree)",
+            "def load_yaml(fpath)",
+            "def yaml_loader()",
+            "def generate_test_segments()",
+            "def generate_test_segments_func(elems)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "alias_single_char_identifiers|select b from tbl as a",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "pytest test/cli/commands_test.py::test__cli__command_directed test/rules/yaml_test_cases_test.py -k L031",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted CLI and L031 tests"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "L031|Avoid using aliases in join condition|aliases in join condition",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 14 matches\n/repo/test/rules/std_test.py:\n  Line 86:             \"L031\",\n\n/repo/test/dialects/postgres_test.py:\n  Line 79:         configs={\"core\": {\"exclude_rules\": \"L009,L016,L031\", \"dialect\": \"postgres\"}}\n\n/repo/test/core/config_test.py:\n  Line 196:         (\"L011,L022,L031\", [\"L011\", \"L022\""
+    },
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test__cli__command_directed",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/test/cli/commands_test.py:\n  Line 56: def test__cli__command_directed():"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "issue_.*L031|dialect: tsql|tsql",
+        "path": "/repo/test/fixtures/rules/std_rule_cases",
+        "include": "*.yml"
+      },
+      "output_preview": "Found 9 matches\n/repo/test/fixtures/rules/std_rule_cases/L048.yml:\n  Line 54: test_pass_tsql_unicode_single_quote:\n  Line 59:       dialect: tsql\n  Line 61: test_fail_tsql_unicode_single_quote:\n  Line 67:       dialect: tsql\n  Line 69: test_fail_tsql_unicode_single_quote_lower_n:\n  Line 74:       di"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "class Rule_L031|aliases in from clauses and join conditions|Avoid table aliases",
+        "path": "/repo/src",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/src/sqlfluff/rules/L031.py:\n  Line 12: class Rule_L031(BaseRule):\n  Line 13:     \"\"\"Avoid table aliases in from clauses and join conditions."
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "from_expression_element",
+        "path": "/repo/src/sqlfluff/dialects",
+        "include": "*.py"
+      },
+      "output_preview": "Found 5 matches\n/repo/src/sqlfluff/dialects/dialect_ansi.py:\n  Line 1059:     type = \"from_expression_element\"\n  Line 1301:         from_expression_element = self.get_child(\"from_expression_element\")\n  Line 1302:         return from_expression_element.get_eventual_alias()\n  Line 1363:               "
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "rule: L031|alias_single_char_identifiers",
+        "path": "/repo/test",
+        "include": "*.yml"
+      },
+      "output_preview": "Found 2 matches\n/repo/test/fixtures/rules/std_rule_cases/L031.yml:\n  Line 1: rule: L031\n  Line 81: alias_single_char_identifiers:"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "join_clause",
+        "path": "/repo/src/sqlfluff",
+        "include": "*.py"
+      },
+      "output_preview": "Found 10 matches\n/repo/src/sqlfluff/rules/L042.py:\n  Line 47:         \"join\": [\"join_clause\"],\n  Line 49:         \"both\": [\"join_clause\", \"from_expression\"],\n\n/repo/src/sqlfluff/rules/L032.py:\n  Line 37:         if segment.is_type(\"join_clause\"):\n\n/repo/src/sqlfluff/rules/L024.py:\n  Line 34:     exp"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "recursive_crawl\\(\"join",
+        "path": "/repo/src/sqlfluff",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/src/sqlfluff/core/rules/analysis/select.py:\n  Line 71:         for join_clause in fc.recursive_crawl(\"join_clause\"):"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "from_expression",
+        "path": "/repo/src/sqlfluff/dialects/dialect_ansi.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 9 matches\n/repo/src/sqlfluff/dialects/dialect_ansi.py:\n  Line 1059:     type = \"from_expression_element\"\n  Line 1111:     type = \"from_expression\"\n  Line 1301:         from_expression_element = self.get_child(\"from_expression_element\")\n  Line 1302:         return from_expression_element.get_ev"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "L031",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "Found 11 matches\n/repo/test/rules/std_test.py:\n  Line 86:             \"L031\",\n\n/repo/test/dialects/postgres_test.py:\n  Line 79:         configs={\"core\": {\"exclude_rules\": \"L009,L016,L031\", \"dialect\": \"postgres\"}}\n\n/repo/test/cli/commands_test.py:\n  Line 52: L:   5 | P:  13 | L031 | Avoid using alias"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "select .* from .* as .*|FROM .* as .*",
+        "path": "/repo/test/fixtures/rules/std_rule_cases/L031.yml",
+        "include": "L031.yml"
+      },
+      "output_preview": "Found 5 matches\n/repo/test/fixtures/rules/std_rule_cases/L031.yml:\n  Line 19:     FROM users as u\n  Line 41:     FROM users as u\n  Line 65:     FROM users as u\n  Line 82:   fail_str: \"select b from tbl as a\"\n  Line 86:   fail_str: \"select * from tbl as a\""
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "pattern": "std_rule_cases|L031.yml|assert_rule_pass_in_sql|load_yaml",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "Found 10 matches\n/repo/test/test_testing.py:\n  Line 7:     assert_rule_pass_in_sql,\n  Line 27: def test_assert_rule_pass_in_sql_should_handle_parse_error():\n  Line 28:     \"\"\"Util assert_rule_pass_in_sql should handle parse errors.\"\"\"\n  Line 30:         assert_rule_pass_in_sql(code=\"L001\", sql=\"sele"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "pattern": "pytest.mark.parametrize\\(.*std_rule_cases|fixtures/rules/std_rule_cases",
+        "path": "/repo/test",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/test/rules/yaml_test_cases_test.py:\n  Line 14:     test_cases_path=os.path.join(\"test/fixtures/rules/std_rule_cases\", \"*.yml\")"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest test/cli/commands_test.py::test__cli__command_directed test/rules/yaml_test_cases_test.py -k L031",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted tests via Python module"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    }
+  ],
+  "token_cost": {
+    "total": 357001,
+    "input": 27485,
+    "output": 4908,
+    "cache_read": 324608,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 105.77,
+  "patch_non_empty": true
+}

@@ -1,0 +1,244 @@
+{
+  "instance_id": "pvlib__pvlib-python-1154",
+  "variant": "summarize-relaxed",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [
+    "/repo/readthedocs.yml",
+    "/repo/codecov.yml",
+    "/repo/ci/requirements-py39.yml",
+    "/repo/ci/requirements-py38.yml",
+    "/repo/ci/requirements-py37.yml",
+    "/repo/ci/requirements-py36.yml",
+    "/repo/ci/requirements-py36-min.yml",
+    "/repo/ci/azure/posix.yml",
+    "/repo/ci/azure/conda_windows.yml",
+    "/repo/ci/azure/conda_linux.yml",
+    "/repo/azure-pipelines.yml",
+    "/repo/.stickler.yml",
+    "/repo/.lgtm.yml",
+    "/repo/.landscape.yml",
+    "/repo/.github/workflows/publish.yml",
+    "/repo/setup.py",
+    "/repo/pvlib/spa_c_files/setup.py",
+    "/repo/setup.cfg"
+  ],
+  "per_file": {
+    "/repo/pvlib/irradiance.py": {
+      "reads": [
+        3,
+        6,
+        16
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 793,
+          "limit": 140,
+          "signatures": [
+            "def king(surface_tilt, dhi, ghi, solar_zenith)"
+          ]
+        },
+        {
+          "offset": 700,
+          "limit": 110,
+          "signatures": [
+            "def haydavies(surface_tilt, surface_azimuth, dhi, dni, dni_extra,",
+            "def reindl(surface_tilt, surface_azimuth, dhi, dni, ghi, dni_extra,"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_irradiance.py": {
+      "reads": [
+        3,
+        16
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 180,
+          "limit": 80,
+          "signatures": [
+            "def test_haydavies(irrad_data, ephem_data, dni_et)",
+            "def test_reindl(irrad_data, ephem_data, dni_et)",
+            "def test_king(irrad_data, ephem_data)",
+            "def test_perez(irrad_data, ephem_data, dni_et, relative_airmass)",
+            "def test_perez_components(irrad_data, ephem_data, dni_et, relative_airmass)",
+            "def test_perez_arrays(irrad_data, ephem_data, dni_et, relative_airmass)"
+          ]
+        },
+        {
+          "offset": 201,
+          "limit": 10,
+          "signatures": [
+            "def test_king(irrad_data, ephem_data)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "pytest pvlib/tests/test_irradiance.py::test_reindl",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Runs targeted reindl irradiance test"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "pytest -q -rA pvlib/tests/test_irradiance.py::test_reindl",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Reruns targeted test with summary"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 13,
+      "tool": "glob",
+      "input": {
+        "pattern": "pyproject.toml",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 13,
+      "tool": "glob",
+      "input": {
+        "pattern": "tox.ini",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 13,
+      "tool": "glob",
+      "input": {
+        "pattern": "requirements*.txt",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 14,
+      "tool": "glob",
+      "input": {
+        "pattern": "environment.yml",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 14,
+      "tool": "glob",
+      "input": {
+        "pattern": "*.ini",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile pvlib/irradiance.py pvlib/tests/test_irradiance.py",
+        "workdir": "/repo",
+        "timeout": 120000,
+        "description": "Checks syntax of edited Python files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "def reindl\\(",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/irradiance.py:\n  Line 793: def reindl(surface_tilt, surface_azimuth, dhi, dni, ghi, dni_extra,"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_reindl",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/tests/test_irradiance.py:\n  Line 201: def test_reindl(irrad_data, ephem_data, dni_et):"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "np\\.divide\\(|divide\\(",
+        "path": "/repo/pvlib",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/inverter.py:\n  Line 393:         -0.0162 * zeta - np.divide(0.0059, zeta, out=eta, where=pdc_neq_0)"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "where\\(.*ghi|ghi.*where|safe.*div",
+        "path": "/repo/pvlib",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/pvlib/irradiance.py:\n  Line 1884:     output['ghi'] = ghi.where(aoi_lt_90, ghi_gte_90)\n  Line 1990:             best_ghi = ghi.where(smallest_diff, best_ghi)\n  Line 2175:     dhi = np.where(bad_values, ghi, dhi)"
+    },
+    {
+      "step": 5,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport numpy as np\nimport pandas as pd\ns = pd.Series([0.,1.,2.])\nout = np.divide(s, s, out=np.zeros_like(s, dtype=float), where=s!=0)\nprint(type(out))\nprint(out)\nout2 = np.maximum(s,0)\nprint(type(out2))\nprint(out2)\nPY",
+        "workdir": "/repo",
+        "description": "Checks numpy divide behavior on Series"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nModuleNotFoundError: No module named 'numpy'\n"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "reindl\\(",
+        "path": "/repo/pvlib/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/pvlib/tests/test_irradiance.py:\n  Line 201: def test_reindl(irrad_data, ephem_data, dni_et):\n  Line 202:     result = irradiance.reindl("
+    }
+  ],
+  "token_cost": {
+    "total": 286490,
+    "input": 10899,
+    "output": 4743,
+    "cache_read": 270848,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 122.73,
+  "patch_non_empty": true
+}

@@ -1,0 +1,29 @@
+diff --git a/astroid/nodes/as_string.py b/astroid/nodes/as_string.py
+index 427ccc15..7d5d436f 100644
+--- a/astroid/nodes/as_string.py
++++ b/astroid/nodes/as_string.py
+@@ -515,6 +515,10 @@ class AsStringVisitor:
+             operator = node.op
+         return f"{operator}{self._precedence_parens(node, node.operand)}"
+ 
++    def visit_unknown(self, node):
++        """return an astroid.Unknown node as string"""
++        return node.name
++
+     def visit_while(self, node):
+         """return an astroid.While node as string"""
+         whiles = f"while {node.test.accept(self)}:\n{self._stmt_list(node.body)}"
+diff --git a/tests/unittest_nodes.py b/tests/unittest_nodes.py
+index 7c78cd23..f6c68c69 100644
+--- a/tests/unittest_nodes.py
++++ b/tests/unittest_nodes.py
+@@ -135,6 +135,9 @@ class AsStringTest(resources.SysPathSetup, unittest.TestCase):
+         ast = abuilder.string_build("raise_string(*args, **kwargs)").body[0]
+         self.assertEqual(ast.as_string(), "raise_string(*args, **kwargs)")
+ 
++    def test_unknown_as_string(self) -> None:
++        self.assertEqual(nodes.Unknown().as_string(), "Unknown")
++
+     def test_module_as_string(self) -> None:
+         """check as_string on a whole module prepared to be returned identically"""
+         module = resources.build_file("data/module.py", "data.module")

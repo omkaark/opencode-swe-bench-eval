@@ -1,0 +1,465 @@
+{
+  "instance_id": "pylint-dev__astroid-1196",
+  "variant": "official",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [],
+  "per_file": {
+    "/repo/astroid/nodes/node_classes.py": {
+      "reads": [
+        2,
+        2,
+        4,
+        6,
+        9,
+        15
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 2325,
+          "limit": 120,
+          "signatures": [
+            "def last_child(self)",
+            "def itered(self)",
+            "def getitem(self, index, context=None)",
+            "def bool_value(self, context=None)",
+            "class Expr(Statement)",
+            "def __init__(",
+            "def postinit(self, value: NodeNG | None = None) -> None",
+            "def get_children(self)",
+            "def _get_yield_nodes_skip_lambdas(self)"
+          ]
+        },
+        {
+          "offset": 2220,
+          "limit": 180,
+          "signatures": [
+            "def postinit(self, targets: list[NodeNG] | None = None) -> None",
+            "def get_children(self)",
+            "class Dict(NodeNG, Instance)",
+            "def __init__(",
+            "def postinit(self, items: list[tuple[NodeNG, NodeNG]]) -> None",
+            "def from_elements(cls, items=None)",
+            "def pytype(self)",
+            "def get_children(self)",
+            "def last_child(self)",
+            "def itered(self)",
+            "def getitem(self, index, context=None)",
+            "def bool_value(self, context=None)",
+            "class Expr(Statement)"
+          ]
+        },
+        {
+          "offset": 4530,
+          "limit": 80,
+          "signatures": [
+            "def postinit(self, value: NodeNG | None = None) -> None",
+            "def get_children(self)",
+            "def _get_yield_nodes_skip_lambdas(self)",
+            "class YieldFrom(Yield):  # TODO value is required, not optional",
+            "class DictUnpack(mixins.NoChildrenMixin, NodeNG)",
+            "class FormattedValue(NodeNG)",
+            "def __init__("
+          ]
+        },
+        {
+          "offset": 480,
+          "limit": 70,
+          "signatures": [
+            "class Name(mixins.NoChildrenMixin, LookupMixIn, NodeNG)",
+            "def __init__("
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 120,
+          "signatures": [
+            "def _is_const(value)",
+            "def unpack_infer(stmt, context=None)",
+            "def are_exclusive(stmt1, stmt2, exceptions: list[str] | None = None) -> bool"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_python3.py": {
+      "reads": [
+        3,
+        8,
+        15,
+        15,
+        16
+      ],
+      "edits": [],
+      "first_read_step": 3,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 250,
+          "limit": 90,
+          "signatures": [
+            "def test_annotation_as_string(self) -> None",
+            "def test(a, b: int = 4, c=2, f: 'lala' = 4) -> 2",
+            "def test(a: typing.Generic[T], c: typing.Any = 24) -> typing.Iterable",
+            "def test_unpacking_in_dicts(self) -> None",
+            "def test_nested_unpacking_in_dicts(self) -> None",
+            "def test_unpacking_in_dict_getitem(self) -> None",
+            "def test_format_string(self) -> None",
+            "def test_underscores_in_numeral_literal(self) -> None",
+            "def test_async_comprehensions(self) -> None",
+            "def test_async_comprehensions_outside_coroutine(self)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 80,
+          "signatures": [
+            "class Python3TC(unittest.TestCase)",
+            "def setUpClass(cls)",
+            "def test_starred_notation(self) -> None",
+            "def test_yield_from(self) -> None",
+            "def func()",
+            "def test_yield_from_is_generator(self) -> None",
+            "def func()",
+            "def test_yield_from_as_string(self) -> None",
+            "def func()",
+            "def test_simple_metaclass(self) -> None",
+            "def test_metaclass_error(self) -> None"
+          ]
+        },
+        {
+          "offset": 278,
+          "limit": 40,
+          "signatures": [
+            "def test_unpacking_in_dict_getitem(self) -> None",
+            "def test_unpacking_in_dict_getitem_with_ref(self) -> None",
+            "def test_unpacking_in_dict_getitem_uninferable(self) -> None"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 20,
+          "signatures": [
+            "class Python3TC(unittest.TestCase)",
+            "def setUpClass(cls)",
+            "def test_starred_notation(self) -> None"
+          ]
+        },
+        {
+          "offset": 318,
+          "limit": 20,
+          "signatures": [
+            "def test_format_string(self) -> None",
+            "def test_underscores_in_numeral_literal(self) -> None",
+            "def test_async_comprehensions(self) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/inference.py": {
+      "reads": [
+        5,
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 130,
+          "limit": 40,
+          "signatures": [
+            "def _infer_map(node, context)"
+          ]
+        }
+      ]
+    },
+    "/repo/astroid/helpers.py": {
+      "reads": [
+        5,
+        7
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 140,
+          "signatures": [
+            "def _build_proxy_class(cls_name, builtins)",
+            "def _function_type(function, builtins)",
+            "def _object_type(node, context=None)",
+            "def object_type(node, context=None)",
+            "def _object_type_is_subclass(obj_type, class_or_seq, context=None)",
+            "def object_isinstance(node, class_or_seq, context=None)",
+            "def object_issubclass(node, class_or_seq, context=None)"
+          ]
+        },
+        {
+          "offset": 141,
+          "limit": 80,
+          "signatures": [
+            "def has_known_bases(klass, context=None)",
+            "def _type_check(type1, type2)",
+            "def is_subtype(type1, type2)",
+            "def is_supertype(type1, type2)",
+            "def class_instance_as_index(node)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_unpacking_in_dict_getitem_(uninferable|with_ref)",
+        "path": "/repo",
+        "include": "tests/*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "AstroidIndexError",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "assertRaises\\(exceptions\\.AstroidIndexError|with self\\.assertRaises\\(exceptions\\.AstroidIndexError",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "from astroid import .*exceptions|import exceptions",
+        "path": "/repo/tests/unittest_python3.py",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 10,
+      "tool": "grep",
+      "input": {
+        "pattern": "from astroid import .*helpers|import helpers",
+        "path": "/repo/astroid/nodes/node_classes.py",
+        "include": "node_classes.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs reference dict getitem test"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs uninferable dict getitem test"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile tests/unittest_python3.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Syntax checks unittest_python3 tests"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile astroid/nodes/node_classes.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Syntax checks node_classes module"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def getitem\\(",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "Found 6 matches\n/repo/astroid/nodes/scoped_nodes/scoped_nodes.py:\n  Line 2721:     def getitem(self, index, context=None):\n\n/repo/astroid/nodes/node_classes.py:\n  Line 1942:     def getitem(self, index, context=None):\n  Line 2349:     def getitem(self, index, context=None):\n  Line 3409:     def geti"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "unpacking_in_dict_getitem",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/tests/unittest_python3.py:\n  Line 281:     def test_unpacking_in_dict_getitem(self) -> None:"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "class DictUnpack|DictUnpack\\(",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/astroid/rebuilder.py:\n  Line 1059:                 rebuilt_key = nodes.DictUnpack(\n\n/repo/astroid/nodes/node_classes.py:\n  Line 4550: class DictUnpack(mixins.NoChildrenMixin, NodeNG):"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "\\.getitem\\(index, context\\)|\\.infer\\(context\\).*getitem|AstroidIndexError\\(index\\)",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/astroid/nodes/node_classes.py:\n  Line 2364:                     return value.getitem(index, context)\n  Line 2374:         raise AstroidIndexError(index)"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "class Name\\b|def infer\\(self, context=None\\):",
+        "path": "/repo/astroid/nodes",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/astroid/nodes/node_classes.py:\n  Line 514: class Name(mixins.NoChildrenMixin, LookupMixIn, NodeNG):"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "safe_infer\\(|infer_call_result\\(|util\\.Uninferable",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 184 matches (showing first 100)\n/repo/astroid/protocols.py:\n  Line 124:                 yield util.Uninferable\n  Line 129:         yield util.Uninferable\n  Line 140:         helpers.safe_infer(elt, context) or util.Uninferable\n  Line 142:         if elt is not util.Uninferable\n  Line 150:     "
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "pattern": "def safe_infer\\(",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/astroid/helpers.py:\n  Line 141: def safe_infer(node, context=None):"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "pattern": "from astroid\\.exceptions import|import .*AstroidIndexError|InferenceError",
+        "path": "/repo/astroid/nodes/node_classes.py",
+        "include": "node_classes.py"
+      },
+      "output_preview": "Found 6 matches\n/repo/astroid/nodes/node_classes.py:\n  Line 22: from astroid.exceptions import (\n  Line 25:     InferenceError,\n  Line 181:         except (InferenceError, StopIteration):\n  Line 1394:         except InferenceError:\n  Line 1494:         except InferenceError:\n  Line 4259:         exc"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "pattern": "builder\\.string_build\\(|extract_node\\(\"\"\"|dedent\\(",
+        "path": "/repo/tests/unittest_python3.py",
+        "include": "unittest_python3.py"
+      },
+      "output_preview": "Found 31 matches\n/repo/tests/unittest_python3.py:\n  Line 19:         astroid = self.builder.string_build(\"*a, b = [1, 2, 3]\", \"test\", \"test\")\n  Line 27:         body = dedent(\n  Line 33:         astroid = self.builder.string_build(body)\n  Line 43:         body = dedent(\n  Line 49:         astroid = "
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs uninferable getitem pytest module"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs reference getitem pytest module"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "python -m unittest tests.unittest_python3.Python3TC.test_unpacking_in_dict_getitem_uninferable",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs uninferable getitem unittest"
+      },
+      "output_preview": "E\n======================================================================\nERROR: unittest_python3 (unittest.loader._FailedTest.unittest_python3)\n----------------------------------------------------------------------\nImportError: Failed to import test module: unittest_python3\nTraceback (most recent ca"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "python -m unittest tests.unittest_python3.Python3TC.test_unpacking_in_dict_getitem_with_ref",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs reference getitem unittest"
+      },
+      "output_preview": "E\n======================================================================\nERROR: unittest_python3 (unittest.loader._FailedTest.unittest_python3)\n----------------------------------------------------------------------\nImportError: Failed to import test module: unittest_python3\nTraceback (most recent ca"
+    }
+  ],
+  "token_cost": {
+    "total": 399575,
+    "input": 28597,
+    "output": 4898,
+    "cache_read": 366080,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 95.69,
+  "patch_non_empty": true
+}

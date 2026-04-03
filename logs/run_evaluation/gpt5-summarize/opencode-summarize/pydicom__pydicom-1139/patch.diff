@@ -1,0 +1,47 @@
+diff --git a/pydicom/tests/test_valuerep.py b/pydicom/tests/test_valuerep.py
+index ad5a62d9..f25f552e 100644
+--- a/pydicom/tests/test_valuerep.py
++++ b/pydicom/tests/test_valuerep.py
+@@ -400,6 +400,20 @@ class TestPersonName:
+         pn = PersonName("John^Doe")
+         assert not pn != "John^Doe"
+ 
++    def test_iterator(self):
++        pn = PersonName("SomeName")
++        assert iter(pn) is not pn
++        assert list(pn) == list("SomeName")
++
++    def test_next(self):
++        pn = PersonName("SomeName")
++        assert next(pn) == "S"
++
++    def test_contains(self):
++        pn = PersonName("SomeName")
++        assert "S" in pn
++        assert "Z" not in pn
++
+     def test_encoding_carried(self):
+         """Test encoding is carried over to a new PN3 object"""
+         # Issue 466
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f787..eb868655 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -756,6 +756,17 @@ class PersonName:
+     def __hash__(self):
+         return hash(self.components)
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, item):
++        return item in str(self)
++
++    def __next__(self):
++        if not hasattr(self, '_iter'):
++            self._iter = iter(str(self))
++        return next(self._iter)
++
+     def decode(self, encodings=None):
+         """Return the patient name decoded by the given `encodings`.
+ 

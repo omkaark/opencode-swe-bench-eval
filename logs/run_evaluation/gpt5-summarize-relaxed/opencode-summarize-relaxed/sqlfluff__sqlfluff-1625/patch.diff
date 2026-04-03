@@ -1,0 +1,80 @@
+diff --git a/src/sqlfluff/rules/L031.py b/src/sqlfluff/rules/L031.py
+index 838c6ce5..115ccc7b 100644
+--- a/src/sqlfluff/rules/L031.py
++++ b/src/sqlfluff/rules/L031.py
+@@ -82,6 +82,9 @@ class Rule_L031(BaseRule):
+ 
+             from_clause_index = segment.segments.index(from_clause_segment)
+             from_clause_and_after = segment.segments[from_clause_index:]
++            has_join_clause = any(
++                clause.is_type("join_clause") for clause in from_clause_and_after
++            )
+ 
+             for clause in from_clause_and_after:
+                 for from_expression_element in clause.recursive_crawl(
+@@ -97,6 +100,7 @@ class Rule_L031(BaseRule):
+                     from_expression_elements,
+                     column_reference_segments,
+                     segment,
++                    has_join_clause,
+                 )
+                 or None
+             )
+@@ -147,7 +151,12 @@ class Rule_L031(BaseRule):
+             )
+ 
+     def _lint_aliases_in_join(
+-        self, base_table, from_expression_elements, column_reference_segments, segment
++        self,
++        base_table,
++        from_expression_elements,
++        column_reference_segments,
++        segment,
++        has_join_clause,
+     ):
+         """Lint and fix all aliases in joins - except for self-joins."""
+         # A buffer to keep any violations.
+@@ -189,6 +198,11 @@ class Rule_L031(BaseRule):
+                 if used_alias_ref and used_alias_ref.raw == alias_name:
+                     ids_refs.append(used_alias_ref)
+ 
++            # If the alias is only used in the SELECT clause and there are no
++            # joins, leave it alone.
++            if ids_refs and not has_join_clause:
++                continue
++
+             # Find all references to alias in column references
+             for exp_ref in column_reference_segments:
+                 used_alias_ref = exp_ref.get_child("identifier")
+diff --git a/test/cli/commands_test.py b/test/cli/commands_test.py
+index 490cf360..f3a8f805 100644
+--- a/test/cli/commands_test.py
++++ b/test/cli/commands_test.py
+@@ -49,7 +49,6 @@ def invoke_assert_code(
+ expected_output = """== [test/fixtures/linter/indentation_error_simple.sql] FAIL
+ L:   2 | P:   4 | L003 | Indentation not hanging or a multiple of 4 spaces
+ L:   5 | P:  10 | L010 | Keywords must be consistently upper case.
+-L:   5 | P:  13 | L031 | Avoid using aliases in join condition
+ """
+ 
+ 
+diff --git a/test/fixtures/rules/std_rule_cases/L031.yml b/test/fixtures/rules/std_rule_cases/L031.yml
+index 40b41639..b31a8943 100644
+--- a/test/fixtures/rules/std_rule_cases/L031.yml
++++ b/test/fixtures/rules/std_rule_cases/L031.yml
+@@ -9,6 +9,15 @@ test_pass_allow_self_join_alias:
+     from x
+     left join x as x_2 on x.foreign_key = x.foreign_key
+ 
++test_pass_single_table_alias_used_in_select:
++  pass_str: |
++    SELECT a.[hello]
++    FROM mytable AS a
++
++  configs:
++    core:
++      dialect: tsql
++
+ test_fail_avoid_aliases_1:
+   fail_str: |
+     SELECT

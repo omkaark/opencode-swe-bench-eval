@@ -3,7 +3,7 @@ from pathlib import Path
 
 import modal
 
-DEFAULT_MODEL = "opencode/mimo-v2-pro-free"
+DEFAULT_MODEL = "openai/gpt-5.4"
 FORK_BRANCH = "omkaark/subagent-shared-prefix"
 FORK_REPO = "https://github.com/omkaark/opencode"
 
@@ -26,9 +26,9 @@ _OPENCODE_CONFIG = json.dumps(
         "$schema": "https://opencode.ai/config.json",
         "model": DEFAULT_MODEL,
         "provider": {
-            "opencode": {
+            "openai": {
                 "options": {
-                    "apiKey": "{env:OPENCODE_API_KEY}",
+                    "apiKey": "{env:OPENAI_API_KEY}",
                 }
             }
         },
@@ -83,6 +83,8 @@ PATCHED_TASK_TS = TREE_FORK_DIR / "packages" / "opencode" / "src" / "tool" / "ta
 NOSUBAGENT_TASK_TS = TREE_FORK_DIR / "packages" / "opencode" / "src" / "tool" / "task.nosubagent.ts"
 NOSUBAGENT_PROMPT = TREE_FORK_DIR / "packages" / "opencode" / "src" / "session" / "prompt" / "default.nosubagent.txt"
 SUMMARIZE_TASK_TS = TREE_FORK_DIR / "packages" / "opencode" / "src" / "tool" / "task.summarize.ts"
+SUMMARIZE_FORCED_TASK_TS = TREE_FORK_DIR / "packages" / "opencode" / "src" / "tool" / "task.summarize-forced.ts"
+SUMMARIZE_RELAXED_PROMPT = TREE_FORK_DIR / "packages" / "opencode" / "src" / "session" / "prompt" / "default.summarize-relaxed.txt"
 
 tree = (
     _base_image()
@@ -162,11 +164,36 @@ nosubagent = (
 )
 
 
+# "summarize-relaxed" — uses a two-step pipeline that FORCES the model
+# to write a summary before acting (first call has tools disabled).
+# Also relaxes system prompt constraints. Tests whether explicit summary
+# generation helps beyond just the framing.
+summarize_relaxed = (
+    _base_image()
+    .run_commands(
+        "curl -fsSL https://bun.sh/install | bash",
+        f"git clone --depth 1 --branch {FORK_BRANCH} {FORK_REPO} /opencode",
+    )
+    .add_local_file(
+        str(SUMMARIZE_FORCED_TASK_TS),
+        "/opencode/packages/opencode/src/tool/task.ts",
+        copy=True,
+    )
+    .add_local_file(
+        str(SUMMARIZE_RELAXED_PROMPT),
+        "/opencode/packages/opencode/src/session/prompt/default.txt",
+        copy=True,
+    )
+    .run_commands(*_build_opencode_commands())
+)
+
+
 VARIANT_IMAGES = {
     "official": official,
     "fork": fork,
     "tree": tree,
     "aware": aware,
     "summarize": summarize,
+    "summarize-relaxed": summarize_relaxed,
     "nosubagent": nosubagent,
 }

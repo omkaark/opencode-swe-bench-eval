@@ -1,0 +1,82 @@
+2026-04-03 02:18:55,697 - INFO - >>>>> Applied Patch:
+Checking patch astroid/modutils.py...
+Checking patch tests/unittest_modutils.py...
+Applied patch astroid/modutils.py cleanly.
+Applied patch tests/unittest_modutils.py cleanly.
+
+2026-04-03 02:18:56,214 - INFO - Git diff before:
+diff --git a/astroid/modutils.py b/astroid/modutils.py
+index 6d698469..63af82e8 100644
+--- a/astroid/modutils.py
++++ b/astroid/modutils.py
+@@ -266,6 +266,14 @@ def check_modpath_has_init(path, mod_path):
+         path = os.path.join(path, part)
+         if not _has_init(path):
+             old_namespace = util.is_namespace(".".join(modpath))
++            if not old_namespace:
++                try:
++                    old_namespace = (
++                        spec.find_spec(modpath, [os.path.dirname(path)]).type
++                        == spec.ModuleType.PY_NAMESPACE
++                    )
++                except ImportError:
++                    old_namespace = False
+             if not old_namespace:
+                 return False
+     return True
+diff --git a/tests/unittest_modutils.py b/tests/unittest_modutils.py
+index d6fcb68e..c40afb58 100644
+--- a/tests/unittest_modutils.py
++++ b/tests/unittest_modutils.py
+@@ -157,6 +157,23 @@ class ModPathFromFileTest(unittest.TestCase):
+             finally:
+                 os.remove(linked_file_name)
+ 
++    def test_load_packages_without_init(self) -> None:
++        with tempfile.TemporaryDirectory() as root_dir:
++            src_dir = os.path.join(root_dir, "src")
++            project_dir = os.path.join(src_dir, "project")
++            os.mkdir(src_dir)
++            os.mkdir(project_dir)
++            with open(os.path.join(src_dir, "__init__.py"), "w", encoding="utf-8"):
++                pass
++            module_file = os.path.join(project_dir, "file.py")
++            with open(module_file, "w", encoding="utf-8"):
++                pass
++
++            self.assertEqual(
++                modutils.modpath_from_file(module_file, [root_dir]),
++                ["src", "project", "file"],
++            )
++
+     def test_load_from_module_symlink_on_symlinked_paths_in_syspath(self) -> None:
+         # constants
+         tmp = tempfile.gettempdir()
+
+2026-04-03 02:19:02,406 - INFO - Test runtime: 5.82 seconds
+2026-04-03 02:19:02,406 - INFO - Test output for pylint-dev__astroid-1333 written to logs/run_evaluation/gpt5-official/opencode-official/pylint-dev__astroid-1333/test_output.txt
+2026-04-03 02:19:02,770 - INFO - Git diff after:
+diff --git a/astroid/modutils.py b/astroid/modutils.py
+index 6d698469..63af82e8 100644
+--- a/astroid/modutils.py
++++ b/astroid/modutils.py
+@@ -266,6 +266,14 @@ def check_modpath_has_init(path, mod_path):
+         path = os.path.join(path, part)
+         if not _has_init(path):
+             old_namespace = util.is_namespace(".".join(modpath))
++            if not old_namespace:
++                try:
++                    old_namespace = (
++                        spec.find_spec(modpath, [os.path.dirname(path)]).type
++                        == spec.ModuleType.PY_NAMESPACE
++                    )
++                except ImportError:
++                    old_namespace = False
+             if not old_namespace:
+                 return False
+     return True
+
+2026-04-03 02:19:02,770 - INFO - Git diff changed after running eval script
+2026-04-03 02:19:02,770 - INFO - Grading answer for pylint-dev__astroid-1333...
+2026-04-03 02:19:02,772 - INFO - report: {'pylint-dev__astroid-1333': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['tests/unittest_modutils.py::ModPathFromFileTest::test_load_packages_without_init']}, 'PASS_TO_PASS': {'success': ['tests/unittest_modutils.py::ModuleFileTest::test_find_egg_module', 'tests/unittest_modutils.py::ModuleFileTest::test_find_zipped_module', 'tests/unittest_modutils.py::LoadModuleFromNameTest::test_known_values_load_module_from_name_1', 'tests/unittest_modutils.py::LoadModuleFromNameTest::test_known_values_load_module_from_name_2', 'tests/unittest_modutils.py::LoadModuleFromNameTest::test_raise_load_module_from_name_1', 'tests/unittest_modutils.py::GetModulePartTest::test_get_module_part_exception', 'tests/unittest_modutils.py::GetModulePartTest::test_known_values_get_builtin_module_part', 'tests/unittest_modutils.py::GetModulePartTest::test_known_values_get_compiled_module_part', 'tests/unittest_modutils.py::GetModulePartTest::test_known_values_get_module_part_1', 'tests/unittest_modutils.py::GetModulePartTest::test_known_values_get_module_part_2', 'tests/unittest_modutils.py::GetModulePartTest::test_known_values_get_module_part_3', 'tests/unittest_modutils.py::ModPathFromFileTest::test_import_symlink_both_outside_of_path', 'tests/unittest_modutils.py::ModPathFromFileTest::test_import_symlink_with_source_outside_of_path', 'tests/unittest_modutils.py::ModPathFromFileTest::test_known_values_modpath_from_file_1', 'tests/unittest_modutils.py::ModPathFromFileTest::test_load_from_module_symlink_on_symlinked_paths_in_syspath', 'tests/unittest_modutils.py::ModPathFromFileTest::test_raise_modpath_from_file_exception', 'tests/unittest_modutils.py::LoadModuleFromPathTest::test_do_not_load_twice', 'tests/unittest_modutils.py::FileFromModPathTest::test_builtin', 'tests/unittest_modutils.py::FileFromModPathTest::test_site_packages', 'tests/unittest_modutils.py::FileFromModPathTest::test_std_lib', 'tests/unittest_modutils.py::FileFromModPathTest::test_unexisting', 'tests/unittest_modutils.py::FileFromModPathTest::test_unicode_in_package_init', 'tests/unittest_modutils.py::GetSourceFileTest::test', 'tests/unittest_modutils.py::GetSourceFileTest::test_raise', 'tests/unittest_modutils.py::StandardLibModuleTest::test_4', 'tests/unittest_modutils.py::StandardLibModuleTest::test_builtin', 'tests/unittest_modutils.py::StandardLibModuleTest::test_builtins', 'tests/unittest_modutils.py::StandardLibModuleTest::test_custom_path', 'tests/unittest_modutils.py::StandardLibModuleTest::test_datetime', 'tests/unittest_modutils.py::StandardLibModuleTest::test_failing_edge_cases', 'tests/unittest_modutils.py::StandardLibModuleTest::test_nonstandard', 'tests/unittest_modutils.py::StandardLibModuleTest::test_unknown', 'tests/unittest_modutils.py::IsRelativeTest::test_deep_relative', 'tests/unittest_modutils.py::IsRelativeTest::test_deep_relative2', 'tests/unittest_modutils.py::IsRelativeTest::test_deep_relative3', 'tests/unittest_modutils.py::IsRelativeTest::test_deep_relative4', 'tests/unittest_modutils.py::IsRelativeTest::test_is_relative_bad_path', 'tests/unittest_modutils.py::IsRelativeTest::test_known_values_is_relative_1', 'tests/unittest_modutils.py::IsRelativeTest::test_known_values_is_relative_3', 'tests/unittest_modutils.py::IsRelativeTest::test_known_values_is_relative_4', 'tests/unittest_modutils.py::IsRelativeTest::test_known_values_is_relative_5', 'tests/unittest_modutils.py::GetModuleFilesTest::test_get_all_files', 'tests/unittest_modutils.py::GetModuleFilesTest::test_get_module_files_1', 'tests/unittest_modutils.py::GetModuleFilesTest::test_load_module_set_attribute', 'tests/unittest_modutils.py::ExtensionPackageWhitelistTest::test_is_module_name_part_of_extension_package_whitelist_success', 'tests/unittest_modutils.py::ExtensionPackageWhitelistTest::test_is_module_name_part_of_extension_package_whitelist_true'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pylint-dev__astroid-1333: resolved: False

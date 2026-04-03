@@ -1,0 +1,217 @@
+{
+  "instance_id": "pylint-dev__astroid-1978",
+  "variant": "official",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/astroid/raw_building.py",
+    "/repo/tests/unittest_raw_building.py"
+  ],
+  "per_file": {
+    "/repo/astroid/raw_building.py": {
+      "reads": [
+        2,
+        4
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "def _attach_local_node(parent, node, name: str) -> None",
+            "def _add_dunder_class(func, member) -> None",
+            "def attach_dummy_node(node, name: str, runtime_object=_EMPTY_OBJECT_MARKER) -> None",
+            "def attach_const_node(node, name: str, value) -> None",
+            "def attach_import_node(node, modname: str, membername: str) -> None",
+            "def build_module(name: str, doc: str | None = None) -> nodes.Module",
+            "def build_class(",
+            "def build_function(",
+            "def build_from_import(fromname: str, names: list[str]) -> nodes.ImportFrom",
+            "def register_arguments(func: nodes.FunctionDef, args: list | None = None) -> None",
+            "def object_build_class(",
+            "def _get_args_info_from_callable(",
+            "def object_build_function(",
+            "def object_build_datadescriptor(",
+            "def object_build_methoddescriptor("
+          ]
+        },
+        {
+          "offset": 340,
+          "limit": 180,
+          "signatures": [
+            "def __init__(self, manager_instance: AstroidManager | None = None) -> None",
+            "def inspect_build(",
+            "def object_build(",
+            "def imported_member(self, node, member, name: str) -> bool",
+            "def _set_proxied(const) -> nodes.ClassDef",
+            "def _astroid_bootstrapping() -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_raw_building.py": {
+      "reads": [
+        2,
+        4
+      ],
+      "edits": [],
+      "first_read_step": 2,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1,
+          "limit": 260,
+          "signatures": [
+            "class RawBuildingTC(unittest.TestCase)",
+            "def test_attach_dummy_node(self) -> None",
+            "def test_build_module(self) -> None",
+            "def test_build_class(self) -> None",
+            "def test_build_function(self) -> None",
+            "def test_build_function_args(self) -> None",
+            "def test_build_function_defaults(self) -> None",
+            "def test_build_function_posonlyargs(self) -> None",
+            "def test_build_function_kwonlyargs(self) -> None",
+            "def test_build_from_import(self) -> None",
+            "def test_io_is__io(self)",
+            "def test_build_function_deepinspect_deprecation(self) -> None",
+            "def test_module_object_with_broken_getattr(self) -> None"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_build_module_getattr_catch_output",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "pytest tests/unittest_raw_building.py::RawBuildingTC::test_module_object_with_warning_getattr -q",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted raw building warning test"
+      },
+      "output_preview": "/usr/bin/bash: line 1: pytest: command not found\n",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "python -m py_compile astroid/raw_building.py tests/unittest_raw_building.py",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Compiles edited files"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "getattr\\(",
+        "path": "/repo/astroid/raw_building.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 10 matches\n/repo/astroid/raw_building.py:\n  Line 50:     cls_name = getattr(python_cls, \"__name__\", None)\n  Line 232:         getattr(member, \"__name__\", None) or localname,\n  Line 258:         getattr(member, \"__name__\", None) or localname, doc=member.__doc__\n  Line 274:     class_name = name"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "hasattr\\(",
+        "path": "/repo/astroid/raw_building.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 3 matches\n/repo/astroid/raw_building.py:\n  Line 333:         return hasattr(obj, member)\n  Line 375:         node.package = hasattr(module, \"__path__\")\n  Line 537:     if hasattr(types, \"AsyncGeneratorType\"):"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "__dict__|dir\\(",
+        "path": "/repo/astroid/raw_building.py",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/astroid/raw_building.py:\n  Line 289:             instdict = member().__dict__\n  Line 389:         for name in dir(obj):"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "numpy|np\\.long|FutureWarning",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 180 matches (showing first 100)\n/repo/tests/unittest_regrtest.py:\n  Line 23:     import numpy  # pylint: disable=unused-import\n  Line 69:     @unittest.skipIf(not HAS_NUMPY, \"Needs numpy\")\n  Line 70:     def test_numpy_crash(self):\n  Line 71:         \"\"\"Test don't crash on numpy.\"\"\"\n  Line 76:"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "imported_member\\(|inspect_build\\(|object_build\\(",
+        "path": "/repo/tests",
+        "include": "*.py"
+      },
+      "output_preview": "Found 7 matches\n/repo/tests/unittest_regrtest.py:\n  Line 67:         builder.object_build(build_module(\"module_name\", \"\"), Whatever)\n\n/repo/tests/unittest_raw_building.py:\n  Line 94:         module = builder.inspect_build(_io)\n  Line 117:         AstroidBuilder().inspect_build(fm_getattr, \"test\")\n\n/"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest tests/unittest_raw_building.py::RawBuildingTC::test_module_object_with_warning_getattr -q",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Runs targeted raw building test via python"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import sys, types, warnings; from astroid.builder import AstroidBuilder; warning_module = types.ModuleType('warning_module');\\n\\ndef __getattr__(name):\\n    warnings.warn('deprecated attribute', FutureWarning)\\n    raise AttributeError(name)\\n\\nwarning_module.__getattr__ = __getattr__; module = types.ModuleType('test'); warned_class = type('WarnedClass', (), {}); warned_class.__module__ = warning_module.__name__; module.WarnedClass = warned_class; sys.modules[warning_module.__name__] = warning_module;\\nwith warnings.catch_warnings(record=True) as records:\\n    warnings.simplefilter('always'); AstroidBuilder().inspect_build(module, 'test');\\nassert not any(issubclass(w.category, FutureWarning) for w in records)\\nprint('ok')\"",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Smoke checks warning suppression"
+      },
+      "output_preview": "  File \"<string>\", line 1\n    import sys, types, warnings; from astroid.builder import AstroidBuilder; warning_module = types.ModuleType('warning_module');\\n\\ndef __getattr__(name):\\n    warnings.warn('deprecated attribute', FutureWarning)\\n    raise AttributeError(name)\\n\\nwarning_module.__getattr_"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "python - <<'PY'\nimport sys\nimport types\nimport warnings\nfrom astroid.builder import AstroidBuilder\n\nwarning_module = types.ModuleType('warning_module')\n\ndef __getattr__(name):\n    warnings.warn('deprecated attribute', FutureWarning)\n    raise AttributeError(name)\n\nwarning_module.__getattr__ = __getattr__\nmodule = types.ModuleType('test')\nwarned_class = type('WarnedClass', (), {})\nwarned_class.__module__ = warning_module.__name__\nmodule.WarnedClass = warned_class\nsys.modules[warning_module.__name__] = warning_module\n\nwith warnings.catch_warnings(record=True) as records:\n    warnings.simplefilter('always')\n    AstroidBuilder().inspect_build(module, 'test')\n\nassert not any(issubclass(w.category, FutureWarning) for w in records)\nprint('ok')\nPY",
+        "timeout": 120000,
+        "workdir": "/repo",
+        "description": "Smoke checks warning suppression"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\n  File \"/repo/astroid/__init__.py\", line 42, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 17, in <module>\n    from astroid.nodes._base_nodes import Statemen"
+    }
+  ],
+  "token_cost": {
+    "total": 214337,
+    "input": 12421,
+    "output": 4796,
+    "cache_read": 197120,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": null,
+  "total_duration_seconds": 67.2,
+  "patch_non_empty": true
+}

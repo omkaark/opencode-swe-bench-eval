@@ -1,0 +1,48 @@
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..36f4da5d 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -186,6 +186,18 @@ class Delimited(OneOf):
+                 else:
+                     # Zero length section between delimiters, or zero code
+                     # elements if appropriate. Return unmatched.
++                    # If we're allowing trailing delimiters and the delimiter
++                    # is the last thing in the stream, treat it as a harmless
++                    # terminator rather than an error. This keeps consecutive
++                    # statement terminators from blowing up file parsing.
++                    if (
++                        self.allow_trailing
++                        and delimiter_matcher is self.delimiter
++                        and len(delimiter_match.unmatched_segments) == 0
++                    ):
++                        matched_segments += delimiter_match.matched_segments
++                        return MatchResult.from_matched(matched_segments.matched_segments)
++
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+diff --git a/test/dialects/ansi_test.py b/test/dialects/ansi_test.py
+index 1c83e4c6..d9a96970 100644
+--- a/test/dialects/ansi_test.py
++++ b/test/dialects/ansi_test.py
+@@ -173,6 +173,20 @@ def test__dialect__ansi_specific_segment_not_parse(raw, err_locations, caplog):
+     assert locs == err_locations
+ 
+ 
++@pytest.mark.parametrize(
++    "raw",
++    [
++        "select id from tbl;;",
++        "select 1;;",
++    ],
++)
++def test__dialect__ansi_multiple_semicolons(raw):
++    """Test consecutive statement terminators do not crash parsing."""
++    lnt = Linter()
++    parsed = lnt.parse_string(raw)
++    assert parsed.tree is not None
++
++
+ def test__dialect__ansi_is_whitespace():
+     """Test proper tagging with is_whitespace."""
+     lnt = Linter()

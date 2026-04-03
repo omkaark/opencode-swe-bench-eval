@@ -1,0 +1,44 @@
+diff --git a/pvlib/irradiance.py b/pvlib/irradiance.py
+index 6580030..5d8f41c 100644
+--- a/pvlib/irradiance.py
++++ b/pvlib/irradiance.py
+@@ -886,7 +886,16 @@ def reindl(surface_tilt, surface_azimuth, dhi, dni, ghi, dni_extra,
+     # these are the () and [] sub-terms of the second term of eqn 8
+     term1 = 1 - AI
+     term2 = 0.5 * (1 + tools.cosd(surface_tilt))
+-    term3 = 1 + np.sqrt(HB / ghi) * (tools.sind(0.5 * surface_tilt) ** 3)
++    with np.errstate(invalid='ignore', divide='ignore'):
++        sqrt_HB_ghi = np.sqrt(HB / ghi)
++
++    try:
++        sqrt_HB_ghi.replace([np.inf, -np.inf], 0, inplace=True)
++        sqrt_HB_ghi.fillna(0, inplace=True)
++    except AttributeError:
++        sqrt_HB_ghi = np.where(np.isfinite(sqrt_HB_ghi), sqrt_HB_ghi, 0)
++
++    term3 = 1 + sqrt_HB_ghi * (tools.sind(0.5 * surface_tilt) ** 3)
+ 
+     sky_diffuse = dhi * (AI * Rb + term1 * term2 * term3)
+     sky_diffuse = np.maximum(sky_diffuse, 0)
+diff --git a/pvlib/tests/test_irradiance.py b/pvlib/tests/test_irradiance.py
+index dd914eb..d0f73ee 100644
+--- a/pvlib/tests/test_irradiance.py
++++ b/pvlib/tests/test_irradiance.py
+@@ -194,7 +194,7 @@ def test_haydavies(irrad_data, ephem_data, dni_et):
+     result = irradiance.haydavies(
+         40, 180, irrad_data['dhi'], irrad_data['dni'], dni_et,
+         ephem_data['apparent_zenith'], ephem_data['azimuth'])
+-    # values from matlab 1.4 code
++    # values from matlab 1.4 code, except zero-GHI case should be 0
+     assert_allclose(result, [0, 27.1775, 102.9949, 33.1909], atol=1e-4)
+ 
+ 
+@@ -203,7 +203,7 @@ def test_reindl(irrad_data, ephem_data, dni_et):
+         40, 180, irrad_data['dhi'], irrad_data['dni'], irrad_data['ghi'],
+         dni_et, ephem_data['apparent_zenith'], ephem_data['azimuth'])
+     # values from matlab 1.4 code
+-    assert_allclose(result, [np.nan, 27.9412, 104.1317, 34.1663], atol=1e-4)
++    assert_allclose(result, [0, 27.9412, 104.1317, 34.1663], atol=1e-4)
+ 
+ 
+ def test_king(irrad_data, ephem_data):

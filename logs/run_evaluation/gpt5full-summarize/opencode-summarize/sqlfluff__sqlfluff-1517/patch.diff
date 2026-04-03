@@ -1,0 +1,48 @@
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..fc524600 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -141,6 +141,10 @@ class Delimited(OneOf):
+                         )
+                     # No match, or an incomplete match: Not allowed
+                     if not match or not match.is_complete():
++                        if matched_segments:
++                            return MatchResult(
++                                matched_segments.matched_segments, mutated_segments
++                            )
+                         return MatchResult.from_unmatched(mutated_segments)
+ 
+                     # We have a complete match!
+@@ -186,6 +190,10 @@ class Delimited(OneOf):
+                 else:
+                     # Zero length section between delimiters, or zero code
+                     # elements if appropriate. Return unmatched.
++                    if matched_segments:
++                        return MatchResult(
++                            matched_segments.matched_segments, mutated_segments
++                        )
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+diff --git a/test/dialects/ansi_test.py b/test/dialects/ansi_test.py
+index 1c83e4c6..51c4cb7d 100644
+--- a/test/dialects/ansi_test.py
++++ b/test/dialects/ansi_test.py
+@@ -173,6 +173,17 @@ def test__dialect__ansi_specific_segment_not_parse(raw, err_locations, caplog):
+     assert locs == err_locations
+ 
+ 
++@pytest.mark.parametrize(
++    "raw,err_locations",
++    [("select id from tbl;;", [(1, 20)])],
++)
++def test__dialect__ansi_multiple_semicolons(raw, err_locations):
++    """Test doubled semicolons return a parse error rather than crashing."""
++    parsed = Linter().parse_string(raw)
++    locs = [(v.line_no, v.line_pos) for v in parsed.violations]
++    assert locs == err_locations
++
++
+ def test__dialect__ansi_is_whitespace():
+     """Test proper tagging with is_whitespace."""
+     lnt = Linter()

@@ -1,0 +1,71 @@
+2026-04-03 18:26:17,856 - INFO - >>>>> Applied Patch:
+Checking patch pvlib/temperature.py...
+Checking patch pvlib/tests/test_temperature.py...
+Applied patch pvlib/temperature.py cleanly.
+Applied patch pvlib/tests/test_temperature.py cleanly.
+
+2026-04-03 18:26:18,866 - INFO - Git diff before:
+diff --git a/pvlib/temperature.py b/pvlib/temperature.py
+index 1d98736..eb46d51 100644
+--- a/pvlib/temperature.py
++++ b/pvlib/temperature.py
+@@ -599,7 +599,7 @@ def fuentes(poa_global, temp_air, wind_speed, noct_installed, module_height=5,
+     # n.b. the way Fuentes calculates the first timedelta makes it seem like
+     # the value doesn't matter -- rather than recreate it here, just assume
+     # it's the same as the second timedelta:
+-    timedelta_hours = np.diff(poa_global.index).astype(float) / 1e9 / 60 / 60
++    timedelta_hours = np.diff(poa_global.index.asi8) / 1e9 / 60 / 60
+     timedelta_hours = np.append([timedelta_hours[0]], timedelta_hours)
+ 
+     tamb_array = temp_air + 273.15
+diff --git a/pvlib/tests/test_temperature.py b/pvlib/tests/test_temperature.py
+index 245c5d2..597a45e 100644
+--- a/pvlib/tests/test_temperature.py
++++ b/pvlib/tests/test_temperature.py
+@@ -190,3 +190,24 @@ def test_fuentes(filename, inoct):
+     night_difference = expected_tcell[is_night] - actual_tcell[is_night]
+     assert night_difference.max() < 6
+     assert night_difference.min() > 0
++
++
++@pytest.mark.parametrize('tz', ['Etc/GMT+5'])
++def test_fuentes_timezone(tz):
++    index = pd.date_range('2019-01-01', freq='h', periods=3)
++    kwargs = {
++        'poa_global': pd.Series(1000, index=index),
++        'temp_air': pd.Series(20, index=index),
++        'wind_speed': pd.Series(1, index=index),
++        'noct_installed': 45,
++    }
++
++    expected = temperature.fuentes(**kwargs)
++
++    kwargs['poa_global'].index = kwargs['poa_global'].index.tz_localize(tz)
++    kwargs['temp_air'].index = kwargs['temp_air'].index.tz_localize(tz)
++    kwargs['wind_speed'].index = kwargs['wind_speed'].index.tz_localize(tz)
++    actual = temperature.fuentes(**kwargs)
++
++    expected.index = expected.index.tz_localize(tz)
++    assert_series_equal(expected, actual)
+
+2026-04-03 18:26:29,741 - INFO - Test runtime: 10.79 seconds
+2026-04-03 18:26:29,741 - INFO - Test output for pvlib__pvlib-python-1072 written to logs/run_evaluation/gpt5full-summarize-relaxed-fixed/opencode-summarize-relaxed/pvlib__pvlib-python-1072/test_output.txt
+2026-04-03 18:26:30,001 - INFO - Git diff after:
+diff --git a/pvlib/temperature.py b/pvlib/temperature.py
+index 1d98736..eb46d51 100644
+--- a/pvlib/temperature.py
++++ b/pvlib/temperature.py
+@@ -599,7 +599,7 @@ def fuentes(poa_global, temp_air, wind_speed, noct_installed, module_height=5,
+     # n.b. the way Fuentes calculates the first timedelta makes it seem like
+     # the value doesn't matter -- rather than recreate it here, just assume
+     # it's the same as the second timedelta:
+-    timedelta_hours = np.diff(poa_global.index).astype(float) / 1e9 / 60 / 60
++    timedelta_hours = np.diff(poa_global.index.asi8) / 1e9 / 60 / 60
+     timedelta_hours = np.append([timedelta_hours[0]], timedelta_hours)
+ 
+     tamb_array = temp_air + 273.15
+
+2026-04-03 18:26:30,001 - INFO - Git diff changed after running eval script
+2026-04-03 18:26:30,001 - INFO - Grading answer for pvlib__pvlib-python-1072...
+2026-04-03 18:26:30,003 - INFO - report: {'pvlib__pvlib-python-1072': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_temperature.py::test_fuentes_timezone[Etc/GMT+5]']}, 'PASS_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_temperature.py::test_sapm_cell', 'pvlib/tests/test_temperature.py::test_sapm_module', 'pvlib/tests/test_temperature.py::test_sapm_cell_from_module', 'pvlib/tests/test_temperature.py::test_sapm_ndarray', 'pvlib/tests/test_temperature.py::test_sapm_series', 'pvlib/tests/test_temperature.py::test_pvsyst_cell_default', 'pvlib/tests/test_temperature.py::test_pvsyst_cell_kwargs', 'pvlib/tests/test_temperature.py::test_pvsyst_cell_ndarray', 'pvlib/tests/test_temperature.py::test_pvsyst_cell_series', 'pvlib/tests/test_temperature.py::test_faiman_default', 'pvlib/tests/test_temperature.py::test_faiman_kwargs', 'pvlib/tests/test_temperature.py::test_faiman_list', 'pvlib/tests/test_temperature.py::test_faiman_ndarray', 'pvlib/tests/test_temperature.py::test_faiman_series', 'pvlib/tests/test_temperature.py::test__temperature_model_params', 'pvlib/tests/test_temperature.py::test_fuentes[pvwatts_8760_rackmount.csv-45]', 'pvlib/tests/test_temperature.py::test_fuentes[pvwatts_8760_roofmount.csv-49]', 'pvlib/tests/test_temperature.py::test_fuentes_timezone[None]']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pvlib__pvlib-python-1072: resolved: False

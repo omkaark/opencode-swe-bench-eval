@@ -1,0 +1,65 @@
+diff --git a/astroid/modutils.py b/astroid/modutils.py
+index 6d698469..0650babc 100644
+--- a/astroid/modutils.py
++++ b/astroid/modutils.py
+@@ -265,8 +265,17 @@ def check_modpath_has_init(path, mod_path):
+         modpath.append(part)
+         path = os.path.join(path, part)
+         if not _has_init(path):
+-            old_namespace = util.is_namespace(".".join(modpath))
+-            if not old_namespace:
++            namespace_name = ".".join(modpath)
++            found_spec = None
++            try:
++                found_spec = spec.find_spec(modpath)
++            except ImportError:
++                pass
++            is_namespace = util.is_namespace(namespace_name) or (
++                found_spec is not None
++                and found_spec.type == spec.ModuleType.PY_NAMESPACE
++            )
++            if not is_namespace:
+                 return False
+     return True
+ 
+@@ -307,6 +316,7 @@ def _get_relative_base_path(filename, path_to_check):
+ 
+ def modpath_from_file_with_callback(filename, path=None, is_package_cb=None):
+     filename = os.path.expanduser(_path_from_filename(filename))
++    assert is_package_cb is not None
+     for pathname in itertools.chain(
+         path or [], map(_cache_normalize_path, sys.path), sys.path
+     ):
+diff --git a/tests/unittest_modutils.py b/tests/unittest_modutils.py
+index d6fcb68e..a6e94012 100644
+--- a/tests/unittest_modutils.py
++++ b/tests/unittest_modutils.py
+@@ -189,6 +189,28 @@ class ModPathFromFileTest(unittest.TestCase):
+         # this should be equivalent to: import secret
+         self.assertEqual(modutils.modpath_from_file(symlink_secret_path), ["secret"])
+ 
++    def test_load_packages_without_init(self) -> None:
++        with tempfile.TemporaryDirectory() as tmpdir:
++            src = os.path.join(tmpdir, "src")
++            package = os.path.join(src, "project")
++            os.mkdir(src)
++            os.mkdir(package)
++            with open(os.path.join(src, "__init__.py"), "w", encoding="utf-8"):
++                pass
++            filepath = os.path.join(package, "file.py")
++            with open(filepath, "w", encoding="utf-8"):
++                pass
++
++            sys.path.insert(0, tmpdir)
++            self.addCleanup(sys.path.pop, 0)
++
++            self.assertEqual(
++                modutils.modpath_from_file(filepath), ["src", "project", "file"]
++            )
++            self.assertEqual(
++                modutils.load_module_from_file(filepath).__name__, "src.project.file"
++            )
++
+ 
+ class LoadModuleFromPathTest(resources.SysPathSetup, unittest.TestCase):
+     def test_do_not_load_twice(self) -> None:

@@ -1,0 +1,93 @@
+2026-04-03 05:02:36,234 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L036.py...
+Checking patch test/rules/std_L016_L36_combo.py...
+Applied patch src/sqlfluff/rules/L036.py cleanly.
+Applied patch test/rules/std_L016_L36_combo.py cleanly.
+
+2026-04-03 05:02:36,938 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..f18372d1 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -117,6 +117,14 @@ class Rule_L036(BaseRule):
+                     select_if=lambda s: s.is_type("whitespace"),
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
++                if not i:
++                    target_idx = segment.segments.index(select_target)
++                    if (
++                        target_idx > 0
++                        and segment.segments[target_idx - 1].is_type("whitespace")
++                        and segment.segments[target_idx - 1] not in ws_to_delete
++                    ):
++                        ws_to_delete = [segment.segments[target_idx - 1]] + ws_to_delete
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+                 fixes.append(LintFix("create", select_target, NewlineSegment()))
+         if fixes:
+diff --git a/test/rules/std_L016_L36_combo.py b/test/rules/std_L016_L36_combo.py
+index e69ea81f..08c7934a 100644
+--- a/test/rules/std_L016_L36_combo.py
++++ b/test/rules/std_L016_L36_combo.py
+@@ -29,3 +29,34 @@ def test__rules__std_L016_L036_long_line_fix2():
+         result
+         == "SELECT 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\n"
+     )
++
++
++def test__rules__std_L016_L036_cte_fix():
++    """Verify L036 doesn't leave an extra space when fixing a CTE select clause."""
++    sql = """WITH example AS (
++    SELECT my_id,
++        other_thing,
++        one_more
++    FROM
++        my_table
++)
++
++SELECT *
++FROM example
++"""
++    result = sqlfluff.fix(sql)
++    assert (
++        result
++        == """WITH example AS (
++    SELECT
++        my_id,
++        other_thing,
++        one_more
++    FROM
++        my_table
++)
++
++SELECT *
++FROM example
++"""
++    )
+
+2026-04-03 05:02:43,167 - INFO - Test runtime: 5.94 seconds
+2026-04-03 05:02:43,170 - INFO - Test output for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/gpt5-summarize-relaxed/opencode-summarize-relaxed/sqlfluff__sqlfluff-1733/test_output.txt
+2026-04-03 05:02:43,393 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..f18372d1 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -117,6 +117,14 @@ class Rule_L036(BaseRule):
+                     select_if=lambda s: s.is_type("whitespace"),
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
++                if not i:
++                    target_idx = segment.segments.index(select_target)
++                    if (
++                        target_idx > 0
++                        and segment.segments[target_idx - 1].is_type("whitespace")
++                        and segment.segments[target_idx - 1] not in ws_to_delete
++                    ):
++                        ws_to_delete = [segment.segments[target_idx - 1]] + ws_to_delete
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+                 fixes.append(LintFix("create", select_target, NewlineSegment()))
+         if fixes:
+
+2026-04-03 05:02:43,394 - INFO - Git diff changed after running eval script
+2026-04-03 05:02:43,395 - INFO - Grading answer for sqlfluff__sqlfluff-1733...
+2026-04-03 05:02:43,396 - INFO - report: {'sqlfluff__sqlfluff-1733': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['test/rules/std_L003_L036_L039_combo_test.py::test__rules__std_L003_L036_L039']}, 'PASS_TO_PASS': {'success': ['test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_lint', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix2'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1733: resolved: False

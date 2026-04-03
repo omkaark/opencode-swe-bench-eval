@@ -1,0 +1,17 @@
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f787..39c4323c 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -756,6 +756,12 @@ class PersonName:
+     def __hash__(self):
+         return hash(self.components)
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, x):
++        return x in str(self)
++
+     def decode(self, encodings=None):
+         """Return the patient name decoded by the given `encodings`.
+ 
