@@ -1,0 +1,45 @@
+diff --git a/astroid/modutils.py b/astroid/modutils.py
+index 6d698469..17d23caf 100644
+--- a/astroid/modutils.py
++++ b/astroid/modutils.py
+@@ -267,7 +267,8 @@ def check_modpath_has_init(path, mod_path):
+         if not _has_init(path):
+             old_namespace = util.is_namespace(".".join(modpath))
+             if not old_namespace:
+-                return False
++                if not os.path.isdir(path):
++                    return False
+     return True
+ 
+ 
+diff --git a/tests/unittest_modutils.py b/tests/unittest_modutils.py
+index d6fcb68e..d5c35dd1 100644
+--- a/tests/unittest_modutils.py
++++ b/tests/unittest_modutils.py
+@@ -157,6 +157,26 @@ class ModPathFromFileTest(unittest.TestCase):
+             finally:
+                 os.remove(linked_file_name)
+ 
++    def test_load_packages_without_init(self) -> None:
++        """Test that we correctly find packages without __init__.py."""
++        # Create a temporary directory structure:
++        # tmp/
++        #   project/  (no __init__.py)
++        #     file.py
++        tmp = tempfile.mkdtemp()
++        self.addCleanup(shutil.rmtree, tmp)
++        project_dir = os.path.join(tmp, "project")
++        os.mkdir(project_dir)
++        # Create file.py inside the package
++        filepath = os.path.join(project_dir, "file.py")
++        with open(filepath, "w", encoding="utf-8"):
++            pass
++        # The file should be importable even without __init__.py
++        self.assertEqual(
++            modutils.modpath_from_file(filepath, [tmp]),
++            ["project", "file"],
++        )
++
+     def test_load_from_module_symlink_on_symlinked_paths_in_syspath(self) -> None:
+         # constants
+         tmp = tempfile.gettempdir()

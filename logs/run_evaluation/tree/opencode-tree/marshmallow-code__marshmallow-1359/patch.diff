@@ -1,0 +1,31 @@
+diff --git a/src/marshmallow/fields.py b/src/marshmallow/fields.py
+index 0b18e7d..b95af9e 100644
+--- a/src/marshmallow/fields.py
++++ b/src/marshmallow/fields.py
+@@ -1114,7 +1114,7 @@ class DateTime(Field):
+         super()._bind_to_schema(field_name, schema)
+         self.format = (
+             self.format
+-            or getattr(schema.opts, self.SCHEMA_OPTS_VAR_NAME)
++            or getattr(getattr(schema, 'opts', None), self.SCHEMA_OPTS_VAR_NAME, None)
+             or self.DEFAULT_FORMAT
+         )
+ 
+diff --git a/tests/test_fields.py b/tests/test_fields.py
+index b0a5a77..5ec91b2 100644
+--- a/tests/test_fields.py
++++ b/tests/test_fields.py
+@@ -169,6 +169,13 @@ class TestParentAndName:
+         assert schema2.fields["foo"].key_field.root == schema2
+         assert schema2.fields["foo"].value_field.root == schema2
+ 
++    def test_datetime_list_inner_format(self):
++        class MySchema(Schema):
++            times = fields.List(fields.DateTime())
++
++        schema = MySchema()
++        assert schema.fields["times"].inner.format == "iso"
++
+ 
+ class TestMetadata:
+     @pytest.mark.parametrize("FieldClass", ALL_FIELDS)

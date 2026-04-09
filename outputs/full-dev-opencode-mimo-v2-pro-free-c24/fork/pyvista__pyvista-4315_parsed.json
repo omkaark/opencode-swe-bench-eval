@@ -1,0 +1,169 @@
+{
+  "instance_id": "pyvista__pyvista-4315",
+  "variant": "fork",
+  "repo": "pyvista/pyvista",
+  "tokens": {
+    "total": 1332033,
+    "input": 52794,
+    "output": 4743,
+    "reasoning": 1453,
+    "cache_read": 1274496,
+    "cache_write": 0
+  },
+  "duration_seconds": 225.13,
+  "time_to_first_edit_seconds": 58.574,
+  "steps": 34,
+  "tool_calls": {
+    "total": 36,
+    "by_tool": {
+      "bash": 18,
+      "edit": 3,
+      "glob": 3,
+      "grep": 8,
+      "read": 4
+    }
+  },
+  "files_read": [
+    "/repo",
+    "/repo/pyvista/core/grid.py",
+    "/repo/tests/test_grid.py"
+  ],
+  "files_edited": [
+    "/repo/pyvista/core/grid.py"
+  ],
+  "failed_tool_calls": 9,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_create_rectilinear_grid_from_specs",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "class RectilinearGrid",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "RectilinearGrid",
+        "include": "*.py",
+        "path": "/repo/pyvista"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "rectilinear_grid_from_specs",
+        "path": "/repo/tests"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/pyvista/core/grid.py",
+        "pattern": "class RectilinearGrid|def __init__|Sequence"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests",
+        "pattern": "rectilinear_grid_from_specs|test_create_rectilinear"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests/test_grid.py",
+        "pattern": "rectilinear|from_specs"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 10,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests/test_grid.py",
+        "pattern": "RectilinearGrid|def test"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 13,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pyvista/core/grid.py",
+        "oldString": "            elif isinstance(args[0], np.ndarray):\n                self._from_arrays(args[0], None, None, check_duplicates)\n            else:\n                raise TypeError(f'Type ({type(args[0])}) not understood by `RectilinearGrid`')",
+        "newString": "            elif isinstance(args[0], (np.ndarray, Sequence)) and not isinstance(args[0], str):\n                self._from_arrays(np.asanyarray(args[0]), None, None, check_duplicates)\n            else:\n                raise TypeError(f'Type ({type(args[0])}) not understood by `RectilinearGrid`')"
+      },
+      "output_preview": ""
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        1,
+        1
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"test_create_rectilinear_grid_from_specs\", \"path\": \"/repo\"}",
+        "{\"pattern\": \"class RectilinearGrid\", \"path\": \"/repo\"}"
+      ]
+    },
+    {
+      "length": 2,
+      "steps": [
+        3,
+        3
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"RectilinearGrid\", \"include\": \"*.py\", \"path\": \"/repo/pyvista\"}",
+        "{\"pattern\": \"rectilinear_grid_from_specs\", \"path\": \"/repo/tests\"}"
+      ]
+    },
+    {
+      "length": 2,
+      "steps": [
+        9,
+        10
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"path\": \"/repo/tests/test_grid.py\", \"pattern\": \"rectilinear|from_specs\"}",
+        "{\"path\": \"/repo/tests/test_grid.py\", \"pattern\": \"RectilinearGrid|def test\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

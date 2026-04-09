@@ -1,0 +1,97 @@
+{
+  "instance_id": "pydicom__pydicom-1256",
+  "variant": "official",
+  "repo": "pydicom/pydicom",
+  "tokens": {
+    "total": 229751,
+    "input": 15038,
+    "output": 1657,
+    "reasoning": 607,
+    "cache_read": 213056,
+    "cache_write": 0
+  },
+  "duration_seconds": 64.71,
+  "time_to_first_edit_seconds": 27.841,
+  "steps": 11,
+  "tool_calls": {
+    "total": 15,
+    "by_tool": {
+      "bash": 5,
+      "edit": 1,
+      "glob": 1,
+      "grep": 4,
+      "read": 4
+    }
+  },
+  "files_read": [
+    "/repo",
+    "/repo/pydicom/jsonrep.py",
+    "/repo/pydicom/tests/test_json.py",
+    "/repo/pydicom/dataelem.py"
+  ],
+  "files_edited": [
+    "/repo/pydicom/jsonrep.py"
+  ],
+  "failed_tool_calls": 4,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_bulk_data_reader_is_called_within_SQ"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "bulk_data_reader_is_called"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "from_json",
+        "include": "*/dataelem.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "from_json",
+        "path": "/repo/pydicom"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 4,
+      "steps": [
+        1,
+        2,
+        2,
+        3
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"test_bulk_data_reader_is_called_within_SQ\"}",
+        "{\"pattern\": \"bulk_data_reader_is_called\"}",
+        "{\"pattern\": \"from_json\", \"include\": \"*/dataelem.py\"}",
+        "{\"pattern\": \"from_json\", \"path\": \"/repo/pydicom\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

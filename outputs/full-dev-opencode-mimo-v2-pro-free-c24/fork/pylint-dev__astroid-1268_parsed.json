@@ -1,0 +1,181 @@
+{
+  "instance_id": "pylint-dev__astroid-1268",
+  "variant": "fork",
+  "repo": "pylint-dev/astroid",
+  "tokens": {
+    "total": 1000880,
+    "input": 75244,
+    "output": 2276,
+    "reasoning": 0,
+    "cache_read": 923360,
+    "cache_write": 0
+  },
+  "duration_seconds": 88.81,
+  "time_to_first_edit_seconds": 48.054,
+  "steps": 29,
+  "tool_calls": {
+    "total": 29,
+    "by_tool": {
+      "bash": 7,
+      "edit": 2,
+      "glob": 3,
+      "grep": 11,
+      "read": 6
+    }
+  },
+  "files_read": [
+    "/repo/astroid/nodes/as_string.py",
+    "/repo/astroid/nodes/node_ng.py",
+    "/repo/tests/unittest_nodes.py",
+    "/repo/astroid/nodes/__init__.py",
+    "/repo/astroid/nodes/node_classes.py"
+  ],
+  "files_edited": [
+    "/repo/astroid/nodes/as_string.py"
+  ],
+  "failed_tool_calls": 12,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "Unknown",
+        "include": "**/nodes/*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "class Unknown",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "class Unknown"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "^class Unknown"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "Unknown",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_as_string_unknown"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 10,
+      "tool": "grep",
+      "input": {
+        "pattern": "Unknown",
+        "include": "**/test*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "pattern": "unknown"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 13,
+      "tool": "grep",
+      "input": {
+        "pattern": "as_string",
+        "path": "/repo/tests/unittest_nodes.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 15,
+      "tool": "grep",
+      "input": {
+        "pattern": "class Unknown",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 17,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/astroid/nodes/node_classes.py",
+        "pattern": "class Unknown"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 20,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/astroid/nodes/as_string.py",
+        "oldString": "def visit_uninferable(self, node):\n        return str(node)",
+        "newString": "def visit_uninferable(self, node):\n        return str(node)\n\n    def visit_unknown(self, node):\n        return node.name"
+      },
+      "output_preview": ""
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        4,
+        5
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"class Unknown\"}",
+        "{\"pattern\": \"^class Unknown\"}"
+      ]
+    },
+    {
+      "length": 3,
+      "steps": [
+        9,
+        10,
+        11
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"test_as_string_unknown\"}",
+        "{\"pattern\": \"Unknown\", \"include\": \"**/test*.py\"}",
+        "{\"pattern\": \"unknown\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

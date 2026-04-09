@@ -1,0 +1,144 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1517",
+  "variant": "fork",
+  "repo": "sqlfluff/sqlfluff",
+  "tokens": {
+    "total": 781613,
+    "input": 88835,
+    "output": 5098,
+    "reasoning": 2209,
+    "cache_read": 687680,
+    "cache_write": 0
+  },
+  "duration_seconds": 409.79,
+  "time_to_first_edit_seconds": 94.765,
+  "steps": 37,
+  "tool_calls": {
+    "total": 40,
+    "by_tool": {
+      "bash": 20,
+      "edit": 1,
+      "grep": 7,
+      "read": 8,
+      "todowrite": 4
+    }
+  },
+  "files_read": [
+    "/repo/src/sqlfluff/core/parser/helpers.py",
+    "/repo/src/sqlfluff/core/parser/segments/base.py",
+    "/repo/src/sqlfluff",
+    "/repo/src/sqlfluff/dialects",
+    "/repo/src/sqlfluff/dialects/dialect_ansi.py",
+    "/repo/src/sqlfluff/core/parser/grammar/delimited.py",
+    "/repo/src/sqlfluff/core/parser/match_result.py"
+  ],
+  "files_edited": [
+    "/repo/src/sqlfluff/core/parser/grammar/delimited.py"
+  ],
+  "failed_tool_calls": 7,
+  "failed_calls_detail": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "multiple_semicolons"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/src/sqlfluff/core/parser",
+        "pattern": "StatementSegment|statement_terminator"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "semicolon",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "pattern": "StatementSegment"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "path": "/repo/src/sqlfluff/core/parser",
+        "pattern": "class Delimited"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 12,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "pattern": "class Delimited"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 19,
+      "tool": "grep",
+      "input": {
+        "pattern": "multiple_semicolons"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 4,
+      "steps": [
+        3,
+        3,
+        4,
+        5
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"multiple_semicolons\"}",
+        "{\"include\": \"*.py\", \"path\": \"/repo/src/sqlfluff/core/parser\", \"pattern\": \"StatementSegment|statement",
+        "{\"pattern\": \"semicolon\", \"include\": \"*.py\"}",
+        "{\"include\": \"*.py\", \"pattern\": \"StatementSegment\"}"
+      ]
+    },
+    {
+      "length": 2,
+      "steps": [
+        11,
+        12
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"include\": \"*.py\", \"path\": \"/repo/src/sqlfluff/core/parser\", \"pattern\": \"class Delimited\"}",
+        "{\"include\": \"*.py\", \"pattern\": \"class Delimited\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

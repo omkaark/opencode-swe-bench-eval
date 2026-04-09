@@ -1,0 +1,197 @@
+2026-03-29 19:47:55,619 - INFO - Creating container for sqlfluff__sqlfluff-1733...
+2026-03-29 19:47:57,891 - INFO - Container for sqlfluff__sqlfluff-1733 created: 904ca2b7ee8641b706065fbfc4667d6e19cf61f17a4c5578b87c0e9b6a41dc10
+2026-03-29 19:47:58,020 - INFO - Container for sqlfluff__sqlfluff-1733 started: 904ca2b7ee8641b706065fbfc4667d6e19cf61f17a4c5578b87c0e9b6a41dc10
+2026-03-29 19:47:58,021 - INFO - Intermediate patch for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/opencode-claude/opencode-claude/sqlfluff__sqlfluff-1733/patch.diff, now applying to container...
+2026-03-29 19:47:58,157 - INFO - >>>>> Applied Patch:
+Checking patch src/sqlfluff/rules/L036.py...
+Checking patch test/fixtures/rules/std_rule_cases/L036.yml...
+Applied patch src/sqlfluff/rules/L036.py cleanly.
+Applied patch test/fixtures/rules/std_rule_cases/L036.yml cleanly.
+
+2026-03-29 19:47:58,303 - INFO - Git diff before:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b81..fd3547ba5 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -118,7 +118,29 @@ class Rule_L036(BaseRule):
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+-                fixes.append(LintFix("create", select_target, NewlineSegment()))
++                # When creating the newline, also add the indentation
++                # whitespace that matches the other select targets to avoid
++                # leaving indentation fixes to L003 (which can interact
++                # badly with L039).
++                if select_targets_info.first_whitespace_idx != -1:
++                    fixes.append(
++                        LintFix(
++                            "create",
++                            select_target,
++                            [
++                                NewlineSegment(),
++                                WhitespaceSegment(
++                                    raw=segment.segments[
++                                        select_targets_info.first_whitespace_idx
++                                    ].raw,
++                                ),
++                            ],
++                        )
++                    )
++                else:
++                    fixes.append(
++                        LintFix("create", select_target, NewlineSegment())
++                    )
+         if fixes:
+             return LintResult(anchor=segment, fixes=fixes)
+ 
+diff --git a/test/fixtures/rules/std_rule_cases/L036.yml b/test/fixtures/rules/std_rule_cases/L036.yml
+index a2f444936..2d8eea887 100644
+--- a/test/fixtures/rules/std_rule_cases/L036.yml
++++ b/test/fixtures/rules/std_rule_cases/L036.yml
+@@ -61,18 +61,15 @@ test_multiple_select_targets_some_newlines_missing_1:
+       d, e, f, g,
+       h
+     from x
+-  # The spaces before a, d, and h look odd, but these are places where the
+-  # select targets were already on a separate line, and the rule made no
+-  # changes.
+   fix_str: |
+     select
+       a,
+-    b,
+-    c,
++      b,
++      c,
+       d,
+-    e,
+-    f,
+-    g,
++      e,
++      f,
++      g,
+       h
+     from x
+ 
+@@ -83,18 +80,15 @@ test_multiple_select_targets_some_newlines_missing_2:
+       d, e, f, g,
+       h
+     from x
+-  # The spaces before d, and h look odd, but these are places where the
+-  # select targets were already on a separate line, and the rule made no
+-  # changes.
+   fix_str: |
+     select
+-    a,
+-    b,
+-    c,
++      a,
++      b,
++      c,
+       d,
+-    e,
+-    f,
+-    g,
++      e,
++      f,
++      g,
+       h
+     from x
+2026-03-29 19:47:58,303 - INFO - Eval script for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/opencode-claude/opencode-claude/sqlfluff__sqlfluff-1733/eval.sh; copying to container...
+2026-03-29 19:48:01,652 - INFO - Test runtime: 3.30 seconds
+2026-03-29 19:48:01,652 - INFO - Test output for sqlfluff__sqlfluff-1733 written to logs/run_evaluation/opencode-claude/opencode-claude/sqlfluff__sqlfluff-1733/test_output.txt
+2026-03-29 19:48:01,723 - INFO - Git diff after:
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b81..fd3547ba5 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -118,7 +118,29 @@ class Rule_L036(BaseRule):
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+-                fixes.append(LintFix("create", select_target, NewlineSegment()))
++                # When creating the newline, also add the indentation
++                # whitespace that matches the other select targets to avoid
++                # leaving indentation fixes to L003 (which can interact
++                # badly with L039).
++                if select_targets_info.first_whitespace_idx != -1:
++                    fixes.append(
++                        LintFix(
++                            "create",
++                            select_target,
++                            [
++                                NewlineSegment(),
++                                WhitespaceSegment(
++                                    raw=segment.segments[
++                                        select_targets_info.first_whitespace_idx
++                                    ].raw,
++                                ),
++                            ],
++                        )
++                    )
++                else:
++                    fixes.append(
++                        LintFix("create", select_target, NewlineSegment())
++                    )
+         if fixes:
+             return LintResult(anchor=segment, fixes=fixes)
+ 
+diff --git a/test/fixtures/rules/std_rule_cases/L036.yml b/test/fixtures/rules/std_rule_cases/L036.yml
+index a2f444936..2d8eea887 100644
+--- a/test/fixtures/rules/std_rule_cases/L036.yml
++++ b/test/fixtures/rules/std_rule_cases/L036.yml
+@@ -61,18 +61,15 @@ test_multiple_select_targets_some_newlines_missing_1:
+       d, e, f, g,
+       h
+     from x
+-  # The spaces before a, d, and h look odd, but these are places where the
+-  # select targets were already on a separate line, and the rule made no
+-  # changes.
+   fix_str: |
+     select
+       a,
+-    b,
+-    c,
++      b,
++      c,
+       d,
+-    e,
+-    f,
+-    g,
++      e,
++      f,
++      g,
+       h
+     from x
+ 
+@@ -83,18 +80,15 @@ test_multiple_select_targets_some_newlines_missing_2:
+       d, e, f, g,
+       h
+     from x
+-  # The spaces before d, and h look odd, but these are places where the
+-  # select targets were already on a separate line, and the rule made no
+-  # changes.
+   fix_str: |
+     select
+-    a,
+-    b,
+-    c,
++      a,
++      b,
++      c,
+       d,
+-    e,
+-    f,
+-    g,
++      e,
++      f,
++      g,
+       h
+     from x
+2026-03-29 19:48:01,723 - INFO - Grading answer for sqlfluff__sqlfluff-1733...
+2026-03-29 19:48:01,724 - INFO - report: {'sqlfluff__sqlfluff-1733': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['test/rules/std_L003_L036_L039_combo_test.py::test__rules__std_L003_L036_L039'], 'failure': []}, 'PASS_TO_PASS': {'success': ['test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_lint', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix', 'test/rules/std_L016_L36_combo_test.py::test__rules__std_L016_L036_long_line_fix2'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for sqlfluff__sqlfluff-1733: resolved: True
+2026-03-29 19:48:01,724 - INFO - Attempting to stop container sweb.eval.sqlfluff__sqlfluff-1733.opencode-claude...
+2026-03-29 19:48:16,909 - INFO - Attempting to remove container sweb.eval.sqlfluff__sqlfluff-1733.opencode-claude...
+2026-03-29 19:48:16,928 - INFO - Container sweb.eval.sqlfluff__sqlfluff-1733.opencode-claude removed.
+2026-03-29 19:48:16,928 - INFO - Attempting to remove image swebench/sweb.eval.x86_64.sqlfluff_1776_sqlfluff-1733:latest...
+2026-03-29 19:48:16,940 - INFO - Image swebench/sweb.eval.x86_64.sqlfluff_1776_sqlfluff-1733:latest removed.

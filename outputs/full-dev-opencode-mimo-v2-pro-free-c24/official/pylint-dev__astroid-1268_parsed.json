@@ -1,0 +1,160 @@
+{
+  "instance_id": "pylint-dev__astroid-1268",
+  "variant": "official",
+  "repo": "pylint-dev/astroid",
+  "tokens": {
+    "total": 1171008,
+    "input": 115859,
+    "output": 3437,
+    "reasoning": 1145,
+    "cache_read": 1051712,
+    "cache_write": 0
+  },
+  "duration_seconds": 139.43,
+  "time_to_first_edit_seconds": 61.799,
+  "steps": 30,
+  "tool_calls": {
+    "total": 35,
+    "by_tool": {
+      "bash": 14,
+      "edit": 2,
+      "glob": 3,
+      "grep": 9,
+      "read": 7
+    }
+  },
+  "files_read": [
+    "/repo",
+    "/repo/astroid/nodes/as_string.py",
+    "/repo/tests/unittest_nodes.py",
+    "/repo/astroid/nodes/__init__.py",
+    "/repo/astroid/nodes/node_classes.py"
+  ],
+  "files_edited": [
+    "/repo/astroid/nodes/as_string.py",
+    "/repo/tests/unittest_nodes.py"
+  ],
+  "failed_tool_calls": 9,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "class AsStringVisitor"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "visit_unknown",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_as_string_unknown"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_as_string",
+        "path": "/repo/tests"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_as_string_unknown",
+        "path": "/repo/tests"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "pattern": "class Unknown",
+        "path": "/repo/astroid"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/astroid",
+        "pattern": "Unknown"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests/unittest_nodes.py",
+        "pattern": "AsString|as_string"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/astroid",
+        "pattern": "class Unknown",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        1,
+        1
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"class AsStringVisitor\"}",
+        "{\"pattern\": \"visit_unknown\", \"path\": \"/repo\"}"
+      ]
+    },
+    {
+      "length": 4,
+      "steps": [
+        4,
+        5,
+        5,
+        6
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"test_as_string\", \"path\": \"/repo/tests\"}",
+        "{\"pattern\": \"test_as_string_unknown\", \"path\": \"/repo/tests\"}",
+        "{\"pattern\": \"class Unknown\", \"path\": \"/repo/astroid\"}",
+        "{\"path\": \"/repo/astroid\", \"pattern\": \"Unknown\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

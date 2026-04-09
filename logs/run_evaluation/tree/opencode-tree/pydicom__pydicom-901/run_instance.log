@@ -1,0 +1,43 @@
+2026-03-29 19:09:36,899 - INFO - >>>>> Applied Patch:
+Checking patch pydicom/config.py...
+Applied patch pydicom/config.py cleanly.
+
+2026-03-29 19:09:37,958 - INFO - Git diff before:
+diff --git a/pydicom/config.py b/pydicom/config.py
+index ae9c8bd..f830e2c 100644
+--- a/pydicom/config.py
++++ b/pydicom/config.py
+@@ -62,10 +62,6 @@ and datetime.time respectively. Default: False
+ 
+ # Logging system and debug function to change logging level
+ logger = logging.getLogger('pydicom')
+-handler = logging.StreamHandler()
+-formatter = logging.Formatter("%(message)s")
+-handler.setFormatter(formatter)
+-logger.addHandler(handler)
+ 
+ 
+ import pydicom.pixel_data_handlers.numpy_handler as np_handler  # noqa
+
+2026-03-29 19:09:41,531 - INFO - Test runtime: 3.23 seconds
+2026-03-29 19:09:41,533 - INFO - Test output for pydicom__pydicom-901 written to logs/run_evaluation/tree/opencode-tree/pydicom__pydicom-901/test_output.txt
+2026-03-29 19:09:41,929 - INFO - Git diff after:
+diff --git a/pydicom/config.py b/pydicom/config.py
+index ae9c8bd..f830e2c 100644
+--- a/pydicom/config.py
++++ b/pydicom/config.py
+@@ -62,10 +62,6 @@ and datetime.time respectively. Default: False
+ 
+ # Logging system and debug function to change logging level
+ logger = logging.getLogger('pydicom')
+-handler = logging.StreamHandler()
+-formatter = logging.Formatter("%(message)s")
+-handler.setFormatter(formatter)
+-logger.addHandler(handler)
+ 
+ 
+ import pydicom.pixel_data_handlers.numpy_handler as np_handler  # noqa
+
+2026-03-29 19:09:41,929 - INFO - Grading answer for pydicom__pydicom-901...
+2026-03-29 19:09:41,932 - INFO - report: {'pydicom__pydicom-901': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pydicom/tests/test_config.py::TestDebug::test_default', 'pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_null', 'pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_null', 'pydicom/tests/test_config.py::TestDebug::test_debug_on_handler_stream', 'pydicom/tests/test_config.py::TestDebug::test_debug_off_handler_stream']}, 'PASS_TO_PASS': {'success': [], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pydicom__pydicom-901: resolved: False

@@ -1,0 +1,76 @@
+{
+  "instance_id": "pylint-dev__astroid-1866",
+  "variant": "fork",
+  "repo": "pylint-dev/astroid",
+  "tokens": {
+    "total": 376161,
+    "input": 42057,
+    "output": 3160,
+    "reasoning": 1106,
+    "cache_read": 330944,
+    "cache_write": 0
+  },
+  "duration_seconds": 128.53,
+  "time_to_first_edit_seconds": 37.735,
+  "steps": 23,
+  "tool_calls": {
+    "total": 25,
+    "by_tool": {
+      "bash": 13,
+      "edit": 2,
+      "glob": 3,
+      "grep": 2,
+      "read": 5
+    }
+  },
+  "files_read": [
+    "/repo/astroid/brain/brain_builtin_inference.py",
+    "/repo/tests/unittest_brain_builtin.py"
+  ],
+  "files_edited": [
+    "/repo/astroid/brain/brain_builtin_inference.py"
+  ],
+  "failed_tool_calls": 4,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "_infer_str_format_call",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests",
+        "pattern": "test_string_format_uninferable"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "glob",
+      "input": {
+        "path": "/repo/tests",
+        "pattern": "**/test*brain*string*"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 7,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/astroid/brain/brain_builtin_inference.py",
+        "oldString": "    except (IndexError, KeyError):\n        # If there is an IndexError there are too few arguments to interpolate\n        return iter([util.Uninferable])",
+        "newString": "    except (IndexError, KeyError, TypeError):\n        # If there is an IndexError there are too few arguments to interpolate\n        # If there is a TypeError there are arguments with an incompatible\n        # format specifier, e.g. None with a format spec like '{:.2f}'.format(None)\n        return iter([util.Uninferable])"
+      },
+      "output_preview": ""
+    }
+  ],
+  "dead_ends": [],
+  "patch_non_empty": true,
+  "error": ""
+}

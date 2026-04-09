@@ -1,0 +1,130 @@
+diff --git a/src/sqlfluff/core/file_helpers.py b/src/sqlfluff/core/file_helpers.py
+index 52f74f0b..1f9256de 100644
+--- a/src/sqlfluff/core/file_helpers.py
++++ b/src/sqlfluff/core/file_helpers.py
+@@ -1,5 +1,8 @@
+ """File Helpers for the parser module."""
+ 
++import os
++import tempfile
++
+ import chardet
+ 
+ from sqlfluff.core.config import FluffConfig
+@@ -15,3 +18,40 @@ def get_encoding(fname: str, config: FluffConfig) -> str:
+         return chardet.detect(data)["encoding"]
+ 
+     return encoding_config
++
++
++def safe_create_replace_file(
++    fname: str, content: str, encoding: str
++) -> None:
++    """Write content to a file safely by writing to a temp file first.
++
++    This avoids data loss if encoding errors occur during writing,
++    since the original file is not modified until the temp file is
++    successfully written and flushed. If the specified encoding cannot
++    encode the content, falls back to utf-8.
++    """
++    # Try writing with the specified encoding. If it fails (e.g. the
++    # detected encoding is Windows-1252 but the content has Unicode
++    # characters), fall back to utf-8.
++    try:
++        encoded = content.encode(encoding)
++    except (UnicodeEncodeError, LookupError):
++        encoding = "utf-8"
++        encoded = content.encode(encoding)
++
++    # Write to a temp file in the same directory, then rename atomically.
++    dir_name = os.path.dirname(os.path.abspath(fname))
++    fd, tmp_path = tempfile.mkstemp(dir=dir_name, suffix=".tmp")
++    try:
++        with os.fdopen(fd, "wb") as f:
++            f.write(encoded)
++            f.flush()
++            os.fsync(f.fileno())
++        os.replace(tmp_path, fname)
++    except BaseException:
++        # Clean up the temp file on any error.
++        try:
++            os.unlink(tmp_path)
++        except OSError:
++            pass
++        raise
+diff --git a/src/sqlfluff/core/linter/linted_file.py b/src/sqlfluff/core/linter/linted_file.py
+index 3a8593ed..8661eb19 100644
+--- a/src/sqlfluff/core/linter/linted_file.py
++++ b/src/sqlfluff/core/linter/linted_file.py
+@@ -493,7 +493,8 @@ class LintedFile(NamedTuple):
+             if suffix:
+                 root, ext = os.path.splitext(fname)
+                 fname = root + suffix + ext
+-            # Actually write the file.
+-            with open(fname, "w", encoding=self.encoding) as f:
+-                f.write(write_buff)
++            # Actually write the file safely.
++            from sqlfluff.core.file_helpers import safe_create_replace_file
++
++            safe_create_replace_file(fname, write_buff, self.encoding)
+         return success
+diff --git a/test/core/linter_test.py b/test/core/linter_test.py
+index 0600adf2..f10a8699 100644
+--- a/test/core/linter_test.py
++++ b/test/core/linter_test.py
+@@ -1,5 +1,6 @@
+ """The Test file for the linter class."""
+ 
++import os
+ import pytest
+ import logging
+ from typing import List
+@@ -12,6 +13,7 @@ from sqlfluff.cli.formatters import CallbackFormatter
+ from sqlfluff.core.linter import LintingResult, NoQaDirective
+ import sqlfluff.core.linter as linter
+ from sqlfluff.core.templaters import TemplatedFile
++from sqlfluff.core.file_helpers import safe_create_replace_file
+ 
+ 
+ class DummyLintError(SQLBaseError):
+@@ -641,3 +643,40 @@ def test__attempt_to_change_templater_warning(caplog):
+         assert "Attempt to set templater to " in caplog.text
+     finally:
+         logger.propagate = original_propagate_value
++
++
++@pytest.mark.parametrize(
++    "fname,content,encoding",
++    [
++        (
++            "utf8_create.sql",
++            "SELECT 1\n",
++            "utf-8",
++        ),
++        (
++            "utf8_update.sql",
++            "SELECT 'hello → world'\n",
++            "utf-8",
++        ),
++        (
++            "utf8_special_char.sql",
++            "SELECT 'café', 'naïve', '→', '★'\n",
++            "utf-8",
++        ),
++    ],
++    ids=["utf8_create", "utf8_update", "utf8_special_char"],
++)
++def test_safe_create_replace_file(fname, content, encoding, tmp_path):
++    """Test safe_create_replace_file handles UTF-8 content correctly."""
++    file_path = str(tmp_path / fname)
++
++    # Create the file with initial content for the update case.
++    if "update" in fname or "special" in fname:
++        with open(file_path, "w", encoding="utf-8") as f:
++            f.write("SELECT 1\n")
++
++    safe_create_replace_file(file_path, content, encoding)
++
++    with open(file_path, "r", encoding="utf-8") as f:
++        result = f.read()
++    assert result == content

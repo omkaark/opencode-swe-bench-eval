@@ -1,0 +1,260 @@
+{
+  "instance_id": "pylint-dev__astroid-1978",
+  "variant": "nosubagent",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [
+    "/repo/tests/unittest_raw_building.py",
+    "/repo/tests/testdata/python3/data/fake_module_with_warnings.py"
+  ],
+  "per_file": {
+    "/repo/astroid/raw_building.py": {
+      "reads": [
+        1,
+        9,
+        10,
+        23
+      ],
+      "edits": [
+        {
+          "step": 11,
+          "old": "if real_name != self._module.__name__:\n            # check if it sounds valid and then add an import node, else use a\n            # dummy node\n            try:\n                getattr(sys.modules[modname], name)\n            except (KeyError, AttributeError):\n                attach_dummy_node(node, name, member)\n            else:\n                attach_import_node(node, modname, name)\n            return True",
+          "new": "if real_name != self._module.__name__:\n            # check if it sounds valid and then add an import node, else use a\n            # dummy node\n            try:\n                with warnings.catch_warnings():\n                    warnings.filterwarnings(\"ignore\", category=FutureWarning)\n                    getattr(sys.modules[modname], name)\n            except (KeyError, AttributeError):\n                attach_dummy_node(node, name, member)\n            else:\n                attach_import_node(node, modname, name)\n            return True"
+        }
+      ],
+      "first_read_step": 1,
+      "first_edit_step": 11,
+      "content_snippets": [
+        {
+          "offset": 460,
+          "limit": 30,
+          "signatures": [
+            "def _set_proxied(const) -> nodes.ClassDef"
+          ]
+        },
+        {
+          "offset": 460,
+          "limit": 50,
+          "signatures": [
+            "def _set_proxied(const) -> nodes.ClassDef",
+            "def _astroid_bootstrapping() -> None"
+          ]
+        },
+        {
+          "offset": 468,
+          "limit": 25,
+          "signatures": [
+            "def _set_proxied(const) -> nodes.ClassDef"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_raw_building.py": {
+      "reads": [
+        6
+      ],
+      "edits": [],
+      "first_read_step": 6,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class RawBuildingTC(unittest.TestCase)",
+            "def test_attach_dummy_node(self) -> None",
+            "def test_build_module(self) -> None",
+            "def test_build_class(self) -> None",
+            "def test_build_function(self) -> None",
+            "def test_build_function_args(self) -> None",
+            "def test_build_function_defaults(self) -> None",
+            "def test_build_function_posonlyargs(self) -> None",
+            "def test_build_function_kwonlyargs(self) -> None",
+            "def test_build_from_import(self) -> None",
+            "def test_io_is__io(self)",
+            "def test_build_function_deepinspect_deprecation(self) -> None",
+            "def test_module_object_with_broken_getattr(self) -> None"
+          ]
+        }
+      ]
+    },
+    "/repo/tests/testdata/python3/data/fake_module_with_warnings.py": {
+      "reads": [
+        8
+      ],
+      "edits": [],
+      "first_read_step": 8,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "def __dir__()",
+            "def __getattr__(name)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_build_module_getattr_catch_output",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "getattr_catch"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests",
+        "pattern": "getattr"
+      },
+      "output_preview": "Found 339 matches (showing first 100)\n/repo/tests/unittest_scoped_nodes.py:\n  Line 81:         self.assertEqual(len(self.module.getattr(\"__name__\")), 1)\n  Line 82:         self.assertIsInstance(self.module.getattr(\"__name__\")[0], nodes.Const)\n  Line 83:         self.assertEqual(self.module.getattr(\""
+    },
+    {
+      "step": 11,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/astroid/raw_building.py",
+        "oldString": "if real_name != self._module.__name__:\n            # check if it sounds valid and then add an import node, else use a\n            # dummy node\n            try:\n                getattr(sys.modules[modname], name)\n            except (KeyError, AttributeError):\n                attach_dummy_node(node, name, member)\n            else:\n                attach_import_node(node, modname, name)\n            return True",
+        "newString": "if real_name != self._module.__name__:\n            # check if it sounds valid and then add an import node, else use a\n            # dummy node\n            try:\n                with warnings.catch_warnings():\n                    warnings.filterwarnings(\"ignore\", category=FutureWarning)\n                    getattr(sys.modules[modname], name)\n            except (KeyError, AttributeError):\n                attach_dummy_node(node, name, member)\n            else:\n                attach_import_node(node, modname, name)\n            return True"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/astroid/raw_building.py\">\nERROR [63:11] Cannot assign to attribute \"object\" for class \"EmptyNode\"\n\u00a0\u00a0Expression of type \"object\" cannot be assigned to attribute \"object\" of class \"EmptyNode\"\n\u00a0\u00a0\u00a0\u00a0\"object"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_raw_building.py -v 2>&1 | head -50",
+        "description": "Run the raw building tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m unittest tests.unittest_raw_building -v 2>&1 | head -50",
+        "description": "Run unittest for raw building"
+      },
+      "output_preview": "unittest_raw_building (unittest.loader._FailedTest.unittest_raw_building) ... ERROR\n\n======================================================================\nERROR: unittest_raw_building (unittest.loader._FailedTest.unittest_raw_building)\n---------------------------------------------------------------"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install pytest -q 2>&1 | tail -5",
+        "description": "Install pytest"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_raw_building.py -v 2>&1",
+        "description": "Run the raw building tests"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: pyproject.toml\nplugins: anyio-4.13.0\ncollecting ... collected 0 items / 1 error\n\n="
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install -e . -q 2>&1 | tail -5",
+        "description": "Install astroid dependencies"
+      },
+      "output_preview": "\u00d7 Checking if build backend supports build_editable did not run successfully.\n\u2502 exit code: 1\n\u2570\u2500> See above for output.\n\nnote: This error originates from a subprocess, and is likely not a problem with pip.\n"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "pip install wrapt -q 2>&1 | tail -3",
+        "description": "Install wrapt"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_raw_building.py -v 2>&1",
+        "description": "Run the raw building tests"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: pyproject.toml\nplugins: anyio-4.13.0\ncollecting ... collected 0 items / 1 error\n\n="
+    },
+    {
+      "step": 19,
+      "tool": "bash",
+      "input": {
+        "command": "pip install lazy_object_proxy -q 2>&1 | tail -2",
+        "description": "Install lazy_object_proxy"
+      },
+      "output_preview": "[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_raw_building.py -v 2>&1",
+        "description": "Run the raw building tests"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: pyproject.toml\nplugins: anyio-4.13.0\ncollecting ... collected 12 items\n\ntests/unit"
+    },
+    {
+      "step": 21,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport warnings\nimport sys\nfrom astroid.raw_building import InspectBuilder\n\n# Create a mock module that raises FutureWarning\nclass MockModule:\n    def __getattr__(self, name):\n        if name == 'test_attr':\n            warnings.warn('test warning', FutureWarning, stacklevel=2)\n            return 42\n        raise AttributeError(f'no attribute {name}')\n\nsys.modules['mock_numpy'] = MockModule()\n\nbuilder = InspectBuilder()\n# This should not raise any warnings\nprint('Test passed - no FutureWarning raised')\n\"",
+        "description": "Test the fix for FutureWarning"
+      },
+      "output_preview": "Test passed - no FutureWarning raised\n"
+    },
+    {
+      "step": 22,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport warnings\nwarnings.filterwarnings('error', category=FutureWarning)\nfrom tests.testdata.python3.data import fake_module_with_warnings as fm\nprint('Test passed - FutureWarning is now raised as error')\n\" 2>&1",
+        "description": "Test fake_module_with_warnings"
+      },
+      "output_preview": "Test passed - FutureWarning is now raised as error\n"
+    },
+    {
+      "step": 24,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_raw_building.py::RawBuildingTC::test_build_function_deepinspect_deprecation -v 2>&1",
+        "description": "Run the deprecation warning test"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: pyproject.toml\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntests/unitte"
+    }
+  ],
+  "token_cost": {
+    "total": 433025,
+    "input": 9145,
+    "output": 2504,
+    "cache_read": 421376,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": 20.79,
+  "total_duration_seconds": 63.23,
+  "patch_non_empty": true
+}

@@ -1,0 +1,134 @@
+{
+  "instance_id": "pyvista__pyvista-4315",
+  "variant": "official",
+  "repo": "pyvista/pyvista",
+  "tokens": {
+    "total": 867271,
+    "input": 69183,
+    "output": 5800,
+    "reasoning": 0,
+    "cache_read": 792288,
+    "cache_write": 0
+  },
+  "duration_seconds": 123.35,
+  "time_to_first_edit_seconds": 46.147,
+  "steps": 26,
+  "tool_calls": {
+    "total": 25,
+    "by_tool": {
+      "bash": 15,
+      "edit": 1,
+      "glob": 1,
+      "grep": 4,
+      "read": 4
+    }
+  },
+  "files_read": [
+    "/repo/pyvista/core/grid.py",
+    "/repo/tests/test_grid.py"
+  ],
+  "files_edited": [
+    "/repo/pyvista/core/grid.py"
+  ],
+  "failed_tool_calls": 7,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "RectilinearGrid",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "rectilinear",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 4,
+      "tool": "bash",
+      "input": {
+        "command": "ls -la /repo/pyvista/"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "pattern": "RectilinearGrid",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "pattern": "class RectilinearGrid",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "pip install matplotlib --quiet 2>/dev/null",
+        "description": "Install matplotlib",
+        "timeout": 60000
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "pip install vtk numpy --quiet 2>/dev/null || pip install vtk --quiet 2>/dev/null",
+        "description": "Install VTK",
+        "timeout": 120000
+      },
+      "output_preview": ""
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        3,
+        4
+      ],
+      "tools": [
+        "grep",
+        "bash"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"rectilinear\", \"include\": \"*.py\"}",
+        "{\"command\": \"ls -la /repo/pyvista/\"}"
+      ]
+    },
+    {
+      "length": 2,
+      "steps": [
+        7,
+        8
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"RectilinearGrid\", \"path\": \"/repo\"}",
+        "{\"pattern\": \"class RectilinearGrid\", \"path\": \"/repo\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

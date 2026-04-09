@@ -1,0 +1,17 @@
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f787..377a5ab6 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -753,6 +753,12 @@ class PersonName:
+     def __repr__(self):
+         return '='.join(self.components).__repr__()
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, x):
++        return x in str(self)
++
+     def __hash__(self):
+         return hash(self.components)
+ 

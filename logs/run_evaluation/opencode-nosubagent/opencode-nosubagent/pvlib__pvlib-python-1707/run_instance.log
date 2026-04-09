@@ -1,0 +1,75 @@
+2026-04-01 03:30:03,843 - INFO - >>>>> Applied Patch:
+Checking patch pvlib/iam.py...
+Checking patch pvlib/tests/test_iam.py...
+Applied patch pvlib/iam.py cleanly.
+Applied patch pvlib/tests/test_iam.py cleanly.
+
+2026-04-01 03:30:05,244 - INFO - Git diff before:
+diff --git a/pvlib/iam.py b/pvlib/iam.py
+index 3eaa6b4..d069379 100644
+--- a/pvlib/iam.py
++++ b/pvlib/iam.py
+@@ -175,8 +175,13 @@ def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):
+     n2costheta2 = n2 * costheta
+ 
+     # reflectance of s-, p-polarized, and normal light by the first interface
+-    rho12_s = ((n1costheta1 - n2costheta2) / (n1costheta1 + n2costheta2)) ** 2
+-    rho12_p = ((n1costheta2 - n2costheta1) / (n1costheta2 + n2costheta1)) ** 2
++    # use np.divide to avoid nan when denominator is 0 (e.g. n=1, aoi>90)
++    denom_s = n1costheta1 + n2costheta2
++    rho12_s = np.divide(n1costheta1 - n2costheta2, denom_s,
++                        out=np.zeros_like(denom_s), where=denom_s != 0) ** 2
++    denom_p = n1costheta2 + n2costheta1
++    rho12_p = np.divide(n1costheta2 - n2costheta1, denom_p,
++                        out=np.zeros_like(denom_p), where=denom_p != 0) ** 2
+     rho12_0 = ((n1 - n2) / (n1 + n2)) ** 2
+ 
+     # transmittance through the first interface
+diff --git a/pvlib/tests/test_iam.py b/pvlib/tests/test_iam.py
+index eba1c66..f3b2813 100644
+--- a/pvlib/tests/test_iam.py
++++ b/pvlib/tests/test_iam.py
+@@ -78,6 +78,14 @@ def test_physical_scalar():
+     assert_allclose(iam, expected, equal_nan=True)
+ 
+ 
++def test_physical_n1_L0():
++    # when n=1 (no reflection) and aoi>90, result should be 0 not nan
++    aoi = np.array([0, 45, 90, 100, np.nan])
++    expected = np.array([1., 0.99669178, 0., 0., np.nan])
++    iam = _iam.physical(aoi, n=1)
++    assert_allclose(iam, expected, atol=1e-7, equal_nan=True)
++
++
+ def test_martin_ruiz():
+ 
+     aoi = 45.
+
+2026-04-01 03:30:21,089 - INFO - Test runtime: 15.62 seconds
+2026-04-01 03:30:21,090 - INFO - Test output for pvlib__pvlib-python-1707 written to logs/run_evaluation/opencode-nosubagent/opencode-nosubagent/pvlib__pvlib-python-1707/test_output.txt
+2026-04-01 03:30:21,380 - INFO - Git diff after:
+diff --git a/pvlib/iam.py b/pvlib/iam.py
+index 3eaa6b4..d069379 100644
+--- a/pvlib/iam.py
++++ b/pvlib/iam.py
+@@ -175,8 +175,13 @@ def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):
+     n2costheta2 = n2 * costheta
+ 
+     # reflectance of s-, p-polarized, and normal light by the first interface
+-    rho12_s = ((n1costheta1 - n2costheta2) / (n1costheta1 + n2costheta2)) ** 2
+-    rho12_p = ((n1costheta2 - n2costheta1) / (n1costheta2 + n2costheta1)) ** 2
++    # use np.divide to avoid nan when denominator is 0 (e.g. n=1, aoi>90)
++    denom_s = n1costheta1 + n2costheta2
++    rho12_s = np.divide(n1costheta1 - n2costheta2, denom_s,
++                        out=np.zeros_like(denom_s), where=denom_s != 0) ** 2
++    denom_p = n1costheta2 + n2costheta1
++    rho12_p = np.divide(n1costheta2 - n2costheta1, denom_p,
++                        out=np.zeros_like(denom_p), where=denom_p != 0) ** 2
+     rho12_0 = ((n1 - n2) / (n1 + n2)) ** 2
+ 
+     # transmittance through the first interface
+
+2026-04-01 03:30:21,380 - INFO - Git diff changed after running eval script
+2026-04-01 03:30:21,380 - INFO - Grading answer for pvlib__pvlib-python-1707...
+2026-04-01 03:30:21,382 - INFO - report: {'pvlib__pvlib-python-1707': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_iam.py::test_physical_n1_L0']}, 'PASS_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_iam.py::test_ashrae', 'pvlib/tests/test_iam.py::test_ashrae_scalar', 'pvlib/tests/test_iam.py::test_physical', 'pvlib/tests/test_iam.py::test_physical_ar', 'pvlib/tests/test_iam.py::test_physical_noar', 'pvlib/tests/test_iam.py::test_physical_scalar', 'pvlib/tests/test_iam.py::test_martin_ruiz', 'pvlib/tests/test_iam.py::test_martin_ruiz_exception', 'pvlib/tests/test_iam.py::test_martin_ruiz_diffuse', 'pvlib/tests/test_iam.py::test_iam_interp', 'pvlib/tests/test_iam.py::test_sapm[45-0.9975036250000002]', 'pvlib/tests/test_iam.py::test_sapm[aoi1-expected1]', 'pvlib/tests/test_iam.py::test_sapm[aoi2-expected2]', 'pvlib/tests/test_iam.py::test_sapm_limits', 'pvlib/tests/test_iam.py::test_marion_diffuse_model', 'pvlib/tests/test_iam.py::test_marion_diffuse_kwargs', 'pvlib/tests/test_iam.py::test_marion_diffuse_invalid', 'pvlib/tests/test_iam.py::test_marion_integrate_scalar[sky-180-0.9596085829811408]', 'pvlib/tests/test_iam.py::test_marion_integrate_scalar[horizon-1800-0.8329070417832541]', 'pvlib/tests/test_iam.py::test_marion_integrate_scalar[ground-180-0.719823559106309]', 'pvlib/tests/test_iam.py::test_marion_integrate_list[sky-180-expected0]', 'pvlib/tests/test_iam.py::test_marion_integrate_list[horizon-1800-expected1]', 'pvlib/tests/test_iam.py::test_marion_integrate_list[ground-180-expected2]', 'pvlib/tests/test_iam.py::test_marion_integrate_series[sky-180-expected0]', 'pvlib/tests/test_iam.py::test_marion_integrate_series[horizon-1800-expected1]', 'pvlib/tests/test_iam.py::test_marion_integrate_series[ground-180-expected2]', 'pvlib/tests/test_iam.py::test_marion_integrate_ground_flat', 'pvlib/tests/test_iam.py::test_marion_integrate_invalid', 'pvlib/tests/test_iam.py::test_schlick', 'pvlib/tests/test_iam.py::test_schlick_diffuse']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pvlib__pvlib-python-1707: resolved: False

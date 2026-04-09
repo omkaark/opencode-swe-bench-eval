@@ -1,0 +1,117 @@
+{
+  "instance_id": "pylint-dev__astroid-1333",
+  "variant": "official",
+  "repo": "pylint-dev/astroid",
+  "tokens": {
+    "total": 2714364,
+    "input": 128860,
+    "output": 22848,
+    "reasoning": 0,
+    "cache_read": 2562656,
+    "cache_write": 0
+  },
+  "duration_seconds": 473.17,
+  "time_to_first_edit_seconds": 255.201,
+  "steps": 65,
+  "tool_calls": {
+    "total": 64,
+    "by_tool": {
+      "bash": 38,
+      "edit": 2,
+      "glob": 5,
+      "grep": 5,
+      "read": 14
+    }
+  },
+  "files_read": [
+    "/repo/tests/unittest_modutils.py",
+    "/repo/astroid/modutils.py",
+    "/repo/astroid/interpreter/_import/spec.py",
+    "/repo/astroid/interpreter/_import/util.py",
+    "/repo/setup.py",
+    "/repo/setup.cfg"
+  ],
+  "files_edited": [
+    "/repo/astroid/modutils.py",
+    "/repo/tests/unittest_modutils.py"
+  ],
+  "failed_tool_calls": 6,
+  "failed_calls_detail": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_load_packages_without_init",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "load_packages_without_init"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 6,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/astroid/modutils.py"
+      },
+      "output_preview": "<path>/repo/astroid/modutils.py</path>\n<type>file</type>\n<content>1: # Copyright (c) 2014-2018, 2020 Claudiu Popa <pcmanticore@gmail.com>\n2: # Copyright (c) 2014 Google, Inc.\n3: # Copyright (c) 2014 D"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "Unable to load file"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "def is_namespace"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 33,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "Unable to load file",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 3,
+      "steps": [
+        5,
+        6,
+        7
+      ],
+      "tools": [
+        "grep",
+        "read",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"path\": \"/repo\", \"pattern\": \"load_packages_without_init\"}",
+        "{\"filePath\": \"/repo/astroid/modutils.py\"}",
+        "{\"path\": \"/repo\", \"pattern\": \"Unable to load file\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

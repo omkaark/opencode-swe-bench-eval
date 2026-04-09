@@ -1,0 +1,55 @@
+diff --git a/src/sqlfluff/rules/L031.py b/src/sqlfluff/rules/L031.py
+index 838c6ce5..9fb0f1dc 100644
+--- a/src/sqlfluff/rules/L031.py
++++ b/src/sqlfluff/rules/L031.py
+@@ -53,6 +53,7 @@ class Rule_L031(BaseRule):
+         and decide if it's needed to report them.
+         """
+         if segment.is_type("select_statement"):
++            dialect = kwargs.get("dialect")
+             # A buffer for all table expressions in join conditions
+             from_expression_elements = []
+             column_reference_segments = []
+@@ -62,6 +63,16 @@ class Rule_L031(BaseRule):
+             if not from_clause_segment:
+                 return None
+ 
++            # TSQL commonly qualifies columns from a single table using an alias.
++            # In that case, L031 should not report a "join condition" violation
++            # when the statement has no join at all.
++            if (
++                dialect
++                and dialect.name == "tsql"
++                and not list(from_clause_segment.recursive_crawl("join_clause"))
++            ):
++                return None
++
+             from_expression = from_clause_segment.get_child("from_expression")
+             from_expression_element = None
+             if from_expression:
+diff --git a/test/fixtures/rules/std_rule_cases/L031.yml b/test/fixtures/rules/std_rule_cases/L031.yml
+index 40b41639..0f4e5d5d 100644
+--- a/test/fixtures/rules/std_rule_cases/L031.yml
++++ b/test/fixtures/rules/std_rule_cases/L031.yml
+@@ -168,3 +168,21 @@ issue_1589:
+               rnd>=t.v
+          order by rnd
+          limit 1)
++
++issue_tsql_no_join_alias:
++  pass_str: |
++    SELECT [hello]
++    FROM
++        mytable
++  configs:
++    core:
++      dialect: tsql
++
++issue_tsql_no_join_alias_qualified_column:
++  pass_str: |
++    SELECT a.[hello]
++    FROM
++        mytable AS a
++  configs:
++    core:
++      dialect: tsql

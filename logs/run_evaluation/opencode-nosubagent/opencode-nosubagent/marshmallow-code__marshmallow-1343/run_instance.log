@@ -1,0 +1,118 @@
+2026-04-01 03:30:19,999 - INFO - >>>>> Applied Patch:
+Checking patch src/marshmallow/marshalling.py...
+Checking patch src/marshmallow/schema.py...
+Checking patch tests/test_marshalling.py...
+Applied patch src/marshmallow/marshalling.py cleanly.
+Applied patch src/marshmallow/schema.py cleanly.
+Applied patch tests/test_marshalling.py cleanly.
+
+2026-04-01 03:30:30,243 - INFO - Git diff before:
+diff --git a/src/marshmallow/marshalling.py b/src/marshmallow/marshalling.py
+index feb7d1a..bdb1135 100644
+--- a/src/marshmallow/marshalling.py
++++ b/src/marshmallow/marshalling.py
+@@ -11,6 +11,7 @@ and from primitive types.
+ from __future__ import unicode_literals
+ 
+ import collections
++import collections.abc
+ 
+ from marshmallow.utils import is_collection, missing, set_value
+ from marshmallow.compat import text_type, iteritems
+@@ -250,7 +251,7 @@ class Unmarshaller(ErrorStore):
+ 
+         ret = dict_class()
+ 
+-        if not isinstance(data, collections.Mapping):
++        if not isinstance(data, collections.abc.Mapping):
+             errors = self.get_errors(index=index)
+             msg = 'Invalid input type.'
+             self.error_field_names = [SCHEMA]
+diff --git a/src/marshmallow/schema.py b/src/marshmallow/schema.py
+index 085c509..5dea285 100644
+--- a/src/marshmallow/schema.py
++++ b/src/marshmallow/schema.py
+@@ -861,6 +861,8 @@ class BaseSchema(base.SchemaABC):
+         return data
+ 
+     def _invoke_field_validators(self, unmarshal, data, many):
++        if data is None:
++            return
+         for attr_name in self.__processors__[(VALIDATES, False)]:
+             validator = getattr(self, attr_name)
+             validator_kwargs = validator.__marshmallow_kwargs__[(VALIDATES, False)]
+diff --git a/tests/test_marshalling.py b/tests/test_marshalling.py
+index 273dada..a881748 100644
+--- a/tests/test_marshalling.py
++++ b/tests/test_marshalling.py
+@@ -2,7 +2,7 @@
+ 
+ import pytest
+ 
+-from marshmallow import fields, Schema
++from marshmallow import fields, Schema, validates
+ from marshmallow.marshalling import Marshaller, Unmarshaller, missing
+ from marshmallow.exceptions import ValidationError
+ 
+@@ -283,3 +283,18 @@ class TestUnmarshaller:
+ 
+             assert result is None
+             assert excinfo.value.messages == {'foo': {'_schema': ['Invalid input type.']}}
++
++    def test_deserialize_wrong_nested_type_with_validates_method(self, unmarshal):
++        class Bar(Schema):
++            value = fields.String()
++
++            @validates('value')
++            def validate_value(self, value):
++                pass
++
++        class Foo(Schema):
++            bar = fields.Nested(Bar)
++
++        data = {'bar': 'invalid'}
++        result, errors = Foo().load(data)
++        assert errors == {'bar': {'_schema': ['Invalid input type.']}}
+
+2026-04-01 03:30:38,964 - INFO - Test runtime: 8.25 seconds
+2026-04-01 03:30:38,964 - INFO - Test output for marshmallow-code__marshmallow-1343 written to logs/run_evaluation/opencode-nosubagent/opencode-nosubagent/marshmallow-code__marshmallow-1343/test_output.txt
+2026-04-01 03:30:39,608 - INFO - Git diff after:
+diff --git a/src/marshmallow/marshalling.py b/src/marshmallow/marshalling.py
+index feb7d1a..bdb1135 100644
+--- a/src/marshmallow/marshalling.py
++++ b/src/marshmallow/marshalling.py
+@@ -11,6 +11,7 @@ and from primitive types.
+ from __future__ import unicode_literals
+ 
+ import collections
++import collections.abc
+ 
+ from marshmallow.utils import is_collection, missing, set_value
+ from marshmallow.compat import text_type, iteritems
+@@ -250,7 +251,7 @@ class Unmarshaller(ErrorStore):
+ 
+         ret = dict_class()
+ 
+-        if not isinstance(data, collections.Mapping):
++        if not isinstance(data, collections.abc.Mapping):
+             errors = self.get_errors(index=index)
+             msg = 'Invalid input type.'
+             self.error_field_names = [SCHEMA]
+diff --git a/src/marshmallow/schema.py b/src/marshmallow/schema.py
+index 085c509..5dea285 100644
+--- a/src/marshmallow/schema.py
++++ b/src/marshmallow/schema.py
+@@ -861,6 +861,8 @@ class BaseSchema(base.SchemaABC):
+         return data
+ 
+     def _invoke_field_validators(self, unmarshal, data, many):
++        if data is None:
++            return
+         for attr_name in self.__processors__[(VALIDATES, False)]:
+             validator = getattr(self, attr_name)
+             validator_kwargs = validator.__marshmallow_kwargs__[(VALIDATES, False)]
+
+2026-04-01 03:30:39,608 - INFO - Git diff changed after running eval script
+2026-04-01 03:30:39,609 - INFO - Grading answer for marshmallow-code__marshmallow-1343...
+2026-04-01 03:30:39,610 - INFO - report: {'marshmallow-code__marshmallow-1343': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': True, 'tests_status': {'FAIL_TO_PASS': {'success': ['tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method'], 'failure': []}, 'PASS_TO_PASS': {'success': ['tests/test_marshalling.py::test_missing_is_falsy', 'tests/test_marshalling.py::TestMarshaller::test_prefix', 'tests/test_marshalling.py::TestMarshaller::test_marshalling_generator', 'tests/test_marshalling.py::TestMarshaller::test_default_to_missing', 'tests/test_marshalling.py::TestMarshaller::test_serialize_fields_with_load_only_param', 'tests/test_marshalling.py::TestMarshaller::test_missing_data_are_skipped', 'tests/test_marshalling.py::TestMarshaller::test_serialize_with_load_only_doesnt_validate', 'tests/test_marshalling.py::TestMarshaller::test_serialize_fields_with_dump_to_param', 'tests/test_marshalling.py::TestMarshaller::test_serialize_fields_with_dump_to_and_prefix_params', 'tests/test_marshalling.py::TestMarshaller::test_stores_indices_of_errors_when_many_equals_true', 'tests/test_marshalling.py::TestMarshaller::test_doesnt_store_errors_when_index_errors_equals_false', 'tests/test_marshalling.py::TestUnmarshaller::test_extra_data_is_ignored', 'tests/test_marshalling.py::TestUnmarshaller::test_stores_errors', 'tests/test_marshalling.py::TestUnmarshaller::test_stores_indices_of_errors_when_many_equals_true', 'tests/test_marshalling.py::TestUnmarshaller::test_doesnt_store_errors_when_index_errors_equals_false', 'tests/test_marshalling.py::TestUnmarshaller::test_deserialize', 'tests/test_marshalling.py::TestUnmarshaller::test_extra_fields', 'tests/test_marshalling.py::TestUnmarshaller::test_deserialize_many', 'tests/test_marshalling.py::TestUnmarshaller::test_deserialize_stores_errors', 'tests/test_marshalling.py::TestUnmarshaller::test_deserialize_fields_with_attribute_param', 'tests/test_marshalling.py::TestUnmarshaller::test_deserialize_fields_with_load_from_param', 'tests/test_marshalling.py::TestUnmarshaller::test_deserialize_fields_with_dump_only_param', 'tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_type_root_data', 'tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_type_nested_data'], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for marshmallow-code__marshmallow-1343: resolved: True

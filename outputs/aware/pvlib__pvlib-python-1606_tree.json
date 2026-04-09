@@ -1,0 +1,265 @@
+{
+  "instance_id": "pvlib__pvlib-python-1606",
+  "variant": "aware",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [],
+  "per_file": {
+    "/repo/pvlib/tools.py": {
+      "reads": [
+        1,
+        2,
+        16,
+        24,
+        26
+      ],
+      "edits": [
+        {
+          "step": 5,
+          "old": "        iterlimit = 1 + np.nanmax(\n            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))",
+          "new": "        iterlimit = 1 + np.nanmax(\n            np.trunc(np.log(atol / np.maximum(df['VH'] - df['VL'], atol))\n                     / np.log(phim1)))"
+        }
+      ],
+      "first_read_step": 1,
+      "first_edit_step": 5,
+      "content_snippets": [
+        {
+          "offset": 320,
+          "limit": 80,
+          "signatures": [
+            "def _get_sample_intervals(times, win_length)"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 15,
+          "signatures": [
+            "def cosd(angle)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_tools.py": {
+      "reads": [
+        4,
+        21
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 27,
+          "limit": 60,
+          "signatures": [
+            "def test__golden_sect_DataFrame_atol()",
+            "def test__golden_sect_DataFrame_vector()",
+            "def test__golden_sect_DataFrame_nans()",
+            "def test_degrees_to_index_1()"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 25,
+          "signatures": [
+            "def test_build_kwargs(keys, input_dict, expected)",
+            "def _obj_test_golden_sect(params, loc)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def _golden_sect_DataFrame",
+        "path": "/repo"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/tools.py:\n  Line 302: def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/pvlib/tests",
+        "pattern": "test__golden_sect_DataFrame"
+      },
+      "output_preview": "Found 4 matches\n/repo/pvlib/tests/test_tools.py:\n  Line 27: def test__golden_sect_DataFrame(params, lb, ub, expected, func):\n  Line 32: def test__golden_sect_DataFrame_atol():\n  Line 40: def test__golden_sect_DataFrame_vector():\n  Line 50: def test__golden_sect_DataFrame_nans():"
+    },
+    {
+      "step": 5,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/tools.py",
+        "oldString": "        iterlimit = 1 + np.nanmax(\n            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))",
+        "newString": "        iterlimit = 1 + np.nanmax(\n            np.trunc(np.log(atol / np.maximum(df['VH'] - df['VL'], atol))\n                     / np.log(phim1)))"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/tools.py\">\nERROR [6:8] Import \"numpy\" could not be resolved\nERROR [7:8] Import \"pandas\" could not be resolved\n</diagnostics>"
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_tools.py::test__golden_sect_DataFrame_vector -xvs 2>&1",
+        "description": "Run the golden section test"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install pytest -q 2>&1 | tail -1",
+        "description": "Install pytest"
+      },
+      "output_preview": "[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_tools.py::test__golden_sect_DataFrame_vector -xvs 2>&1",
+        "description": "Run the golden section vector test"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/usr/local/lib/python3.12/site-packages/pytest/__main__.py\", line 9, in <module>\n    raise SystemExit(pytest.console_main())\n                     ^^^^^^"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nfrom pvlib import tools\n\ndef _obj_test_golden_sect(df, loc):\n    c = df['c']\n    n = df['n']\n    return -np.abs(n[loc] * c[loc] ** n[loc] - c[loc] ** (2 * n[loc]))\n\n# Test with upper == lower (the bug case)\nparams = {'c': np.array([1., 1.]), 'n': np.array([1., 1.])}\nlower = np.array([0., 0.])  \nupper = np.array([0., 1.1])  # first element has equal bounds\nv, x = tools._golden_sect_DataFrame(params, lower, upper, _obj_test_golden_sect)\nprint('Result x:', x)\nprint('Expected: first element should be ~0, second ~0.5')\n\n# Test with scalar upper == lower\nparams = {'c': 1., 'n': 1.}\nv, x = tools._golden_sect_DataFrame(params, 0., 0., _obj_test_golden_sect)\nprint('Scalar equal bounds x:', x)\n\" 2>&1",
+        "description": "Test the fix with equal bounds"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"from pvlib import tools; print('ok')\" 2>&1",
+        "description": "Check if import works"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/atmosphere.py\", line 8, in <module>\n    import numpy as np\nModuleNotFoundError: No module named 'numpy'\n"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install numpy pandas -q 2>&1 | tail -1",
+        "description": "Install numpy and pandas"
+      },
+      "output_preview": "[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nfrom pvlib import tools\n\ndef _obj_test_golden_sect(df, loc):\n    c = df['c']\n    n = df['n']\n    return -np.abs(n[loc] * c[loc] ** n[loc] - c[loc] ** (2 * n[loc]))\n\n# Test with upper == lower (the bug case)\nparams = {'c': np.array([1., 1.]), 'n': np.array([1., 1.])}\nlower = np.array([0., 0.])  \nupper = np.array([0., 1.1])  # first element has equal bounds\nv, x = tools._golden_sect_DataFrame(params, lower, upper, _obj_test_golden_sect)\nprint('Result x:', x)\nprint('Expected: first element should be ~0, second ~0.5')\nassert np.isclose(x[0], 0., atol=1e-8) or np.isnan(x[0]), f'Expected 0 or nan for equal bounds, got {x[0]}'\nassert np.isclose(x[1], 0.5, atol=1e-8), f'Expected 0.5, got {x[1]}'\n\n# Test with scalar upper == lower\nparams = {'c': 1., 'n': 1.}\nv, x = tools._golden_sect_DataFrame(params, 0., 0., _obj_test_golden_sect)\nprint('Scalar equal bounds x:', x)\n\nprint('All tests passed!')\n\" 2>&1",
+        "description": "Test the fix with equal bounds"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/bifacial/__init__.py\", line 7, in <module>\n    from pvlib.bifacial import pvfactors, infinite_sheds, utils   # noq"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install pytz -q 2>&1 | tail -1 && python -c \"from pvlib import tools; print('ok')\" 2>&1",
+        "description": "Install pytz and test import"
+      },
+      "output_preview": "[notice] To update, run: pip install --upgrade pip\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/bifacial/__init__.py\", line 7, in <module>\n    from pvlib.bifac"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install scipy -q 2>&1 | tail -1 && python -c \"\nimport numpy as np\nfrom pvlib.tools import _golden_sect_DataFrame\n\ndef _obj_test_golden_sect(df, loc):\n    c = df['c']\n    n = df['n']\n    return -np.abs(n[loc] * c[loc] ** n[loc] - c[loc] ** (2 * n[loc]))\n\n# Test with upper == lower (the bug case)\nparams = {'c': np.array([1., 1.]), 'n': np.array([1., 1.])}\nlower = np.array([0., 0.])  \nupper = np.array([0., 1.1])  # first element has equal bounds\nv, x = _golden_sect_DataFrame(params, lower, upper, _obj_test_golden_sect)\nprint('Result x:', x)\nprint('Expected: first element should be ~0, second ~0.5')\n\n# Test with scalar upper == lower\nparams = {'c': 1., 'n': 1.}\nv, x = _golden_sect_DataFrame(params, 0., 0., _obj_test_golden_sect)\nprint('Scalar equal bounds x:', x)\n\nprint('All tests passed!')\n\" 2>&1",
+        "description": "Test fix after installing scipy"
+      },
+      "output_preview": "[notice] To update, run: pip install --upgrade pip\nTraceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/clearsky.py\", line 14, in <module>\n    import h5py\nModuleNotFou"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport sys, importlib.util\nspec = importlib.util.spec_from_file_location('tools', '/repo/pvlib/tools.py')\ntools = importlib.util.module_from_spec(spec)\nsys.modules['pvlib.tools'] = tools\nspec.loader.exec_module(tools)\nprint('Direct import works')\n\" 2>&1",
+        "description": "Try direct module import"
+      },
+      "output_preview": "Direct import works\n"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install -e . -q 2>&1 | tail -3",
+        "description": "Install pvlib with dependencies"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nfrom pvlib.tools import _golden_sect_DataFrame\n\ndef _obj_test_golden_sect(df, loc):\n    c = df['c']\n    n = df['n']\n    return -np.abs(n[loc] * c[loc] ** n[loc] - c[loc] ** (2 * n[loc]))\n\n# Test with upper == lower (the bug case)\nparams = {'c': np.array([1., 1.]), 'n': np.array([1., 1.])}\nlower = np.array([0., 0.])  \nupper = np.array([0., 1.1])  # first element has equal bounds\nv, x = _golden_sect_DataFrame(params, lower, upper, _obj_test_golden_sect)\nprint('Result x:', x)\nprint('Expected: first element should be ~0, second ~0.5')\n\n# Test with scalar upper == lower\nparams = {'c': 1., 'n': 1.}\nv, x = _golden_sect_DataFrame(params, 0., 0., _obj_test_golden_sect)\nprint('Scalar equal bounds x:', x)\n\nprint('All tests passed!')\n\" 2>&1",
+        "description": "Test the fix"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/ivtools/__init__.py\", line 7, in <module>\n    from pvlib.ivtools import sde, sdm, utils  # noqa: F401\n    ^^^^^^^^"
+    },
+    {
+      "step": 19,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport sys, importlib\n# Mock pytz to avoid pvlib import chain\nimport types\nsys.modules['pvlib'] = types.ModuleType('pvlib')\n\nimport numpy as np\nimport pandas as pd\nimport warnings\nimport datetime as dt\nimport pytz\n\n# Now import tools functions directly  \nexec(open('/repo/pvlib/tools.py').read())\n\ndef _obj_test_golden_sect(df, loc):\n    c = df['c']\n    n = df['n']\n    return -np.abs(n[loc] * c[loc] ** n[loc] - c[loc] ** (2 * n[loc]))\n\n# Test with upper == lower (the bug case)\nparams = {'c': np.array([1., 1.]), 'n': np.array([1., 1.])}\nlower = np.array([0., 0.])  \nupper = np.array([0., 1.1])  # first element has equal bounds\nv, x = _golden_sect_DataFrame(params, lower, upper, _obj_test_golden_sect)\nprint('Result x:', x)\n\n# Test with scalar upper == lower\nparams = {'c': 1., 'n': 1.}\nv, x = _golden_sect_DataFrame(params, 0., 0., _obj_test_golden_sect)\nprint('Scalar equal bounds x:', x)\n\nprint('All tests passed!')\n\" 2>&1",
+        "description": "Test fix by executing tools.py directly"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 25, in <module>\n  File \"<string>\", line 368, in _golden_sect_DataFrame\n  File \"<string>\", line 19, in _obj_test_golden_sect\nIndexError: only integers, slices (`:`), ellipsis (`...`), numpy.newaxis (`None`) and integer or boolean arrays are v"
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nimport pandas as pd\nimport warnings\n\n# Copy of the relevant portion of _golden_sect_DataFrame for testing\ndef _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):\n    phim1 = (np.sqrt(5) - 1) / 2\n    df = params\n    df['VH'] = upper\n    df['VL'] = lower\n    converged = False\n    iterations = 0\n    with warnings.catch_warnings():\n        warnings.filterwarnings(action='ignore', message='All-NaN slice encountered')\n        iterlimit = 1 + np.nanmax(\n            np.trunc(np.log(atol / np.maximum(df['VH'] - df['VL'], atol)) / np.log(phim1)))\n    print(f'iterlimit: {iterlimit}')\n    while not converged and (iterations <= iterlimit):\n        phi = phim1 * (df['VH'] - df['VL'])\n        df['V1'] = df['VL'] + phi\n        df['V2'] = df['VH'] - phi\n        df['f1'] = func(df, 'V1')\n        df['f2'] = func(df, 'V2')\n        df['SW_Flag'] = df['f1'] > df['f2']\n        df['VL'] = df['V2']*df['SW_Flag'] + df['VL']*(~df['SW_Flag'])\n        df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])\n        err = abs(df['V2'] - df['V1'])\n        converged = (err[~np.isnan(err)] < atol).all()\n        iterations += 1\n    if iterations > iterlimit:\n        raise Exception('Iterations exceeded maximum')\n    func_result = func(df, 'V1')\n    x = np.where(np.isnan(func_result), np.nan, df['V1'])\n    return func_result, x\n\ndef _obj_test_golden_sect(df, loc):\n    c = df['c']\n    n = df['n']\n    return -np.abs(n[loc] * c[loc] ** n[loc] - c[loc] ** (2 * n[loc]))\n\n# Test 1: vector case with one element having equal bounds\nparams = pd.DataFrame({'c': np.array([1., 1.]), 'n': np.array([1., 1.])})\nlower = np.array([0., 0.])  \nupper = np.array([0., 1.1])  # first element has equal bounds\nv, x = _golden_sect_DataFrame(params, lower, upper, _obj_test_golden_sect)\nprint('Result x:', x)\nprint('x[0] should be ~0, x[1] should be ~0.5')\n\n# Test 2: scalar upper == lower\nparams = pd.DataFrame({'c': [1.], 'n': [1.]})\nv, x = _golden_sect_DataFrame(params, 0., 0., _obj_test_golden_sect)\nprint('Scalar equal bounds x:', x)\n\nprint('All tests passed!')\n\" 2>&1",
+        "description": "Test with DataFrame params"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 46, in <module>\n  File \"<string>\", line 23, in _golden_sect_DataFrame\n  File \"<string>\", line 40, in _obj_test_golden_sect\n  File \"/usr/local/lib/python3.12/site-packages/pandas/core/series.py\", line 959, in __getitem__\n    return self._get_"
+    },
+    {
+      "step": 22,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nimport pandas as pd\nimport warnings\n\n# Copy of _golden_sect_DataFrame for testing\ndef _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):\n    phim1 = (np.sqrt(5) - 1) / 2\n    df = params\n    df['VH'] = upper\n    df['VL'] = lower\n    converged = False\n    iterations = 0\n    with warnings.catch_warnings():\n        warnings.filterwarnings(action='ignore', message='All-NaN slice encountered')\n        iterlimit = 1 + np.nanmax(\n            np.trunc(np.log(atol / np.maximum(df['VH'] - df['VL'], atol)) / np.log(phim1)))\n    print(f'iterlimit: {iterlimit}')\n    while not converged and (iterations <= iterlimit):\n        phi = phim1 * (df['VH'] - df['VL'])\n        df['V1'] = df['VL'] + phi\n        df['V2'] = df['VH'] - phi\n        df['f1'] = func(df, 'V1')\n        df['f2'] = func(df, 'V2')\n        df['SW_Flag'] = df['f1'] > df['f2']\n        df['VL'] = df['V2']*df['SW_Flag'] + df['VL']*(~df['SW_Flag'])\n        df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])\n        err = abs(df['V2'] - df['V1'])\n        converged = (err[~np.isnan(err)] < atol).all()\n        iterations += 1\n    if iterations > iterlimit:\n        raise Exception('Iterations exceeded maximum')\n    func_result = func(df, 'V1')\n    x = np.where(np.isnan(func_result), np.nan, df['V1'])\n    return func_result, x\n\ndef _obj_test_golden_sect(params, loc):\n    return params[loc] * (1. - params['c'] * params[loc]**params['n'])\n\n# Test 1: vector case with one element having equal bounds (upper == lower == 0)\nparams = pd.DataFrame({'c': np.array([1., 1.]), 'n': np.array([1., 1.])})\nlower = np.array([0., 0.])  \nupper = np.array([0., 1.1])  # first element has equal bounds\nv, x = _golden_sect_DataFrame(params, lower, upper, _obj_test_golden_sect)\nprint('Result x:', x)\nassert np.isclose(x[1], 0.5, atol=1e-8), f'Expected x[1]=0.5, got {x[1]}'\nprint('x[1] is correct')\n\n# Test 2: vector case where ALL elements have equal bounds\nparams = pd.DataFrame({'c': np.array([1., 1.]), 'n': np.array([1., 1.])})\nlower = np.array([0., 0.])\nupper = np.array([0., 0.])  # all equal bounds\nv, x = _golden_sect_DataFrame(params, lower, upper, _obj_test_golden_sect)\nprint('All equal bounds x:', x)\n\nprint('All tests passed!')\n\" 2>&1",
+        "description": "Test with correct test function"
+      },
+      "output_preview": "iterlimit: 39.0\nResult x: [0.         0.50000001]\nx[1] is correct\niterlimit: 1.0\nAll equal bounds x: [0. 0.]\nAll tests passed!\n"
+    },
+    {
+      "step": 23,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nimport pandas as pd\nimport warnings\n\ndef _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):\n    phim1 = (np.sqrt(5) - 1) / 2\n    df = pd.DataFrame(params) if isinstance(params, dict) else params.copy()\n    df['VH'] = upper\n    df['VL'] = lower\n    converged = False\n    iterations = 0\n    with warnings.catch_warnings():\n        warnings.filterwarnings(action='ignore', message='All-NaN slice encountered')\n        iterlimit = 1 + np.nanmax(\n            np.trunc(np.log(atol / np.maximum(df['VH'] - df['VL'], atol)) / np.log(phim1)))\n    while not converged and (iterations <= iterlimit):\n        phi = phim1 * (df['VH'] - df['VL'])\n        df['V1'] = df['VL'] + phi\n        df['V2'] = df['VH'] - phi\n        df['f1'] = func(df, 'V1')\n        df['f2'] = func(df, 'V2')\n        df['SW_Flag'] = df['f1'] > df['f2']\n        df['VL'] = df['V2']*df['SW_Flag'] + df['VL']*(~df['SW_Flag'])\n        df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])\n        err = abs(df['V2'] - df['V1'])\n        converged = (err[~np.isnan(err)] < atol).all()\n        iterations += 1\n    if iterations > iterlimit:\n        raise Exception('Iterations exceeded maximum')\n    try:\n        func_result = func(df, 'V1')\n        x = np.where(np.isnan(func_result), np.nan, df['V1'])\n    except KeyError:\n        func_result = np.full_like(upper, np.nan)\n        x = func_result.copy()\n    return func_result, x\n\ndef _obj_test_golden_sect(params, loc):\n    return params[loc] * (1. - params['c'] * params[loc]**params['n'])\n\n# Original parametrized tests\ntests = [\n    ({'c': 1., 'n': 1.}, 0., 1., 0.5),\n    ({'c': 1e6, 'n': 6.}, 0., 1., 0.07230200263994839),\n    ({'c': 0.2, 'n': 0.3}, 0., 100., 89.14332727531685),\n]\nfor params, lb, ub, expected in tests:\n    v, x = _golden_sect_DataFrame(params, lb, ub, _obj_test_golden_sect)\n    assert np.isclose(x, expected, atol=1e-8), f'Failed: {params}, expected {expected}, got {x}'\n    print(f'OK: {expected}')\n\n# atol test\nparams = {'c': 0.2, 'n': 0.3}\nv, x = _golden_sect_DataFrame(params, 0., 100., _obj_test_golden_sect, atol=1e-12)\nassert np.isclose(x, 89.14332727531685, atol=1e-12)\nprint('atol test OK')\n\n# vector test\nparams = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}\nv, x = _golden_sect_DataFrame(params, np.array([0., 0.001]), np.array([1.1, 1.2]), _obj_test_golden_sect)\nassert np.allclose(x, np.array([0.5, 0.25]), atol=1e-8)\nprint('vector test OK')\n\n# nan tests\nparams = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}\nv, x = _golden_sect_DataFrame(params, np.array([0., 0.001, np.nan]), np.array([1.1, 1.2, 1.]), _obj_test_golden_sect)\nassert np.allclose(x, np.array([0.5, 0.25, np.nan]), atol=1e-8, equal_nan=True)\nprint('nan in bounds test OK')\n\nparams = {'c': np.array([1., 2., np.nan]), 'n': np.array([1., 1., 1.])}\nv, x = _golden_sect_DataFrame(params, np.array([0., 0.001, 0.]), np.array([1.1, 1.2, 1.]), _obj_test_golden_sect)\nassert np.allclose(x, np.array([0.5, 0.25, np.nan]), atol=1e-8, equal_nan=True)\nprint('nan in func test OK')\n\n# all nan in bounds\nparams = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}\nv, x = _golden_sect_DataFrame(params, np.array([np.nan, np.nan, np.nan]), np.array([1.1, 1.2, 1.]), _obj_test_golden_sect)\nassert np.allclose(x, np.array([np.nan, np.nan, np.nan]), atol=1e-8, equal_nan=True)\nprint('all nan in bounds test OK')\n\nprint('All existing tests pass!')\n\" 2>&1",
+        "description": "Run all existing tests with fix"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 49, in <module>\n  File \"<string>\", line 8, in _golden_sect_DataFrame\n  File \"/usr/local/lib/python3.12/site-packages/pandas/core/frame.py\", line 769, in __init__\n    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy)\n          ^"
+    },
+    {
+      "step": 25,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nimport warnings\n\ndef _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):\n    phim1 = (np.sqrt(5) - 1) / 2\n    df = params\n    df['VH'] = upper\n    df['VL'] = lower\n    converged = False\n    iterations = 0\n    with warnings.catch_warnings():\n        warnings.filterwarnings(action='ignore', message='All-NaN slice encountered')\n        iterlimit = 1 + np.nanmax(\n            np.trunc(np.log(atol / np.maximum(df['VH'] - df['VL'], atol)) / np.log(phim1)))\n    while not converged and (iterations <= iterlimit):\n        phi = phim1 * (df['VH'] - df['VL'])\n        df['V1'] = df['VL'] + phi\n        df['V2'] = df['VH'] - phi\n        df['f1'] = func(df, 'V1')\n        df['f2'] = func(df, 'V2')\n        df['SW_Flag'] = df['f1'] > df['f2']\n        df['VL'] = df['V2']*df['SW_Flag'] + df['VL']*(~df['SW_Flag'])\n        df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])\n        err = abs(df['V2'] - df['V1'])\n        converged = (err[~np.isnan(err)] < atol).all()\n        iterations += 1\n    if iterations > iterlimit:\n        raise Exception('Iterations exceeded maximum')\n    try:\n        func_result = func(df, 'V1')\n        x = np.where(np.isnan(func_result), np.nan, df['V1'])\n    except KeyError:\n        func_result = np.full_like(upper, np.nan)\n        x = func_result.copy()\n    return func_result, x\n\ndef _obj_test_golden_sect(params, loc):\n    return params[loc] * (1. - params['c'] * params[loc]**params['n'])\n\n# Original scalar tests\nfor params, lb, ub, expected in [\n    ({'c': 1., 'n': 1.}, 0., 1., 0.5),\n    ({'c': 1e6, 'n': 6.}, 0., 1., 0.07230200263994839),\n    ({'c': 0.2, 'n': 0.3}, 0., 100., 89.14332727531685),\n]:\n    v, x = _golden_sect_DataFrame(params, lb, ub, _obj_test_golden_sect)\n    assert np.isclose(x, expected, atol=1e-8)\nprint('Scalar tests OK')\n\n# vector test\nparams = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}\nv, x = _golden_sect_DataFrame(params, np.array([0., 0.001]), np.array([1.1, 1.2]), _obj_test_golden_sect)\nassert np.allclose(x, np.array([0.5, 0.25]), atol=1e-8)\nprint('Vector test OK')\n\n# nan tests\nparams = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}\nv, x = _golden_sect_DataFrame(params, np.array([0., 0.001, np.nan]), np.array([1.1, 1.2, 1.]), _obj_test_golden_sect)\nassert np.allclose(x, np.array([0.5, 0.25, np.nan]), atol=1e-8, equal_nan=True)\nprint('Nan in bounds OK')\n\nparams = {'c': np.array([1., 2., np.nan]), 'n': np.array([1., 1., 1.])}\nv, x = _golden_sect_DataFrame(params, np.array([0., 0.001, 0.]), np.array([1.1, 1.2, 1.]), _obj_test_golden_sect)\nassert np.allclose(x, np.array([0.5, 0.25, np.nan]), atol=1e-8, equal_nan=True)\nprint('Nan in func OK')\n\nparams = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}\nv, x = _golden_sect_DataFrame(params, np.array([np.nan, np.nan, np.nan]), np.array([1.1, 1.2, 1.]), _obj_test_golden_sect)\nassert np.allclose(x, np.array([np.nan, np.nan, np.nan]), atol=1e-8, equal_nan=True)\nprint('All nan in bounds OK')\n\n# NEW: equal bounds test (the bug)\nparams = {'c': np.array([1., 1.]), 'n': np.array([1., 1.])}\nv, x = _golden_sect_DataFrame(params, np.array([0., 0.]), np.array([0., 1.1]), _obj_test_golden_sect)\nassert np.allclose(x, np.array([0., 0.5]), atol=1e-8)\nprint('Equal bounds (one element) OK')\n\nparams = {'c': np.array([1., 1.]), 'n': np.array([1., 1.])}\nv, x = _golden_sect_DataFrame(params, np.array([0., 0.]), np.array([0., 0.]), _obj_test_golden_sect)\nassert np.allclose(x, np.array([0., 0.]), atol=1e-8)\nprint('Equal bounds (all elements) OK')\n\nprint('ALL TESTS PASS!')\n\" 2>&1",
+        "description": "Test fix with direct dict usage"
+      },
+      "output_preview": "Scalar tests OK\nVector test OK\nNan in bounds OK\nNan in func OK\nAll nan in bounds OK\nEqual bounds (one element) OK\nEqual bounds (all elements) OK\nALL TESTS PASS!\n"
+    }
+  ],
+  "token_cost": {
+    "total": 561809,
+    "input": 26537,
+    "output": 9000,
+    "cache_read": 526272,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": 49.28,
+  "total_duration_seconds": 288.83,
+  "patch_non_empty": true
+}

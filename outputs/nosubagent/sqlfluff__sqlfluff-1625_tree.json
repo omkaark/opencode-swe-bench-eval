@@ -1,0 +1,668 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-1625",
+  "variant": "nosubagent",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [],
+  "per_file": {
+    "/repo/src/sqlfluff/rules/L031.py": {
+      "reads": [
+        2,
+        24,
+        26,
+        45,
+        52,
+        54,
+        55
+      ],
+      "edits": [
+        {
+          "step": 21,
+          "old": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements\n    ) -> Generator[TableAliasInfo, None, None]:\n        for from_expression in from_expression_elements:",
+          "new": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements, from_expression_element=None\n    ) -> Generator[TableAliasInfo, None, None]:\n        # Determine if there are any join clauses present. If not,\n        # the base table alias should not be flagged (no join exists).\n        has_joins = False\n        if from_expression_element:\n            for _ in from_expression_element.recursive_crawl(\"join_clause\"):\n                has_joins = True\n                break\n\n        for from_expression in from_expression_elements:"
+        },
+        {
+          "step": 22,
+          "old": "            # If this is self-join - skip it\n            if (\n                base_table\n                and base_table.raw == table_ref.raw\n                and base_table != table_ref\n            ):\n                continue",
+          "new": "            # If this is self-join - skip it\n            if (\n                base_table\n                and base_table.raw == table_ref.raw\n                and base_table != table_ref\n            ):\n                continue\n\n            # If this is the base table and there are no joins, skip it\n            if not has_joins and base_table and base_table == table_ref:\n                continue"
+        },
+        {
+          "step": 23,
+          "old": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                )\n                or None\n            )",
+          "new": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                    from_expression_element,\n                )\n                or None\n            )"
+        },
+        {
+          "step": 25,
+          "old": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                )\n                or None\n            )",
+          "new": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                    from_expression_element,\n                )\n                or None\n            )"
+        },
+        {
+          "step": 27,
+          "old": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(base_table, from_expression_elements)\n        )",
+          "new": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment,\n        from_expression_element=None,\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(\n                base_table, from_expression_elements, from_expression_element\n            )\n        )"
+        },
+        {
+          "step": 46,
+          "old": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                    from_expression_element,\n                )\n                or None\n            )",
+          "new": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                    from_expression,\n                )\n                or None\n            )"
+        },
+        {
+          "step": 47,
+          "old": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment,\n        from_expression_element=None,\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(\n                base_table, from_expression_elements, from_expression_element\n            )\n        )",
+          "new": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment,\n        from_expression=None,\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(\n                base_table, from_expression_elements, from_expression\n            )\n        )"
+        },
+        {
+          "step": 48,
+          "old": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements, from_expression_element=None\n    ) -> Generator[TableAliasInfo, None, None]:\n        # Determine if there are any join clauses present. If not,\n        # the base table alias should not be flagged (no join exists).\n        has_joins = False\n        if from_expression_element:\n            for _ in from_expression_element.recursive_crawl(\"join_clause\"):\n                has_joins = True\n                break",
+          "new": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements, from_expression=None\n    ) -> Generator[TableAliasInfo, None, None]:\n        # Determine if there are any join clauses present. If not,\n        # the base table alias should not be flagged (no join exists).\n        has_joins = False\n        if from_expression:\n            for _ in from_expression.recursive_crawl(\"join_clause\"):\n                has_joins = True\n                break"
+        },
+        {
+          "step": 53,
+          "old": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements, from_expression_element=None\n    ) -> Generator[TableAliasInfo, None, None]:\n        # Determine if there are any join clauses present. If not,\n        # the base table alias should not be flagged (no join exists).\n        has_joins = False\n        if from_expression_element:\n            for _ in from_expression_element.recursive_crawl(\"join_clause\"):\n                has_joins = True\n                break\n\n        for from_expression in from_expression_elements:\n            table_expression = from_expression.get_child(\"table_expression\")",
+          "new": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements, from_expression=None\n    ) -> Generator[TableAliasInfo, None, None]:\n        # Determine if there are any join clauses present. If not,\n        # the base table alias should not be flagged (no join exists).\n        has_joins = False\n        if from_expression:\n            for _ in from_expression.recursive_crawl(\"join_clause\"):\n                has_joins = True\n                break\n\n        for from_expression_elem in from_expression_elements:\n            table_expression = from_expression_elem.get_child(\"table_expression\")"
+        },
+        {
+          "step": 56,
+          "old": "            whitespace_ref = from_expression.get_child(\"whitespace\")\n\n            # If there's no alias expression - skip it\n            alias_exp_ref = from_expression.get_child(\"alias_expression\")",
+          "new": "            whitespace_ref = from_expression_elem.get_child(\"whitespace\")\n\n            # If there's no alias expression - skip it\n            alias_exp_ref = from_expression_elem.get_child(\"alias_expression\")"
+        },
+        {
+          "step": 57,
+          "old": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment,\n        from_expression_element=None,\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(\n                base_table, from_expression_elements, from_expression_element\n            )\n        )",
+          "new": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment,\n        from_expression=None,\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(\n                base_table, from_expression_elements, from_expression\n            )\n        )"
+        }
+      ],
+      "first_read_step": 2,
+      "first_edit_step": 21,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class Rule_L031(BaseRule)",
+            "def _eval(self, segment, **kwargs)",
+            "class TableAliasInfo(NamedTuple)",
+            "def _filter_table_expressions(",
+            "def _lint_aliases_in_join("
+          ]
+        },
+        {
+          "offset": 90,
+          "limit": 50,
+          "signatures": [
+            "class TableAliasInfo(NamedTuple)",
+            "def _filter_table_expressions("
+          ]
+        },
+        {
+          "offset": 149,
+          "limit": 30,
+          "signatures": [
+            "def _lint_aliases_in_join("
+          ]
+        },
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class Rule_L031(BaseRule)",
+            "def _eval(self, segment, **kwargs)",
+            "class TableAliasInfo(NamedTuple)",
+            "def _filter_table_expressions(",
+            "def _lint_aliases_in_join("
+          ]
+        },
+        {
+          "offset": 147,
+          "limit": 20,
+          "signatures": [
+            "def _lint_aliases_in_join("
+          ]
+        }
+      ]
+    },
+    "/repo/test/fixtures/rules/std_rule_cases/L031.yml": {
+      "reads": [
+        3,
+        32
+      ],
+      "edits": [
+        {
+          "step": 30,
+          "old": "alias_single_char_identifiers:\n  fail_str: \"select b from tbl as a\"\n  fix_str: \"select b from tbl\"",
+          "new": "alias_single_char_identifiers:\n  pass_str: \"select b from tbl as a\""
+        },
+        {
+          "step": 31,
+          "old": "alias_with_wildcard_identifier:\n  fail_str: \"select * from tbl as a\"\n  fix_str: \"select * from tbl\"",
+          "new": "alias_with_wildcard_identifier:\n  pass_str: \"select * from tbl as a\""
+        },
+        {
+          "step": 33,
+          "old": "alias_with_wildcard_identifier:\n  fail_str: \"select * from tbl as a\"\n  fix_str: \"select * from tbl\"",
+          "new": "alias_with_wildcard_identifier:\n  pass_str: \"select * from tbl as a\""
+        }
+      ],
+      "first_read_step": 3,
+      "first_edit_step": 30,
+      "content_snippets": []
+    },
+    "/repo/test/cli/commands_test.py": {
+      "reads": [
+        5
+      ],
+      "edits": [
+        {
+          "step": 29,
+          "old": "expected_output = \"\"\"== [test/fixtures/linter/indentation_error_simple.sql] FAIL\nL:   2 | P:   4 | L003 | Indentation not hanging or a multiple of 4 spaces\nL:   5 | P:  10 | L010 | Keywords must be consistently upper case.\nL:   5 | P:  13 | L031 | Avoid using aliases in join condition\n\"\"\"",
+          "new": "expected_output = \"\"\"== [test/fixtures/linter/indentation_error_simple.sql] FAIL\nL:   2 | P:   4 | L003 | Indentation not hanging or a multiple of 4 spaces\nL:   5 | P:  10 | L010 | Keywords must be consistently upper case.\n\"\"\""
+        }
+      ],
+      "first_read_step": 5,
+      "first_edit_step": 29,
+      "content_snippets": [
+        {
+          "offset": 40,
+          "limit": 40,
+          "signatures": [
+            "def test__cli__command_directed()",
+            "def test__cli__command_dialect()"
+          ]
+        }
+      ]
+    },
+    "/repo/test/fixtures/linter/indentation_error_simple.sql": {
+      "reads": [
+        5
+      ],
+      "edits": [],
+      "first_read_step": 5,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/dialects/dialect_ansi.py": {
+      "reads": [
+        7
+      ],
+      "edits": [],
+      "first_read_step": 7,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 1240,
+          "limit": 80,
+          "signatures": [
+            "class JoinClauseSegment(BaseSegment)",
+            "def get_eventual_alias(self) -> AliasInfo",
+            "class JoinOnConditionSegment(BaseSegment)"
+          ]
+        }
+      ]
+    },
+    "/repo/test/fixtures/linter/aliases_in_join_error.sql": {
+      "reads": [
+        43
+      ],
+      "edits": [],
+      "first_read_step": 43,
+      "first_edit_step": null,
+      "content_snippets": []
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 23,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "newString": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                    from_expression_element,\n                )\n                or None\n            )",
+        "oldString": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                )\n                or None\n            )"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 31,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/test/fixtures/rules/std_rule_cases/L031.yml",
+        "newString": "alias_with_wildcard_identifier:\n  pass_str: \"select * from tbl as a\"",
+        "oldString": "alias_with_wildcard_identifier:\n  fail_str: \"select * from tbl as a\"\n  fix_str: \"select * from tbl\""
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 47,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "newString": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment,\n        from_expression=None,\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(\n                base_table, from_expression_elements, from_expression\n            )\n        )",
+        "oldString": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment,\n        from_expression_element=None,\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(\n                base_table, from_expression_elements, from_expression_element\n            )\n        )"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 48,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "newString": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements, from_expression=None\n    ) -> Generator[TableAliasInfo, None, None]:\n        # Determine if there are any join clauses present. If not,\n        # the base table alias should not be flagged (no join exists).\n        has_joins = False\n        if from_expression:\n            for _ in from_expression.recursive_crawl(\"join_clause\"):\n                has_joins = True\n                break",
+        "oldString": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements, from_expression_element=None\n    ) -> Generator[TableAliasInfo, None, None]:\n        # Determine if there are any join clauses present. If not,\n        # the base table alias should not be flagged (no join exists).\n        has_joins = False\n        if from_expression_element:\n            for _ in from_expression_element.recursive_crawl(\"join_clause\"):\n                has_joins = True\n                break"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "join_clause|join_on_condition|from_expression_element",
+        "path": "/repo/src/sqlfluff/dialects",
+        "include": "*.py"
+      },
+      "output_preview": "Found 10 matches\n/repo/src/sqlfluff/dialects/dialect_ansi.py:\n  Line 1059:     type = \"from_expression_element\"\n  Line 1245:     type = \"join_clause\"\n  Line 1301:         from_expression_element = self.get_child(\"from_expression_element\")\n  Line 1302:         return from_expression_element.get_event"
+    },
+    {
+      "step": 4,
+      "tool": "bash",
+      "input": {
+        "command": "grep -n \"directed\\|L031\" /repo/test/cli/commands_test.py | head -30",
+        "description": "Find test__cli__command_directed test"
+      },
+      "output_preview": "52:L:   5 | P:  13 | L031 | Avoid using aliases in join condition\n56:def test__cli__command_directed():\n183:                \"L006,L031\",\n193:                \"L006,L007,L031,L039\",\n203:                \"L003,L009,L031\",\n412:        # L031 fix aliases in joins\n416:            \"L031\",\n"
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/cli/commands_test.py::test__cli__command_directed -x 2>&1 | tail -30",
+        "description": "Run the failing test"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install -e . 2>&1 | tail -5",
+        "description": "Install sqlfluff in dev mode"
+      },
+      "output_preview": "\nSuccessfully installed Jinja2-3.1.6 MarkupSafe-3.0.3 appdirs-1.4.4 cached-property-2.0.1 chardet-7.4.0.post2 colorama-0.4.6 configparser-7.2.0 diff-cover-10.2.0 iniconfig-2.3.0 oyaml-1.0 packaging-26.0 pathspec-1.0.4 pluggy-1.6.0 pytest-9.0.2 pyyaml-6.0.3 sqlfluff-0.7.0a8 tblib-3.2.2 toml-0.10.2\n\n["
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport sqlfluff\nresult = sqlfluff.lint('SELECT a.[hello] FROM mytable AS a', dialect='tsql')\nfor r in result:\n    print(r)\n\"",
+        "description": "Test the issue with TSQL"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 9, in <module>\n    import pkg_resources\nModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install setuptools 2>&1 | tail -3",
+        "description": "Install setuptools for pkg_resources"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport sqlfluff\nresult = sqlfluff.lint('SELECT a.[hello] FROM mytable AS a', dialect='tsql')\nfor r in result:\n    print(r)\n\"",
+        "description": "Test the issue with TSQL"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\n  File \"/repo/src/sqlfluff/__init__.py\", line 9, in <module>\n    import pkg_resources\nModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "pip install setuptools --force-reinstall 2>&1 | tail -5",
+        "description": "Force reinstall setuptools"
+      },
+      "output_preview": "      Successfully uninstalled setuptools-82.0.1\nSuccessfully installed setuptools-82.0.1\n\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"import pkg_resources; print('ok')\" 2>&1",
+        "description": "Test pkg_resources import"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "which python && python --version && pip show setuptools 2>&1",
+        "description": "Check Python and setuptools"
+      },
+      "output_preview": "/usr/local/bin/python\nPython 3.12.10\nName: setuptools\nVersion: 82.0.1\nSummary: Most extensible Python build backend with support for C/C++ extension modules\nHome-page: \nAuthor: \nAuthor-email: Python Packaging Authority <distutils-sig@python.org>\nLicense-Expression: MIT\nLocation: /usr/local/lib/pytho"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "pip install \"setuptools<70\" 2>&1 | tail -5",
+        "description": "Install older setuptools with pkg_resources"
+      },
+      "output_preview": "      Successfully uninstalled setuptools-82.0.1\nSuccessfully installed setuptools-69.5.1\n\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport sqlfluff\nresult = sqlfluff.lint('SELECT a.[hello] FROM mytable AS a', dialect='tsql')\nfor r in result:\n    print(r)\n\"",
+        "description": "Test the TSQL issue"
+      },
+      "output_preview": "{'line_no': 1, 'line_pos': 34, 'code': 'L009', 'description': 'Files must end with a trailing newline.'}\n{'line_no': 1, 'line_pos': 34, 'code': 'L031', 'description': 'Avoid using aliases in join condition'}\n"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport sqlfluff\nresult = sqlfluff.lint('SELECT [hello] FROM mytable', dialect='tsql')\nfor r in result:\n    print(r)\n\"",
+        "description": "Test TSQL without alias"
+      },
+      "output_preview": "{'line_no': 1, 'line_pos': 21, 'code': 'L009', 'description': 'Files must end with a trailing newline.'}\n"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nfrom sqlfluff.core import Linter\nlinter = Linter(dialect='tsql')\nparsed = linter.parse_string('SELECT a.[hello] FROM mytable AS a')\nfor seg in parsed.tree.recursive_crawl('from_expression_element'):\n    print('Element:', seg)\n    print('Parent type:', seg.get_parent().type if seg.get_parent() else None)\n    print()\n\"",
+        "description": "Inspect from_expression_element structure"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 7, in <module>\nAttributeError: 'FromExpressionElementSegment' object has no attribute 'get_parent'\nElement: <FromExpressionElementSegment: ([L:  1, P: 23])>\n"
+    },
+    {
+      "step": 19,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nfrom sqlfluff.core import Linter\nlinter = Linter(dialect='tsql')\nparsed = linter.parse_string('SELECT a.[hello] FROM mytable AS a')\ndef show_tree(seg, indent=0):\n    print('  ' * indent + f'{seg.type}: {repr(seg.raw)[:40]}')\n    if hasattr(seg, 'segments'):\n        for child in seg.segments:\n            show_tree(child, indent + 1)\nshow_tree(parsed.tree)\n\" 2>&1 | head -60",
+        "description": "Show parse tree structure"
+      },
+      "output_preview": "file: 'SELECT a.[hello] FROM mytable AS a'\n  batch: 'SELECT a.[hello] FROM mytable AS a'\n    statement: 'SELECT a.[hello] FROM mytable AS a'\n      select_statement: 'SELECT a.[hello] FROM mytable AS a'\n        select_clause: 'SELECT a.[hello]'\n          keyword: 'SELECT'\n          indent: ''\n       "
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nfrom sqlfluff.core import Linter\nlinter = Linter(dialect='tsql')\nparsed = linter.parse_string('SELECT a.[hello] FROM mytable AS a JOIN other AS b ON a.id = b.id')\ndef show_tree(seg, indent=0):\n    print('  ' * indent + f'{seg.type}: {repr(seg.raw)[:50]}')\n    if hasattr(seg, 'segments'):\n        for child in seg.segments:\n            show_tree(child, indent + 1)\nshow_tree(parsed.tree)\n\" 2>&1 | head -80",
+        "description": "Show parse tree with join"
+      },
+      "output_preview": "file: 'SELECT a.[hello] FROM mytable AS a JOIN other AS \n  batch: 'SELECT a.[hello] FROM mytable AS a JOIN other AS \n    statement: 'SELECT a.[hello] FROM mytable AS a JOIN other AS \n      select_statement: 'SELECT a.[hello] FROM mytable AS a JOIN other AS \n        select_clause: 'SELECT a.[hello]'\n"
+    },
+    {
+      "step": 21,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "oldString": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements\n    ) -> Generator[TableAliasInfo, None, None]:\n        for from_expression in from_expression_elements:",
+        "newString": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements, from_expression_element=None\n    ) -> Generator[TableAliasInfo, None, None]:\n        # Determine if there are any join clauses present. If not,\n        # the base table alias should not be flagged (no join exists).\n        has_joins = False\n        if from_expression_element:\n            for _ in from_expression_element.recursive_crawl(\"join_clause\"):\n                has_joins = True\n                break\n\n        for from_expression in from_expression_elements:"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/src/sqlfluff/rules/L031.py\">\nERROR [49:9] Method \"_eval\" overrides class \"BaseRule\" in an incompatible manner\n\u00a0\u00a0Positional parameter count mismatch; base method has 2, but override has 3\n</diagnostics>"
+    },
+    {
+      "step": 22,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "oldString": "            # If this is self-join - skip it\n            if (\n                base_table\n                and base_table.raw == table_ref.raw\n                and base_table != table_ref\n            ):\n                continue",
+        "newString": "            # If this is self-join - skip it\n            if (\n                base_table\n                and base_table.raw == table_ref.raw\n                and base_table != table_ref\n            ):\n                continue\n\n            # If this is the base table and there are no joins, skip it\n            if not has_joins and base_table and base_table == table_ref:\n                continue"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/src/sqlfluff/rules/L031.py\">\nERROR [49:9] Method \"_eval\" overrides class \"BaseRule\" in an incompatible manner\n\u00a0\u00a0Positional parameter count mismatch; base method has 2, but override has 3\n</diagnostics>"
+    },
+    {
+      "step": 25,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "oldString": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                )\n                or None\n            )",
+        "newString": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                    from_expression_element,\n                )\n                or None\n            )"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/src/sqlfluff/rules/L031.py\">\nERROR [100:21] Expected 4 positional arguments\nERROR [49:9] Method \"_eval\" overrides class \"BaseRule\" in an incompatible manner\n\u00a0\u00a0Positional parameter count mismatch; base "
+    },
+    {
+      "step": 27,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "newString": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment,\n        from_expression_element=None,\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(\n                base_table, from_expression_elements, from_expression_element\n            )\n        )",
+        "oldString": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(base_table, from_expression_elements)\n        )"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/src/sqlfluff/rules/L031.py\">\nERROR [49:9] Method \"_eval\" overrides class \"BaseRule\" in an incompatible manner\n\u00a0\u00a0Positional parameter count mismatch; base method has 2, but override has 3\n</diagnostics>"
+    },
+    {
+      "step": 28,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport sqlfluff\n# Test case from the issue - should NOT trigger L031\nresult = sqlfluff.lint('SELECT a.[hello] FROM mytable AS a', dialect='tsql')\nfor r in result:\n    print(r)\nprint('---')\n# Test with join - SHOULD trigger L031\nresult = sqlfluff.lint('SELECT a.id FROM users AS a JOIN customers AS c ON a.id = c.user_id', dialect='tsql')\nfor r in result:\n    print(r)\n\"",
+        "description": "Test the fix"
+      },
+      "output_preview": "{'line_no': 1, 'line_pos': 34, 'code': 'L009', 'description': 'Files must end with a trailing newline.'}\n---\n{'line_no': 1, 'line_pos': 47, 'code': 'L031', 'description': 'Avoid using aliases in join condition'}\n{'line_no': 1, 'line_pos': 61, 'code': 'L009', 'description': 'Files must end with a tra"
+    },
+    {
+      "step": 29,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/test/cli/commands_test.py",
+        "oldString": "expected_output = \"\"\"== [test/fixtures/linter/indentation_error_simple.sql] FAIL\nL:   2 | P:   4 | L003 | Indentation not hanging or a multiple of 4 spaces\nL:   5 | P:  10 | L010 | Keywords must be consistently upper case.\nL:   5 | P:  13 | L031 | Avoid using aliases in join condition\n\"\"\"",
+        "newString": "expected_output = \"\"\"== [test/fixtures/linter/indentation_error_simple.sql] FAIL\nL:   2 | P:   4 | L003 | Indentation not hanging or a multiple of 4 spaces\nL:   5 | P:  10 | L010 | Keywords must be consistently upper case.\n\"\"\""
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/test/cli/commands_test.py\">\nERROR [8:8] Import \"oyaml\" could not be resolved\nERROR [10:8] Import \"chardet\" could not be resolved\nERROR [14:8] Import \"pytest\" could not be resolved\nERROR [18:8] Import \""
+    },
+    {
+      "step": 30,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/test/fixtures/rules/std_rule_cases/L031.yml",
+        "newString": "alias_single_char_identifiers:\n  pass_str: \"select b from tbl as a\"",
+        "oldString": "alias_single_char_identifiers:\n  fail_str: \"select b from tbl as a\"\n  fix_str: \"select b from tbl\""
+      },
+      "output_preview": "Edit applied successfully."
+    },
+    {
+      "step": 33,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/test/fixtures/rules/std_rule_cases/L031.yml",
+        "newString": "alias_with_wildcard_identifier:\n  pass_str: \"select * from tbl as a\"",
+        "oldString": "alias_with_wildcard_identifier:\n  fail_str: \"select * from tbl as a\"\n  fix_str: \"select * from tbl\""
+      },
+      "output_preview": "Edit applied successfully."
+    },
+    {
+      "step": 34,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nfrom sqlfluff.cli.commands import lint\nfrom click.testing import CliRunner\nrunner = CliRunner()\nresult = runner.invoke(lint, ['test/fixtures/linter/indentation_error_simple.sql'])\nprint('Exit code:', result.exit_code)\nprint('Output:', result.output)\n\"",
+        "description": "Check CLI output after fix"
+      },
+      "output_preview": "Exit code: 65\nOutput: == [test/fixtures/linter/indentation_error_simple.sql] FAIL\nL:   2 | P:   4 | L003 | Indentation not hanging or a multiple of 4 spaces\nL:   5 | P:  10 | L010 | Keywords must be consistently upper case.\nAll Finished \ud83d\udcdc \ud83c\udf89!\n\n"
+    },
+    {
+      "step": 35,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/cli/commands_test.py::test__cli__command_directed -xvs 2>&1 | tail -20",
+        "description": "Run the CLI test"
+      },
+      "output_preview": "        \"\"\"Invoke a command and check return code.\"\"\"\n        args = args or []\n        kwargs = kwargs or {}\n        if cli_input:\n            kwargs[\"input\"] = cli_input\n>       runner = CliRunner(mix_stderr=mix_stderr)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: CliRunner"
+    },
+    {
+      "step": 36,
+      "tool": "bash",
+      "input": {
+        "command": "pip install \"click>=7,<9\" 2>&1 | tail -3",
+        "description": "Install compatible click version"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 37,
+      "tool": "bash",
+      "input": {
+        "command": "pip show click 2>&1",
+        "description": "Check click version"
+      },
+      "output_preview": "Name: click\nVersion: 8.3.1\nSummary: Composable command line interface toolkit\nHome-page: \nAuthor: \nAuthor-email: \nLicense-Expression: BSD-3-Clause\nLocation: /usr/local/lib/python3.12/site-packages\nRequires: \nRequired-by: sqlfluff, uvicorn\n"
+    },
+    {
+      "step": 38,
+      "tool": "bash",
+      "input": {
+        "command": "pip install \"click>=7,<8.1\" 2>&1 | tail -3",
+        "description": "Install older click version"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 39,
+      "tool": "bash",
+      "input": {
+        "command": "pip show click 2>&1",
+        "description": "Check click version after install"
+      },
+      "output_preview": "Name: click\nVersion: 8.0.4\nSummary: Composable command line interface toolkit\nHome-page: https://palletsprojects.com/p/click/\nAuthor: Armin Ronacher\nAuthor-email: armin.ronacher@active-4.com\nLicense: BSD-3-Clause\nLocation: /usr/local/lib/python3.12/site-packages\nRequires: \nRequired-by: sqlfluff, uvi"
+    },
+    {
+      "step": 40,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/cli/commands_test.py::test__cli__command_directed -xvs 2>&1 | tail -20",
+        "description": "Run the CLI test"
+      },
+      "output_preview": "cachedir: .pytest_cache\nrootdir: /repo\nconfigfile: pytest.ini (WARNING: ignoring pytest config in tox.ini!)\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest/cli/commands_test.py::test__cli__command_directed == [test/fixtures/linter/indentation_error_simple.sql] FAIL\nL:   2 | P:   4 | L003"
+    },
+    {
+      "step": 41,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/ -k \"L031\" -xvs 2>&1 | tail -40",
+        "description": "Run L031 rule tests"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: pytest.ini (WARNING: ignoring pytest config in tox.ini!)\nplugins: anyio-4.13.0\ncol"
+    },
+    {
+      "step": 42,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/rules/ -k \"L031\" -xvs 2>&1 | tail -50",
+        "description": "Run L031 rule tests only"
+      },
+      "output_preview": "                [(12, 13), (12, 25)],\n            ),\n        ],\n    )\n    def test__rules__std_file(rule, path, violations):\n        \"\"\"Test the linter finds the given errors in (and only in) the right places.\"\"\"\n>       assert_rule_raises_violations_in_file(\n            rule=rule,\n            fpath"
+    },
+    {
+      "step": 44,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nfrom sqlfluff.core import Linter\nlinter = Linter()\nparsed = linter.parse_string('''SELECT\n    u.id,\n    c.first_name,\n    c.last_name,\n    COUNT(o.user_id)\nFROM users as u\nJOIN customers as c on u.id = c.user_id\nJOIN orders as o on u.id = o.user_id;''')\nfor seg in parsed.tree.recursive_crawl('from_expression'):\n    print('from_expression:', seg)\n    for fe in seg.recursive_crawl('from_expression_element'):\n        print('  from_expression_element:', fe)\n    for jc in seg.recursive_crawl('join_clause'):\n        print('  join_clause:', jc)\n\"",
+        "description": "Debug the from_expression structure"
+      },
+      "output_preview": "from_expression: <FromExpressionSegment: ([L:  6, P:  6])>\n  from_expression_element: <FromExpressionElementSegment: ([L:  6, P:  6])>\n  from_expression_element: <FromExpressionElementSegment: ([L:  7, P:  6])>\n  from_expression_element: <FromExpressionElementSegment: ([L:  8, P:  6])>\n  join_clause"
+    },
+    {
+      "step": 46,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "newString": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                    from_expression,\n                )\n                or None\n            )",
+        "oldString": "            return (\n                self._lint_aliases_in_join(\n                    base_table,\n                    from_expression_elements,\n                    column_reference_segments,\n                    segment,\n                    from_expression_element,\n                )\n                or None\n            )"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/src/sqlfluff/rules/L031.py\">\nERROR [49:9] Method \"_eval\" overrides class \"BaseRule\" in an incompatible manner\n\u00a0\u00a0Positional parameter count mismatch; base method has 2, but override has 3\n</diagnostics>"
+    },
+    {
+      "step": 49,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport sqlfluff\n# Test case from the issue - should NOT trigger L031 (no join)\nresult = sqlfluff.lint('SELECT a.[hello] FROM mytable AS a', dialect='tsql')\nprint('No join:')\nfor r in result:\n    print(r)\nprint('---')\n# Test with join - SHOULD trigger L031\nresult = sqlfluff.lint('SELECT a.id FROM users AS a JOIN customers AS c ON a.id = c.user_id', dialect='tsql')\nprint('With join:')\nfor r in result:\n    print(r)\n\"",
+        "description": "Test the fix"
+      },
+      "output_preview": "No join:\n{'line_no': 1, 'line_pos': 34, 'code': 'L009', 'description': 'Files must end with a trailing newline.'}\n---\nWith join:\n{'line_no': 1, 'line_pos': 27, 'code': 'L031', 'description': 'Avoid using aliases in join condition'}\n{'line_no': 1, 'line_pos': 47, 'code': 'L031', 'description': 'Avoid"
+    },
+    {
+      "step": 50,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/rules/ -k \"L031\" -xvs 2>&1 | tail -30",
+        "description": "Run L031 rule tests"
+      },
+      "output_preview": "[L:  7, P:  6]      |                                    orderby_clause:\n[L:  7, P:  6]      |                                        keyword:              'order'\n[L:  7, P: 11]      |                                        whitespace:           ' '\n[L:  7, P: 12]      |                            "
+    },
+    {
+      "step": 51,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/cli/commands_test.py::test__cli__command_directed -xvs 2>&1 | tail -15",
+        "description": "Run the CLI test"
+      },
+      "output_preview": "\ntest/cli/commands_test.py::test__cli__command_directed == [test/fixtures/linter/indentation_error_simple.sql] FAIL\nL:   2 | P:   4 | L003 | Indentation not hanging or a multiple of 4 spaces\nL:   5 | P:  10 | L010 | Keywords must be consistently upper case.\nAll Finished \ud83d\udcdc \ud83c\udf89!\n\nPASSED\n\n==============="
+    },
+    {
+      "step": 53,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "newString": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements, from_expression=None\n    ) -> Generator[TableAliasInfo, None, None]:\n        # Determine if there are any join clauses present. If not,\n        # the base table alias should not be flagged (no join exists).\n        has_joins = False\n        if from_expression:\n            for _ in from_expression.recursive_crawl(\"join_clause\"):\n                has_joins = True\n                break\n\n        for from_expression_elem in from_expression_elements:\n            table_expression = from_expression_elem.get_child(\"table_expression\")",
+        "oldString": "    @classmethod\n    def _filter_table_expressions(\n        cls, base_table, from_expression_elements, from_expression_element=None\n    ) -> Generator[TableAliasInfo, None, None]:\n        # Determine if there are any join clauses present. If not,\n        # the base table alias should not be flagged (no join exists).\n        has_joins = False\n        if from_expression_element:\n            for _ in from_expression_element.recursive_crawl(\"join_clause\"):\n                has_joins = True\n                break\n\n        for from_expression in from_expression_elements:\n            table_expression = from_expression.get_child(\"table_expression\")"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/src/sqlfluff/rules/L031.py\">\nERROR [150:46] \"get_child\" is not a known attribute of \"None\"\nERROR [153:45] \"get_child\" is not a known attribute of \"None\"\nERROR [49:9] Method \"_eval\" overrides class \"Bas"
+    },
+    {
+      "step": 56,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "newString": "            whitespace_ref = from_expression_elem.get_child(\"whitespace\")\n\n            # If there's no alias expression - skip it\n            alias_exp_ref = from_expression_elem.get_child(\"alias_expression\")",
+        "oldString": "            whitespace_ref = from_expression.get_child(\"whitespace\")\n\n            # If there's no alias expression - skip it\n            alias_exp_ref = from_expression.get_child(\"alias_expression\")"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/src/sqlfluff/rules/L031.py\">\nERROR [49:9] Method \"_eval\" overrides class \"BaseRule\" in an incompatible manner\n\u00a0\u00a0Positional parameter count mismatch; base method has 2, but override has 3\n</diagnostics>"
+    },
+    {
+      "step": 57,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L031.py",
+        "newString": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment,\n        from_expression=None,\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(\n                base_table, from_expression_elements, from_expression\n            )\n        )",
+        "oldString": "    def _lint_aliases_in_join(\n        self, base_table, from_expression_elements, column_reference_segments, segment,\n        from_expression_element=None,\n    ):\n        \"\"\"Lint and fix all aliases in joins - except for self-joins.\"\"\"\n        # A buffer to keep any violations.\n        violation_buff = []\n\n        to_check = list(\n            self._filter_table_expressions(\n                base_table, from_expression_elements, from_expression_element\n            )\n        )"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/src/sqlfluff/rules/L031.py\">\nERROR [49:9] Method \"_eval\" overrides class \"BaseRule\" in an incompatible manner\n\u00a0\u00a0Positional parameter count mismatch; base method has 2, but override has 3\n</diagnostics>"
+    },
+    {
+      "step": 58,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/rules/ -k \"L031\" -xvs 2>&1 | tail -10",
+        "description": "Run L031 tests final check"
+      },
+      "output_preview": "Errors Found: []\nPASSED\n\n=============================== warnings summary ===============================\nsrc/sqlfluff/__init__.py:9\n  /repo/src/sqlfluff/__init__.py:9: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html\n    import p"
+    },
+    {
+      "step": 59,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/cli/commands_test.py::test__cli__command_directed -xvs 2>&1 | tail -10",
+        "description": "Run CLI test final check"
+      },
+      "output_preview": "\nPASSED\n\n=============================== warnings summary ===============================\nsrc/sqlfluff/__init__.py:9\n  /repo/src/sqlfluff/__init__.py:9: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html\n    import pkg_resources\n\n--"
+    }
+  ],
+  "token_cost": {
+    "total": 1737985,
+    "input": 42778,
+    "output": 12903,
+    "cache_read": 1682304,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": 196.42,
+  "total_duration_seconds": 387.57,
+  "patch_non_empty": true
+}

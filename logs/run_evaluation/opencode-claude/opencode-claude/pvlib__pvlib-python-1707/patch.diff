@@ -1,0 +1,19 @@
+diff --git a/pvlib/iam.py b/pvlib/iam.py
+index 3eaa6b4..0711f84 100644
+--- a/pvlib/iam.py
++++ b/pvlib/iam.py
+@@ -215,6 +215,14 @@ def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):
+     # incidence angle modifier
+     iam = (tau_s + tau_p) / 2 / tau_0
+ 
++    # for aoi >= 90, replace any nan with 0
++    if isinstance(aoi, pd.Series):
++        iam = iam.where(np.abs(aoi) < 90, other=0.0)
++    else:
++        iam = np.where(np.abs(aoi) >= 90, 0.0, iam)
++        if np.isscalar(aoi):
++            iam = float(iam)
++
+     return iam
+ 
+ 

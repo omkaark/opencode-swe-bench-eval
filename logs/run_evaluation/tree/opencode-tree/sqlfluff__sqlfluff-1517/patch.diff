@@ -1,0 +1,19 @@
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..91cf8de0 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -185,8 +185,12 @@ class Delimited(OneOf):
+                         )
+                 else:
+                     # Zero length section between delimiters, or zero code
+-                    # elements if appropriate. Return unmatched.
+-                    return MatchResult.from_unmatched(mutated_segments)
++                    # elements if appropriate. Return unmatched, but include
++                    # any previously matched segments so we don't drop them.
++                    return MatchResult(
++                        matched_segments.matched_segments,
++                        delimiter_match.all_segments(),
++                    )
+             else:
+                 # No match for a delimiter looking forward, this means we're
+                 # at the end. In this case we look for a potential partial match

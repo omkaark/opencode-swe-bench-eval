@@ -1,0 +1,13 @@
+{
+  "variant": "claude",
+  "instance_id": "pvlib__pvlib-python-1854",
+  "repo": "pvlib/pvlib-python",
+  "base_commit": "27a3a07ebc84b11014d3753e4923902adf9a38c0",
+  "cli_exit_code": 0,
+  "cli_output": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":29399,\"duration_api_ms\":27812,\"num_turns\":7,\"result\":\"The fix adds an `isinstance(arrays, Array)` check before the `len(arrays)` call in `pvlib/pvsystem.py:223`, wrapping a single `Array` instance in a tuple automatically. This handles `PVSystem(arrays=array)` where `array` is a single `Array` instance.\",\"stop_reason\":\"end_turn\",\"session_id\":\"021b65e7-0830-4508-b913-9d2dd494ac51\",\"total_cost_usd\":0.14063325000000002,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":8661,\"cache_read_input_tokens\":115314,\"output_tokens\":1152,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":8661,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-opus-4-6[1m]\":{\"inputTokens\":9,\"outputTokens\":1152,\"cacheReadInputTokens\":115314,\"cacheCreationInputTokens\":8661,\"webSearchRequests\":0,\"costUSD\":0.14063325000000002,\"contextWindow\":1000000,\"maxOutputTokens\":64000}},\"permission_denials\":[],\"fast_mode_state\":\"off\",\"uuid\":\"dd92a5a6-30ff-4080-a86c-c89e4643c59f\"}\n",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 30.32,
+  "git_status": " M pvlib/pvsystem.py\n?? .swe_prompt.txt\n",
+  "model_patch": "diff --git a/pvlib/pvsystem.py b/pvlib/pvsystem.py\nindex c277a77..1a6d32c 100644\n--- a/pvlib/pvsystem.py\n+++ b/pvlib/pvsystem.py\n@@ -220,6 +220,8 @@ class PVSystem:\n                 strings_per_inverter,\n                 array_losses_parameters,\n             ),)\n+        elif isinstance(arrays, Array):\n+            self.arrays = (arrays,)\n         elif len(arrays) == 0:\n             raise ValueError(\"PVSystem must have at least one Array. \"\n                              \"If you want to create a PVSystem instance \"\n",
+  "error": ""
+}

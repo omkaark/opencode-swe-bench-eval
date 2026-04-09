@@ -1,0 +1,59 @@
+diff --git a/astroid/modutils.py b/astroid/modutils.py
+index 6d698469..8231c04a 100644
+--- a/astroid/modutils.py
++++ b/astroid/modutils.py
+@@ -307,8 +307,11 @@ def _get_relative_base_path(filename, path_to_check):
+ 
+ def modpath_from_file_with_callback(filename, path=None, is_package_cb=None):
+     filename = os.path.expanduser(_path_from_filename(filename))
++    paths_to_check = sys.path.copy()
++    if path:
++        paths_to_check += path
+     for pathname in itertools.chain(
+-        path or [], map(_cache_normalize_path, sys.path), sys.path
++        paths_to_check, map(_cache_normalize_path, paths_to_check)
+     ):
+         if not pathname:
+             continue
+diff --git a/tests/unittest_modutils.py b/tests/unittest_modutils.py
+index d6fcb68e..22689eec 100644
+--- a/tests/unittest_modutils.py
++++ b/tests/unittest_modutils.py
+@@ -30,6 +30,7 @@ import sys
+ import tempfile
+ import unittest
+ import xml
++from pathlib import Path
+ from xml import etree
+ from xml.etree import ElementTree
+ 
+@@ -189,6 +190,29 @@ class ModPathFromFileTest(unittest.TestCase):
+         # this should be equivalent to: import secret
+         self.assertEqual(modutils.modpath_from_file(symlink_secret_path), ["secret"])
+ 
++    def test_load_packages_without_init(self) -> None:
++        """Test that we correctly find packages with an __init__.py file.
++
++        Regression test for issue reported in:
++        https://github.com/PyCQA/astroid/issues/1327
++        """
++        tmp_dir = Path(tempfile.gettempdir())
++        self.addCleanup(os.chdir, os.curdir)
++        os.chdir(tmp_dir)
++
++        self.addCleanup(shutil.rmtree, tmp_dir / "src")
++        os.mkdir(tmp_dir / "src")
++        os.mkdir(tmp_dir / "src" / "package")
++        with open(tmp_dir / "src" / "__init__.py", "w", encoding="utf-8"):
++            pass
++        with open(tmp_dir / "src" / "package" / "file.py", "w", encoding="utf-8"):
++            pass
++
++        self.assertEqual(
++            modutils.modpath_from_file(str(Path("src") / "package"), ["."]),
++            ["src", "package"],
++        )
++
+ 
+ class LoadModuleFromPathTest(resources.SysPathSetup, unittest.TestCase):
+     def test_do_not_load_twice(self) -> None:

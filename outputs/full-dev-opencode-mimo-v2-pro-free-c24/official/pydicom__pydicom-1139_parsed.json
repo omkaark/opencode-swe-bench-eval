@@ -1,0 +1,157 @@
+{
+  "instance_id": "pydicom__pydicom-1139",
+  "variant": "official",
+  "repo": "pydicom/pydicom",
+  "tokens": {
+    "total": 430210,
+    "input": 16560,
+    "output": 2258,
+    "reasoning": 0,
+    "cache_read": 411392,
+    "cache_write": 0
+  },
+  "duration_seconds": 60.67,
+  "time_to_first_edit_seconds": 45.987,
+  "steps": 22,
+  "tool_calls": {
+    "total": 21,
+    "by_tool": {
+      "bash": 8,
+      "edit": 1,
+      "glob": 2,
+      "grep": 8,
+      "read": 2
+    }
+  },
+  "files_read": [
+    "/repo/pydicom/tests/test_valuerep.py",
+    "/repo/pydicom/valuerep.py"
+  ],
+  "files_edited": [
+    "/repo/pydicom/valuerep.py"
+  ],
+  "failed_tool_calls": 9,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "PersonName3",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "pattern": "class PersonName"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "pattern": "PersonName"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 4,
+      "tool": "bash",
+      "input": {
+        "command": "ls -la"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "pattern": "test_next",
+        "path": "pydicom/tests"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/pydicom/tests",
+        "pattern": "PersonName"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 11,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/pydicom",
+        "pattern": "class PersonName"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 12,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/pydicom/valuerep.py",
+        "pattern": "PersonName"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 14,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "PersonName3"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 4,
+      "steps": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep",
+        "bash"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"PersonName3\", \"include\": \"*.py\"}",
+        "{\"include\": \"*.py\", \"pattern\": \"class PersonName\"}",
+        "{\"include\": \"*.py\", \"pattern\": \"PersonName\"}",
+        "{\"command\": \"ls -la\"}"
+      ]
+    },
+    {
+      "length": 2,
+      "steps": [
+        11,
+        12
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"path\": \"/repo/pydicom\", \"pattern\": \"class PersonName\"}",
+        "{\"path\": \"/repo/pydicom/valuerep.py\", \"pattern\": \"PersonName\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

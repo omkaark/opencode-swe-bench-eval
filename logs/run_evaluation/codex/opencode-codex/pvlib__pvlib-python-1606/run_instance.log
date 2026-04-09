@@ -1,0 +1,181 @@
+2026-03-29 20:50:21,524 - INFO - >>>>> Applied Patch:
+Checking patch pvlib/tests/test_tools.py...
+Checking patch pvlib/tools.py...
+Applied patch pvlib/tests/test_tools.py cleanly.
+Applied patch pvlib/tools.py cleanly.
+
+2026-03-29 20:50:23,644 - INFO - Git diff before:
+diff --git a/pvlib/tests/test_tools.py b/pvlib/tests/test_tools.py
+index 167dca8..56dfc53 100644
+--- a/pvlib/tests/test_tools.py
++++ b/pvlib/tests/test_tools.py
+@@ -47,6 +47,16 @@ def test__golden_sect_DataFrame_vector():
+     assert np.allclose(x, expected, atol=1e-8)
+ 
+ 
++def test__golden_sect_DataFrame_vector_equal_bounds():
++    params = {'c': np.array([1., 2.]), 'n': np.array([1., 1.])}
++    lower = np.array([0., 0.25])
++    upper = np.array([1.1, 0.25])
++    expected = np.array([0.5, 0.25])
++    v, x = tools._golden_sect_DataFrame(params, lower, upper,
++                                        _obj_test_golden_sect)
++    assert np.allclose(x, expected, atol=1e-8)
++
++
+ def test__golden_sect_DataFrame_nans():
+     # nan in bounds
+     params = {'c': np.array([1., 2., 1.]), 'n': np.array([1., 1., 1.])}
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..57ec983 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -350,38 +350,43 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+ 
+     converged = False
+     iterations = 0
++    err = abs(df['VH'] - df['VL'])
++    remaining = err > atol
+ 
+-    # handle all NaN case gracefully
+-    with warnings.catch_warnings():
+-        warnings.filterwarnings(action='ignore',
+-                                message='All-NaN slice encountered')
+-        iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++    if not remaining[~np.isnan(remaining)].any():
++        df['V1'] = df['VL']
++    else:
++        # handle all NaN case gracefully
++        with warnings.catch_warnings():
++            warnings.filterwarnings(action='ignore',
++                                    message='All-NaN slice encountered')
++            iterlimit = 1 + np.nanmax(
++                np.trunc(np.log(atol / err[remaining]) / np.log(phim1)))
+ 
+-    while not converged and (iterations <= iterlimit):
++        while not converged and (iterations <= iterlimit):
+ 
+-        phi = phim1 * (df['VH'] - df['VL'])
+-        df['V1'] = df['VL'] + phi
+-        df['V2'] = df['VH'] - phi
++            phi = phim1 * (df['VH'] - df['VL'])
++            df['V1'] = df['VL'] + phi
++            df['V2'] = df['VH'] - phi
+ 
+-        df['f1'] = func(df, 'V1')
+-        df['f2'] = func(df, 'V2')
+-        df['SW_Flag'] = df['f1'] > df['f2']
++            df['f1'] = func(df, 'V1')
++            df['f2'] = func(df, 'V2')
++            df['SW_Flag'] = df['f1'] > df['f2']
+ 
+-        df['VL'] = df['V2']*df['SW_Flag'] + df['VL']*(~df['SW_Flag'])
+-        df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])
++            df['VL'] = df['V2']*df['SW_Flag'] + df['VL']*(~df['SW_Flag'])
++            df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])
+ 
+-        err = abs(df['V2'] - df['V1'])
++            err = abs(df['V2'] - df['V1'])
+ 
+-        # works with single value because err is np.float64
+-        converged = (err[~np.isnan(err)] < atol).all()
+-        # err will be less than atol before iterations hit the limit
+-        # but just to be safe
+-        iterations += 1
++            # works with single value because err is np.float64
++            converged = (err[~np.isnan(err)] < atol).all()
++            # err will be less than atol before iterations hit the limit
++            # but just to be safe
++            iterations += 1
+ 
+-    if iterations > iterlimit:
+-        raise Exception("Iterations exceeded maximum. Check that func",
+-                        " is not NaN in (lower, upper)")  # pragma: no cover
++        if iterations > iterlimit:
++            raise Exception("Iterations exceeded maximum. Check that func",
++                            " is not NaN in (lower, upper)")  # pragma: no cover
+ 
+     try:
+         func_result = func(df, 'V1')
+
+2026-03-29 20:50:40,395 - INFO - Test runtime: 16.58 seconds
+2026-03-29 20:50:40,396 - INFO - Test output for pvlib__pvlib-python-1606 written to logs/run_evaluation/codex/opencode-codex/pvlib__pvlib-python-1606/test_output.txt
+2026-03-29 20:50:40,730 - INFO - Git diff after:
+diff --git a/pvlib/tools.py b/pvlib/tools.py
+index 991568f..57ec983 100644
+--- a/pvlib/tools.py
++++ b/pvlib/tools.py
+@@ -350,38 +350,43 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):
+ 
+     converged = False
+     iterations = 0
++    err = abs(df['VH'] - df['VL'])
++    remaining = err > atol
+ 
+-    # handle all NaN case gracefully
+-    with warnings.catch_warnings():
+-        warnings.filterwarnings(action='ignore',
+-                                message='All-NaN slice encountered')
+-        iterlimit = 1 + np.nanmax(
+-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))
++    if not remaining[~np.isnan(remaining)].any():
++        df['V1'] = df['VL']
++    else:
++        # handle all NaN case gracefully
++        with warnings.catch_warnings():
++            warnings.filterwarnings(action='ignore',
++                                    message='All-NaN slice encountered')
++            iterlimit = 1 + np.nanmax(
++                np.trunc(np.log(atol / err[remaining]) / np.log(phim1)))
+ 
+-    while not converged and (iterations <= iterlimit):
++        while not converged and (iterations <= iterlimit):
+ 
+-        phi = phim1 * (df['VH'] - df['VL'])
+-        df['V1'] = df['VL'] + phi
+-        df['V2'] = df['VH'] - phi
++            phi = phim1 * (df['VH'] - df['VL'])
++            df['V1'] = df['VL'] + phi
++            df['V2'] = df['VH'] - phi
+ 
+-        df['f1'] = func(df, 'V1')
+-        df['f2'] = func(df, 'V2')
+-        df['SW_Flag'] = df['f1'] > df['f2']
++            df['f1'] = func(df, 'V1')
++            df['f2'] = func(df, 'V2')
++            df['SW_Flag'] = df['f1'] > df['f2']
+ 
+-        df['VL'] = df['V2']*df['SW_Flag'] + df['VL']*(~df['SW_Flag'])
+-        df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])
++            df['VL'] = df['V2']*df['SW_Flag'] + df['VL']*(~df['SW_Flag'])
++            df['VH'] = df['V1']*~df['SW_Flag'] + df['VH']*(df['SW_Flag'])
+ 
+-        err = abs(df['V2'] - df['V1'])
++            err = abs(df['V2'] - df['V1'])
+ 
+-        # works with single value because err is np.float64
+-        converged = (err[~np.isnan(err)] < atol).all()
+-        # err will be less than atol before iterations hit the limit
+-        # but just to be safe
+-        iterations += 1
++            # works with single value because err is np.float64
++            converged = (err[~np.isnan(err)] < atol).all()
++            # err will be less than atol before iterations hit the limit
++            # but just to be safe
++            iterations += 1
+ 
+-    if iterations > iterlimit:
+-        raise Exception("Iterations exceeded maximum. Check that func",
+-                        " is not NaN in (lower, upper)")  # pragma: no cover
++        if iterations > iterlimit:
++            raise Exception("Iterations exceeded maximum. Check that func",
++                            " is not NaN in (lower, upper)")  # pragma: no cover
+ 
+     try:
+         func_result = func(df, 'V1')
+
+2026-03-29 20:50:40,730 - INFO - Git diff changed after running eval script
+2026-03-29 20:50:40,730 - INFO - Grading answer for pvlib__pvlib-python-1606...
+2026-03-29 20:50:40,736 - INFO - report: {'pvlib__pvlib-python-1606': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test__golden_sect_DataFrame_vector']}, 'PASS_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_tools.py::test_build_kwargs[keys0-input_dict0-expected0]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys1-input_dict1-expected1]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys2-input_dict2-expected2]', 'pvlib/tests/test_tools.py::test_build_kwargs[keys3-input_dict3-expected3]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params0-0.0-1.0-0.5-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params1-0.0-1.0-0.07230200263994839-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame[params2-0.0-100.0-89.14332727531685-_obj_test_golden_sect]', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_atol', 'pvlib/tests/test_tools.py::test__golden_sect_DataFrame_nans', 'pvlib/tests/test_tools.py::test_degrees_to_index_1']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pvlib__pvlib-python-1606: resolved: False

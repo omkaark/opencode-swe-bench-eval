@@ -1,0 +1,192 @@
+{
+  "instance_id": "pvlib__pvlib-python-1707",
+  "variant": "nosubagent",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [],
+  "per_file": {
+    "/repo/pvlib/iam.py": {
+      "reads": [
+        2,
+        3,
+        14
+      ],
+      "edits": [
+        {
+          "step": 4,
+          "old": "    # reflectance of s-, p-polarized, and normal light by the first interface\n    rho12_s = ((n1costheta1 - n2costheta2) / (n1costheta1 + n2costheta2)) ** 2\n    rho12_p = ((n1costheta2 - n2costheta1) / (n1costheta2 + n2costheta1)) ** 2\n    rho12_0 = ((n1 - n2) / (n1 + n2)) ** 2",
+          "new": "    # reflectance of s-, p-polarized, and normal light by the first interface\n    # use np.divide to avoid nan when denominator is 0 (e.g. n=1, aoi>90)\n    denom_s = n1costheta1 + n2costheta2\n    rho12_s = np.divide(n1costheta1 - n2costheta2, denom_s,\n                        out=np.zeros_like(denom_s), where=denom_s != 0) ** 2\n    denom_p = n1costheta2 + n2costheta1\n    rho12_p = np.divide(n1costheta2 - n2costheta1, denom_p,\n                        out=np.zeros_like(denom_p), where=denom_p != 0) ** 2\n    rho12_0 = ((n1 - n2) / (n1 + n2)) ** 2"
+        }
+      ],
+      "first_read_step": 2,
+      "first_edit_step": 4,
+      "content_snippets": [
+        {
+          "offset": 214,
+          "limit": 30,
+          "signatures": [
+            "def martin_ruiz(aoi, a_r=0.16)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_iam.py": {
+      "reads": [
+        10,
+        14
+      ],
+      "edits": [
+        {
+          "step": 11,
+          "old": "def test_martin_ruiz():",
+          "new": "def test_physical_n1_L0():\n    # when n=1 (no reflection) and aoi>90, result should be 0 not nan\n    aoi = np.array([0, 45, 90, 100, np.nan])\n    expected = np.array([1, 1, 0, 0, np.nan])\n    iam = _iam.physical(aoi, n=1, K=0, L=0)\n    assert_allclose(iam, expected, equal_nan=True)\n\n\ndef test_martin_ruiz():"
+        },
+        {
+          "step": 13,
+          "old": "def test_physical_n1_L0():\n    # when n=1 (no reflection) and aoi>90, result should be 0 not nan\n    aoi = np.array([0, 45, 90, 100, np.nan])\n    expected = np.array([1, 1, 0, 0, np.nan])\n    iam = _iam.physical(aoi, n=1, K=0, L=0)\n    assert_allclose(iam, expected, equal_nan=True)",
+          "new": "def test_physical_n1_L0():\n    # when n=1 (no reflection) and aoi>90, result should be 0 not nan\n    aoi = np.array([0, 45, 90, 100, np.nan])\n    expected = np.array([1., 0.99669178, 0., 0., np.nan])\n    iam = _iam.physical(aoi, n=1)\n    assert_allclose(iam, expected, atol=1e-7, equal_nan=True)"
+        }
+      ],
+      "first_read_step": 10,
+      "first_edit_step": 11,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": 100,
+          "signatures": [
+            "def test_ashrae()",
+            "def test_ashrae_scalar()",
+            "def test_physical()",
+            "def test_physical_ar()",
+            "def test_physical_noar()",
+            "def test_physical_scalar()",
+            "def test_martin_ruiz()"
+          ]
+        },
+        {
+          "offset": 80,
+          "limit": 8,
+          "signatures": [
+            "def test_physical_n1_L0()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_physical_n1_L0",
+        "path": "/repo"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def physical",
+        "path": "/repo"
+      },
+      "output_preview": "Found 2 matches\n/repo/pvlib/modelchain.py:\n  Line 939:     def physical_aoi_loss(self):\n\n/repo/pvlib/iam.py:\n  Line 94: def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):"
+    },
+    {
+      "step": 4,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/iam.py",
+        "oldString": "    # reflectance of s-, p-polarized, and normal light by the first interface\n    rho12_s = ((n1costheta1 - n2costheta2) / (n1costheta1 + n2costheta2)) ** 2\n    rho12_p = ((n1costheta2 - n2costheta1) / (n1costheta2 + n2costheta1)) ** 2\n    rho12_0 = ((n1 - n2) / (n1 + n2)) ** 2",
+        "newString": "    # reflectance of s-, p-polarized, and normal light by the first interface\n    # use np.divide to avoid nan when denominator is 0 (e.g. n=1, aoi>90)\n    denom_s = n1costheta1 + n2costheta2\n    rho12_s = np.divide(n1costheta1 - n2costheta2, denom_s,\n                        out=np.zeros_like(denom_s), where=denom_s != 0) ** 2\n    denom_p = n1costheta2 + n2costheta1\n    rho12_p = np.divide(n1costheta2 - n2costheta1, denom_p,\n                        out=np.zeros_like(denom_p), where=denom_p != 0) ** 2\n    rho12_0 = ((n1 - n2) / (n1 + n2)) ** 2"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/iam.py\">\nERROR [11:8] Import \"numpy\" could not be resolved\nERROR [12:8] Import \"pandas\" could not be resolved\nERROR [464:10] Import \"scipy.interpolate\" could not be resolved\n</diagnostics>"
+    },
+    {
+      "step": 5,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nfrom pvlib.iam import physical\nprint('aoi=100, n=1:', physical(100, n=1))\nprint('aoi=90, n=1:', physical(90, n=1))\nprint('aoi=0, n=1:', physical(0, n=1))\nprint('aoi=100, n=1.526:', physical(100, n=1.526))\nprint('aoi=45, n=1:', physical(45, n=1))\n\"",
+        "description": "Test the fix for physical IAM"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\nModuleNotFoundError: No module named 'numpy'\n"
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "pip install numpy pandas -q 2>&1 | tail -1",
+        "description": "Install numpy and pandas"
+      },
+      "output_preview": "[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nfrom numpy import cosd\nimport sys\nsys.path.insert(0, '.')\n\n# Simulate the physical function logic with n=1, aoi=100\nn = 1\naoi = 100\nK = 4.0\nL = 0.002\n\nn1, n3 = 1, n\nn2 = n\n\ncostheta = np.maximum(0, cosd(aoi))\nsintheta = np.sqrt(1 - costheta**2)\nn1costheta1 = n1 * costheta\nn2costheta1 = n2 * costheta\n\nsintheta = n1 / n2 * sintheta\ncostheta = np.sqrt(1 - sintheta**2)\nn1costheta2 = n1 * costheta\nn2costheta2 = n2 * costheta\n\nprint('costheta:', costheta)\nprint('n1costheta1:', n1costheta1)\nprint('n2costheta2:', n2costheta2)\n\n# Fixed version\ndenom_s = n1costheta1 + n2costheta2\nrho12_s = np.divide(n1costheta1 - n2costheta2, denom_s, out=np.zeros_like(denom_s), where=denom_s != 0) ** 2\ndenom_p = n1costheta2 + n2costheta1\nrho12_p = np.divide(n1costheta2 - n2costheta1, denom_p, out=np.zeros_like(denom_p), where=denom_p != 0) ** 2\nrho12_0 = ((n1 - n2) / (n1 + n2)) ** 2\n\nprint('rho12_s:', rho12_s)\nprint('rho12_p:', rho12_p)\nprint('rho12_0:', rho12_0)\n\ntau_s = 1 - rho12_s\ntau_p = 1 - rho12_p\ntau_0 = 1 - rho12_0\n\ntau_s *= np.exp(-K * L / costheta)\ntau_p *= np.exp(-K * L / costheta)\ntau_0 *= np.exp(-K * L)\n\niam = (tau_s + tau_p) / 2 / tau_0\nprint('iam:', iam)\n\"\n",
+        "description": "Test the fix manually"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\nImportError: cannot import name 'cosd' from 'numpy' (/usr/local/lib/python3.12/site-packages/numpy/__init__.py). Did you mean: 'cos'?\n"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\n\n# cosd\naoi = 100\ncostheta_aoi = np.cos(np.radians(aoi))\n\nn1, n2, n3 = 1, 1, 1\nK, L = 4.0, 0.002\n\ncostheta = np.maximum(0, costheta_aoi)\nsintheta = np.sqrt(1 - costheta**2)\n\nn1costheta1 = n1 * costheta\nn2costheta1 = n2 * costheta\n\nsintheta2 = n1 / n2 * sintheta\ncostheta2 = np.sqrt(1 - sintheta2**2)\nn1costheta2 = n1 * costheta2\nn2costheta2 = n2 * costheta2\n\nprint('costheta:', costheta)\nprint('costheta2:', costheta2)\n\ndenom_s = n1costheta1 + n2costheta2\nprint('denom_s:', denom_s)\nrho12_s = np.divide(n1costheta1 - n2costheta2, denom_s, out=np.zeros_like(np.asarray(denom_s, dtype=float)), where=denom_s != 0) ** 2\nprint('rho12_s:', rho12_s)\n\ndenom_p = n1costheta2 + n2costheta1\nrho12_p = np.divide(n1costheta2 - n2costheta1, denom_p, out=np.zeros_like(np.asarray(denom_p, dtype=float)), where=denom_p != 0) ** 2\nprint('rho12_p:', rho12_p)\n\nrho12_0 = ((n1 - n2) / (n1 + n2)) ** 2\n\ntau_s = 1 - rho12_s\ntau_p = 1 - rho12_p\ntau_0 = 1 - rho12_0\n\ntau_s *= np.exp(-K * L / costheta2)\ntau_p *= np.exp(-K * L / costheta2)\ntau_0 *= np.exp(-K * L)\n\niam = (tau_s + tau_p) / 2 / tau_0\nprint('iam:', iam)\nprint('Expected: 0.0')\n\"\n",
+        "description": "Test the fix logic manually"
+      },
+      "output_preview": "<string>:40: RuntimeWarning: divide by zero encountered in scalar divide\n<string>:41: RuntimeWarning: divide by zero encountered in scalar divide\ncostheta: 0.0\ncostheta2: 0.0\ndenom_s: 0.0\nrho12_s: 0.0\nrho12_p: 0.0\niam: 0.0\nExpected: 0.0\n"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/pvlib/tests/test_iam.py",
+        "pattern": "test_physical_n1_L0|n.*=.*1.*aoi.*90|physical.*n.*1"
+      },
+      "output_preview": "Found 3 matches\n/repo/pvlib/tests/test_iam.py:\n  Line 57:     iam = _iam.physical(aoi, n_ar=1.29)\n  Line 64:     iam0 = _iam.physical(aoi, n_ar=1)\n  Line 65:     iam1 = _iam.physical(aoi, n_ar=1.526)"
+    },
+    {
+      "step": 11,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/tests/test_iam.py",
+        "oldString": "def test_martin_ruiz():",
+        "newString": "def test_physical_n1_L0():\n    # when n=1 (no reflection) and aoi>90, result should be 0 not nan\n    aoi = np.array([0, 45, 90, 100, np.nan])\n    expected = np.array([1, 1, 0, 0, np.nan])\n    iam = _iam.physical(aoi, n=1, K=0, L=0)\n    assert_allclose(iam, expected, equal_nan=True)\n\n\ndef test_martin_ruiz():"
+      },
+      "output_preview": "Edit applied successfully."
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\n\ndef physical_test(aoi, n=1.526, K=4.0, L=0.002):\n    n1, n3 = 1, n\n    n2 = n\n    costheta = np.maximum(0, np.cos(np.radians(aoi)))\n    sintheta = np.sqrt(1 - costheta**2)\n    n1costheta1 = n1 * costheta\n    n2costheta1 = n2 * costheta\n    sintheta = n1 / n2 * sintheta\n    costheta = np.sqrt(1 - sintheta**2)\n    n1costheta2 = n1 * costheta\n    n2costheta2 = n2 * costheta\n    \n    denom_s = n1costheta1 + n2costheta2\n    rho12_s = np.divide(n1costheta1 - n2costheta2, denom_s, out=np.zeros_like(np.asarray(denom_s, dtype=float)), where=denom_s != 0) ** 2\n    denom_p = n1costheta2 + n2costheta1\n    rho12_p = np.divide(n1costheta2 - n2costheta1, denom_p, out=np.zeros_like(np.asarray(denom_p, dtype=float)), where=denom_p != 0) ** 2\n    rho12_0 = ((n1 - n2) / (n1 + n2)) ** 2\n    \n    tau_s = 1 - rho12_s\n    tau_p = 1 - rho12_p\n    tau_0 = 1 - rho12_0\n    tau_s *= np.exp(-K * L / costheta)\n    tau_p *= np.exp(-K * L / costheta)\n    tau_0 *= np.exp(-K * L)\n    return (tau_s + tau_p) / 2 / tau_0\n\nfor aoi in [0, 22.5, 45, 67.5, 90, 100]:\n    print(f'aoi={aoi}, n=1, K=4, L=0.002: {physical_test(aoi, n=1, K=4, L=0.002)}')\nprint()\nfor aoi in [0, 22.5, 45, 67.5, 90, 100]:\n    print(f'aoi={aoi}, n=1.526, K=4, L=0.002: {physical_test(aoi, n=1.526, K=4, L=0.002)}')\n\"\n",
+        "description": "Calculate expected values for test"
+      },
+      "output_preview": "<string>:25: RuntimeWarning: divide by zero encountered in scalar divide\n<string>:26: RuntimeWarning: divide by zero encountered in scalar divide\naoi=0, n=1, K=4, L=0.002: 1.0\naoi=22.5, n=1, K=4, L=0.002: 0.9993410795811297\naoi=45, n=1, K=4, L=0.002: 0.9966917757735907\naoi=67.5, n=1, K=4, L=0.002: 0"
+    },
+    {
+      "step": 13,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/tests/test_iam.py",
+        "newString": "def test_physical_n1_L0():\n    # when n=1 (no reflection) and aoi>90, result should be 0 not nan\n    aoi = np.array([0, 45, 90, 100, np.nan])\n    expected = np.array([1., 0.99669178, 0., 0., np.nan])\n    iam = _iam.physical(aoi, n=1)\n    assert_allclose(iam, expected, atol=1e-7, equal_nan=True)",
+        "oldString": "def test_physical_n1_L0():\n    # when n=1 (no reflection) and aoi>90, result should be 0 not nan\n    aoi = np.array([0, 45, 90, 100, np.nan])\n    expected = np.array([1, 1, 0, 0, np.nan])\n    iam = _iam.physical(aoi, n=1, K=0, L=0)\n    assert_allclose(iam, expected, equal_nan=True)"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/tests/test_iam.py\">\nERROR [10:8] Import \"pytest\" could not be resolved\nERROR [363:5] No overloads for \"assert_allclose\" match the provided arguments\nERROR [363:21] Argument of type \"ArrayLike\" ca"
+    }
+  ],
+  "token_cost": {
+    "total": 257204,
+    "input": 30847,
+    "output": 5557,
+    "cache_read": 220800,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": 25.85,
+  "total_duration_seconds": 914.97,
+  "patch_non_empty": true
+}

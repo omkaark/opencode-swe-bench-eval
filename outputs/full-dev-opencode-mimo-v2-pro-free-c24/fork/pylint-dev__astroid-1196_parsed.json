@@ -1,0 +1,140 @@
+{
+  "instance_id": "pylint-dev__astroid-1196",
+  "variant": "fork",
+  "repo": "pylint-dev/astroid",
+  "tokens": {
+    "total": 709109,
+    "input": 43471,
+    "output": 4582,
+    "reasoning": 1399,
+    "cache_read": 661056,
+    "cache_write": 0
+  },
+  "duration_seconds": 212.45,
+  "time_to_first_edit_seconds": 61.918,
+  "steps": 39,
+  "tool_calls": {
+    "total": 38,
+    "by_tool": {
+      "bash": 21,
+      "edit": 2,
+      "grep": 5,
+      "read": 5,
+      "todowrite": 5
+    }
+  },
+  "files_read": [
+    "/repo",
+    "/repo/astroid/nodes/node_classes.py",
+    "/repo/tests/unittest_python3.py"
+  ],
+  "files_edited": [
+    "/repo/astroid/nodes/node_classes.py"
+  ],
+  "failed_tool_calls": 7,
+  "failed_calls_detail": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "def getitem",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "include": "*.py",
+        "pattern": "def getitem"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests",
+        "pattern": "test_unpacking_in_dict_getitem"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 9,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests",
+        "pattern": "test_unpacking_in_dict_getitem"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 10,
+      "tool": "grep",
+      "input": {
+        "path": "/repo/tests",
+        "pattern": "unpacking_in_dict"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 24,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref -xvs 2>&1 | head -80",
+        "description": "Run the failing tests"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.1, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /"
+    },
+    {
+      "step": 32,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/astroid/nodes/node_classes.py",
+        "oldString": "    if isinstance(key, DictUnpack):\n                try:\n                    for inferred in value.infer(context):\n                        if inferred is util.Uninferable:\n                            raise AstroidIndexError(index)\n                        try:\n                            return inferred.getitem(index, context)\n                        except (AstroidTypeError, AstroidIndexError):\n                            continue\n                except InferenceError:\n                    continue\n                continue",
+        "newString": "    if isinstance(key, DictUnpack):\n                for inferred in value.infer(context):\n                    if inferred is util.Uninferable:\n                        continue\n                    try:\n                        return inferred.getitem(index, context)\n                    except (AstroidTypeError, AstroidIndexError):\n                        continue\n                continue"
+      },
+      "output_preview": ""
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        3,
+        4
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"def getitem\", \"path\": \"/repo\", \"include\": \"*.py\"}",
+        "{\"path\": \"/repo\", \"include\": \"*.py\", \"pattern\": \"def getitem\"}"
+      ]
+    },
+    {
+      "length": 3,
+      "steps": [
+        8,
+        9,
+        10
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"path\": \"/repo/tests\", \"pattern\": \"test_unpacking_in_dict_getitem\"}",
+        "{\"path\": \"/repo/tests\", \"pattern\": \"test_unpacking_in_dict_getitem\"}",
+        "{\"path\": \"/repo/tests\", \"pattern\": \"unpacking_in_dict\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

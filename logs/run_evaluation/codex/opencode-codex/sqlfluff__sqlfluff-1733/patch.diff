@@ -1,0 +1,65 @@
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..6eb69da0 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -118,7 +118,20 @@ class Rule_L036(BaseRule):
+                     loop_while=lambda s: s.is_type("whitespace", "comma") or s.is_meta,
+                 )
+                 fixes += [LintFix("delete", ws) for ws in ws_to_delete]
+-                fixes.append(LintFix("create", select_target, NewlineSegment()))
++                create_buff = [NewlineSegment()]
++                if not i and select_targets_info.first_whitespace_idx != -1:
++                    create_buff.append(
++                        WhitespaceSegment(
++                            raw=segment.segments[
++                                select_targets_info.first_whitespace_idx
++                            ].raw
++                        )
++                    )
++                if not i and ws_to_delete:
++                    fixes.append(LintFix("edit", ws_to_delete[0], create_buff))
++                    fixes += [LintFix("delete", ws) for ws in ws_to_delete[1:]]
++                else:
++                    fixes.append(LintFix("create", select_target, create_buff))
+         if fixes:
+             return LintResult(anchor=segment, fixes=fixes)
+ 
+diff --git a/test/rules/std_L016_L36_combo.py b/test/rules/std_L016_L36_combo.py
+index e69ea81f..88f11fbf 100644
+--- a/test/rules/std_L016_L36_combo.py
++++ b/test/rules/std_L016_L36_combo.py
+@@ -29,3 +29,34 @@ def test__rules__std_L016_L036_long_line_fix2():
+         result
+         == "SELECT 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\n"
+     )
++
++
++def test__rules__std_L036_with_cte_first_target_moved_to_newline():
++    """Verify moving the first select target in a CTE does not add extra indentation."""
++    sql = """WITH example AS (
++    SELECT my_id,
++        other_thing,
++        one_more
++    FROM
++        my_table
++)
++
++SELECT *
++FROM example
++"""
++    result = sqlfluff.fix(sql)
++    assert (
++        result
++        == """WITH example AS (
++    SELECT
++        my_id,
++        other_thing,
++        one_more
++    FROM
++        my_table
++)
++
++SELECT *
++FROM example
++"""
++    )

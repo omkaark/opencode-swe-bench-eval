@@ -1,0 +1,101 @@
+{
+  "instance_id": "pylint-dev__astroid-1196",
+  "variant": "official",
+  "repo": "pylint-dev/astroid",
+  "tokens": {
+    "total": 494868,
+    "input": 29198,
+    "output": 4230,
+    "reasoning": 1672,
+    "cache_read": 461440,
+    "cache_write": 0
+  },
+  "duration_seconds": 169.89,
+  "time_to_first_edit_seconds": 65.92,
+  "steps": 29,
+  "tool_calls": {
+    "total": 30,
+    "by_tool": {
+      "bash": 20,
+      "edit": 2,
+      "grep": 2,
+      "read": 6
+    }
+  },
+  "files_read": [
+    "/repo/astroid/nodes/node_classes.py",
+    "/repo/tests/unittest_python3.py"
+  ],
+  "files_edited": [
+    "/repo/astroid/nodes/node_classes.py"
+  ],
+  "failed_tool_calls": 5,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def getitem",
+        "path": "/repo",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "def getitem",
+        "path": "/repo/astroid",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 3,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && grep -rn \"def getitem\" astroid/",
+        "description": "Find getitem method definitions"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 4,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && grep -rn \"getitem\" astroid/nodes/node_classes.py | head -20",
+        "description": "Search getitem in node_classes.py"
+      },
+      "output_preview": ""
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && grep -n \"test_unpacking_in_dict_getitem_uninferable\\|test_unpacking_in_dict_getitem_with_ref\" tests/unittest_python3.py",
+        "description": "Find specific failing tests"
+      },
+      "output_preview": ""
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        3,
+        4
+      ],
+      "tools": [
+        "bash",
+        "bash"
+      ],
+      "inputs_preview": [
+        "{\"command\": \"cd /repo && grep -rn \\\"def getitem\\\" astroid/\", \"description\": \"Find getitem method def",
+        "{\"command\": \"cd /repo && grep -rn \\\"getitem\\\" astroid/nodes/node_classes.py | head -20\", \"descriptio"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

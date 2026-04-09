@@ -1,0 +1,39 @@
+2026-04-01 03:30:04,047 - INFO - >>>>> Applied Patch:
+Checking patch pvlib/temperature.py...
+Applied patch pvlib/temperature.py cleanly.
+
+2026-04-01 03:30:05,362 - INFO - Git diff before:
+diff --git a/pvlib/temperature.py b/pvlib/temperature.py
+index 1d98736..049e6b6 100644
+--- a/pvlib/temperature.py
++++ b/pvlib/temperature.py
+@@ -599,7 +599,7 @@ def fuentes(poa_global, temp_air, wind_speed, noct_installed, module_height=5,
+     # n.b. the way Fuentes calculates the first timedelta makes it seem like
+     # the value doesn't matter -- rather than recreate it here, just assume
+     # it's the same as the second timedelta:
+-    timedelta_hours = np.diff(poa_global.index).astype(float) / 1e9 / 60 / 60
++    timedelta_hours = np.diff(poa_global.index.view(np.int64)).astype(float) / 1e9 / 60 / 60
+     timedelta_hours = np.append([timedelta_hours[0]], timedelta_hours)
+ 
+     tamb_array = temp_air + 273.15
+
+2026-04-01 03:30:19,593 - INFO - Test runtime: 14.11 seconds
+2026-04-01 03:30:19,594 - INFO - Test output for pvlib__pvlib-python-1072 written to logs/run_evaluation/opencode-nosubagent/opencode-nosubagent/pvlib__pvlib-python-1072/test_output.txt
+2026-04-01 03:30:20,092 - INFO - Git diff after:
+diff --git a/pvlib/temperature.py b/pvlib/temperature.py
+index 1d98736..049e6b6 100644
+--- a/pvlib/temperature.py
++++ b/pvlib/temperature.py
+@@ -599,7 +599,7 @@ def fuentes(poa_global, temp_air, wind_speed, noct_installed, module_height=5,
+     # n.b. the way Fuentes calculates the first timedelta makes it seem like
+     # the value doesn't matter -- rather than recreate it here, just assume
+     # it's the same as the second timedelta:
+-    timedelta_hours = np.diff(poa_global.index).astype(float) / 1e9 / 60 / 60
++    timedelta_hours = np.diff(poa_global.index.view(np.int64)).astype(float) / 1e9 / 60 / 60
+     timedelta_hours = np.append([timedelta_hours[0]], timedelta_hours)
+ 
+     tamb_array = temp_air + 273.15
+
+2026-04-01 03:30:20,093 - INFO - Grading answer for pvlib__pvlib-python-1072...
+2026-04-01 03:30:20,094 - INFO - report: {'pvlib__pvlib-python-1072': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_temperature.py::test_fuentes_timezone[Etc/GMT+5]']}, 'PASS_TO_PASS': {'success': [], 'failure': ['pvlib/tests/test_temperature.py::test_sapm_cell', 'pvlib/tests/test_temperature.py::test_sapm_module', 'pvlib/tests/test_temperature.py::test_sapm_cell_from_module', 'pvlib/tests/test_temperature.py::test_sapm_ndarray', 'pvlib/tests/test_temperature.py::test_sapm_series', 'pvlib/tests/test_temperature.py::test_pvsyst_cell_default', 'pvlib/tests/test_temperature.py::test_pvsyst_cell_kwargs', 'pvlib/tests/test_temperature.py::test_pvsyst_cell_ndarray', 'pvlib/tests/test_temperature.py::test_pvsyst_cell_series', 'pvlib/tests/test_temperature.py::test_faiman_default', 'pvlib/tests/test_temperature.py::test_faiman_kwargs', 'pvlib/tests/test_temperature.py::test_faiman_list', 'pvlib/tests/test_temperature.py::test_faiman_ndarray', 'pvlib/tests/test_temperature.py::test_faiman_series', 'pvlib/tests/test_temperature.py::test__temperature_model_params', 'pvlib/tests/test_temperature.py::test_fuentes[pvwatts_8760_rackmount.csv-45]', 'pvlib/tests/test_temperature.py::test_fuentes[pvwatts_8760_roofmount.csv-49]', 'pvlib/tests/test_temperature.py::test_fuentes_timezone[None]']}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pvlib__pvlib-python-1072: resolved: False

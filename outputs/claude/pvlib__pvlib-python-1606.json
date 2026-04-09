@@ -1,0 +1,13 @@
+{
+  "variant": "claude",
+  "instance_id": "pvlib__pvlib-python-1606",
+  "repo": "pvlib/pvlib-python",
+  "base_commit": "c78b50f4337ecbe536a961336ca91a1176efc0e8",
+  "cli_exit_code": 0,
+  "cli_output": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":65926,\"duration_api_ms\":64053,\"num_turns\":10,\"result\":\"The fix handles the case where `upper == lower` by replacing zero differences with `atol` in the `iterlimit` calculation. When `diff == 0`, `log(atol/atol) = log(1) = 0`, so `iterlimit = 1 + 0 = 1`. The loop will execute once but since `VH == VL`, `phi = 0`, `V1 = V2 = VL = VH`, and `err = 0 < atol`, so it converges immediately.\",\"stop_reason\":\"end_turn\",\"session_id\":\"e808ebc8-b23b-48ee-83e7-e6ea61053684\",\"total_cost_usd\":0.23504724999999999,\"usage\":{\"input_tokens\":11,\"cache_creation_input_tokens\":13773,\"cache_read_input_tokens\":180872,\"output_tokens\":2339,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":13773,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-opus-4-6[1m]\":{\"inputTokens\":11,\"outputTokens\":2339,\"cacheReadInputTokens\":180872,\"cacheCreationInputTokens\":13773,\"webSearchRequests\":0,\"costUSD\":0.23504724999999999,\"contextWindow\":1000000,\"maxOutputTokens\":64000}},\"permission_denials\":[],\"fast_mode_state\":\"off\",\"uuid\":\"f460da19-764c-4884-b634-0ac157e29965\"}\n",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 66.82,
+  "git_status": " M pvlib/tools.py\n?? .swe_prompt.txt\n",
+  "model_patch": "diff --git a/pvlib/tools.py b/pvlib/tools.py\nindex 991568f..ca29105 100644\n--- a/pvlib/tools.py\n+++ b/pvlib/tools.py\n@@ -351,12 +351,15 @@ def _golden_sect_DataFrame(params, lower, upper, func, atol=1e-8):\n     converged = False\n     iterations = 0\n \n-    # handle all NaN case gracefully\n+    # handle all NaN case and equal bounds gracefully\n     with warnings.catch_warnings():\n         warnings.filterwarnings(action='ignore',\n                                 message='All-NaN slice encountered')\n+        diff = df['VH'] - df['VL']\n+        # replace 0 with atol to avoid log(atol/0) = -inf when bounds equal\n+        diff = np.where(diff == 0, atol, diff)\n         iterlimit = 1 + np.nanmax(\n-            np.trunc(np.log(atol / (df['VH'] - df['VL'])) / np.log(phim1)))\n+            np.trunc(np.log(atol / diff) / np.log(phim1)))\n \n     while not converged and (iterations <= iterlimit):\n \n",
+  "error": ""
+}

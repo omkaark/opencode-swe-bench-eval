@@ -1,0 +1,320 @@
+{
+  "instance_id": "sqlfluff__sqlfluff-2419",
+  "variant": "summarize",
+  "repo": "sqlfluff/sqlfluff",
+  "repo_map": [
+    "/repo/test/fixtures/rules/std_rule_cases/L060.yml"
+  ],
+  "per_file": {
+    "/repo/test/rules/std_L060_test.py": {
+      "reads": [
+        1
+      ],
+      "edits": [],
+      "first_read_step": 1,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/src/sqlfluff/rules/L060.py": {
+      "reads": [
+        2,
+        6
+      ],
+      "edits": [
+        {
+          "step": 5,
+          "old": "        return LintResult(context.segment, [fix])",
+          "new": "        return LintResult(\n            context.segment,\n            [fix],\n            description=f\"Use 'COALESCE' instead of '{context.segment.raw_upper}'.\",\n        )"
+        }
+      ],
+      "first_read_step": 2,
+      "first_edit_step": 5,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class Rule_L060(BaseRule)",
+            "def _eval(self, context: RuleContext) -> Optional[LintResult]"
+          ]
+        },
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "class Rule_L060(BaseRule)",
+            "def _eval(self, context: RuleContext) -> Optional[LintResult]"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/core/rules/base.py": {
+      "reads": [
+        4
+      ],
+      "edits": [],
+      "first_read_step": 4,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 53,
+          "limit": 30,
+          "signatures": [
+            "def __init__("
+          ]
+        }
+      ]
+    },
+    "/repo/test/fixtures/rules/std_rule_cases/L060.yml": {
+      "reads": [
+        9
+      ],
+      "edits": [],
+      "first_read_step": 9,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/test/rules/yaml_test_cases_test.py": {
+      "reads": [
+        11
+      ],
+      "edits": [],
+      "first_read_step": 11,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 0,
+          "limit": null,
+          "signatures": [
+            "def test__rule_test_case(test_case, caplog)",
+            "def test__rule_test_global_config()"
+          ]
+        }
+      ]
+    },
+    "/repo/src/sqlfluff/testing/rules.py": {
+      "reads": [
+        13,
+        14
+      ],
+      "edits": [],
+      "first_read_step": 13,
+      "first_edit_step": null,
+      "content_snippets": [
+        {
+          "offset": 50,
+          "limit": 60,
+          "signatures": [
+            "def get_rule_from_set(code, config)",
+            "def assert_rule_fail_in_sql(code, sql, configs=None, line_numbers=None)",
+            "def assert_rule_pass_in_sql(code, sql, configs=None)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "read",
+      "input": {
+        "filePath": "/repo/test/rules/std_L060_test.py"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 2,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/std_L060_test.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 7,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/std_L060_test.py"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 7,
+      "tool": "grep",
+      "input": {
+        "include": "test*.py",
+        "pattern": "std_L060"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/L060*test*"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 8,
+      "tool": "glob",
+      "input": {
+        "pattern": "**/tests/**/*L060*"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/rules/yaml_test_cases_test.py -k \"L060\" -v 2>&1 | head -50",
+        "description": "Run L060 tests"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "L060",
+        "include": "*.py"
+      },
+      "output_preview": "Found 2 matches\n/repo/src/sqlfluff/rules/L060.py:\n  Line 1: \"\"\"Implementation of Rule L060.\"\"\"\n  Line 11: class Rule_L060(BaseRule):"
+    },
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "class LintResult"
+      },
+      "output_preview": "Found 1 matches\n/repo/src/sqlfluff/core/rules/base.py:\n  Line 53: class LintResult:"
+    },
+    {
+      "step": 5,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/src/sqlfluff/rules/L060.py",
+        "oldString": "        return LintResult(context.segment, [fix])",
+        "newString": "        return LintResult(\n            context.segment,\n            [fix],\n            description=f\"Use 'COALESCE' instead of '{context.segment.raw_upper}'.\",\n        )"
+      },
+      "output_preview": "Edit applied successfully."
+    },
+    {
+      "step": 10,
+      "tool": "grep",
+      "input": {
+        "pattern": "std_rule_cases",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/test/rules/yaml_test_cases_test.py:\n  Line 14:     test_cases_path=os.path.join(\"test/fixtures/rules/std_rule_cases\", \"*.yml\")"
+    },
+    {
+      "step": 12,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "pattern": "def rules__test_helper"
+      },
+      "output_preview": "Found 1 matches\n/repo/src/sqlfluff/testing/rules.py:\n  Line 121: def rules__test_helper(test_case):"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/rules/yaml_test_cases_test.py -k \"L060\" -v 2>&1",
+        "description": "Run L060 tests",
+        "timeout": 60000
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install pytest 2>&1 | tail -5",
+        "description": "Install pytest",
+        "timeout": 60000
+      },
+      "output_preview": "\nSuccessfully installed iniconfig-2.3.0 packaging-26.0 pluggy-1.6.0 pytest-9.0.2\n\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/rules/yaml_test_cases_test.py -k \"L060\" -v 2>&1",
+        "description": "Run L060 tests",
+        "timeout": 60000
+      },
+      "output_preview": "ImportError while loading conftest '/repo/test/conftest.py'.\ntest/conftest.py:7: in <module>\n    import yaml\nE   ModuleNotFoundError: No module named 'yaml'\n"
+    },
+    {
+      "step": 19,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install pyyaml 2>&1 | tail -3",
+        "description": "Install pyyaml",
+        "timeout": 60000
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/rules/yaml_test_cases_test.py -k \"L060\" -v 2>&1",
+        "description": "Run L060 tests",
+        "timeout": 60000
+      },
+      "output_preview": "ImportError while loading conftest '/repo/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nE   ModuleNotFoundError: No module named 'sqlfluff'\n"
+    },
+    {
+      "step": 21,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install -e . 2>&1 | tail -10",
+        "description": "Install sqlfluff package",
+        "timeout": 120000
+      },
+      "output_preview": "  Building editable for sqlfluff (pyproject.toml): finished with status 'done'\n  Created wheel for sqlfluff: filename=sqlfluff-0.9.1-0.editable-py3-none-any.whl size=5461 sha256=9814b3df95e696f9cf35520af96c6eeb41a3f9dd25f35ac82ab0892e8665a836\n  Stored in directory: /tmp/pip-ephem-wheel-cache-riexgs0"
+    },
+    {
+      "step": 22,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest test/rules/yaml_test_cases_test.py -k \"L060\" -v 2>&1",
+        "description": "Run L060 tests",
+        "timeout": 120000
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: pytest.ini (WARNING: ignoring pytest config in tox.ini!)\nplugins: anyio-4.13.0\ncol"
+    },
+    {
+      "step": 23,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nfrom sqlfluff.core import Linter\nresult = Linter().lint_string('SELECT ifnull(foo, 0) AS bar FROM baz;')\nfor v in result.violations:\n    print(f'{v.desc()}')\n\nresult2 = Linter().lint_string('SELECT nvl(foo, 0) AS bar FROM baz;')\nfor v in result2.violations:\n    print(f'{v.desc()}')\n\"",
+        "description": "Verify the new description messages",
+        "timeout": 60000
+      },
+      "output_preview": "Files must end with a single trailing newline.\nUse 'COALESCE' instead of 'IFNULL'.\nFiles must end with a single trailing newline.\nUse 'COALESCE' instead of 'NVL'.\n"
+    }
+  ],
+  "token_cost": {
+    "total": 366069,
+    "input": 35205,
+    "output": 2160,
+    "cache_read": 328704,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": 13.24,
+  "total_duration_seconds": 95.54,
+  "patch_non_empty": true
+}

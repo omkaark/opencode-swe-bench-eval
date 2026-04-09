@@ -1,0 +1,84 @@
+{
+  "instance_id": "pvlib__pvlib-python-1154",
+  "variant": "fork",
+  "repo": "pvlib/pvlib-python",
+  "tokens": {
+    "total": 452518,
+    "input": 28916,
+    "output": 5106,
+    "reasoning": 1179,
+    "cache_read": 418496,
+    "cache_write": 0
+  },
+  "duration_seconds": 235.91,
+  "time_to_first_edit_seconds": 41.711,
+  "steps": 24,
+  "tool_calls": {
+    "total": 26,
+    "by_tool": {
+      "bash": 14,
+      "edit": 3,
+      "glob": 1,
+      "grep": 2,
+      "read": 6
+    }
+  },
+  "files_read": [
+    "/repo/pvlib/irradiance.py",
+    "/repo/pvlib/tests/test_irradiance.py"
+  ],
+  "files_edited": [
+    "/repo/pvlib/irradiance.py",
+    "/repo/pvlib/tests/test_irradiance.py"
+  ],
+  "failed_tool_calls": 3,
+  "failed_calls_detail": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def reindl",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_reindl",
+        "include": "*.py"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 8,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/tests/test_irradiance.py",
+        "oldString": "    assert_allclose(result, [np.nan, 27.9412, 104.1317, 34.1663], atol=1e-4)",
+        "newString": "    assert_allclose(result, [0, 27.9412, 104.1317, 34.1663], atol=1e-4)"
+      },
+      "output_preview": ""
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 2,
+      "steps": [
+        1,
+        1
+      ],
+      "tools": [
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"def reindl\", \"include\": \"*.py\"}",
+        "{\"pattern\": \"test_reindl\", \"include\": \"*.py\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}

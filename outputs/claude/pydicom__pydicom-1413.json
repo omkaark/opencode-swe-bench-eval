@@ -1,0 +1,13 @@
+{
+  "variant": "claude",
+  "instance_id": "pydicom__pydicom-1413",
+  "repo": "pydicom/pydicom",
+  "base_commit": "f909c76e31f759246cec3708dadd173c5d6e84b1",
+  "cli_exit_code": 0,
+  "cli_output": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":215095,\"duration_api_ms\":210900,\"num_turns\":43,\"result\":\"Also pre-existing. The fix is straightforward - added `'OD'`, `'OL'`, and `'OV'` to the exclusion list in the `value` setter so that bytes values for these VRs don't get incorrectly split on backslash bytes.\",\"stop_reason\":\"end_turn\",\"session_id\":\"4af5f533-d830-47c6-876d-952e552515ae\",\"total_cost_usd\":0.86435,\"usage\":{\"input_tokens\":42,\"cache_creation_input_tokens\":25346,\"cache_read_input_tokens\":992855,\"output_tokens\":8372,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":25346,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-opus-4-6[1m]\":{\"inputTokens\":42,\"outputTokens\":8372,\"cacheReadInputTokens\":992855,\"cacheCreationInputTokens\":25346,\"webSearchRequests\":0,\"costUSD\":0.86435,\"contextWindow\":1000000,\"maxOutputTokens\":64000}},\"permission_denials\":[],\"fast_mode_state\":\"off\",\"uuid\":\"f17e0a68-4926-4bdf-b9e9-ccc913e2e3c2\"}\n",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 216.58,
+  "git_status": " M pydicom/dataelem.py\n?? .swe_prompt.txt\n",
+  "model_patch": "diff --git a/pydicom/dataelem.py b/pydicom/dataelem.py\nindex b2709f13..45e6e449 100644\n--- a/pydicom/dataelem.py\n+++ b/pydicom/dataelem.py\n@@ -437,7 +437,8 @@ class DataElement:\n         # If so, turn them into a list of separate strings\n         #  Last condition covers 'US or SS' etc\n         if isinstance(val, (str, bytes)) and self.VR not in \\\n-                ['UT', 'ST', 'LT', 'FL', 'FD', 'AT', 'OB', 'OW', 'OF', 'SL',\n+                ['UT', 'ST', 'LT', 'FL', 'FD', 'AT', 'OB', 'OD', 'OF',\n+                 'OL', 'OV', 'OW', 'SL',\n                  'SQ', 'SS', 'UL', 'OB/OW', 'OW/OB', 'OB or OW',\n                  'OW or OB', 'UN'] and 'US' not in self.VR:\n             try:\n",
+  "error": ""
+}

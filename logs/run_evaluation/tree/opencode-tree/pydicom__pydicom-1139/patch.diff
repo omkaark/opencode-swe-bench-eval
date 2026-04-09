@@ -1,0 +1,45 @@
+diff --git a/pydicom/tests/test_valuerep.py b/pydicom/tests/test_valuerep.py
+index ad5a62d9..0b526d14 100644
+--- a/pydicom/tests/test_valuerep.py
++++ b/pydicom/tests/test_valuerep.py
+@@ -410,6 +410,23 @@ class TestPersonName:
+         pn2 = PersonName(pn)
+         assert pn2.encodings == ("iso_ir_126",)
+ 
++    def test_contains(self):
++        """PN: __contains__ works correctly."""
++        pn = PersonName("SomeName")
++        assert 'S' in pn
++        assert 'Some' in pn
++        assert 'z' not in pn
++
++    def test_next(self):
++        """PN: iteration works correctly."""
++        pn = PersonName("ABC")
++        assert next(iter(pn)) == 'A'
++
++    def test_iterator(self):
++        """PN: iteration over characters works correctly."""
++        pn = PersonName("ABC")
++        assert list(pn) == ['A', 'B', 'C']
++
+     def test_hash(self):
+         """Test that the same name creates the same hash."""
+         # Regression test for #785
+diff --git a/pydicom/valuerep.py b/pydicom/valuerep.py
+index e992f787..1883fd6d 100644
+--- a/pydicom/valuerep.py
++++ b/pydicom/valuerep.py
+@@ -750,6 +750,12 @@ class PersonName:
+     def __str__(self):
+         return '='.join(self.components).__str__()
+ 
++    def __iter__(self):
++        return iter(str(self))
++
++    def __contains__(self, item):
++        return item in str(self)
++
+     def __repr__(self):
+         return '='.join(self.components).__repr__()
+ 

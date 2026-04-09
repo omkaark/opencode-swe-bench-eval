@@ -1,0 +1,13 @@
+{
+  "variant": "codex",
+  "instance_id": "pyvista__pyvista-4315",
+  "repo": "pyvista/pyvista",
+  "base_commit": "db6ee8dd4a747b8864caae36c5d05883976a3ae5",
+  "cli_exit_code": null,
+  "cli_output": "",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 1200,
+  "git_status": "",
+  "model_patch": "",
+  "error": "Timeout after 1200s"
+}

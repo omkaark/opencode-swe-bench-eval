@@ -1,0 +1,17 @@
+diff --git a/pvlib/iam.py b/pvlib/iam.py
+index 3eaa6b4..ca3f40b 100644
+--- a/pvlib/iam.py
++++ b/pvlib/iam.py
+@@ -164,6 +164,12 @@ def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):
+ 
+     # incidence angle
+     costheta = np.maximum(0, cosd(aoi))  # always >= 0
++
++    # when n=1 (no refractive interface) and aoi > 90, no light is transmitted
++    # return 0 instead of nan (caused by 0/0 in reflectance calculations)
++    if np.allclose(n2, n1) and np.allclose(n3, n1):
++        iam = np.where(costheta > 0, 1 - (n1 - n3)**2 / (n1 + n3)**2, 0)
++        return iam
+     sintheta = np.sqrt(1 - costheta**2)  # always >= 0
+     n1costheta1 = n1 * costheta
+     n2costheta1 = n2 * costheta

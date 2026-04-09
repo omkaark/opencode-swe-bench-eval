@@ -1,0 +1,185 @@
+{
+  "instance_id": "pvlib__pvlib-python-1154",
+  "variant": "summarize",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [],
+  "per_file": {
+    "/repo/pvlib/irradiance.py": {
+      "reads": [
+        2,
+        3,
+        14
+      ],
+      "edits": [
+        {
+          "step": 5,
+          "old": "    term3 = 1 + np.sqrt(HB / ghi) * (tools.sind(0.5 * surface_tilt) ** 3)",
+          "new": "    term3 = 1 + np.sqrt(np.where(ghi == 0, 0, HB / ghi)) * \\\n        (tools.sind(0.5 * surface_tilt) ** 3)"
+        }
+      ],
+      "first_read_step": 2,
+      "first_edit_step": 5,
+      "content_snippets": [
+        {
+          "offset": 862,
+          "limit": 40,
+          "signatures": [
+            "def king(surface_tilt, dhi, ghi, solar_zenith)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_irradiance.py": {
+      "reads": [
+        2,
+        4
+      ],
+      "edits": [
+        {
+          "step": 6,
+          "old": "    assert_allclose(result, [np.nan, 27.9412, 104.1317, 34.1663], atol=1e-4)",
+          "new": "    assert_allclose(result, [0, 27.9412, 104.1317, 34.1663], atol=1e-4)"
+        }
+      ],
+      "first_read_step": 2,
+      "first_edit_step": 6,
+      "content_snippets": [
+        {
+          "offset": 195,
+          "limit": 30,
+          "signatures": [
+            "def test_reindl(irrad_data, ephem_data, dni_et)",
+            "def test_king(irrad_data, ephem_data)",
+            "def test_perez(irrad_data, ephem_data, dni_et, relative_airmass)"
+          ]
+        },
+        {
+          "offset": 170,
+          "limit": 20,
+          "signatures": [
+            "def test_klucher_series(irrad_data, ephem_data)"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "def reindl",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/irradiance.py:\n  Line 793: def reindl(surface_tilt, surface_azimuth, dhi, dni, ghi, dni_extra,"
+    },
+    {
+      "step": 1,
+      "tool": "grep",
+      "input": {
+        "pattern": "test_reindl",
+        "include": "*.py"
+      },
+      "output_preview": "Found 1 matches\n/repo/pvlib/tests/test_irradiance.py:\n  Line 201: def test_reindl(irrad_data, ephem_data, dni_et):"
+    },
+    {
+      "step": 5,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/irradiance.py",
+        "oldString": "    term3 = 1 + np.sqrt(HB / ghi) * (tools.sind(0.5 * surface_tilt) ** 3)",
+        "newString": "    term3 = 1 + np.sqrt(np.where(ghi == 0, 0, HB / ghi)) * \\\n        (tools.sind(0.5 * surface_tilt) ** 3)"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/irradiance.py\">\nERROR [11:8] Import \"numpy\" could not be resolved\nERROR [12:8] Import \"pandas\" could not be resolved\nERROR [125:18] Type \"(pd_object: Unknown) -> Unknown\" is not assignable to dec"
+    },
+    {
+      "step": 6,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/tests/test_irradiance.py",
+        "oldString": "    assert_allclose(result, [np.nan, 27.9412, 104.1317, 34.1663], atol=1e-4)",
+        "newString": "    assert_allclose(result, [0, 27.9412, 104.1317, 34.1663], atol=1e-4)"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/tests/test_irradiance.py\">\nERROR [5:8] Import \"numpy\" could not be resolved\nERROR [6:6] Import \"numpy\" could not be resolved\nERROR [7:8] Import \"pandas\" could not be resolved\nERROR [9:8] Import \""
+    },
+    {
+      "step": 7,
+      "tool": "bash",
+      "input": {
+        "command": "python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1",
+        "description": "Run test_reindl to verify fix",
+        "workdir": "/repo"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 8,
+      "tool": "bash",
+      "input": {
+        "command": "pip install pytest 2>&1 | tail -3 && python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1",
+        "description": "Install pytest and run test_reindl",
+        "workdir": "/repo"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:5: in <module>\n    import pandas as pd\nE   ModuleNotFoundError: No module named 'pandas'\n"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "pip install pandas numpy 2>&1 | tail -3 && python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1",
+        "description": "Install deps and run test_reindl",
+        "workdir": "/repo"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:6: in <module>\n    from pkg_resources import parse_version\nE   ModuleNotFoundError: No module n"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "pip install setuptools 2>&1 | tail -3 && python -m pytest pvlib/tests/test_irradiance.py::test_reindl -xvs 2>&1",
+        "description": "Install setuptools and run test",
+        "workdir": "/repo"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:6: in <module>\n    from pkg_resources import parse_version\nE   ModuleNotFoundError: No module n"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "pip install -e /repo 2>&1 | tail -5",
+        "description": "Install pvlib in dev mode",
+        "workdir": "/repo"
+      },
+      "output_preview": "\u00d7 Encountered error while generating package metadata.\n\u2570\u2500> See above for output.\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for details.\n"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"\nimport numpy as np\nimport sys\nsys.path.insert(0, '/repo')\n\n# Mock the minimal needed imports\nimport pvlib.tools as tools\n\n# Test the fix directly\ndef reindl_fixed(surface_tilt, surface_azimuth, dhi, dni, ghi, dni_extra, solar_zenith, solar_azimuth):\n    from pvlib.irradiance import aoi_projection\n    cos_tt = aoi_projection(surface_tilt, surface_azimuth, solar_zenith, solar_azimuth)\n    cos_tt = np.maximum(cos_tt, 0)\n    cos_solar_zenith = tools.cosd(solar_zenith)\n    Rb = cos_tt / np.maximum(cos_solar_zenith, 0.01745)\n    AI = dni / dni_extra\n    HB = dni * cos_solar_zenith\n    HB = np.maximum(HB, 0)\n    term1 = 1 - AI\n    term2 = 0.5 * (1 + tools.cosd(surface_tilt))\n    term3 = 1 + np.sqrt(np.where(ghi == 0, 0, HB / ghi)) * (tools.sind(0.5 * surface_tilt) ** 3)\n    sky_diffuse = dhi * (AI * Rb + term1 * term2 * term3)\n    sky_diffuse = np.maximum(sky_diffuse, 0)\n    return sky_diffuse\n\n# Test with ghi=0\nresult = reindl_fixed(40, 180, 0.0, 0.0, 0.0, 1370, 90, 180)\nprint(f'GHI=0 result: {result}')\nassert result == 0.0, f'Expected 0, got {result}'\n\n# Test with non-zero values  \nresult2 = reindl_fixed(40, 180, 100.0, 800.0, 900.0, 1370, 30, 180)\nprint(f'Normal result: {result2}')\nassert np.isfinite(result2), f'Expected finite, got {result2}'\n\nprint('All tests passed!')\n\"",
+        "description": "Verify fix with direct test"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 7, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/clearsky.py\", line 12, in <module>\n    from scipy.optimize import minimize_scalar\nModuleNotFoundError: No module n"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "python -c \"\nimport numpy as np\n\n# Manually define needed functions to avoid import issues\ndef cosd(angle):\n    return np.cos(np.radians(angle))\n\ndef sind(angle):\n    return np.sin(np.radians(angle))\n\ndef aoi_projection(surface_tilt, surface_azimuth, solar_zenith, solar_azimuth):\n    return (cosd(solar_zenith) * cosd(surface_tilt) +\n            sind(surface_tilt) * sind(solar_zenith) *\n            np.cos(np.radians(solar_azimuth - surface_azimuth)))\n\ndef reindl_fixed(surface_tilt, surface_azimuth, dhi, dni, ghi, dni_extra, solar_zenith, solar_azimuth):\n    cos_tt = aoi_projection(surface_tilt, surface_azimuth, solar_zenith, solar_azimuth)\n    cos_tt = np.maximum(cos_tt, 0)\n    cos_solar_zenith = cosd(solar_zenith)\n    Rb = cos_tt / np.maximum(cos_solar_zenith, 0.01745)\n    AI = dni / dni_extra\n    HB = dni * cos_solar_zenith\n    HB = np.maximum(HB, 0)\n    term1 = 1 - AI\n    term2 = 0.5 * (1 + cosd(surface_tilt))\n    term3 = 1 + np.sqrt(np.where(ghi == 0, 0, HB / ghi)) * (sind(0.5 * surface_tilt) ** 3)\n    sky_diffuse = dhi * (AI * Rb + term1 * term2 * term3)\n    sky_diffuse = np.maximum(sky_diffuse, 0)\n    return sky_diffuse\n\n# Test with ghi=0\nresult = reindl_fixed(40, 180, 0.0, 0.0, 0.0, 1370, 90, 180)\nprint(f'GHI=0 result: {result}')\nassert result == 0.0, f'Expected 0, got {result}'\n\n# Test with normal values\nresult2 = reindl_fixed(40, 180, 100.0, 800.0, 900.0, 1370, 30, 180)\nprint(f'Normal result: {result2}')\nassert np.isfinite(result2)\n\n# Test original behavior (NaN) \ndef reindl_old(surface_tilt, surface_azimuth, dhi, dni, ghi, dni_extra, solar_zenith, solar_azimuth):\n    cos_tt = aoi_projection(surface_tilt, surface_azimuth, solar_zenith, solar_azimuth)\n    cos_tt = np.maximum(cos_tt, 0)\n    cos_solar_zenith = cosd(solar_zenith)\n    Rb = cos_tt / np.maximum(cos_solar_zenith, 0.01745)\n    AI = dni / dni_extra\n    HB = dni * cos_solar_zenith\n    HB = np.maximum(HB, 0)\n    term1 = 1 - AI\n    term2 = 0.5 * (1 + cosd(surface_tilt))\n    term3 = 1 + np.sqrt(HB / ghi) * (sind(0.5 * surface_tilt) ** 3)\n    sky_diffuse = dhi * (AI * Rb + term1 * term2 * term3)\n    sky_diffuse = np.maximum(sky_diffuse, 0)\n    return sky_diffuse\n\nold_result = reindl_old(40, 180, 0.0, 0.0, 0.0, 1370, 90, 180)\nprint(f'Old GHI=0 result: {old_result} (should be NaN)')\n\nprint('All tests passed!')\n\"",
+        "description": "Verify fix logic with standalone test"
+      },
+      "output_preview": "<string>:26: RuntimeWarning: invalid value encountered in scalar divide\n<string>:52: RuntimeWarning: invalid value encountered in scalar divide\nGHI=0 result: 0.0\nNormal result: 104.43191465842328\nOld GHI=0 result: nan (should be NaN)\nAll tests passed!\n"
+    }
+  ],
+  "token_cost": {
+    "total": 239493,
+    "input": 23489,
+    "output": 3140,
+    "cache_read": 212864,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": 18.0,
+  "total_duration_seconds": 107.24,
+  "patch_non_empty": true
+}

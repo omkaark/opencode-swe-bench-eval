@@ -1,0 +1,50 @@
+diff --git a/src/sqlfluff/core/parser/grammar/delimited.py b/src/sqlfluff/core/parser/grammar/delimited.py
+index 39a35037..15e6e0c0 100644
+--- a/src/sqlfluff/core/parser/grammar/delimited.py
++++ b/src/sqlfluff/core/parser/grammar/delimited.py
+@@ -185,7 +185,23 @@ class Delimited(OneOf):
+                         )
+                 else:
+                     # Zero length section between delimiters, or zero code
+-                    # elements if appropriate. Return unmatched.
++                    # elements if appropriate. If trailing delimiters are allowed
++                    # and we've hit another delimiter with only non-code remaining,
++                    # treat it as an allowed trailing delimiter.
++                    if self.allow_trailing and delimiter_matcher is self.delimiter:
++                        pre_non_code, trailing_code, post_non_code = (
++                            trim_non_code_segments(
++                                delimiter_match.unmatched_segments
++                            )
++                        )
++                        if not trailing_code:
++                            return MatchResult.from_matched(
++                                matched_segments.matched_segments
++                                + delimiter_match.matched_segments
++                                + pre_non_code
++                                + post_non_code
++                            )
++                    # Otherwise, this is a zero-length section between delimiters.
+                     return MatchResult.from_unmatched(mutated_segments)
+             else:
+                 # No match for a delimiter looking forward, this means we're
+diff --git a/test/dialects/ansi_test.py b/test/dialects/ansi_test.py
+index 1c83e4c6..0fd3104b 100644
+--- a/test/dialects/ansi_test.py
++++ b/test/dialects/ansi_test.py
+@@ -214,3 +214,16 @@ def test__dialect__ansi_parse_indented_joins(sql_string, indented_joins, meta_lo
+         idx for idx, raw_seg in enumerate(parsed.tree.iter_raw_seg()) if raw_seg.is_meta
+     )
+     assert res_meta_locs == meta_loc
++
++
++@pytest.mark.parametrize(
++    "raw",
++    [
++        "select id from tbl;;",
++    ],
++)
++def test__dialect__ansi_multiple_semicolons(raw):
++    """Test parsing does not crash on repeated trailing semicolons."""
++    lnt = Linter(config=FluffConfig(overrides=dict(dialect="ansi")))
++    parsed = lnt.parse_string(raw)
++    assert parsed.tree.raw == raw

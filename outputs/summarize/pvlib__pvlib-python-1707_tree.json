@@ -1,0 +1,330 @@
+{
+  "instance_id": "pvlib__pvlib-python-1707",
+  "variant": "summarize",
+  "repo": "pvlib/pvlib-python",
+  "repo_map": [],
+  "per_file": {
+    "/repo/pvlib/iam.py": {
+      "reads": [
+        2,
+        3,
+        5,
+        7,
+        24
+      ],
+      "edits": [
+        {
+          "step": 8,
+          "old": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    return iam",
+          "new": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    # zero out results for aoi >= 90 (no transmitted light)\n    iam = np.where(aoi >= 90, 0, iam)\n\n    return iam"
+        },
+        {
+          "step": 22,
+          "old": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    # zero out results for aoi >= 90 (no transmitted light)\n    iam = np.where(aoi >= 90, 0, iam)\n\n    return iam",
+          "new": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    # zero out results for aoi >= 90 (no transmitted light)\n    iam = iam * (aoi < 90)\n\n    return iam"
+        },
+        {
+          "step": 23,
+          "old": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    # zero out results for aoi >= 90 (no transmitted light)\n    iam = iam * (aoi < 90)\n\n    return iam",
+          "new": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    # zero out results for aoi >= 90 (no transmitted light)\n    iam = np.where(aoi >= 90, 0, iam)\n    # np.where converts Series to ndarray; restore Series type if needed\n    if isinstance(aoi, pd.Series):\n        iam = pd.Series(iam, index=aoi.index)\n\n    return iam"
+        }
+      ],
+      "first_read_step": 2,
+      "first_edit_step": 8,
+      "content_snippets": [
+        {
+          "offset": 200,
+          "limit": 40,
+          "signatures": [
+            "def martin_ruiz(aoi, a_r=0.16)"
+          ]
+        },
+        {
+          "offset": 210,
+          "limit": 15,
+          "signatures": [
+            "def martin_ruiz(aoi, a_r=0.16)"
+          ]
+        }
+      ]
+    },
+    "/repo/pvlib/tests/test_iam.py": {
+      "reads": [
+        21,
+        29
+      ],
+      "edits": [
+        {
+          "step": 30,
+          "old": "def test_physical_scalar():\n    aoi = -45.\n    iam = _iam.physical(aoi, 1.526, 0.002, 4)\n    expected = 0.98797788\n    assert_allclose(iam, expected, equal_nan=True)\n    aoi = np.nan\n    iam = _iam.physical(aoi, 1.526, 0.002, 4)\n    expected = np.nan\n    assert_allclose(iam, expected, equal_nan=True)",
+          "new": "def test_physical_scalar():\n    aoi = -45.\n    iam = _iam.physical(aoi, 1.526, 0.002, 4)\n    expected = 0.98797788\n    assert_allclose(iam, expected, equal_nan=True)\n    aoi = np.nan\n    iam = _iam.physical(aoi, 1.526, 0.002, 4)\n    expected = np.nan\n    assert_allclose(iam, expected, equal_nan=True)\n\n\ndef test_physical_n1_L0():\n    # regression test: when n=1 and aoi > 90, result should be 0 not nan\n    aoi = 100\n    iam = _iam.physical(aoi, n=1)\n    assert iam == 0"
+        }
+      ],
+      "first_read_step": 21,
+      "first_edit_step": 30,
+      "content_snippets": [
+        {
+          "offset": 39,
+          "limit": 25,
+          "signatures": [
+            "def test_physical_ar()",
+            "def test_physical_noar()"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 1,
+      "tool": "bash",
+      "input": {
+        "command": "grep -n \"test_physical_n1_L0\" /repo/pvlib/tests/test_iam.py",
+        "description": "Find failing test"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 1,
+      "tool": "bash",
+      "input": {
+        "command": "grep -n \"def physical\" /repo/pvlib/iam.py | head -5",
+        "description": "Find physical function in iam.py"
+      },
+      "output_preview": "94:def physical(aoi, n=1.526, K=4.0, L=0.002, *, n_ar=None):\n"
+    },
+    {
+      "step": 4,
+      "tool": "bash",
+      "input": {
+        "command": "grep -n \"test_physical\" /repo/pvlib/tests/test_iam.py | head -20",
+        "description": "Find physical tests"
+      },
+      "output_preview": "39:def test_physical():\n54:def test_physical_ar():\n61:def test_physical_noar():\n70:def test_physical_scalar():\n"
+    },
+    {
+      "step": 6,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && git log --oneline -10",
+        "description": "Check recent git history"
+      },
+      "output_preview": "40e9e97 fix recombination args in pvsystem.maximum_power_point (#1733)\n"
+    },
+    {
+      "step": 8,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/iam.py",
+        "oldString": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    return iam",
+        "newString": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    # zero out results for aoi >= 90 (no transmitted light)\n    iam = np.where(aoi >= 90, 0, iam)\n\n    return iam"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/iam.py\">\nERROR [11:8] Import \"numpy\" could not be resolved\nERROR [12:8] Import \"pandas\" could not be resolved\nERROR [462:10] Import \"scipy.interpolate\" could not be resolved\n</diagnostics>"
+    },
+    {
+      "step": 9,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"import pvlib; print(pvlib.iam.physical(aoi=100, n=1)); print(pvlib.iam.physical(aoi=80, n=1)); print(pvlib.iam.physical(aoi=90, n=1))\"",
+        "description": "Test the fix"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/spectrum/__init__.py\", line 1, in <module>\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\n    ^^^^"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install numpy pandas scipy -q 2>&1 | tail -3",
+        "description": "Install dependencies"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"import pvlib; print(pvlib.iam.physical(aoi=100, n=1)); print(pvlib.iam.physical(aoi=80, n=1)); print(pvlib.iam.physical(aoi=90, n=1))\"",
+        "description": "Test the fix"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/spectrum/__init__.py\", line 1, in <module>\n    from pvlib.spectrum.spectrl2 import spectrl2  # noqa: F401\n    ^^^^"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install -e . -q 2>&1 | tail -5",
+        "description": "Install pvlib with all deps"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"import pvlib; print(pvlib.iam.physical(aoi=100, n=1)); print(pvlib.iam.physical(aoi=80, n=1)); print(pvlib.iam.physical(aoi=90, n=1))\"",
+        "description": "Test the fix"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/repo/pvlib/__init__.py\", line 3, in <module>\n    from pvlib import (  # noqa: F401\n  File \"/repo/pvlib/ivtools/__init__.py\", line 7, in <module>\n    from pvlib.ivtools import sde, sdm, utils  # noqa: F401\n    ^^^^^^^^"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "pip install \"numpy<2\" -q 2>&1 | tail -3",
+        "description": "Install numpy 1.x"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"import pvlib; print(pvlib.iam.physical(aoi=100, n=1)); print(pvlib.iam.physical(aoi=80, n=1)); print(pvlib.iam.physical(aoi=90, n=1))\"",
+        "description": "Test the fix"
+      },
+      "output_preview": "/repo/pvlib/iam.py:178: RuntimeWarning: invalid value encountered in scalar divide\n  rho12_s = ((n1costheta1 - n2costheta2) / (n1costheta1 + n2costheta2)) ** 2\n/repo/pvlib/iam.py:179: RuntimeWarning: invalid value encountered in scalar divide\n  rho12_p = ((n1costheta2 - n2costheta1) / (n1costheta2 +"
+    },
+    {
+      "step": 16,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_iam.py::test_physical pvlib/tests/test_iam.py::test_physical_ar pvlib/tests/test_iam.py::test_physical_noar pvlib/tests/test_iam.py::test_physical_scalar -v 2>&1",
+        "description": "Run existing physical tests"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 17,
+      "tool": "bash",
+      "input": {
+        "command": "pip install pytest -q && cd /repo && python -m pytest pvlib/tests/test_iam.py::test_physical pvlib/tests/test_iam.py::test_physical_ar pvlib/tests/test_iam.py::test_physical_noar pvlib/tests/test_iam.py::test_physical_scalar -v 2>&1",
+        "description": "Install pytest and run tests"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/usr/local/lib/python3.12/site-packages"
+    },
+    {
+      "step": 18,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_iam.py -k \"test_physical\" -v -o \"testpaths=pvlib/tests\" 2>&1 | tail -30",
+        "description": "Run tests with workaround"
+      },
+      "output_preview": "ImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:7: in <module>\n    from pkg_resources import parse_version\nE   ModuleNotFoundError: No module named 'pkg_resources'\n"
+    },
+    {
+      "step": 19,
+      "tool": "bash",
+      "input": {
+        "command": "pip install setuptools -q && cd /repo && python -m pytest pvlib/tests/test_iam.py -k \"test_physical\" -v -o \"testpaths=pvlib/tests\" 2>&1 | tail -20",
+        "description": "Install setuptools and run tests"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\nImportError while loading conftest '/repo/pvlib/tests/conftest.py'.\npvlib/tests/conftest.py:7: in <module>\n    from pkg_resources import parse_version\nE   ModuleNotFoundError: No module n"
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "pip install setuptools==69.5.1 -q && cd /repo && python -m pytest pvlib/tests/test_iam.py -k \"test_physical\" -v -o \"testpaths=pvlib/tests\" 2>&1 | tail -20",
+        "description": "Install setuptools and run tests"
+      },
+      "output_preview": "\n[notice] A new release of pip is available: 25.1.1 -> 26.0.1\n[notice] To update, run: pip install --upgrade pip\n        AssertionError : Either `left` or `right` is not an instance of `cls`.\n        \"\"\"\n        cls_name = cls.__name__\n    \n        if not isinstance(left, cls):\n>           raise Ass"
+    },
+    {
+      "step": 22,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/iam.py",
+        "oldString": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    # zero out results for aoi >= 90 (no transmitted light)\n    iam = np.where(aoi >= 90, 0, iam)\n\n    return iam",
+        "newString": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    # zero out results for aoi >= 90 (no transmitted light)\n    iam = iam * (aoi < 90)\n\n    return iam"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/iam.py\">\nERROR [11:8] Import \"numpy\" could not be resolved\nERROR [12:8] Import \"pandas\" could not be resolved\nERROR [462:10] Import \"scipy.interpolate\" could not be resolved\n</diagnostics>"
+    },
+    {
+      "step": 23,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/iam.py",
+        "oldString": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    # zero out results for aoi >= 90 (no transmitted light)\n    iam = iam * (aoi < 90)\n\n    return iam",
+        "newString": "    # incidence angle modifier\n    iam = (tau_s + tau_p) / 2 / tau_0\n\n    # zero out results for aoi >= 90 (no transmitted light)\n    iam = np.where(aoi >= 90, 0, iam)\n    # np.where converts Series to ndarray; restore Series type if needed\n    if isinstance(aoi, pd.Series):\n        iam = pd.Series(iam, index=aoi.index)\n\n    return iam"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/iam.py\">\nERROR [476:40] Argument of type \"Literal['extrapolate']\" cannot be assigned to parameter \"fill_value\" of type \"float\" in function \"__init__\"\n\u00a0\u00a0\"Literal['extrapolate']\" is not assignable "
+    },
+    {
+      "step": 25,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nimport numpy as np\nimport pandas as pd\nimport pvlib.iam as _iam\n\n# Test scalar\nprint('scalar n=1 aoi=100:', _iam.physical(100, n=1))\nprint('scalar n=1 aoi=90:', _iam.physical(90, n=1))\nprint('scalar n=1 aoi=80:', _iam.physical(80, n=1))\n\n# Test array\naoi = np.array([0, 80, 90, 100, np.nan])\nprint('array:', _iam.physical(aoi, 1.526, 0.002, 4))\n\n# Test series\naoi_s = pd.Series(aoi)\nresult = _iam.physical(aoi_s, 1.526, 0.002, 4)\nprint('series type:', type(result))\nprint('series:', result.values)\n\"",
+        "description": "Test the fix"
+      },
+      "output_preview": "/repo/pvlib/iam.py:178: RuntimeWarning: invalid value encountered in scalar divide\n  rho12_s = ((n1costheta1 - n2costheta2) / (n1costheta1 + n2costheta2)) ** 2\n/repo/pvlib/iam.py:179: RuntimeWarning: invalid value encountered in scalar divide\n  rho12_p = ((n1costheta2 - n2costheta1) / (n1costheta2 +"
+    },
+    {
+      "step": 26,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_iam.py -k \"test_physical\" -v -o \"testpaths=pvlib/tests\" 2>&1 | tail -15",
+        "description": "Run physical tests"
+      },
+      "output_preview": "plugins: anyio-4.13.0\ncollecting ... collected 30 items / 26 deselected / 4 selected\n\npvlib/tests/test_iam.py::test_physical PASSED                            [ 25%]\npvlib/tests/test_iam.py::test_physical_ar PASSED                         [ 50%]\npvlib/tests/test_iam.py::test_physical_noar PASSED    "
+    },
+    {
+      "step": 27,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"import pvlib; print(pvlib.iam.physical(aoi=100, n=1))\" 2>/dev/null",
+        "description": "Verify the reported bug is fixed"
+      },
+      "output_preview": "0.0\n"
+    },
+    {
+      "step": 28,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_iam.py::test_physical_n1_L0 -v -o \"testpaths=pvlib/tests\" 2>&1 | tail -5",
+        "description": "Check if test_physical_n1_L0 exists"
+      },
+      "output_preview": "  /repo/pvlib/tests/conftest.py:7: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html\n    from pkg_resources import parse_version\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n============================="
+    },
+    {
+      "step": 30,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/pvlib/tests/test_iam.py",
+        "oldString": "def test_physical_scalar():\n    aoi = -45.\n    iam = _iam.physical(aoi, 1.526, 0.002, 4)\n    expected = 0.98797788\n    assert_allclose(iam, expected, equal_nan=True)\n    aoi = np.nan\n    iam = _iam.physical(aoi, 1.526, 0.002, 4)\n    expected = np.nan\n    assert_allclose(iam, expected, equal_nan=True)",
+        "newString": "def test_physical_scalar():\n    aoi = -45.\n    iam = _iam.physical(aoi, 1.526, 0.002, 4)\n    expected = 0.98797788\n    assert_allclose(iam, expected, equal_nan=True)\n    aoi = np.nan\n    iam = _iam.physical(aoi, 1.526, 0.002, 4)\n    expected = np.nan\n    assert_allclose(iam, expected, equal_nan=True)\n\n\ndef test_physical_n1_L0():\n    # regression test: when n=1 and aoi > 90, result should be 0 not nan\n    aoi = 100\n    iam = _iam.physical(aoi, n=1)\n    assert iam == 0"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/pvlib/tests/test_iam.py\">\nERROR [362:5] No overloads for \"assert_allclose\" match the provided arguments\nERROR [362:21] Argument of type \"ArrayLike\" cannot be assigned to parameter \"actual\" of type \"_Ar"
+    },
+    {
+      "step": 31,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_iam.py::test_physical_n1_L0 -v -o \"testpaths=pvlib/tests\" 2>&1 | tail -10",
+        "description": "Run the new test"
+      },
+      "output_preview": "pvlib/tests/test_iam.py::test_physical_n1_L0\n  /repo/pvlib/iam.py:211: RuntimeWarning: divide by zero encountered in scalar divide\n    tau_s *= np.exp(-K * L / costheta)\n\npvlib/tests/test_iam.py::test_physical_n1_L0\n  /repo/pvlib/iam.py:212: RuntimeWarning: divide by zero encountered in scalar divid"
+    },
+    {
+      "step": 32,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest pvlib/tests/test_iam.py -k \"test_physical\" -v -o \"testpaths=pvlib/tests\" 2>&1 | tail -10",
+        "description": "Run all physical tests"
+      },
+      "output_preview": "pvlib/tests/test_iam.py::test_physical_n1_L0\n  /repo/pvlib/iam.py:211: RuntimeWarning: divide by zero encountered in scalar divide\n    tau_s *= np.exp(-K * L / costheta)\n\npvlib/tests/test_iam.py::test_physical_n1_L0\n  /repo/pvlib/iam.py:212: RuntimeWarning: divide by zero encountered in scalar divid"
+    }
+  ],
+  "token_cost": {
+    "total": 616618,
+    "input": 85113,
+    "output": 5105,
+    "cache_read": 526400,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": 33.4,
+  "total_duration_seconds": 181.29,
+  "patch_non_empty": true
+}

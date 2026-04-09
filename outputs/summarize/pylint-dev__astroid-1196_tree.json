@@ -1,0 +1,313 @@
+{
+  "instance_id": "pylint-dev__astroid-1196",
+  "variant": "summarize",
+  "repo": "pylint-dev/astroid",
+  "repo_map": [],
+  "per_file": {
+    "/repo": {
+      "reads": [
+        1
+      ],
+      "edits": [],
+      "first_read_step": 1,
+      "first_edit_step": null,
+      "content_snippets": []
+    },
+    "/repo/astroid/nodes/node_classes.py": {
+      "reads": [
+        3,
+        7
+      ],
+      "edits": [
+        {
+          "step": 9,
+          "old": "            if isinstance(key, DictUnpack):\n                try:\n                    return value.getitem(index, context)\n                except (AstroidTypeError, AstroidIndexError):\n                    continue",
+          "new": "            if isinstance(key, DictUnpack):\n                for inferred in value.infer(context):\n                    if inferred is util.Uninferable:\n                        continue\n                    try:\n                        return inferred.getitem(index, context)\n                    except (AstroidTypeError, AstroidIndexError):\n                        continue\n                continue"
+        }
+      ],
+      "first_read_step": 3,
+      "first_edit_step": 9,
+      "content_snippets": [
+        {
+          "offset": 2330,
+          "limit": 80,
+          "signatures": [
+            "def last_child(self)",
+            "def itered(self)",
+            "def getitem(self, index, context=None)",
+            "def bool_value(self, context=None)",
+            "class Expr(Statement)",
+            "def __init__("
+          ]
+        }
+      ]
+    },
+    "/repo/tests/unittest_python3.py": {
+      "reads": [
+        5,
+        16,
+        17
+      ],
+      "edits": [
+        {
+          "step": 19,
+          "old": "    def test_unpacking_in_dict_getitem(self) -> None:\n        node = extract_node(\"{1:2, **{2:3, 3:4}, **{5: 6}}\")\n        for key, expected in ((1, 2), (2, 3), (3, 4), (5, 6)):\n            value = node.getitem(nodes.Const(key))\n            self.assertIsInstance(value, nodes.Const)\n            self.assertEqual(value.value, expected)\n\n    def test_format_string(self) -> None:",
+          "new": "    def test_unpacking_in_dict_getitem(self) -> None:\n        node = extract_node(\"{1:2, **{2:3, 3:4}, **{5: 6}}\")\n        for key, expected in ((1, 2), (2, 3), (3, 4), (5, 6)):\n            value = node.getitem(nodes.Const(key))\n            self.assertIsInstance(value, nodes.Const)\n            self.assertEqual(value.value, expected)\n\n    def test_unpacking_in_dict_getitem_with_ref(self) -> None:\n        node = extract_node(\n            \"\"\"\n            X = {'A': 'B'}\n            Y = {**X}\n            Y  #@\n        \"\"\"\n        )\n        value = node.getitem(nodes.Const(\"A\"))\n        self.assertIsInstance(value, nodes.Const)\n        self.assertEqual(value.value, \"B\")\n\n    def test_unpacking_in_dict_getitem_uninferable(self) -> None:\n        from astroid.exceptions import AstroidIndexError\n\n        node = extract_node(\n            \"\"\"\n            def func(**kwargs):\n                return {**kwargs}\n            func()  #@\n        \"\"\"\n        )\n        self.assertRaises(AstroidIndexError, node.getitem, nodes.Const(\"A\"))\n\n    def test_format_string(self) -> None:"
+        },
+        {
+          "step": 21,
+          "old": "    def test_unpacking_in_dict_getitem_with_ref(self) -> None:\n        node = extract_node(\n            \"\"\"\n            X = {'A': 'B'}\n            Y = {**X}\n            Y  #@\n        \"\"\"\n        )\n        value = node.getitem(nodes.Const(\"A\"))\n        self.assertIsInstance(value, nodes.Const)\n        self.assertEqual(value.value, \"B\")\n\n    def test_unpacking_in_dict_getitem_uninferable(self) -> None:\n        from astroid.exceptions import AstroidIndexError\n\n        node = extract_node(\n            \"\"\"\n            def func(**kwargs):\n                return {**kwargs}\n            func()  #@\n        \"\"\"\n        )\n        self.assertRaises(AstroidIndexError, node.getitem, nodes.Const(\"A\"))",
+          "new": "    def test_unpacking_in_dict_getitem_with_ref(self) -> None:\n        node = extract_node(\n            \"\"\"\n            X = {'A': 'B'}\n            Y = {**X}\n            {**X}  #@\n        \"\"\"\n        )\n        value = node.getitem(nodes.Const(\"A\"))\n        self.assertIsInstance(value, nodes.Const)\n        self.assertEqual(value.value, \"B\")\n\n    def test_unpacking_in_dict_getitem_uninferable(self) -> None:\n        from astroid.exceptions import AstroidIndexError\n\n        node = extract_node(\n            \"\"\"\n            def func(**kwargs):\n                return {**kwargs}\n            {**kwargs}  #@\n        \"\"\"\n        )\n        self.assertRaises(AstroidIndexError, node.getitem, nodes.Const(\"A\"))"
+        },
+        {
+          "step": 23,
+          "old": "    def test_unpacking_in_dict_getitem_uninferable(self) -> None:\n        from astroid.exceptions import AstroidIndexError\n\n        node = extract_node(\n            \"\"\"\n            def func(**kwargs):\n                return {**kwargs}\n            {**kwargs}  #@\n        \"\"\"\n        )\n        self.assertRaises(AstroidIndexError, node.getitem, nodes.Const(\"A\"))",
+          "new": "    def test_unpacking_in_dict_getitem_uninferable(self) -> None:\n        from astroid.exceptions import AstroidIndexError\n\n        node = extract_node(\n            \"\"\"\n            def func(**kwargs):\n                {**kwargs}  #@\n            \"\"\"\n        )\n        self.assertRaises(AstroidIndexError, node.getitem, nodes.Const(\"A\"))"
+        }
+      ],
+      "first_read_step": 5,
+      "first_edit_step": 19,
+      "content_snippets": [
+        {
+          "offset": 275,
+          "limit": 50,
+          "signatures": [
+            "def test_nested_unpacking_in_dicts(self) -> None",
+            "def test_unpacking_in_dict_getitem(self) -> None",
+            "def test_format_string(self) -> None",
+            "def test_underscores_in_numeral_literal(self) -> None",
+            "def test_async_comprehensions(self) -> None"
+          ]
+        },
+        {
+          "offset": 281,
+          "limit": 15,
+          "signatures": [
+            "def test_format_string(self) -> None",
+            "def test_underscores_in_numeral_literal(self) -> None"
+          ]
+        },
+        {
+          "offset": 1,
+          "limit": 20,
+          "signatures": [
+            "class Python3TC(unittest.TestCase)",
+            "def setUpClass(cls)",
+            "def test_starred_notation(self) -> None"
+          ]
+        }
+      ]
+    }
+  },
+  "failed_approaches": [
+    {
+      "step": 11,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install -e . -q 2>/dev/null",
+        "description": "Install astroid package"
+      },
+      "output_preview": "",
+      "reason_failed": "empty output"
+    },
+    {
+      "step": 14,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && pip install pytest -q 2>/dev/null && python -m pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref -v",
+        "description": "Install pytest and run failing tests"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: setup.cfg\nplugins: anyio-4.13.0\ncollecting ... ERROR: not found: /repo/tests/unitt",
+      "reason_failed": "not found"
+    },
+    {
+      "step": 18,
+      "tool": "grep",
+      "input": {
+        "include": "tests/unittest_python3.py",
+        "pattern": "AstroidIndexError"
+      },
+      "output_preview": "No files found",
+      "reason_failed": "no files found"
+    },
+    {
+      "step": 22,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem -v",
+        "description": "Run all three getitem tests"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: setup.cfg\nplugins: anyio-4.13.0\ncollecting ... collected 3 items\n\ntests/unittest_p",
+      "reason_failed": "not found"
+    }
+  ],
+  "successful_approaches": [
+    {
+      "step": 2,
+      "tool": "grep",
+      "input": {
+        "pattern": "def getitem",
+        "include": "*.py"
+      },
+      "output_preview": "Found 6 matches\n/repo/astroid/nodes/scoped_nodes/scoped_nodes.py:\n  Line 2721:     def getitem(self, index, context=None):\n\n/repo/astroid/nodes/node_classes.py:\n  Line 1942:     def getitem(self, index, context=None):\n  Line 2349:     def getitem(self, index, context=None):\n  Line 3409:     def geti"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "pattern": "test_unpacking_in_dict_getitem"
+      },
+      "output_preview": "Found 1 matches\n/repo/tests/unittest_python3.py:\n  Line 281:     def test_unpacking_in_dict_getitem(self) -> None:"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "pattern": "class AstroidIndexError"
+      },
+      "output_preview": "Found 1 matches\n/repo/astroid/exceptions.py:\n  Line 238: class AstroidIndexError(AstroidError):"
+    },
+    {
+      "step": 8,
+      "tool": "grep",
+      "input": {
+        "include": "*.py",
+        "pattern": "class DictUnpack"
+      },
+      "output_preview": "Found 1 matches\n/repo/astroid/nodes/node_classes.py:\n  Line 4550: class DictUnpack(mixins.NoChildrenMixin, NodeNG):"
+    },
+    {
+      "step": 9,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/astroid/nodes/node_classes.py",
+        "oldString": "            if isinstance(key, DictUnpack):\n                try:\n                    return value.getitem(index, context)\n                except (AstroidTypeError, AstroidIndexError):\n                    continue",
+        "newString": "            if isinstance(key, DictUnpack):\n                for inferred in value.infer(context):\n                    if inferred is util.Uninferable:\n                        continue\n                    try:\n                        return inferred.getitem(index, context)\n                    except (AstroidTypeError, AstroidIndexError):\n                        continue\n                continue"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/astroid/nodes/node_classes.py\">\nERROR [66:2] Arguments missing for parameters \"instance\", \"args\", \"kwargs\"\nERROR [247:29] \"child_sequence\" is not a known attribute of \"None\"\nERROR [260:29] \"child_seque"
+    },
+    {
+      "step": 10,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nfrom astroid import parse\n\nsource = '''\nX = {\n    'A': 'B'\n}\n\nY = {\n    **X\n}\n\nKEY = 'A'\n'''\n\ntree = parse(source)\n\nfirst_dict = tree.body[0].value\nsecond_dict = tree.body[1].value\nkey = tree.body[2].value\n\nprint(f'{first_dict.getitem(key).value = }')\nprint(f'{second_dict.getitem(key).value = }')\n\"\n",
+        "description": "Test the reproducer from the issue"
+      },
+      "output_preview": "Traceback (most recent call last):\n  File \"<string>\", line 2, in <module>\n  File \"/repo/astroid/__init__.py\", line 42, in <module>\n    from astroid.nodes import node_classes, scoped_nodes\n  File \"/repo/astroid/nodes/__init__.py\", line 15, in <module>\n    from astroid.nodes.node_classes import (  # p"
+    },
+    {
+      "step": 12,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nfrom astroid import parse\n\nsource = '''\nX = {\n    'A': 'B'\n}\n\nY = {\n    **X\n}\n\nKEY = 'A'\n'''\n\ntree = parse(source)\n\nfirst_dict = tree.body[0].value\nsecond_dict = tree.body[1].value\nkey = tree.body[2].value\n\nprint(f'{first_dict.getitem(key).value = }')\nprint(f'{second_dict.getitem(key).value = }')\n\"\n",
+        "description": "Test the reproducer from the issue"
+      },
+      "output_preview": "first_dict.getitem(key).value = 'B'\nsecond_dict.getitem(key).value = 'B'\n"
+    },
+    {
+      "step": 13,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref -v 2>&1 | head -30",
+        "description": "Run the failing tests mentioned in the issue"
+      },
+      "output_preview": "/usr/local/bin/python: No module named pytest\n"
+    },
+    {
+      "step": 15,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem -v",
+        "description": "Run existing test to verify fix doesn't break it"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: setup.cfg\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntests/unittest_py"
+    },
+    {
+      "step": 19,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/tests/unittest_python3.py",
+        "oldString": "    def test_unpacking_in_dict_getitem(self) -> None:\n        node = extract_node(\"{1:2, **{2:3, 3:4}, **{5: 6}}\")\n        for key, expected in ((1, 2), (2, 3), (3, 4), (5, 6)):\n            value = node.getitem(nodes.Const(key))\n            self.assertIsInstance(value, nodes.Const)\n            self.assertEqual(value.value, expected)\n\n    def test_format_string(self) -> None:",
+        "newString": "    def test_unpacking_in_dict_getitem(self) -> None:\n        node = extract_node(\"{1:2, **{2:3, 3:4}, **{5: 6}}\")\n        for key, expected in ((1, 2), (2, 3), (3, 4), (5, 6)):\n            value = node.getitem(nodes.Const(key))\n            self.assertIsInstance(value, nodes.Const)\n            self.assertEqual(value.value, expected)\n\n    def test_unpacking_in_dict_getitem_with_ref(self) -> None:\n        node = extract_node(\n            \"\"\"\n            X = {'A': 'B'}\n            Y = {**X}\n            Y  #@\n        \"\"\"\n        )\n        value = node.getitem(nodes.Const(\"A\"))\n        self.assertIsInstance(value, nodes.Const)\n        self.assertEqual(value.value, \"B\")\n\n    def test_unpacking_in_dict_getitem_uninferable(self) -> None:\n        from astroid.exceptions import AstroidIndexError\n\n        node = extract_node(\n            \"\"\"\n            def func(**kwargs):\n                return {**kwargs}\n            func()  #@\n        \"\"\"\n        )\n        self.assertRaises(AstroidIndexError, node.getitem, nodes.Const(\"A\"))\n\n    def test_format_string(self) -> None:"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/tests/unittest_python3.py\">\nERROR [24:41] Cannot access attribute \"assign_type\" for class \"NodeNG\"\n\u00a0\u00a0Attribute \"assign_type\" is unknown\nERROR [34:16] Object of type \"None\" is not subscriptable\nERROR [3"
+    },
+    {
+      "step": 20,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem -v",
+        "description": "Run all three getitem tests"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: setup.cfg\nplugins: anyio-4.13.0\ncollecting ... collected 3 items\n\ntests/unittest_p"
+    },
+    {
+      "step": 21,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/tests/unittest_python3.py",
+        "oldString": "    def test_unpacking_in_dict_getitem_with_ref(self) -> None:\n        node = extract_node(\n            \"\"\"\n            X = {'A': 'B'}\n            Y = {**X}\n            Y  #@\n        \"\"\"\n        )\n        value = node.getitem(nodes.Const(\"A\"))\n        self.assertIsInstance(value, nodes.Const)\n        self.assertEqual(value.value, \"B\")\n\n    def test_unpacking_in_dict_getitem_uninferable(self) -> None:\n        from astroid.exceptions import AstroidIndexError\n\n        node = extract_node(\n            \"\"\"\n            def func(**kwargs):\n                return {**kwargs}\n            func()  #@\n        \"\"\"\n        )\n        self.assertRaises(AstroidIndexError, node.getitem, nodes.Const(\"A\"))",
+        "newString": "    def test_unpacking_in_dict_getitem_with_ref(self) -> None:\n        node = extract_node(\n            \"\"\"\n            X = {'A': 'B'}\n            Y = {**X}\n            {**X}  #@\n        \"\"\"\n        )\n        value = node.getitem(nodes.Const(\"A\"))\n        self.assertIsInstance(value, nodes.Const)\n        self.assertEqual(value.value, \"B\")\n\n    def test_unpacking_in_dict_getitem_uninferable(self) -> None:\n        from astroid.exceptions import AstroidIndexError\n\n        node = extract_node(\n            \"\"\"\n            def func(**kwargs):\n                return {**kwargs}\n            {**kwargs}  #@\n        \"\"\"\n        )\n        self.assertRaises(AstroidIndexError, node.getitem, nodes.Const(\"A\"))"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/tests/unittest_python3.py\">\nERROR [24:41] Cannot access attribute \"assign_type\" for class \"NodeNG\"\n\u00a0\u00a0Attribute \"assign_type\" is unknown\nERROR [34:16] Object of type \"None\" is not subscriptable\nERROR [3"
+    },
+    {
+      "step": 23,
+      "tool": "edit",
+      "input": {
+        "filePath": "/repo/tests/unittest_python3.py",
+        "oldString": "    def test_unpacking_in_dict_getitem_uninferable(self) -> None:\n        from astroid.exceptions import AstroidIndexError\n\n        node = extract_node(\n            \"\"\"\n            def func(**kwargs):\n                return {**kwargs}\n            {**kwargs}  #@\n        \"\"\"\n        )\n        self.assertRaises(AstroidIndexError, node.getitem, nodes.Const(\"A\"))",
+        "newString": "    def test_unpacking_in_dict_getitem_uninferable(self) -> None:\n        from astroid.exceptions import AstroidIndexError\n\n        node = extract_node(\n            \"\"\"\n            def func(**kwargs):\n                {**kwargs}  #@\n            \"\"\"\n        )\n        self.assertRaises(AstroidIndexError, node.getitem, nodes.Const(\"A\"))"
+      },
+      "output_preview": "Edit applied successfully.\n\nLSP errors detected in this file, please fix:\n<diagnostics file=\"/repo/tests/unittest_python3.py\">\nERROR [24:41] Cannot access attribute \"assign_type\" for class \"NodeNG\"\n\u00a0\u00a0Attribute \"assign_type\" is unknown\nERROR [34:16] Object of type \"None\" is not subscriptable\nERROR [3"
+    },
+    {
+      "step": 24,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable -v",
+        "description": "Run uninferable test"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: setup.cfg\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntests/unittest_py"
+    },
+    {
+      "step": 25,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable -v",
+        "description": "Run all three getitem tests"
+      },
+      "output_preview": "============================= test session starts ==============================\nplatform linux -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /repo\nconfigfile: setup.cfg\nplugins: anyio-4.13.0\ncollecting ... collected 3 items\n\ntests/unittest_p"
+    },
+    {
+      "step": 26,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -c \"\nfrom astroid import parse\n\nsource = '''\nX = {\n    'A': 'B'\n}\n\nY = {\n    **X\n}\n\nKEY = 'A'\n'''\n\ntree = parse(source)\n\nfirst_dict = tree.body[0].value\nsecond_dict = tree.body[1].value\nkey = tree.body[2].value\n\nprint(f'{first_dict.getitem(key).value = }')\nprint(f'{second_dict.getitem(key).value = }')\n\"\n",
+        "description": "Final verification with original reproducer"
+      },
+      "output_preview": "first_dict.getitem(key).value = 'B'\nsecond_dict.getitem(key).value = 'B'\n"
+    },
+    {
+      "step": 27,
+      "tool": "bash",
+      "input": {
+        "command": "cd /repo && python -m pytest tests/unittest_python3.py -v -k \"unpacking_in_dict\" 2>&1 | tail -15",
+        "description": "Run all dict unpacking tests"
+      },
+      "output_preview": "tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable PASSED [ 60%]\ntests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref PASSED [ 80%]\ntests/unittest_python3.py::Python3TC::test_unpacking_in_dicts PASSED     [100%]\n\n=============================== "
+    }
+  ],
+  "token_cost": {
+    "total": 511536,
+    "input": 32610,
+    "output": 4558,
+    "cache_read": 474368,
+    "cache_write": 0
+  },
+  "time_to_first_edit_seconds": 42.21,
+  "total_duration_seconds": 165.16,
+  "patch_non_empty": true
+}

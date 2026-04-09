@@ -1,0 +1,13 @@
+{
+  "variant": "claude",
+  "instance_id": "pylint-dev__astroid-1866",
+  "repo": "pylint-dev/astroid",
+  "base_commit": "6cf238d089cf4b6753c94cfc089b4a47487711e5",
+  "cli_exit_code": 0,
+  "cli_output": "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"duration_ms\":37775,\"duration_api_ms\":37225,\"num_turns\":5,\"result\":\"All 5 tests pass. The fix adds `TypeError` to the exception handler on line 957, so that when `None` or other non-string values are passed through `.format()`, the function returns `Uninferable` instead of crashing.\",\"stop_reason\":\"end_turn\",\"session_id\":\"31f730b3-dfbf-405d-b1f0-26d58b265d0d\",\"total_cost_usd\":0.11385475,\"usage\":{\"input_tokens\":7,\"cache_creation_input_tokens\":8511,\"cache_read_input_tokens\":79852,\"output_tokens\":828,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":8511,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-opus-4-6[1m]\":{\"inputTokens\":7,\"outputTokens\":828,\"cacheReadInputTokens\":79852,\"cacheCreationInputTokens\":8511,\"webSearchRequests\":0,\"costUSD\":0.11385475,\"contextWindow\":1000000,\"maxOutputTokens\":64000}},\"permission_denials\":[],\"fast_mode_state\":\"off\",\"uuid\":\"c008bfc7-1fb9-497c-b5da-791196cd04fc\"}\n",
+  "cli_stderr": "",
+  "opencode_duration_seconds": 39.05,
+  "git_status": " M astroid/brain/brain_builtin_inference.py\n?? .swe_prompt.txt\n",
+  "model_patch": "diff --git a/astroid/brain/brain_builtin_inference.py b/astroid/brain/brain_builtin_inference.py\nindex af1ddf4d..d55740f0 100644\n--- a/astroid/brain/brain_builtin_inference.py\n+++ b/astroid/brain/brain_builtin_inference.py\n@@ -954,7 +954,7 @@ def _infer_str_format_call(\n \n     try:\n         formatted_string = format_template.format(*pos_values, **keyword_values)\n-    except (IndexError, KeyError):\n+    except (IndexError, KeyError, TypeError):\n         # If there is an IndexError there are too few arguments to interpolate\n         return iter([util.Uninferable])\n \n",
+  "error": ""
+}

@@ -1,0 +1,52 @@
+diff --git a/src/sqlfluff/__init__.py b/src/sqlfluff/__init__.py
+index 677a56fc..1c0039e8 100644
+--- a/src/sqlfluff/__init__.py
++++ b/src/sqlfluff/__init__.py
+@@ -6,12 +6,21 @@ import pytest
+ from sqlfluff.api import lint, fix, parse, list_rules, list_dialects  # noqa: F401
+ 
+ # Set the version attribute of the library
+-import pkg_resources
+-import configparser
++try:
++    import pkg_resources
++    import configparser
+ 
+-# Get the current version
+-config = configparser.ConfigParser()
+-config.read([pkg_resources.resource_filename("sqlfluff", "config.ini")])
++    # Get the current version
++    config = configparser.ConfigParser()
++    config.read([pkg_resources.resource_filename("sqlfluff", "config.ini")])
++except ModuleNotFoundError:
++    from importlib import resources
++    import configparser
++    import io
++
++    # Get the current version
++    config = configparser.ConfigParser()
++    config.read_string(resources.files("sqlfluff").joinpath("config.ini").read_text())
+ 
+ __version__ = config.get("sqlfluff", "version")
+ 
+diff --git a/src/sqlfluff/rules/L036.py b/src/sqlfluff/rules/L036.py
+index ed5533b8..e0b8410c 100644
+--- a/src/sqlfluff/rules/L036.py
++++ b/src/sqlfluff/rules/L036.py
+@@ -169,6 +169,16 @@ class Rule_L036(BaseRule):
+                     select_clause.segments[select_targets_info.first_select_target_idx],
+                 ),
+             ]
++            # Delete any whitespace before the first select target.
++            if select_targets_info.first_whitespace_idx != -1:
++                fixes += [
++                    LintFix(
++                        "delete",
++                        select_clause.segments[
++                            select_targets_info.first_whitespace_idx
++                        ],
++                    )
++                ]
+ 
+             start_idx = 0
+ 

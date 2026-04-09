@@ -1,0 +1,98 @@
+{
+  "instance_id": "pvlib__pvlib-python-1606",
+  "variant": "official",
+  "repo": "pvlib/pvlib-python",
+  "tokens": {
+    "total": 606382,
+    "input": 18846,
+    "output": 5200,
+    "reasoning": 1845,
+    "cache_read": 582336,
+    "cache_write": 0
+  },
+  "duration_seconds": 269.36,
+  "time_to_first_edit_seconds": 80.48,
+  "steps": 28,
+  "tool_calls": {
+    "total": 29,
+    "by_tool": {
+      "bash": 14,
+      "edit": 2,
+      "glob": 1,
+      "grep": 4,
+      "read": 5,
+      "todowrite": 3
+    }
+  },
+  "files_read": [
+    "/repo",
+    "/repo/pvlib",
+    "/repo/pvlib/tests/test_tools.py",
+    "/repo/pvlib/tools.py"
+  ],
+  "files_edited": [
+    "/repo/pvlib/tools.py",
+    "/repo/pvlib/tests/test_tools.py"
+  ],
+  "failed_tool_calls": 4,
+  "failed_calls_detail": [
+    {
+      "step": 3,
+      "tool": "grep",
+      "input": {
+        "pattern": "test__golden_sect_DataFrame_vector",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 4,
+      "tool": "grep",
+      "input": {
+        "pattern": "_golden_sect_DataFrame",
+        "path": "/repo"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 5,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "golden_sect"
+      },
+      "output_preview": "No files found"
+    },
+    {
+      "step": 6,
+      "tool": "grep",
+      "input": {
+        "path": "/repo",
+        "pattern": "golden"
+      },
+      "output_preview": "No files found"
+    }
+  ],
+  "dead_ends": [
+    {
+      "length": 3,
+      "steps": [
+        4,
+        5,
+        6
+      ],
+      "tools": [
+        "grep",
+        "grep",
+        "grep"
+      ],
+      "inputs_preview": [
+        "{\"pattern\": \"_golden_sect_DataFrame\", \"path\": \"/repo\"}",
+        "{\"path\": \"/repo\", \"pattern\": \"golden_sect\"}",
+        "{\"path\": \"/repo\", \"pattern\": \"golden\"}"
+      ]
+    }
+  ],
+  "patch_non_empty": true,
+  "error": ""
+}
