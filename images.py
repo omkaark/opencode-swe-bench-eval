@@ -1,12 +1,10 @@
 import json
+from pathlib import Path
 
 import modal
+import yaml
 
-DEFAULT_MODEL = "opencode/mimo-v2-pro-free"
-FORK_BRANCH = "omkaark/subagent-shared-prefix"
-FORK_REPO = "https://github.com/omkaark/opencode"
-
-_COMMON_PACKAGES = (
+COMMON_PACKAGES = (
     "bash",
     "git",
     "curl",
@@ -18,12 +16,17 @@ _COMMON_PACKAGES = (
     "fd-find",
 )
 
-_PATH = "/usr/local/bin:/root/.bun/bin:/root/.local/bin:/usr/bin:/bin"
+PATH = "/usr/local/bin:/root/.bun/bin:/root/.local/bin:/usr/bin:/bin"
 
-_OPENCODE_CONFIG = json.dumps(
-    {
+def load_config() -> dict:
+    config_path = Path(__file__).parent / "config.yaml"
+    with open(config_path) as f:
+        return yaml.safe_load(f)
+
+def get_opencode_config(model: str) -> str:
+    return json.dumps({
         "$schema": "https://opencode.ai/config.json",
-        "model": DEFAULT_MODEL,
+        "model": model,
         "provider": {
             "opencode": {
                 "options": {
@@ -31,39 +34,52 @@ _OPENCODE_CONFIG = json.dumps(
                 }
             }
         },
-    },
-)
+    })
 
 
-def _base_image() -> modal.Image:
+def get_base_image(model: str) -> modal.Image:
     return (
         modal.Image.debian_slim()
-        .apt_install(*_COMMON_PACKAGES)
-        .pip_install("swe-rex==1.4.0")
+        .apt_install(*COMMON_PACKAGES)
+        .pip_install("swe-rex[modal]==1.4.0")
         .run_commands(
             "ln -sf /usr/bin/fdfind /usr/local/bin/fd || true",
             "mkdir -p /root/.config/opencode",
-            f"echo '{_OPENCODE_CONFIG}' > /root/.config/opencode/opencode.json",
+            f"echo '{get_opencode_config(model)}' > /root/.config/opencode/opencode.json",
         )
-        .env({"PATH": _PATH})
+        .env({"PATH": PATH})
     )
 
 
-# Supported official baseline from the current OpenCode lineage.
-official = _base_image().apt_install("nodejs", "npm").run_commands("npm i -g opencode-ai@latest")
+def build_npm_image(model: str) -> modal.Image:
+    return get_base_image(model).apt_install("nodejs", "npm").run_commands("npm i -g opencode-ai@latest")
 
 
-# The fork branch is built into a native Linux binary during the image build.
-fork = _base_image().run_commands(
-    "curl -fsSL https://bun.sh/install | bash",
-    f"git clone --depth 1 --branch {FORK_BRANCH} {FORK_REPO} /opencode",
-    "cd /opencode && /root/.bun/bin/bun install --frozen-lockfile || /root/.bun/bin/bun install",
-    "cd /opencode/packages/opencode && /root/.bun/bin/bun run build --single",
-    "ln -sf /opencode/packages/opencode/dist/opencode-linux-x64/bin/opencode /usr/local/bin/opencode",
-)
+def build_fork_image(model: str, repo: str, branch: str) -> modal.Image:
+    return get_base_image(model).run_commands(
+        "curl -fsSL https://bun.sh/install | bash",
+        f"git clone --depth 1 --branch {branch} {repo} /opencode",
+        "cd /opencode && /root/.bun/bin/bun install --frozen-lockfile || /root/.bun/bin/bun install",
+        "cd /opencode/packages/opencode && /root/.bun/bin/bun run build --single",
+        "ln -sf /opencode/packages/opencode/dist/opencode-linux-x64/bin/opencode /usr/local/bin/opencode",
+    )
 
 
-VARIANT_IMAGES = {
-    "official": official,
-    "fork": fork,
-}
+def load_variants(config: dict) -> dict[str, modal.Image]:
+    model = config.get("model")
+    images = {}
+    for name, spec in config.get("variants", {}).items():
+        variant_type = spec.get("type", "npm")
+        if variant_type == "npm":
+            images[name] = build_npm_image(model)
+        elif variant_type == "fork":
+            repo = spec.get("repo", "https://github.com/omkaark/opencode")
+            branch = spec.get("branch", "main")
+            images[name] = build_fork_image(model, repo, branch)
+        else:
+            raise ValueError(f"Unknown variant type: {variant_type}")
+    return images
+
+
+CONFIG = load_config()
+VARIANT_IMAGES = load_variants(CONFIG)

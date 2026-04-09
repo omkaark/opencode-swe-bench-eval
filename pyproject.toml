@@ -1,0 +1,16 @@
+[project]
+name = "opencode-swe-bench-eval"
+version = "0.1.0"
+description = "SWE-bench evaluation runner for OpenCode"
+requires-python = ">=3.11"
+dependencies = [
+    "aiohttp",
+    "datasets",
+    "modal",
+    "pydantic",
+    "pyyaml",
+    "swe-rex>=1.4.0",
+]
+
+[tool.uv]
+dev-dependencies = []
