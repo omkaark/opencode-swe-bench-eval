@@ -15,8 +15,8 @@ from swerex.deployment.modal import ModalDeployment
 from swerex.runtime.abstract import BashAction, Command, CreateBashSessionRequest, ReadFileRequest, WriteFileRequest
 from swerex.runtime.remote import RemoteRuntime
 
-from .images import load_variants
-from .utils import save_artifact, save_log, save_predictions
+from images import load_variants
+from utils import save_artifact, save_log, save_predictions
 
 DATASET = "princeton-nlp/SWE-bench_Lite"
 CLONE_TIMEOUT = 300

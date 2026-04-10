@@ -4,6 +4,7 @@ import statistics
 from pathlib import Path
 
 import yaml
+from swebench.harness.constants import MAP_REPO_VERSION_TO_SPECS, RUN_EVALUATION_LOG_DIR
 from swebench.harness.run_evaluation import main as run_evaluation
 
 
@@ -11,7 +12,6 @@ DATASET = "princeton-nlp/SWE-bench_Lite"
 
 
 def load_artifacts(output_dir: Path) -> dict[str, list[dict]]:
-    """Load all artifact JSON files grouped by variant."""
     results = {}
     for variant_dir in output_dir.iterdir():
         if not variant_dir.is_dir() or variant_dir.name == "logs":
@@ -26,14 +26,32 @@ def load_artifacts(output_dir: Path) -> dict[str, list[dict]]:
     return results
 
 
-def run_harness(output_dir: Path, variant: str, split: str) -> dict[str, str]:
-    """Run SWE-bench harness and return instance_id -> resolution status."""
+def patch_harness_install_commands() -> None:
+    fallback_map = {
+        "python -m pip install -e .": "python -m pip install -e . || python -m pip install .",
+        "python -m pip install -e .[all]": "python -m pip install -e .[all] || python -m pip install .[all]",
+        "python -m pip install -e '.[dev]'": "python -m pip install -e '.[dev]' || python -m pip install '.[dev]'",
+        'python -m pip install -e ".[dev]"': 'python -m pip install -e ".[dev]" || python -m pip install ".[dev]"',
+    }
+
+    def rewrite_install(install):
+        if isinstance(install, str):
+            return fallback_map.get(install, install)
+        if isinstance(install, list):
+            return [fallback_map.get(item, item) for item in install]
+        return install
+
+    for version_specs in MAP_REPO_VERSION_TO_SPECS.values():
+        for spec in version_specs.values():
+            spec["install"] = rewrite_install(spec.get("install"))
+
+
+def run_harness(output_dir: Path, variant: str, split: str) -> dict[str, bool]:
     predictions_path = output_dir / f"predictions_{variant}.jsonl"
     if not predictions_path.exists():
         print(f"No predictions file for {variant}")
         return {}
 
-    # Extract instance IDs with non-empty patches
     instance_ids = []
     with open(predictions_path) as f:
         for line in f:
@@ -44,6 +62,8 @@ def run_harness(output_dir: Path, variant: str, split: str) -> dict[str, str]:
     if not instance_ids:
         print(f"No patches to evaluate for {variant}")
         return {}
+
+    patch_harness_install_commands()
 
     print(f"Running harness for {variant} ({len(instance_ids)} instances)...")
     run_evaluation(
@@ -67,9 +87,6 @@ def run_harness(output_dir: Path, variant: str, split: str) -> dict[str, str]:
 
 
 def load_harness_results(variant: str) -> dict[str, bool]:
-    """Load harness results from report files."""
-    from swebench.harness.constants import RUN_EVALUATION_LOG_DIR
-
     results = {}
     log_dir = Path(RUN_EVALUATION_LOG_DIR) / variant
     if not log_dir.exists():
@@ -80,7 +97,6 @@ def load_harness_results(variant: str) -> dict[str, bool]:
             with open(report_file) as f:
                 report = json.load(f)
             instance_id = report_file.parent.name
-            # Report is nested: {instance_id: {resolved: bool, ...}}
             inner = report.get(instance_id, {})
             results[instance_id] = inner.get("resolved", False)
         except (json.JSONDecodeError, KeyError):
@@ -89,7 +105,6 @@ def load_harness_results(variant: str) -> dict[str, bool]:
 
 
 def percentile(data: list[float], p: float) -> float:
-    """Calculate percentile (0-100)."""
     if not data:
         return 0.0
     sorted_data = sorted(data)
@@ -100,7 +115,6 @@ def percentile(data: list[float], p: float) -> float:
 
 
 def compute_stats(values: list[float]) -> dict[str, float]:
-    """Compute avg, p50, p90 for a list of values."""
     if not values:
         return {"avg": 0, "p50": 0, "p90": 0}
     return {
@@ -110,8 +124,51 @@ def compute_stats(values: list[float]) -> dict[str, float]:
     }
 
 
+def count_tool_calls(log_content: str) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for line in log_content.splitlines():
+        try:
+            event = json.loads(line)
+            if event.get("type") == "tool_use":
+                tool = event.get("part", {}).get("tool", "unknown")
+                counts[tool] = counts.get(tool, 0) + 1
+        except json.JSONDecodeError:
+            continue
+    return counts
+
+
+def load_tool_calls(output_dir: Path, variant: str, artifacts: list[dict]) -> dict[str, dict[str, int]]:
+    results = {}
+    logs_dir = output_dir / variant / "logs"
+    if not logs_dir.exists():
+        return results
+
+    for artifact in artifacts:
+        instance_id = artifact["instance_id"]
+        safe_name = instance_id.replace("/", "__")
+        log_path = logs_dir / f"{safe_name}.log"
+        if log_path.exists():
+            results[instance_id] = count_tool_calls(log_path.read_text())
+    return results
+
+
+def aggregate_tool_calls(tool_calls_by_instance: dict[str, dict[str, int]]) -> dict[str, float]:
+    if not tool_calls_by_instance:
+        return {}
+
+    all_tools: set[str] = set()
+    for counts in tool_calls_by_instance.values():
+        all_tools.update(counts.keys())
+
+    averages = {}
+    n = len(tool_calls_by_instance)
+    for tool in sorted(all_tools):
+        total = sum(counts.get(tool, 0) for counts in tool_calls_by_instance.values())
+        averages[tool] = round(total / n, 2)
+    return averages
+
+
 def analyze_variant(artifacts: list[dict], harness_results: dict[str, bool]) -> dict:
-    """Analyze stats for a single variant."""
     durations = [a["duration"] for a in artifacts if a.get("duration") is not None]
     inputs = [a["input"] for a in artifacts if a.get("input") is not None]
     outputs = [a["output"] for a in artifacts if a.get("output") is not None]
@@ -138,8 +195,7 @@ def analyze_variant(artifacts: list[dict], harness_results: dict[str, bool]) -> 
     }
 
 
-def print_table(stats_by_variant: dict[str, dict]) -> None:
-    """Print a formatted table of stats."""
+def print_table(stats_by_variant: dict[str, dict], tool_calls_by_variant: dict[str, dict[str, float]]) -> None:
     if not stats_by_variant:
         print("No data found.")
         return
@@ -177,6 +233,31 @@ def print_table(stats_by_variant: dict[str, dict]) -> None:
             values = stats[metric_key]
             print(f"{variant:<{col_width}} {values['avg']:>12} {values['p50']:>12} {values['p90']:>12}")
 
+    # Tool calls table
+    if tool_calls_by_variant:
+        all_tools: set[str] = set()
+        for tool_avgs in tool_calls_by_variant.values():
+            all_tools.update(tool_avgs.keys())
+
+        if all_tools:
+            print("\n" + "=" * 80)
+            print("TOOL CALLS (avg per instance)")
+            print("=" * 80)
+
+            tool_col_width = max(len(t) for t in all_tools) + 2
+            header = f"{'Tool':<{tool_col_width}}"
+            for variant in variants:
+                header += f" {variant:>12}"
+            print(f"\n{header}")
+            print("-" * (tool_col_width + 13 * len(variants)))
+
+            for tool in sorted(all_tools):
+                row = f"{tool:<{tool_col_width}}"
+                for variant in variants:
+                    avg = tool_calls_by_variant.get(variant, {}).get(tool, 0)
+                    row += f" {avg:>12}"
+                print(row)
+
     print()
 
 
@@ -207,15 +288,19 @@ def main(config_path: Path, run_harness_eval: bool) -> None:
     if not run_harness_eval:
         has_results = any(harness_results_by_variant.values())
         if not has_results:
-            print("No cached harness results found. Use --run-harness to run evaluation.")
-            return
+            print("No cached harness results found. Use --run-harness to run evaluation.\n")
 
     stats_by_variant = {
         variant: analyze_variant(artifacts, harness_results_by_variant.get(variant, {}))
         for variant, artifacts in artifacts_by_variant.items()
     }
 
-    print_table(stats_by_variant)
+    tool_calls_by_variant = {}
+    for variant, artifacts in artifacts_by_variant.items():
+        tool_calls = load_tool_calls(output_dir, variant, artifacts)
+        tool_calls_by_variant[variant] = aggregate_tool_calls(tool_calls)
+
+    print_table(stats_by_variant, tool_calls_by_variant)
 
 
 if __name__ == "__main__":

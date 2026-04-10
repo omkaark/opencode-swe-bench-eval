@@ -20,7 +20,7 @@ uv sync
 modal setup
 ```
 
-3. Set your API key:
+3. Set your API key in a `.env`:
 ```bash
 export OPENAI_API_KEY=your_key
 ```
