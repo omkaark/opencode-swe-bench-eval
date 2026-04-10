@@ -1,3 +1,4 @@
+import argparse
 import asyncio
 import json
 import os
@@ -6,13 +7,16 @@ import traceback
 from pathlib import Path
 from typing import Any
 
+import aiohttp
 import modal
+import yaml
 from datasets import load_dataset
 from swerex.deployment.modal import ModalDeployment
 from swerex.runtime.abstract import BashAction, Command, CreateBashSessionRequest, ReadFileRequest, WriteFileRequest
+from swerex.runtime.remote import RemoteRuntime
 
-from images import CONFIG, VARIANT_IMAGES
-from utils import save_artifact, save_log, save_predictions
+from .images import load_variants
+from .utils import save_artifact, save_log, save_predictions
 
 DATASET = "princeton-nlp/SWE-bench_Lite"
 CLONE_TIMEOUT = 300
@@ -20,7 +24,81 @@ COMMAND_TIMEOUT = 1200
 STARTUP_TIMEOUT = 180
 RUNTIME_TIMEOUT = 1800
 DEPLOYMENT_TIMEOUT = 3600
-API_KEY_ENV_VAR = "OPENCODE_API_KEY"
+
+
+def load_env_file(env_path: Path) -> None:
+    if not env_path.exists():
+        return
+
+    for raw_line in env_path.read_text().splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if not key:
+            continue
+
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
+
+        os.environ.setdefault(key, value)
+
+
+def patch_swerex_timeouts():
+    """Patch RemoteRuntime._request to use proper HTTP timeouts."""
+    if getattr(RemoteRuntime, "_patched", False):
+        return
+
+    import uuid
+    import random
+
+    async def patched_request(self, endpoint, payload, output_class, num_retries=0):
+        # Calculate timeout from payload
+        timeout = self._config.timeout
+        if payload:
+            for field in ("timeout", "startup_timeout"):
+                val = getattr(payload, field, None)
+                if val:
+                    timeout = max(timeout, val + 120)
+
+        request_url = f"{self._api_url}/{endpoint}"
+        request_id = str(uuid.uuid4())
+        headers = self._headers.copy()
+        headers["X-Request-ID"] = request_id
+
+        retry_count = 0
+        last_exception = None
+        retry_delay = 0.1
+
+        while retry_count <= num_retries:
+            try:
+                async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(force_close=True)) as session:
+                    async with session.post(
+                        request_url,
+                        json=payload.model_dump() if payload else None,
+                        headers=headers,
+                        timeout=aiohttp.ClientTimeout(total=timeout),
+                    ) as resp:
+                        await self._handle_response_errors(resp)
+                        return output_class(**await resp.json())
+            except Exception as e:
+                last_exception = e
+                retry_count += 1
+                if retry_count <= num_retries:
+                    await asyncio.sleep(retry_delay)
+                    retry_delay = min(retry_delay * 2 + random.uniform(0, 0.5), 5)
+                    continue
+                self.logger.error("Error making request %s after %d retries: %s", request_id, num_retries, e)
+        raise last_exception
+
+    RemoteRuntime._request = patched_request
+    RemoteRuntime._patched = True
+
+
+patch_swerex_timeouts()
 
 def build_prompt(instance: dict[str, Any]) -> str:
     sections = [
@@ -153,12 +231,11 @@ async def run_instance(
                 await deployment.stop()
             except Exception:
                 pass
-            sandbox = getattr(deployment, "sandbox", None)
-            if sandbox:
-                try:
-                    await sandbox.terminate.aio()
-                except Exception:
-                    pass
+            try:
+                sandbox = deployment.sandbox
+                await sandbox.terminate.aio()
+            except Exception:
+                pass
 
 
 async def run_variant(
@@ -182,20 +259,30 @@ async def run_variant(
     return await asyncio.gather(*(run_with_limit(inst) for inst in instances))
 
 
-async def main() -> None:
-    split = CONFIG.get("split", "dev")
-    output_dir = Path(CONFIG.get("output_dir", "outputs")).resolve()
-    concurrency = CONFIG.get("concurrency", 8)
-    model = CONFIG.get("model")
+async def main(config_path: Path) -> None:
+    load_env_file(Path.cwd() / ".env")
 
-    api_key = os.environ.get(API_KEY_ENV_VAR)
-    instances = [dict(item) for item in load_dataset(DATASET, split=split)][:1]  # DEBUG: limit to 1
-    secret = modal.Secret.from_dict({API_KEY_ENV_VAR: api_key})
-    variants = list(VARIANT_IMAGES.keys())
+    with open(config_path) as f:
+        config = yaml.safe_load(f)
 
-    for variant in variants:
+    split = config.get("split", "dev")
+    output_dir = Path(config.get("output_dir", "outputs")).resolve()
+    concurrency = config.get("concurrency", 8)
+    model = config.get("model")
+    api_key_env = config.get("api_key_env", "OPENCODE_API_KEY")
+
+    api_key = os.environ.get(api_key_env)
+    if not api_key:
+        print(f"Error: {api_key_env} environment variable not set")
+        return
+
+    instances = [dict(item) for item in load_dataset(DATASET, split=split)]
+    secret = modal.Secret.from_dict({api_key_env: api_key})
+    variant_images = load_variants(config)
+
+    for variant, image in variant_images.items():
         results = await run_variant(
-            variant, VARIANT_IMAGES[variant], instances, secret,
+            variant, image, instances, secret,
             model, concurrency, output_dir
         )
         predictions_path = save_predictions(output_dir, variant, results)
@@ -203,4 +290,7 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=Path, required=True, help="Path to config YAML file")
+    args = parser.parse_args()
+    asyncio.run(main(args.config))
