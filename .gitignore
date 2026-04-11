@@ -1,5 +1,7 @@
 __pycache__
 .venv
+.python-version
 logs/
 outputs/
 *.json
+.env
