@@ -7,9 +7,18 @@ model: openai/gpt-5-mini
 api_key_env: OPENAI_API_KEY
 
 variants:
+  # Baseline — no clone tool at all
   official:
     type: npm
-  clone-agent:
+
+  # Clone tool used naturally (base: subagent-shared-prefix) + observability fix
+  clone-fixed-natural:
     type: fork
     repo: https://github.com/omkaark/opencode
-    branch: omkaark/subagent-shared-prefix
+    branch: sofia/observability
+
+  # Clone tool forced (base: force-clone-use) + observability fix
+  clone-fixed-forced:
+    type: fork
+    repo: https://github.com/omkaark/opencode
+    branch: sofia/emit-subagent-events

@@ -277,6 +277,9 @@ async def main(config_path: Path) -> None:
         return
 
     instances = [dict(item) for item in load_dataset(DATASET, split=split)]
+    limit = config.get("limit")
+    if limit:
+        instances = instances[:limit]
     secret = modal.Secret.from_dict({api_key_env: api_key})
     variant_images = load_variants(config)
 
