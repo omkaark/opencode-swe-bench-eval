@@ -55,7 +55,7 @@ def patch_swerex_timeouts():
     import uuid
     import random
 
-    async def patched_request(self, endpoint, payload, output_class, num_retries=0):
+    async def patched_request(self, endpoint, payload, output_class, num_retries=3):
         # Calculate timeout from payload
         timeout = self._config.timeout
         if payload:
