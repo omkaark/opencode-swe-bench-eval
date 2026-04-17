@@ -44,8 +44,12 @@ git checkout {commit} || exit 1
 cat > /tmp/problem.txt << 'PROBLEM_EOF'
 {build_prompt(instance)}
 PROBLEM_EOF
+cat > /tmp/run_opencode.sh << 'SCRIPT_EOF'
+cd /repo && opencode run --agent build --model {model} --format json "$(cat /tmp/problem.txt)"
+SCRIPT_EOF
+chmod +x /tmp/run_opencode.sh
 echo "=== OPENCODE_OUTPUT_START ==="
-script -qec "opencode run --agent build --model {model} --format json \\"$(cat /tmp/problem.txt)\\"" /dev/null
+script -qec "bash /tmp/run_opencode.sh" /dev/null
 OPENCODE_EXIT=$?
 echo ""
 echo "=== OPENCODE_OUTPUT_END ==="
