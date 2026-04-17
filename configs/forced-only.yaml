@@ -1,0 +1,14 @@
+# Re-run just clone-fixed-forced after Modal infra crash
+split: dev
+output_dir: outputs-forced-rerun
+concurrency: 1
+limit: 1
+
+model: openai/gpt-5-mini
+api_key_env: OPENAI_API_KEY
+
+variants:
+  clone-fixed-forced:
+    type: fork
+    repo: https://github.com/omkaark/opencode
+    branch: sofia/emit-subagent-events
